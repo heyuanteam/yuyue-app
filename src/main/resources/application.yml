@@ -1,0 +1,43 @@
+# DATASOURCE
+jdbc:
+    dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+    url: jdbc:mysql://127.0.0.1:3306/student?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
+    databaseName: student
+    serverName: 127.0.0.1
+    username: root
+    password: rootadmin
+    cachePrepStmts: true
+    prepStmtsSize: 250
+    prepStmtsCacheSqlLimit: 2048
+    userServerPrepStmts: true
+
+ # MyBatis
+mybatis:
+        typeAliasesPackage: com.yuyue.app.api.*.mapper
+        mapperLocations: classpath:/mappers/*.xml
+        configLocation: classpath:/mybatis-config.xml
+
+# spring-boot默认打印输出info级别以上的，可在此处修改输出级别
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+
+spring:
+  #redis配置
+  redis:
+    host: 127.0.0.1
+    port: 80
+    password:
+    lettuce:
+    pool:
+        #最大连接数
+        max-active: 8
+        #最大阻塞等待时间
+        max-wait: 6000
+        #最大空闲连接
+        max-idle: 8
+        #最小空闲连接
+        min-idle: 0
+        timeout: 5000
+    database: 0
