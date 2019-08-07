@@ -37,10 +37,10 @@ spring:
       pool-prepared-statements: false
       max-pool-prepared-statement-per-connection-size: 20
 
- # MyBatis
+  # MyBatis
 mybatis:
-        typeAliasesPackage: com.yuyue.app.*.mapper
-        mapperLocations: classpath:/mappers/*.xml
+  typeAliasesPackage: com.yuyue.app.*.mapper
+  mapperLocations: classpath:/mappers/*.xml
 
 # spring-boot默认打印输出info级别以上的，可在此处修改输出级别
 logging:
@@ -55,13 +55,13 @@ logging:
     password:
     lettuce:
     pool:
-        #最大连接数
-        max-active: 8
-        #最大阻塞等待时间
-        max-wait: 6000
-        #最大空闲连接
-        max-idle: 8
-        #最小空闲连接
-        min-idle: 0
-        timeout: 5000
+      #最大连接数
+      max-active: 8
+      #最大阻塞等待时间
+      max-wait: 6000
+      #最大空闲连接
+      max-idle: 8
+      #最小空闲连接
+      min-idle: 0
+      timeout: 5000
     database: 0

@@ -11,30 +11,30 @@ import org.springframework.web.bind.annotation.*;
  * 登录模块
  */
 @RestController
-@RequestMapping(value="/login", produces = "application/json; charset=UTF-8")
+@RequestMapping(value = "/login", produces = "application/json; charset=UTF-8")
 public class LoginController {
 
     @Autowired
     private LoginService loginService;
 
     @ResponseBody
-    @RequestMapping( "/version")
+    @RequestMapping("/version")
     public JSONObject getUserName(@RequestParam(value = "appVersion") String appVersion) {
         JSONObject jsonObject = new JSONObject();
-        if(StringUtils.isEmpty(appVersion)){
-            jsonObject.put("code","01");
-            jsonObject.put("result","版本号为空！");
+        if (StringUtils.isEmpty(appVersion)) {
+            jsonObject.put("code", "01");
+            jsonObject.put("result", "版本号为空！");
             return jsonObject;
         }
         AppVersion version = loginService.getAppVersion(appVersion);
-        if (version == null){
-            jsonObject.put("code","01");
-            jsonObject.put("result","请设置版本号！");
+        if (version == null) {
+            jsonObject.put("code", "01");
+            jsonObject.put("result", "请设置版本号！");
             return jsonObject;
         }
 
-        jsonObject.put("code","00");
-        jsonObject.put("result",version.toString());
+        jsonObject.put("code", "00");
+        jsonObject.put("result", version.toString());
         return jsonObject;
     }
 

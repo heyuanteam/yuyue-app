@@ -8,34 +8,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value="/redis", produces = "application/json; charset=UTF-8")
+@RequestMapping(value = "/redis", produces = "application/json; charset=UTF-8")
 public class RedisController {
 
     @Autowired
-    private RedisTemplate  redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Autowired
     private RedisUtil redisUtil;
 
-    @RequestMapping( "/set")
-    public String setUserName( String name) {
+    @RequestMapping("/set")
+    public String setUserName(String name) {
         redisTemplate.opsForValue().set("1", name);
         return "succees";
     }
 
-    @RequestMapping( "/get")
-    public String getUserName( String key) {
-        return  redisTemplate.opsForValue().get(key).toString();
+    @RequestMapping("/get")
+    public String getUserName(String key) {
+        return redisTemplate.opsForValue().get(key).toString();
     }
 
-    @RequestMapping( "/delete")
+    @RequestMapping("/delete")
     public Boolean deleteKey(String key) {
         return redisUtil.deleteKey(key);
     }
 
-    @RequestMapping( "/newset")
+    @RequestMapping("/newset")
     public Boolean newSetName(String name) {
-        return redisUtil.setString("2",name);
+        return redisUtil.setString("2", name);
     }
 
 

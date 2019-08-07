@@ -12,7 +12,7 @@ public class IController {
 
     @RequestMapping("/")
     @ResponseBody
-    public String hello(){
+    public String hello() {
         return "Hello ！ 娱悦APP ！";
     }
 }

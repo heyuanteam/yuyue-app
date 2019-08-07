@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yuyue.app.api.mapper.AppVersionMapper" >
+<mapper namespace="com.yuyue.app.api.mapper.AppVersionMapper">
 
-        <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
-        <resultMap id="BaseResultMap" type="com.yuyue.app.api.domain.AppVersion">
-            <id column="id" property="appVersionId"  jdbcType="VARCHAR" />
-            <result column="system_type" property="systemType"  jdbcType="VARCHAR" />
-            <result column="version_no" property="versionNo" jdbcType="VARCHAR" />
-            <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-            <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
-            <result column="status" property="status"  jdbcType="VARCHAR" />
-            <result column="program_description" property="programDescription" jdbcType="VARCHAR" />
-        </resultMap>
+    <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
+    <resultMap id="BaseResultMap" type="com.yuyue.app.api.domain.AppVersion">
+        <id column="id" property="appVersionId" jdbcType="VARCHAR"/>
+        <result column="system_type" property="systemType" jdbcType="VARCHAR"/>
+        <result column="version_no" property="versionNo" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="program_description" property="programDescription" jdbcType="VARCHAR"/>
+    </resultMap>
 
-        <!-- 查询单条记录 -->
-        <select id="getAppVersion" parameterType="String" resultMap="BaseResultMap">
-            SELECT * FROM yuyue_app_version b WHERE b.system_type = #{appVersion} ORDER BY b.CREATE_TIME DESC LIMIT 1
-        </select>
-    </mapper>
+    <!-- 查询单条记录 -->
+    <select id="getAppVersion" parameterType="String" resultMap="BaseResultMap">
+        SELECT * FROM yuyue_app_version b WHERE b.system_type = #{appVersion} ORDER BY b.CREATE_TIME DESC LIMIT 1
+    </select>
+</mapper>
