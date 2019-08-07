@@ -9,7 +9,7 @@ package com.yuyue.app.Exception;
  *
  * @author YWH
  */
-public class MyException extends RuntimeException{
+public class  MyException extends RuntimeException{
 
     public MyException(String msg) {
         super(msg);

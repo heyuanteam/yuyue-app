@@ -1,0 +1,1396 @@
+2019-08-06 10:30:17,537 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 17636 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 10:30:17,540 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 10:30:17,592 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@443118b0: startup date [Tue Aug 06 10:30:17 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 10:30:17,731 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 10:30:18,233 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 10:30:18,441 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 10:30:18,527 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$263f7a7d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 10:30:18,912 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 10:30:18,930 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 10:30:18,941 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 10:30:18,941 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 10:30:19,056 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 10:30:19,056 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1464 ms
+2019-08-06 10:30:19,191 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 10:30:19,194 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 10:30:19,195 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 10:30:19,195 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 10:30:19,195 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 10:30:19,230 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 10:30:19,247 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 10:32:19,672 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 20552 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 10:32:19,675 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 10:32:19,725 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@443118b0: startup date [Tue Aug 06 10:32:19 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 10:32:19,868 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 10:32:20,362 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 10:32:20,567 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 10:32:20,656 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dc166e9d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 10:32:21,004 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 10:32:21,015 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 10:32:21,023 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 10:32:21,024 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 10:32:21,102 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 10:32:21,102 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1377 ms
+2019-08-06 10:32:21,218 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 10:32:21,221 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 10:32:21,221 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 10:32:21,221 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 10:32:21,221 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 10:32:21,253 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 10:32:21,268 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 10:40:21,175 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 8772 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 10:40:21,179 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 10:40:21,233 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@443118b0: startup date [Tue Aug 06 10:40:21 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 10:40:21,383 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 10:40:21,836 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 10:40:22,071 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 10:40:22,170 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$b5c47085] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 10:40:22,551 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 10:40:22,562 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 10:40:22,569 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 10:40:22,569 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 10:40:22,645 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 10:40:22,645 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1412 ms
+2019-08-06 10:40:22,757 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 10:40:22,760 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 10:40:22,761 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 10:40:22,761 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 10:40:22,761 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 10:40:23,039 [main] INFO  o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@443118b0: startup date [Tue Aug 06 10:40:21 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 10:40:23,080 [main] INFO  o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-08-06 10:40:23,081 [main] INFO  o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-08-06 10:40:23,099 [main] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-08-06 10:40:23,099 [main] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-08-06 10:40:23,125 [main] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-08-06 10:40:23,183 [main] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
+2019-08-06 10:40:23,184 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 10:40:23,198 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 10:42:29,564 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 16720 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 10:42:29,568 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 10:42:29,632 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@443118b0: startup date [Tue Aug 06 10:42:29 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 10:42:29,795 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 10:42:30,435 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 10:42:30,656 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 10:42:30,739 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$6ea8a107] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 10:42:31,116 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 10:42:31,130 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 10:42:31,138 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 10:42:31,138 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 10:42:31,221 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 10:42:31,221 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1589 ms
+2019-08-06 10:42:31,377 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 10:42:31,384 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 10:42:31,384 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 10:42:31,384 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 10:42:31,385 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 10:42:31,656 [main] INFO  o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@443118b0: startup date [Tue Aug 06 10:42:29 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 10:42:31,714 [main] INFO  o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-08-06 10:42:31,716 [main] INFO  o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-08-06 10:42:31,742 [main] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-08-06 10:42:31,742 [main] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-08-06 10:42:31,772 [main] INFO  org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-08-06 10:42:31,846 [main] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
+2019-08-06 10:42:31,847 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 10:42:31,861 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 10:44:09,337 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 20248 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 10:44:09,341 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 10:44:09,395 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@443118b0: startup date [Tue Aug 06 10:44:09 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 10:44:09,554 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 10:44:10,036 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 10:44:10,233 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 10:44:10,289 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$69a840d6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 10:44:10,300 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 10:44:11,408 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 10:44:11,430 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 10:44:12,435 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 10:44:12,438 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 10:44:13,443 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 10:44:13,467 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 10:44:14,471 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 10:44:14,481 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 10:44:15,485 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 10:44:15,491 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$6ffd24ac] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 10:44:15,514 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 10:44:16,516 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 10:44:16,556 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 10:44:17,558 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 10:44:17,605 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 10:44:18,607 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 10:44:18,611 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 10:44:19,614 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 10:44:19,617 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 10:44:20,620 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 10:44:20,623 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 10:44:21,627 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 10:44:21,655 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 10:44:22,658 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 10:44:22,661 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 10:44:23,665 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 10:44:23,669 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 10:44:24,673 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 10:44:24,678 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 10:44:25,680 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 10:44:25,683 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 10:44:26,687 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 10:44:26,802 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 10:44:26,813 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 10:44:26,821 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 10:44:26,821 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 10:44:26,908 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 10:44:26,908 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17514 ms
+2019-08-06 10:44:26,915 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 10:44:27,918 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 10:44:27,921 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 10:44:28,925 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 10:44:28,939 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 10:44:29,942 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 10:44:29,944 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 10:44:30,959 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 10:44:30,992 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 10:44:31,995 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 10:44:31,998 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 10:44:33,001 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 10:44:33,080 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 10:44:33,083 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 10:44:33,083 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 10:44:33,083 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 10:44:33,083 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 10:44:33,111 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 10:44:34,114 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 10:44:34,119 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 10:44:35,122 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 10:44:35,125 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 10:44:35,137 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:03:06,572 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 13500 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:03:06,576 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:03:06,631 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@3c46e67a: startup date [Tue Aug 06 11:03:06 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:03:06,775 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:03:07,326 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:03:07,523 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:03:07,577 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:03:07,588 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:03:08,674 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:03:08,692 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:03:09,695 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:03:09,698 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:03:10,701 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:03:10,726 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:03:11,730 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:03:11,738 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:03:12,741 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:03:12,743 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dd75cf24] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:03:12,765 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:03:13,770 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:03:13,830 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:03:14,834 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:03:14,883 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:03:15,887 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:03:15,895 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:03:16,898 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:03:16,902 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:03:17,903 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:03:17,906 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:03:18,909 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:03:18,940 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:03:19,945 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:03:19,949 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:03:20,953 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:03:20,957 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:03:21,959 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:03:21,963 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:03:22,966 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:03:22,969 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:03:23,973 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:03:24,090 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:03:24,100 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:03:24,107 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:03:24,108 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:03:24,207 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:03:24,207 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17576 ms
+2019-08-06 11:03:24,214 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:03:25,219 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:03:25,230 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:03:26,236 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:03:26,246 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:03:27,249 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:03:27,252 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:03:28,255 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:03:28,277 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:03:29,280 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:03:29,284 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:03:30,288 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:03:30,371 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:03:30,374 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:03:30,375 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:03:30,375 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:03:30,375 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:03:30,403 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:03:31,406 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:03:31,416 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 11:03:32,420 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 11:03:32,423 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:03:32,432 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:05:45,307 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 19944 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:05:45,311 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:05:45,368 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@3c46e67a: startup date [Tue Aug 06 11:05:45 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:05:45,513 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:05:46,002 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:05:46,200 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:05:46,257 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:05:46,268 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:05:47,350 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:05:47,368 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:05:48,370 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:05:48,374 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:05:49,379 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:05:49,411 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:05:50,415 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:05:50,418 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:05:51,422 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:05:51,424 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dd75cf24] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:05:51,445 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:05:52,449 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:05:52,488 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:05:53,491 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:05:53,541 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:05:54,545 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:05:54,548 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:05:55,550 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:05:55,558 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:05:56,560 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:05:56,564 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:05:57,567 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:05:57,596 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:05:58,598 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:05:58,602 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:05:59,605 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:05:59,610 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:06:00,613 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:06:00,617 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:06:01,620 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:06:01,624 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:06:02,628 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:06:02,742 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:06:02,753 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:06:02,760 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:06:02,760 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:06:02,847 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:06:02,847 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17479 ms
+2019-08-06 11:06:02,854 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:06:03,858 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:06:03,862 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:06:04,866 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:06:04,887 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:06:05,891 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:06:05,894 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:06:06,896 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:06:06,917 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:06:07,920 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:06:07,923 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:06:08,926 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:06:09,006 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:06:09,009 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:06:09,010 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:06:09,010 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:06:09,010 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:06:09,037 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:06:10,040 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:06:10,045 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 11:06:11,048 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 11:06:11,054 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:06:11,065 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:07:40,762 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 18316 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:07:40,766 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:07:40,823 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@3c46e67a: startup date [Tue Aug 06 11:07:40 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:07:40,986 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:07:41,491 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:07:41,691 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:07:41,748 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:07:41,758 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:07:42,840 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:07:42,857 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:07:43,861 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:07:43,865 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:07:44,870 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:07:44,891 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:07:45,900 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:07:45,904 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:07:46,908 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:07:46,910 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dd75cf24] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:07:46,938 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:07:47,942 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:07:47,986 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:07:48,989 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:07:49,035 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:07:50,037 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:07:50,040 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:07:51,042 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:07:51,045 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:07:52,047 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:07:52,050 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:07:53,052 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:07:53,088 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:07:54,091 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:07:54,096 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:07:55,098 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:07:55,103 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:07:56,106 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:07:56,111 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:07:57,114 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:07:57,118 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:07:58,127 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:07:58,259 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:07:58,269 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:07:58,277 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:07:58,277 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:07:58,379 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:07:58,380 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17557 ms
+2019-08-06 11:07:58,387 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:07:59,392 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:07:59,395 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:08:00,398 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:08:00,409 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:08:01,413 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:08:01,419 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:08:02,423 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:08:02,444 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:08:03,446 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:08:03,449 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:08:04,454 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:08:04,542 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:08:04,545 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:08:04,546 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:08:04,546 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:08:04,546 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:08:04,574 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:08:05,576 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:08:05,581 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 11:08:06,583 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 11:08:06,586 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:08:06,597 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:08:34,329 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 18576 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:08:34,332 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:08:34,384 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@3c46e67a: startup date [Tue Aug 06 11:08:34 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:08:34,552 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:08:35,084 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:08:35,303 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:08:35,368 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:08:35,382 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:08:36,477 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:08:36,496 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:08:37,500 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:08:37,505 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:08:38,508 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:08:38,535 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:08:39,540 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:08:39,546 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:08:40,549 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:08:40,551 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$eb15e913] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:08:40,586 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:08:41,590 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:08:41,647 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:08:42,651 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:08:42,748 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:08:43,751 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:08:43,754 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:08:44,755 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:08:44,758 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:08:45,761 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:08:45,764 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:08:46,766 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:08:46,795 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:08:47,798 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:08:47,813 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:08:48,817 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:08:48,820 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:08:49,824 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:08:49,829 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:08:50,832 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:08:50,836 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:08:51,841 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:08:51,957 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:08:51,967 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:08:51,974 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:08:51,975 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:08:52,062 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:08:52,062 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17678 ms
+2019-08-06 11:08:52,070 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:08:53,074 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:08:53,077 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:08:54,079 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:08:54,101 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:08:55,104 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:08:55,108 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:08:56,110 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:08:56,131 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:08:57,134 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:08:57,136 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:08:58,140 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:08:58,269 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:08:58,272 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:08:58,272 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:08:58,272 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:08:58,273 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:08:58,302 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:08:59,304 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:08:59,309 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 11:09:00,313 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 11:09:00,316 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:09:00,326 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:20:45,193 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 4664 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:20:45,197 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:20:45,256 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@3c46e67a: startup date [Tue Aug 06 11:20:45 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:20:45,407 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:20:45,928 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:20:46,158 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:20:46,215 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:20:46,225 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:20:47,309 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:20:47,330 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:20:48,334 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:20:48,337 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:20:49,340 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:20:49,359 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:20:50,369 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:20:50,373 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:20:51,376 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:20:51,378 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dd75cf24] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:20:51,399 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:20:52,402 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:20:52,450 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:20:53,455 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:20:53,503 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:20:54,505 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:20:54,508 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:20:55,512 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:20:55,515 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:20:56,518 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:20:56,521 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:20:57,524 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:20:57,565 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:20:58,568 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:20:58,572 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:20:59,575 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:20:59,579 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:21:00,583 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:21:00,587 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:21:01,589 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:21:01,593 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:21:02,599 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:21:02,711 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:21:02,721 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:21:02,728 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:21:02,729 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:21:02,816 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:21:02,816 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17560 ms
+2019-08-06 11:21:02,837 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:21:03,841 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:21:03,844 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:21:04,848 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:21:04,861 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:21:05,866 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:21:05,873 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:21:06,875 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:21:06,896 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:21:07,901 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:21:07,903 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:21:08,907 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:21:08,991 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:21:08,994 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:21:08,995 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:21:08,995 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:21:08,995 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:21:09,025 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:21:10,028 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:21:10,034 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 11:21:11,037 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 11:21:11,040 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:21:11,050 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:21:28,997 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 15820 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:21:29,002 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:21:29,059 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@3c46e67a: startup date [Tue Aug 06 11:21:29 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:21:29,221 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:21:29,705 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:21:29,906 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:21:29,962 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:21:29,974 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:21:31,065 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:21:31,084 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:21:32,087 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:21:32,091 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:21:33,095 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:21:33,121 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:21:34,123 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:21:34,128 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:21:35,131 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:21:35,133 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$eb15e913] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:21:35,156 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:21:36,159 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:21:36,194 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:21:37,197 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:21:37,242 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:21:38,245 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:21:38,248 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:21:39,253 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:21:39,263 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:21:40,267 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:21:40,270 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:21:41,273 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:21:41,307 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:21:42,311 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:21:42,321 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:21:43,322 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:21:43,327 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:21:44,331 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:21:44,341 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:21:45,344 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:21:45,348 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:21:46,353 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:21:46,481 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:21:46,491 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:21:46,500 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:21:46,500 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:21:46,599 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:21:46,599 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17540 ms
+2019-08-06 11:21:46,606 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:21:47,608 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:21:47,612 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:21:48,616 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:21:48,626 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:21:49,627 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:21:49,630 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:21:50,633 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:21:50,653 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:21:51,656 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:21:51,659 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:21:52,661 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:21:52,741 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:21:52,744 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:21:52,744 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:21:52,744 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:21:52,744 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:21:52,772 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:21:53,775 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:21:53,780 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 11:21:54,782 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 11:21:54,786 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:21:54,797 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:34:30,095 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 11072 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:34:30,101 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:34:30,164 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 11:34:30 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:34:30,372 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:34:31,038 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:34:31,305 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:34:31,374 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:34:31,386 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:34:32,474 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:34:32,492 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:34:33,496 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:34:33,499 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:34:34,502 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:34:34,535 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:34:35,539 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:34:35,543 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:34:36,546 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:34:36,548 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dd75cf24] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:34:36,569 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:34:37,573 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:34:37,609 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:34:38,613 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:34:38,657 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:34:39,661 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:34:39,663 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:34:40,667 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:34:40,670 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:34:41,673 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:34:41,676 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:34:42,681 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:34:42,717 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:34:43,721 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:34:43,730 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:34:44,733 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:34:44,737 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:34:45,744 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:34:45,749 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:34:46,752 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:34:46,756 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:34:47,760 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:34:47,887 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:34:47,898 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:34:47,908 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:34:47,908 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:34:48,018 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:34:48,019 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17855 ms
+2019-08-06 11:34:48,028 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:34:49,031 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:34:49,034 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:34:50,038 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:34:50,048 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:34:51,051 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:34:51,054 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:34:52,056 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:34:52,078 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:34:53,082 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:34:53,092 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:34:54,095 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:34:54,191 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:34:54,195 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:34:54,195 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:34:54,195 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:34:54,195 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:34:54,224 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:34:55,227 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:34:55,232 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 11:34:56,235 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 11:34:56,238 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:34:56,248 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:46:11,296 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 18068 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:46:11,300 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:46:11,353 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 11:46:11 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:46:11,542 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:46:12,073 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:46:12,267 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:46:12,333 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d231f449] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:46:12,343 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:46:13,425 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:46:13,430 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:46:14,436 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:46:14,441 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:46:15,445 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:46:15,451 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:46:16,453 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:46:16,483 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:46:17,489 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:46:17,501 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:46:18,507 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:46:18,510 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:46:19,513 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:46:19,515 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:46:20,518 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:46:20,523 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:46:21,529 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:46:21,533 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:46:22,536 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:46:22,542 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:46:23,545 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:46:23,548 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:46:24,551 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:46:24,577 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:46:25,580 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:46:25,583 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:46:26,587 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:46:26,595 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:46:27,599 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:46:27,603 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:46:28,608 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:46:28,613 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:46:29,618 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:46:29,620 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:46:30,624 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:46:30,626 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:46:31,629 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:46:31,632 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:46:32,635 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:46:32,636 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$d886d81f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:46:32,658 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:46:33,662 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:46:33,665 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:46:34,670 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:46:34,678 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:46:35,686 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:46:35,689 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 11:46:36,692 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 11:46:36,729 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-24 is starting.
+2019-08-06 11:46:37,731 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-24 is shutting down.
+2019-08-06 11:46:37,738 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-25 is starting.
+2019-08-06 11:46:38,742 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-25 is shutting down.
+2019-08-06 11:46:38,745 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-26 is starting.
+2019-08-06 11:46:39,749 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-26 is shutting down.
+2019-08-06 11:46:39,756 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-27 is starting.
+2019-08-06 11:46:40,758 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-27 is shutting down.
+2019-08-06 11:46:40,805 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-28 is starting.
+2019-08-06 11:46:41,808 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-28 is shutting down.
+2019-08-06 11:46:41,811 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-29 is starting.
+2019-08-06 11:46:42,813 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-29 is shutting down.
+2019-08-06 11:46:42,816 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-30 is starting.
+2019-08-06 11:46:43,818 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-30 is shutting down.
+2019-08-06 11:46:43,821 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-31 is starting.
+2019-08-06 11:46:44,824 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-31 is shutting down.
+2019-08-06 11:46:44,826 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-32 is starting.
+2019-08-06 11:46:45,829 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-32 is shutting down.
+2019-08-06 11:46:45,832 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-33 is starting.
+2019-08-06 11:46:46,833 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-33 is shutting down.
+2019-08-06 11:46:46,835 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-34 is starting.
+2019-08-06 11:46:47,839 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-34 is shutting down.
+2019-08-06 11:46:47,848 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-35 is starting.
+2019-08-06 11:46:48,853 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-35 is shutting down.
+2019-08-06 11:46:48,855 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-36 is starting.
+2019-08-06 11:46:49,863 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-36 is shutting down.
+2019-08-06 11:46:49,865 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-37 is starting.
+2019-08-06 11:46:50,867 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-37 is shutting down.
+2019-08-06 11:46:50,870 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-38 is starting.
+2019-08-06 11:46:51,873 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-38 is shutting down.
+2019-08-06 11:46:51,880 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-39 is starting.
+2019-08-06 11:46:52,883 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-39 is shutting down.
+2019-08-06 11:46:52,887 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-40 is starting.
+2019-08-06 11:46:53,892 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-40 is shutting down.
+2019-08-06 11:46:53,898 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-41 is starting.
+2019-08-06 11:46:54,900 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-41 is shutting down.
+2019-08-06 11:46:54,903 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-42 is starting.
+2019-08-06 11:46:55,907 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-42 is shutting down.
+2019-08-06 11:46:55,909 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-43 is starting.
+2019-08-06 11:46:56,913 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-43 is shutting down.
+2019-08-06 11:46:56,945 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-44 is starting.
+2019-08-06 11:46:57,949 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-44 is shutting down.
+2019-08-06 11:46:57,952 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-45 is starting.
+2019-08-06 11:46:58,956 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-45 is shutting down.
+2019-08-06 11:46:58,961 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-46 is starting.
+2019-08-06 11:46:59,966 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-46 is shutting down.
+2019-08-06 11:46:59,972 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-47 is starting.
+2019-08-06 11:47:00,977 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-47 is shutting down.
+2019-08-06 11:47:00,985 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-48 is starting.
+2019-08-06 11:47:01,989 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-48 is shutting down.
+2019-08-06 11:47:01,992 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-49 is starting.
+2019-08-06 11:47:02,997 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-49 is shutting down.
+2019-08-06 11:47:03,004 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-50 is starting.
+2019-08-06 11:47:04,009 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-50 is shutting down.
+2019-08-06 11:47:04,015 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-51 is starting.
+2019-08-06 11:47:05,017 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-51 is shutting down.
+2019-08-06 11:47:05,021 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-52 is starting.
+2019-08-06 11:47:06,024 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-52 is shutting down.
+2019-08-06 11:47:06,027 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-53 is starting.
+2019-08-06 11:47:07,031 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-53 is shutting down.
+2019-08-06 11:47:07,034 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-54 is starting.
+2019-08-06 11:47:08,036 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-54 is shutting down.
+2019-08-06 11:47:08,039 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-55 is starting.
+2019-08-06 11:47:09,041 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-55 is shutting down.
+2019-08-06 11:47:09,046 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-56 is starting.
+2019-08-06 11:47:10,048 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-56 is shutting down.
+2019-08-06 11:47:10,051 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-57 is starting.
+2019-08-06 11:47:11,053 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-57 is shutting down.
+2019-08-06 11:47:11,056 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-58 is starting.
+2019-08-06 11:47:12,059 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-58 is shutting down.
+2019-08-06 11:47:12,063 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-59 is starting.
+2019-08-06 11:47:13,067 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-59 is shutting down.
+2019-08-06 11:47:13,072 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-60 is starting.
+2019-08-06 11:47:14,076 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-60 is shutting down.
+2019-08-06 11:47:14,081 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-61 is starting.
+2019-08-06 11:47:15,084 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-61 is shutting down.
+2019-08-06 11:47:15,091 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-62 is starting.
+2019-08-06 11:47:16,094 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-62 is shutting down.
+2019-08-06 11:47:16,097 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-63 is starting.
+2019-08-06 11:47:17,099 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-63 is shutting down.
+2019-08-06 11:47:17,220 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:47:17,229 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:47:17,237 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:47:17,237 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:47:17,319 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:47:17,319 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 65966 ms
+2019-08-06 11:47:17,324 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-64 is starting.
+2019-08-06 11:47:18,328 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-64 is shutting down.
+2019-08-06 11:47:18,329 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-65 is starting.
+2019-08-06 11:47:19,332 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-65 is shutting down.
+2019-08-06 11:47:19,334 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-66 is starting.
+2019-08-06 11:47:20,336 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-66 is shutting down.
+2019-08-06 11:47:20,339 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-67 is starting.
+2019-08-06 11:47:21,342 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-67 is shutting down.
+2019-08-06 11:47:21,344 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-68 is starting.
+2019-08-06 11:47:22,349 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-68 is shutting down.
+2019-08-06 11:47:22,358 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-69 is starting.
+2019-08-06 11:47:23,360 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-69 is shutting down.
+2019-08-06 11:47:23,362 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-70 is starting.
+2019-08-06 11:47:24,364 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-70 is shutting down.
+2019-08-06 11:47:24,366 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-71 is starting.
+2019-08-06 11:47:25,369 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-71 is shutting down.
+2019-08-06 11:47:25,379 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-72 is starting.
+2019-08-06 11:47:26,381 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-72 is shutting down.
+2019-08-06 11:47:26,384 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-73 is starting.
+2019-08-06 11:47:27,386 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-73 is shutting down.
+2019-08-06 11:47:27,388 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-74 is starting.
+2019-08-06 11:47:28,390 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-74 is shutting down.
+2019-08-06 11:47:28,396 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-75 is starting.
+2019-08-06 11:47:29,398 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-75 is shutting down.
+2019-08-06 11:47:29,400 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-76 is starting.
+2019-08-06 11:47:30,404 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-76 is shutting down.
+2019-08-06 11:47:30,407 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-77 is starting.
+2019-08-06 11:47:31,408 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-77 is shutting down.
+2019-08-06 11:47:31,410 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-78 is starting.
+2019-08-06 11:47:32,413 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-78 is shutting down.
+2019-08-06 11:47:32,415 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-79 is starting.
+2019-08-06 11:47:33,419 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-79 is shutting down.
+2019-08-06 11:47:33,440 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-80 is starting.
+2019-08-06 11:47:34,442 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-80 is shutting down.
+2019-08-06 11:47:34,444 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-81 is starting.
+2019-08-06 11:47:35,448 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-81 is shutting down.
+2019-08-06 11:47:35,450 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-82 is starting.
+2019-08-06 11:47:36,452 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-82 is shutting down.
+2019-08-06 11:47:36,454 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-83 is starting.
+2019-08-06 11:47:37,462 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-83 is shutting down.
+2019-08-06 11:47:37,466 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-84 is starting.
+2019-08-06 11:47:38,468 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-84 is shutting down.
+2019-08-06 11:47:38,471 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-85 is starting.
+2019-08-06 11:47:39,477 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-85 is shutting down.
+2019-08-06 11:47:39,479 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-86 is starting.
+2019-08-06 11:47:40,483 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-86 is shutting down.
+2019-08-06 11:47:40,490 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-87 is starting.
+2019-08-06 11:47:41,494 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-87 is shutting down.
+2019-08-06 11:47:41,586 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:47:41,590 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:47:41,590 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:47:41,590 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:47:41,590 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:47:41,620 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-88 is starting.
+2019-08-06 11:47:42,623 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-88 is shutting down.
+2019-08-06 11:47:42,625 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-89 is starting.
+2019-08-06 11:47:43,627 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-89 is shutting down.
+2019-08-06 11:47:43,629 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-90 is starting.
+2019-08-06 11:47:44,633 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-90 is shutting down.
+2019-08-06 11:47:44,640 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-91 is starting.
+2019-08-06 11:47:45,643 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-91 is shutting down.
+2019-08-06 11:47:45,647 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-92 is starting.
+2019-08-06 11:47:46,651 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-92 is shutting down.
+2019-08-06 11:47:46,656 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-93 is starting.
+2019-08-06 11:47:47,659 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-93 is shutting down.
+2019-08-06 11:47:47,661 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-94 is starting.
+2019-08-06 11:47:48,664 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-94 is shutting down.
+2019-08-06 11:47:48,667 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-95 is starting.
+2019-08-06 11:47:49,670 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-95 is shutting down.
+2019-08-06 11:47:49,673 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:47:49,683 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:48:37,983 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 20624 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:48:37,988 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:48:38,054 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 11:48:38 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:48:38,191 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:48:38,700 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:48:38,908 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:48:38,971 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:48:38,981 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:48:40,065 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:48:40,084 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:48:41,088 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:48:41,091 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:48:42,093 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:48:42,118 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:48:43,121 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:48:43,124 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:48:44,128 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:48:44,134 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$eb15e913] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:48:44,157 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:48:45,160 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:48:45,195 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:48:46,199 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:48:46,244 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:48:47,249 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:48:47,258 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:48:48,261 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:48:48,271 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:48:49,273 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:48:49,277 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:48:50,280 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:48:50,310 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:48:51,314 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:48:51,318 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:48:52,322 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:48:52,331 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:48:53,336 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:48:53,345 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:48:54,348 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:48:54,357 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:48:55,360 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:48:55,474 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:48:55,483 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:48:55,492 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:48:55,492 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:48:55,587 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:48:55,587 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17534 ms
+2019-08-06 11:48:55,597 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:48:56,601 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:48:56,604 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:48:57,607 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:48:57,628 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:48:58,631 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:48:58,634 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:48:59,636 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:48:59,656 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:49:00,659 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:49:00,663 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:49:01,665 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:49:01,748 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:49:01,751 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:49:01,751 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:49:01,752 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:49:01,752 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:49:01,781 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:49:02,784 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:49:02,796 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:49:02,806 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:54:32,201 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 18580 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:54:32,205 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:54:32,259 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 11:54:32 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:54:32,413 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:54:32,984 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:54:33,289 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:54:33,360 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:54:33,372 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:54:34,464 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:54:34,482 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:54:35,485 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:54:35,488 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:54:36,492 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:54:36,517 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:54:37,521 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:54:37,524 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:54:38,526 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:54:38,528 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$eb15e913] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:54:38,550 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:54:39,554 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:54:39,589 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:54:40,591 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:54:40,635 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:54:41,639 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:54:41,641 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:54:42,644 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:54:42,647 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:54:43,652 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:54:43,659 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:54:44,662 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:54:44,690 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:54:45,692 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:54:45,696 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:54:46,699 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:54:46,702 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:54:47,705 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:54:47,709 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:54:48,712 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:54:48,721 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:54:49,725 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:54:49,837 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:54:49,847 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:54:49,854 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:54:49,855 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:54:49,941 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:54:49,941 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17682 ms
+2019-08-06 11:54:49,949 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:54:50,951 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:54:50,954 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:54:51,957 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:54:51,975 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:54:52,987 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:54:52,990 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:54:53,992 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:54:54,014 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:54:55,017 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:54:55,025 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:54:56,030 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:54:56,129 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:54:56,132 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:54:56,132 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:54:56,132 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:54:56,132 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:54:56,163 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:54:57,166 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:54:57,170 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:54:57,181 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 11:55:55,644 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 17200 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 11:55:55,647 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 11:55:55,703 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 11:55:55 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 11:55:55,870 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 11:55:56,395 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 11:55:56,760 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 11:55:56,877 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$5bffdf3b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:55:56,901 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 11:55:58,020 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 11:55:58,038 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 11:55:59,041 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 11:55:59,045 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 11:56:00,049 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 11:56:00,076 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 11:56:01,080 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 11:56:01,084 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 11:56:02,088 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 11:56:02,093 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$6254c311] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:56:02,114 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 11:56:03,119 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 11:56:03,178 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 11:56:04,182 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 11:56:04,233 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 11:56:05,237 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 11:56:05,240 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 11:56:06,243 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 11:56:06,247 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 11:56:07,249 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 11:56:07,252 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 11:56:08,254 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 11:56:08,294 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 11:56:09,298 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 11:56:09,302 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 11:56:10,305 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 11:56:10,309 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 11:56:11,313 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 11:56:11,318 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 11:56:12,321 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 11:56:12,325 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 11:56:13,328 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 11:56:13,441 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 11:56:13,451 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 11:56:13,459 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 11:56:13,459 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 11:56:13,558 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 11:56:13,558 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17855 ms
+2019-08-06 11:56:13,566 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 11:56:14,569 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 11:56:14,572 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 11:56:15,576 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 11:56:15,589 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 11:56:16,592 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 11:56:16,595 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 11:56:17,597 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 11:56:17,618 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 11:56:18,620 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 11:56:18,629 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 11:56:19,634 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 11:56:19,727 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 11:56:19,731 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 11:56:19,731 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 11:56:19,731 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 11:56:19,731 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 11:56:19,763 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 11:56:20,767 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 11:56:20,770 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 11:56:20,780 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 12:42:21,796 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 18312 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 12:42:21,799 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 12:42:21,841 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 12:42:21 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 12:42:21,988 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 12:42:22,528 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 12:42:22,740 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 12:42:22,842 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$4246cae4] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:42:23,165 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 12:42:23,176 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 12:42:23,183 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 12:42:23,183 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 12:42:23,271 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 12:42:23,271 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1430 ms
+2019-08-06 12:42:23,433 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 12:42:23,439 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 12:42:23,440 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 12:42:23,440 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 12:42:23,440 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 12:42:23,487 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 12:42:23,508 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 12:45:17,337 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 16504 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 12:45:17,341 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 12:45:17,404 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 12:45:17 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 12:45:17,576 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 12:45:18,073 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 12:45:18,279 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 12:45:18,334 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:45:18,345 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 12:45:19,432 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 12:45:19,451 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 12:45:20,455 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 12:45:20,457 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 12:45:21,461 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 12:45:21,489 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 12:45:22,491 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 12:45:22,494 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 12:45:23,497 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 12:45:23,499 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$eb15e913] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:45:23,530 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 12:45:24,532 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 12:45:24,567 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 12:45:25,570 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 12:45:25,620 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 12:45:26,624 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 12:45:26,627 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 12:45:27,630 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 12:45:27,633 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 12:45:28,636 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 12:45:28,639 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 12:45:29,643 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 12:45:29,676 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 12:45:30,679 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 12:45:30,683 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 12:45:31,686 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 12:45:31,691 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 12:45:32,694 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 12:45:32,708 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 12:45:33,712 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 12:45:33,717 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 12:45:34,720 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 12:45:34,840 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 12:45:34,850 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 12:45:34,858 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 12:45:34,858 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 12:45:34,950 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 12:45:34,950 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17546 ms
+2019-08-06 12:45:34,960 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 12:45:35,966 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 12:45:35,981 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 12:45:36,985 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 12:45:36,997 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 12:45:38,000 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 12:45:38,003 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 12:45:39,006 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 12:45:39,030 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 12:45:40,032 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 12:45:40,035 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 12:45:41,043 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 12:45:41,165 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 12:45:41,169 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 12:45:41,170 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 12:45:41,170 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 12:45:41,170 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 12:45:41,209 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 12:45:42,213 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 12:45:42,217 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 12:45:42,227 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 12:48:30,339 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 17472 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 12:48:30,344 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 12:48:30,425 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 12:48:30 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 12:48:30,566 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 12:48:31,144 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 12:48:31,370 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 12:48:31,436 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:48:31,448 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 12:48:32,543 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 12:48:32,562 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 12:48:33,565 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 12:48:33,568 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 12:48:34,571 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 12:48:34,596 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 12:48:35,599 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 12:48:35,602 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 12:48:36,606 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 12:48:36,608 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$eb15e913] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:48:36,630 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 12:48:37,633 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 12:48:37,669 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 12:48:38,672 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 12:48:38,726 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 12:48:39,730 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 12:48:39,737 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 12:48:40,740 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 12:48:40,743 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 12:48:41,747 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 12:48:41,750 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 12:48:42,751 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 12:48:42,779 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 12:48:43,783 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 12:48:43,792 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 12:48:44,796 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 12:48:44,800 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 12:48:45,803 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 12:48:45,808 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 12:48:46,811 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 12:48:46,814 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 12:48:47,820 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 12:48:47,934 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 12:48:47,944 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 12:48:47,951 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 12:48:47,951 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 12:48:48,050 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 12:48:48,051 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17626 ms
+2019-08-06 12:48:48,060 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 12:48:49,063 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 12:48:49,066 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 12:48:50,069 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 12:48:50,082 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 12:48:51,086 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 12:48:51,092 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 12:48:52,097 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 12:48:52,117 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 12:48:53,120 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 12:48:53,123 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 12:48:54,125 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 12:48:54,206 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 12:48:54,209 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 12:48:54,210 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 12:48:54,210 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 12:48:54,210 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 12:48:54,238 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 12:48:55,242 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 12:48:55,247 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 12:48:56,249 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 12:48:56,256 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 12:48:56,268 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 12:50:27,766 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 20996 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 12:50:27,769 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 12:50:27,813 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 12:50:27 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 12:50:27,971 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 12:50:28,524 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 12:50:28,742 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 12:50:28,801 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:50:28,812 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 12:50:29,906 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 12:50:29,925 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 12:50:30,927 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 12:50:30,931 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 12:50:31,934 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 12:50:31,973 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 12:50:32,976 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 12:50:32,979 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 12:50:33,982 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 12:50:33,990 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dd75cf24] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:50:34,011 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 12:50:35,016 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 12:50:35,054 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 12:50:36,058 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 12:50:36,107 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 12:50:37,110 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 12:50:37,112 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 12:50:38,115 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 12:50:38,118 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 12:50:39,122 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 12:50:39,126 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 12:50:40,130 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 12:50:40,165 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 12:50:41,167 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 12:50:41,171 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 12:50:42,175 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 12:50:42,184 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 12:50:43,188 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 12:50:43,193 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 12:50:44,194 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 12:50:44,198 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 12:50:45,201 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 12:50:45,316 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 12:50:45,325 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 12:50:45,333 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 12:50:45,333 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 12:50:45,430 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 12:50:45,430 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17617 ms
+2019-08-06 12:50:45,440 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 12:50:46,443 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 12:50:46,446 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 12:50:47,449 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 12:50:47,458 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 12:50:48,461 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 12:50:48,465 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 12:50:49,467 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 12:50:49,487 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 12:50:50,490 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 12:50:50,493 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 12:50:51,495 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 12:50:51,583 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 12:50:51,586 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 12:50:51,587 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 12:50:51,587 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 12:50:51,587 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 12:50:51,617 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 12:50:52,620 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 12:50:52,625 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 12:50:53,628 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 12:50:53,632 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 12:50:53,644 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.
+2019-08-06 16:40:24,016 [main] INFO  com.yuyue.app.AppApplication - Starting AppApplication on LAPTOP-SO8LCAR6 with PID 19452 (C:\project\yuyue-app\target\classes started by weili in C:\project\yuyue-app)
+2019-08-06 16:40:24,021 [main] INFO  com.yuyue.app.AppApplication - No active profile set, falling back to default profiles: default
+2019-08-06 16:40:24,098 [main] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@206a70ef: startup date [Tue Aug 06 16:40:24 GMT+08:00 2019]; root of context hierarchy
+2019-08-06 16:40:24,250 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
+2019-08-06 16:40:24,862 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-08-06 16:40:25,267 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-08-06 16:40:25,376 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 16:40:25,392 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
+2019-08-06 16:40:26,503 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
+2019-08-06 16:40:26,531 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
+2019-08-06 16:40:27,534 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-1 is shutting down.
+2019-08-06 16:40:27,538 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-2 is starting.
+2019-08-06 16:40:28,542 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-2 is shutting down.
+2019-08-06 16:40:28,569 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-3 is starting.
+2019-08-06 16:40:29,573 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-3 is shutting down.
+2019-08-06 16:40:29,577 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-4 is starting.
+2019-08-06 16:40:30,579 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-4 is shutting down.
+2019-08-06 16:40:30,581 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dd75cf24] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 16:40:30,604 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-5 is starting.
+2019-08-06 16:40:31,607 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-5 is shutting down.
+2019-08-06 16:40:31,651 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-6 is starting.
+2019-08-06 16:40:32,655 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-6 is shutting down.
+2019-08-06 16:40:32,725 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-7 is starting.
+2019-08-06 16:40:33,729 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-7 is shutting down.
+2019-08-06 16:40:33,733 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-8 is starting.
+2019-08-06 16:40:34,736 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-8 is shutting down.
+2019-08-06 16:40:34,739 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-9 is starting.
+2019-08-06 16:40:35,743 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-9 is shutting down.
+2019-08-06 16:40:35,756 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-10 is starting.
+2019-08-06 16:40:36,761 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-10 is shutting down.
+2019-08-06 16:40:36,791 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-11 is starting.
+2019-08-06 16:40:37,794 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-11 is shutting down.
+2019-08-06 16:40:37,799 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-12 is starting.
+2019-08-06 16:40:38,801 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-12 is shutting down.
+2019-08-06 16:40:38,804 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-13 is starting.
+2019-08-06 16:40:39,807 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-13 is shutting down.
+2019-08-06 16:40:39,812 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-14 is starting.
+2019-08-06 16:40:40,815 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-14 is shutting down.
+2019-08-06 16:40:40,819 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-15 is starting.
+2019-08-06 16:40:41,822 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-15 is shutting down.
+2019-08-06 16:40:41,935 [main] INFO  org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainer - Tomcat initialized with port(s): 8080 (http)
+2019-08-06 16:40:41,944 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2019-08-06 16:40:41,952 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2019-08-06 16:40:41,952 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet Engine: Apache Tomcat/8.5.31
+2019-08-06 16:40:42,043 [localhost-startStop-1] INFO  org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2019-08-06 16:40:42,043 [localhost-startStop-1] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 17945 ms
+2019-08-06 16:40:42,051 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-16 is starting.
+2019-08-06 16:40:43,071 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-16 is shutting down.
+2019-08-06 16:40:43,078 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-17 is starting.
+2019-08-06 16:40:44,081 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-17 is shutting down.
+2019-08-06 16:40:44,091 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-18 is starting.
+2019-08-06 16:40:45,095 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-18 is shutting down.
+2019-08-06 16:40:45,098 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-19 is starting.
+2019-08-06 16:40:46,100 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-19 is shutting down.
+2019-08-06 16:40:46,122 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-20 is starting.
+2019-08-06 16:40:47,124 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-20 is shutting down.
+2019-08-06 16:40:47,127 [localhost-startStop-1] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-21 is starting.
+2019-08-06 16:40:48,131 [localhost-startStop-1] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-21 is shutting down.
+2019-08-06 16:40:48,216 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.ServletRegistrationBean - Mapping servlet: 'dispatcherServlet' to [/]
+2019-08-06 16:40:48,219 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-08-06 16:40:48,220 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-08-06 16:40:48,220 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-08-06 16:40:48,220 [localhost-startStop-1] INFO  org.springframework.boot.web.servlet.FilterRegistrationBean - Mapping filter: 'requestContextFilter' to: [/*]
+2019-08-06 16:40:48,249 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-22 is starting.
+2019-08-06 16:40:49,253 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-22 is shutting down.
+2019-08-06 16:40:49,257 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-23 is starting.
+2019-08-06 16:40:50,261 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-23 is shutting down.
+2019-08-06 16:40:50,265 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2019-08-06 16:40:50,276 [main] INFO  o.s.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer - 
+
+Error starting ApplicationContext. To display the auto-configuration report re-run your application with 'debug' enabled.

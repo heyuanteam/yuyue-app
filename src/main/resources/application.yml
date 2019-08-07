@@ -1,21 +1,46 @@
-# DATASOURCE
-jdbc:
-    dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-    url: jdbc:mysql://127.0.0.1:3306/student?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true
-    databaseName: student
-    serverName: 127.0.0.1
-    username: root
-    password: rootadmin
-    cachePrepStmts: true
-    prepStmtsSize: 250
-    prepStmtsCacheSqlLimit: 2048
-    userServerPrepStmts: true
+server:
+  port: 8080
+
+spring:
+  thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+    # 开发禁用缓存
+    cache: false
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    #druid相关配置
+    druid:
+      #监控统计拦截的filters
+      filters: stat
+      driver-class-name: com.mysql.jdbc.Driver
+      #基本属性
+      url: jdbc:mysql://101.37.252.177:3306/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      username: root
+      password: Ab323232
+      #配置初始化大小/最小/最大
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      #获取连接等待超时时间
+      max-wait: 60000
+      #间隔多久进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+      #一个连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 20
 
  # MyBatis
 mybatis:
-        typeAliasesPackage: com.yuyue.app.api.*.mapper
+        typeAliasesPackage: com.yuyue.app.*.mapper
         mapperLocations: classpath:/mappers/*.xml
-        configLocation: classpath:/mybatis-config.xml
 
 # spring-boot默认打印输出info级别以上的，可在此处修改输出级别
 logging:
@@ -23,7 +48,6 @@ logging:
   level:
     root: info
 
-spring:
   #redis配置
   redis:
     host: 127.0.0.1
