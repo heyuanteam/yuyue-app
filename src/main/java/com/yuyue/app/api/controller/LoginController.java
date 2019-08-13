@@ -80,7 +80,7 @@ public class LoginController {
                     if (!ciphertextPwd.equals(appUser.getPassword())){
                         result.setMessage("账号或密码不正确!");
                     } else {
-                        result.setMessage("登录成功！");
+                        result.setMessage("登录成功");
                         result.setStatus(Boolean.TRUE);
                         result.setToken(loginService.getToken(appUser));
                         result.setResult(JSONObject.toJSON(appUser));
