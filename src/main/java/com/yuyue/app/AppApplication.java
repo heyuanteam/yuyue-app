@@ -1,13 +1,25 @@
 package com.yuyue.app;
 
-import org.mybatis.spring.annotation.MapperScan;
+import javafx.application.Application;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.data.redis.core.RedisTemplate;
+
+import javax.annotation.Resource;
 
 @SpringBootApplication
-@MapperScan("com.yuyue.app.api.mapper")
-public class AppApplication {
+public class AppApplication{
+
+    //上线放开
+    //public class AppApplication extends SpringBootServletInitializer {
+
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//        // 注意这里要指向原先用main方法执行的Application启动类
+//        return builder.sources(AppApplication.class);
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(AppApplication.class, args);

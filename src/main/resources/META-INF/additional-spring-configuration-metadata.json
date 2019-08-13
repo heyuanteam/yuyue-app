@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.redis.lettuce",
+      "type": "java.lang.String",
+      "description": "Description for spring.redis.lettuce."
+    },
+    {
+      "name": "spring.redis.lettuce",
+      "type": "java.lang.String",
+      "description": "Description for spring.redis.lettuce."
+    }
+  ] }

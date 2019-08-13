@@ -28,15 +28,15 @@ public class RedisController {
         return redisTemplate.opsForValue().get(key).toString();
     }
 
-    @RequestMapping("/delete")
-    public Boolean deleteKey(String key) {
-        return redisUtil.deleteKey(key);
-    }
-
-    @RequestMapping("/newset")
-    public Boolean newSetName(String name) {
-        return redisUtil.setString("2", name);
-    }
+//    @RequestMapping("/delete")
+//    public Boolean deleteKey(String key) {
+//        return redisUtil.deleteKey(key);
+//    }
+//
+//    @RequestMapping("/newset")
+//    public Boolean newSetName(String name) {
+//        return redisUtil.setString("2", name);
+//    }
 
 
 }

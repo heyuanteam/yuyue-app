@@ -2,56 +2,10 @@ server:
   port: 8080
 
 spring:
-  thymeleaf:
-    mode: HTML5
-    encoding: UTF-8
-    content-type: text/html
-    # 开发禁用缓存
-    cache: false
-  datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
-    #druid相关配置
-    druid:
-      #监控统计拦截的filters
-      filters: stat
-      driver-class-name: com.mysql.jdbc.Driver
-      #基本属性
-      url: jdbc:mysql://101.37.252.177:3306/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-      username: root
-      password: Ab323232
-      #配置初始化大小/最小/最大
-      initial-size: 1
-      min-idle: 1
-      max-active: 20
-      #获取连接等待超时时间
-      max-wait: 60000
-      #间隔多久进行一次检测，检测需要关闭的空闲连接
-      time-between-eviction-runs-millis: 60000
-      #一个连接在池中最小生存的时间
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 'x'
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
-      pool-prepared-statements: false
-      max-pool-prepared-statement-per-connection-size: 20
-
-  # MyBatis
-mybatis:
-  typeAliasesPackage: com.yuyue.app.*.mapper
-  mapperLocations: classpath:/mappers/*.xml
-
-# spring-boot默认打印输出info级别以上的，可在此处修改输出级别
-logging:
-  config: classpath:logback-spring.xml
-  level:
-    root: info
-
   #redis配置
   redis:
-    host: 127.0.0.1
-    port: 80
+    host: 101.37.252.177
+    port: 6379
     password:
     lettuce:
     pool:
@@ -65,3 +19,47 @@ logging:
       min-idle: 0
       timeout: 5000
     database: 0
+
+#druid相关配置
+  druid:
+    username: root
+    password: Ab323232
+    #基本属性
+    url: jdbc:mysql://101.37.252.177:3306/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.xa.DruidXADataSource
+    #配置初始化大小/最小/最大
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    #获取连接等待超时时间
+    maxWait: 60000
+    #间隔多久进行一次检测，检测需要关闭的空闲连接
+    timeBetweenEvictionRunsMillis: 60000
+    #一个连接在池中最小生存的时间
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    #监控统计拦截的filters
+    filters: stat
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+    #pool-prepared-statements: false
+
+# MyBatis
+mybatis:
+  typeAliasesPackage: com.yuyue.app.*.domain
+  mapperLocations: classpath:/mappers/*.xml
+  configLocation: classpath:/mybatis-config.xml
+
+# spring-boot默认打印输出info级别以上的，可在此处修改输出级别
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: info
+

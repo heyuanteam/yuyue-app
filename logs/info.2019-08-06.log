@@ -106,7 +106,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 10:44:09,554 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 10:44:10,036 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 10:44:10,233 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 10:44:10,289 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$69a840d6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 10:44:10,289 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$69a840d6] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 10:44:10,300 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 10:44:11,408 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 10:44:11,430 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -177,7 +177,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:03:06,775 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:03:07,326 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:03:07,523 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:03:07,577 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:03:07,577 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:03:07,588 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:03:08,674 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:03:08,692 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -248,7 +248,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:05:45,513 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:05:46,002 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:05:46,200 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:05:46,257 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:05:46,257 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:05:46,268 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:05:47,350 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:05:47,368 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -319,7 +319,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:07:40,986 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:07:41,491 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:07:41,691 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:07:41,748 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:07:41,748 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:07:41,758 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:07:42,840 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:07:42,857 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -390,7 +390,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:08:34,552 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:08:35,084 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:08:35,303 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:08:35,368 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:08:35,368 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:08:35,382 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:08:36,477 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:08:36,496 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -461,7 +461,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:20:45,407 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:20:45,928 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:20:46,158 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:20:46,215 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:20:46,215 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:20:46,225 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:20:47,309 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:20:47,330 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -532,7 +532,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:21:29,221 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:21:29,705 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:21:29,906 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:21:29,962 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:21:29,962 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:21:29,974 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:21:31,065 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:21:31,084 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -603,7 +603,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:34:30,372 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:34:31,038 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:34:31,305 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:34:31,374 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:34:31,374 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:34:31,386 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:34:32,474 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:34:32,492 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -674,7 +674,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:46:11,542 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:46:12,073 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:46:12,267 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:46:12,333 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d231f449] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:46:12,333 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d231f449] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:46:12,343 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:46:13,425 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:46:13,430 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -889,7 +889,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:48:38,191 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:48:38,700 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:48:38,908 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:48:38,971 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:48:38,971 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:48:38,981 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:48:40,065 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:48:40,084 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -958,7 +958,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:54:32,413 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:54:32,984 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:54:33,289 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:54:33,360 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:54:33,360 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:54:33,372 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:54:34,464 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:54:34,482 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -1027,7 +1027,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 11:55:55,870 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 11:55:56,395 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 11:55:56,760 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 11:55:56,877 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$5bffdf3b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 11:55:56,877 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$5bffdf3b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 11:55:56,901 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 11:55:58,020 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 11:55:58,038 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -1118,7 +1118,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 12:45:17,576 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 12:45:18,073 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 12:45:18,279 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 12:45:18,334 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:45:18,334 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 12:45:18,345 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 12:45:19,432 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 12:45:19,451 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -1187,7 +1187,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 12:48:30,566 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 12:48:31,144 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 12:48:31,370 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 12:48:31,436 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:48:31,436 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$e4c1053d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 12:48:31,448 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 12:48:32,543 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 12:48:32,562 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -1258,7 +1258,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 12:50:27,971 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 12:50:28,524 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 12:50:28,742 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 12:50:28,801 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 12:50:28,801 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 12:50:28,812 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 12:50:29,906 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 12:50:29,925 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.
@@ -1329,7 +1329,7 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-06 16:40:24,250 [background-preinit] INFO  org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.3.6.Final
 2019-08-06 16:40:24,862 [main] INFO  org.springframework.data.repository.config.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode!
 2019-08-06 16:40:25,267 [main] INFO  o.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor - JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
-2019-08-06 16:40:25,376 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.mybatis.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-08-06 16:40:25,376 [main] INFO  o.s.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'dataBaseConfiguration' of type [com.yuyue.app.config.DataBaseConfiguration$$EnhancerBySpringCGLIB$$d720eb4e] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
 2019-08-06 16:40:25,392 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-0 is starting.
 2019-08-06 16:40:26,503 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariCP pool HikariPool-0 is shutting down.
 2019-08-06 16:40:26,531 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariCP pool HikariPool-1 is starting.

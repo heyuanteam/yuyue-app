@@ -25,7 +25,7 @@ public class RedisUtil {
 
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate  redisTemplate;
 
     //---------------------- common --------------------------
 
@@ -69,7 +69,7 @@ public class RedisUtil {
      * @param key key值
      * @return true 删除成功，否则返回异常信息
      */
-    public Boolean deleteKey(String key) {
+    public Boolean  deleteKey(String key) {
         try {
             redisTemplate.delete(key);
             return true;
@@ -137,6 +137,7 @@ public class RedisUtil {
             throw MyExceptionUtils.mxe("插入缓存失败！", ex);
         }
     }
+
 
 
     //-----------------------------hash----------------------------------
@@ -301,37 +302,35 @@ public class RedisUtil {
     }
 
     //-----------------------lock----------------------
-
     /**
      * 获取分布式锁
-     *
-     * @param lockKey     锁
-     * @param requestId   请求标识
-     * @param expireTime  单位秒
+     * @param lockKey 锁
+     * @param requestId 请求标识
+     * @param expireTime 单位秒
      * @param waitTimeout 单位毫秒
      * @return 是否获取成功
      */
-    public boolean tryLock(String lockKey, String requestId, int expireTime, long waitTimeout) {
+    public boolean tryLock(String lockKey, String requestId, int expireTime,long waitTimeout) {
         // 当前时间
         long nanoTime = System.nanoTime();
-        try {
+        try{
             String script = "if redis.call('setNx',KEYS[1],ARGV[1]) then if redis.call('get',KEYS[1])==ARGV[1] then return redis.call('expire',KEYS[1],ARGV[2]) else return 0 end end";
             int count = 0;
-            do {
+            do{
                 RedisScript<String> redisScript = new DefaultRedisScript<>(script, String.class);
 
-                Object result = redisTemplate.execute(redisScript, Collections.singletonList(lockKey), requestId, expireTime);
+                Object result = redisTemplate.execute(redisScript, Collections.singletonList(lockKey),requestId,expireTime);
 
-                if (SUCCESS.equals(result)) {
+                if(SUCCESS.equals(result)) {
                     return true;
                 }
                 //休眠500毫秒
                 Thread.sleep(500L);
                 count++;
-            } while ((System.nanoTime() - nanoTime) < TimeUnit.MILLISECONDS.toNanos(waitTimeout));
+            }while ((System.nanoTime() - nanoTime) < TimeUnit.MILLISECONDS.toNanos(waitTimeout));
 
-        } catch (Exception e) {
-            System.out.println("尝试获取分布式锁-key[{}]异常" + lockKey);
+        }catch(Exception e){
+            System.out.println("尝试获取分布式锁-key[{}]异常"+lockKey);
         }
 
         return false;
@@ -340,8 +339,7 @@ public class RedisUtil {
 
     /**
      * 释放锁
-     *
-     * @param lockKey   锁
+     * @param lockKey 锁
      * @param requestId 请求标识
      * @return 是否释放成功
      */

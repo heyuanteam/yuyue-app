@@ -8,6 +8,7 @@
         <result column="system_type" property="systemType" jdbcType="VARCHAR"/>
         <result column="version_no" property="versionNo" jdbcType="VARCHAR"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="VARCHAR"/>
         <result column="program_description" property="programDescription" jdbcType="VARCHAR"/>

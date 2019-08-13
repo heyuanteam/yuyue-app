@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface AppVersionMapper extends MyBaseMapper<AppVersion> {
 
     //查询APP版本，是否需要更新
-    public AppVersion getAppVersion(String appVersion);
+    AppVersion getAppVersion(String appVersion);
 }
