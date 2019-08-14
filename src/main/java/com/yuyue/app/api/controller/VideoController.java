@@ -2,9 +2,6 @@ package com.yuyue.app.api.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.yuyue.app.annotation.CurrentUser;
-import com.yuyue.app.annotation.LoginRequired;
-import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.domain.Video;
 import com.yuyue.app.api.service.VideoService;
@@ -40,26 +37,19 @@ public class VideoController {
 
     @Autowired
     private VideoService videoService;
-    @Autowired
-    private LoginController loginController;
 
     @RequestMapping("upVideo")
     @ResponseBody
-    @LoginRequired
-    public JSONObject upVideo(MultipartFile file, @CurrentUser AppUser user){
+    public JSONObject upVideo(MultipartFile file){
         ReturnResult returnResult=new ReturnResult();
         LOGGER.info("upvideo is starting");
 
-        if(loginController.userAuth(user)==false){
-            returnResult.setMessage("未登录!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if(file.isEmpty()){
+        if(file.isEmpty()){
             returnResult.setMessage("文件不能为空!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if(file.getSize()>104857600){
-            System.out.println("--------->");
+            returnResult.setToken(null);
+          }else if(file.getSize()>104857600){
             returnResult.setMessage("上传文件不可大于100MB!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
+            returnResult.setToken(null);
         }else {
             //获取文件名
             String fileName=file.getOriginalFilename();
@@ -83,21 +73,20 @@ public class VideoController {
                 System.out.println("获取文件大小======="+fileSize);
                 //数据转化   B-->KB-->MB
                 DecimalFormat df = new DecimalFormat("#.00");
-                if(fileSize < 1024){
+                if(fileSize<1024){
                     video.setSize(fileSize+"B");
-                }else if (fileSize > 1024 && fileSize < 1048576){
-                    System.out.println(fileSize / 1024);
+                }else if (fileSize>1024&&fileSize<1048576){
+                    System.out.println(fileSize/1024);
                     video.setSize(df.format(fileSize/1024)+"KB");
                 }else {
                     System.out.println(fileSize/1024/1024);
                     video.setSize(df.format(fileSize/1024/1024)+"MB");
                 }
                 System.out.println("转换后获取文件大小====="+video.getSize());
-
                 Timestamp timestamp = new Timestamp(new Date().getTime());
                 System.out.println(timestamp);
                 video.setUploadTime(timestamp);
-                video.setAuthorId(user.getId());
+                video.setAuthorId("1EAAFB67C2094E24A3100C719335FE45");
                 video.setUrl(realPath);
                 video.setCategory("DANCE");
                 video.setDescription("GOOD");
@@ -112,9 +101,9 @@ public class VideoController {
                     System.out.println("视频时长"+duration);
                     //时分秒
                     long secondTotal=duration/1000;
-                    if (secondTotal < 60){
+                    if (secondTotal<60){
                         video.setDuration("0:"+secondTotal);
-                    }else if(secondTotal > 60 && secondTotal < 3600){
+                    }else if(secondTotal>60&&secondTotal<3600){
                         int minute = (int)secondTotal / 60;
                         int second=(int)secondTotal  %  60;
                         video.setDuration(minute+":"+second);
