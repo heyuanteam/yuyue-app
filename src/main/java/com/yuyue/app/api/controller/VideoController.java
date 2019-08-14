@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -46,7 +47,7 @@ public class VideoController {
         if(file.isEmpty()){
             returnResult.setMessage("文件不能为空!");
             returnResult.setToken(null);
-          }else if(file.getSize() > 104857600){
+          }else if(file.getSize()>104857600){
             returnResult.setMessage("上传文件不可大于100MB!!!");
             returnResult.setToken(null);
         }else {
@@ -72,9 +73,9 @@ public class VideoController {
                 System.out.println("获取文件大小======="+fileSize);
                 //数据转化   B-->KB-->MB
                 DecimalFormat df = new DecimalFormat("#.00");
-                if(fileSize < 1024){
+                if(fileSize<1024){
                     video.setSize(fileSize+"B");
-                }else if (fileSize > 1024 && fileSize < 1048576){
+                }else if (fileSize>1024&&fileSize<1048576){
                     System.out.println(fileSize/1024);
                     video.setSize(df.format(fileSize/1024)+"KB");
                 }else {
@@ -82,6 +83,9 @@ public class VideoController {
                     video.setSize(df.format(fileSize/1024/1024)+"MB");
                 }
                 System.out.println("转换后获取文件大小====="+video.getSize());
+                Timestamp timestamp = new Timestamp(new Date().getTime());
+                System.out.println(timestamp);
+                video.setUploadTime(timestamp);
                 video.setAuthorId("1EAAFB67C2094E24A3100C719335FE45");
                 video.setUrl(realPath);
                 video.setCategory("DANCE");
