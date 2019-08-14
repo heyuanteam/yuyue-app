@@ -161,3 +161,6 @@
 2019-08-13 10:41:38,169 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - FrameworkServlet 'dispatcherServlet': initialization started
 2019-08-13 10:41:38,194 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - FrameworkServlet 'dispatcherServlet': initialization completed in 25 ms
 2019-08-13 12:01:49,581 [http-nio-8080-exec-3] INFO  com.yuyue.app.api.controller.sendSmsController - 验证码：==========358758
+2019-08-13 17:46:04,757 [Thread-18] INFO  o.s.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext - Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@5a0fafb7: startup date [Tue Aug 13 10:41:30 GMT+08:00 2019]; root of context hierarchy
+2019-08-13 17:46:04,801 [Thread-18] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
+2019-08-13 17:46:04,802 [Thread-18] INFO  org.springframework.jmx.export.annotation.AnnotationMBeanExporter - Unregistering JMX-exposed beans
