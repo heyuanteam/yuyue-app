@@ -17,19 +17,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 
 @RestController
 @RequestMapping(value = "jsp" , produces = "application/json; charset=UTF-8")
-public class VideoController {
+public class VideoController extends  BaseController{
     private Logger LOGGER= (Logger) LoggerFactory.getLogger(VideoController.class);
 
     @Value("${video.localPath}")
@@ -40,14 +39,15 @@ public class VideoController {
 
     @RequestMapping("upVideo")
     @ResponseBody
-    public JSONObject upVideo(MultipartFile file){
+    public JSONObject upVideo(HttpServletRequest request,MultipartFile file){
         ReturnResult returnResult=new ReturnResult();
         LOGGER.info("upvideo is starting");
 
+        Map<String,String> map = getParameterMap(request);
         if(file.isEmpty()){
             returnResult.setMessage("文件不能为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-          }else if(file.getSize()>104857600){
+          }else if(file.getSize() > 104857600){
             System.out.println("--------->");
             returnResult.setMessage("上传文件不可大于100MB!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -85,9 +85,6 @@ public class VideoController {
                 }
                 System.out.println("转换后获取文件大小====="+video.getSize());
 
-                Timestamp timestamp = new Timestamp(new Date().getTime());
-                System.out.println(timestamp);
-                video.setUploadTime(timestamp);
                 video.setAuthorId("1EAAFB67C2094E24A3100C719335FE45");
                 video.setUrl(realPath);
                 video.setCategory("DANCE");
