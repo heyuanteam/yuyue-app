@@ -24,8 +24,8 @@ spring:
   #上传视频的大小限制
   http:
     multipart:
-      max-file-size: 101MB
-      max-request-size: 101MB
+      max-file-size: -1
+      max-request-size: -1
 
   #redis配置
   redis:
