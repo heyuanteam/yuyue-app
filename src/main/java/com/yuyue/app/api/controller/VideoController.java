@@ -115,12 +115,16 @@ public class VideoController {
                     }
                 } catch (EncoderException e) {
                     e.printStackTrace();
+                    returnResult.setMessage("上传视频失败！");
+                    LOGGER.info("上传视频失败！");
                 }
                 System.out.println("时间格式转换后"+video.getDuration());
                 videoService.addVideo(video);
                 System.out.println("---------------------------------------------------------------------------------->");
             } catch (IOException e) {
                 e.printStackTrace();
+                returnResult.setMessage("上传视频失败！");
+                LOGGER.info("上传视频失败！");
             }
             returnResult.setMessage("上传成功！");
             returnResult.setStatus(Boolean.TRUE);
