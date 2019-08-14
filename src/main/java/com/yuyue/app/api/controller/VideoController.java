@@ -47,13 +47,13 @@ public class VideoController {
         ReturnResult returnResult=new ReturnResult();
         LOGGER.info("upvideo is starting");
 
-        if(user==null || loginController.userAuth(user)==Boolean.FALSE){
+        if(null == user || Boolean.FALSE == loginController.userAuth(user)){
             returnResult.setMessage("未登录!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else if(file.isEmpty()){
             returnResult.setMessage("文件不能为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if(file.getSize() > 104857600){
+        }else if(104857600 < file.getSize()){
             System.out.println("--------->");
             returnResult.setMessage("上传文件不可大于100MB!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
