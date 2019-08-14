@@ -1,7 +1,32 @@
 server:
   port: 8080
 
+#视频存储路径
+video:
+  localPath: C:\video
+multipart:
+  enabled: true
+
 spring:
+  thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+    # 开发禁用缓存
+    cache: false
+
+  #跳转页面路径
+  mvc:
+    view:
+      prefix: /
+      suffix: .jsp
+
+  #上传视频的大小限制
+  http:
+    multipart:
+      max-file-size: 101MB
+      max-request-size: 101MB
+
   #redis配置
   redis:
     host: 101.37.252.177
