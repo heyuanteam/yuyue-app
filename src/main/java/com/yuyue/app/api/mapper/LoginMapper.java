@@ -20,10 +20,12 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
     @Select("SELECT * FROM yuyue_merchant where id=#{id} LIMIT 1 ")
     AppUser getAppUserById(@Param("id") String id);
 
+
     @Transactional
     @Insert("insert into yuyue_merchant (ID,USER_NO,USER_NICK_NAME,USER_REAL_NAME,PHONE,PASSWORD,SALT,USER_STATUS) " +
             "values (#{id},#{userNo},#{nickName},#{realName},#{phone},#{password},#{salt},#{userStatus})")
     void addUser(AppUser appUser);
+
 
     @Transactional
     @Update("UPDATE yuyue_merchant b SET b.`PASSWORD` = #{password} WHERE b.PHONE = #{phone}")

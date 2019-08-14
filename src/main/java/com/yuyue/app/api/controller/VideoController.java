@@ -2,6 +2,9 @@ package com.yuyue.app.api.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.yuyue.app.annotation.CurrentUser;
+import com.yuyue.app.annotation.LoginRequired;
+import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.domain.Video;
 import com.yuyue.app.api.service.VideoService;
@@ -37,17 +40,23 @@ public class VideoController {
 
     @Autowired
     private VideoService videoService;
+    @Autowired
+    private LoginController loginController;
 
     @RequestMapping("upVideo")
     @ResponseBody
-    public JSONObject upVideo(MultipartFile file){
+    @LoginRequired
+    public JSONObject upVideo(MultipartFile file, @CurrentUser AppUser user){
         ReturnResult returnResult=new ReturnResult();
         LOGGER.info("upvideo is starting");
 
-        if(file.isEmpty()){
+        if(loginController.userAuth(user)==false){
+            returnResult.setMessage("未登录!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if(file.isEmpty()){
             returnResult.setMessage("文件不能为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-          }else if(file.getSize()>104857600){
+        }else if(file.getSize()>104857600){
             System.out.println("--------->");
             returnResult.setMessage("上传文件不可大于100MB!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -88,7 +97,7 @@ public class VideoController {
                 Timestamp timestamp = new Timestamp(new Date().getTime());
                 System.out.println(timestamp);
                 video.setUploadTime(timestamp);
-                video.setAuthorId("1EAAFB67C2094E24A3100C719335FE45");
+                video.setAuthorId(user.getId());
                 video.setUrl(realPath);
                 video.setCategory("DANCE");
                 video.setDescription("GOOD");

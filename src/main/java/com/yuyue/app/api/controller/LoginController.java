@@ -1,6 +1,8 @@
 package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.AppVersion;
 import com.yuyue.app.api.domain.ReturnResult;
@@ -214,5 +216,14 @@ public class LoginController {
              LOGGER.info("用户注册失败！");
          }
          return ResultJSONUtils.getJSONObjectBean(result);
+    }
+    public  boolean userAuth(@CurrentUser AppUser user){
+        AppUser appUserById = loginService.getAppUserById(user.getId());
+
+        if (appUserById.equals(user.getPassword())){
+             return Boolean.TRUE;
+         }else {
+             return Boolean.FALSE;
+         }
     }
 }
