@@ -48,7 +48,7 @@ public class VideoController {
             returnResult.setMessage("文件不能为空!");
             returnResult.setToken(null);
           }else if(file.getSize()>104857600){
-            returnResult.setMessage("上传文件不可大于100MB!!!");
+            returnResult.setMessage("上传文件不可大于100MB!");
             returnResult.setToken(null);
         }else {
             //获取文件名
