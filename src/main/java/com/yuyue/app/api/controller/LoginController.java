@@ -215,4 +215,13 @@ public class LoginController {
          }
          return ResultJSONUtils.getJSONObjectBean(result);
     }
+
+    public  boolean userAuth( AppUser user){
+        AppUser appUserById = loginService.getAppUserById(user.getId());
+        if (appUserById.equals(user.getPassword())){
+            return Boolean.TRUE;
+        }else {
+            return Boolean.FALSE;
+        }
+    }
 }
