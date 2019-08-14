@@ -16,19 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
 
 
 @RestController
 @RequestMapping(value = "jsp" , produces = "application/json; charset=UTF-8")
-public class VideoController extends  BaseController{
+public class VideoController {
     private Logger LOGGER= (Logger) LoggerFactory.getLogger(VideoController.class);
 
     @Value("${video.localPath}")
@@ -39,18 +39,16 @@ public class VideoController extends  BaseController{
 
     @RequestMapping("upVideo")
     @ResponseBody
-    public JSONObject upVideo(HttpServletRequest request,MultipartFile file){
+    public JSONObject upVideo(MultipartFile file){
         ReturnResult returnResult=new ReturnResult();
         LOGGER.info("upvideo is starting");
 
-        Map<String,String> map = getParameterMap(request);
         if(file.isEmpty()){
             returnResult.setMessage("文件不能为空!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
+            returnResult.setToken(null);
           }else if(file.getSize() > 104857600){
-            System.out.println("--------->");
-            returnResult.setMessage("上传文件不可大于100MB!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
+            returnResult.setMessage("上传文件不可大于100MB!!!");
+            returnResult.setToken(null);
         }else {
             //获取文件名
             String fileName=file.getOriginalFilename();
@@ -77,14 +75,13 @@ public class VideoController extends  BaseController{
                 if(fileSize < 1024){
                     video.setSize(fileSize+"B");
                 }else if (fileSize > 1024 && fileSize < 1048576){
-                    System.out.println(fileSize / 1024);
+                    System.out.println(fileSize/1024);
                     video.setSize(df.format(fileSize/1024)+"KB");
                 }else {
                     System.out.println(fileSize/1024/1024);
                     video.setSize(df.format(fileSize/1024/1024)+"MB");
                 }
                 System.out.println("转换后获取文件大小====="+video.getSize());
-
                 video.setAuthorId("1EAAFB67C2094E24A3100C719335FE45");
                 video.setUrl(realPath);
                 video.setCategory("DANCE");
@@ -100,9 +97,9 @@ public class VideoController extends  BaseController{
                     System.out.println("视频时长"+duration);
                     //时分秒
                     long secondTotal=duration/1000;
-                    if (secondTotal < 60){
+                    if (secondTotal<60){
                         video.setDuration("0:"+secondTotal);
-                    }else if(secondTotal > 60 && secondTotal < 3600){
+                    }else if(secondTotal>60&&secondTotal<3600){
                         int minute = (int)secondTotal / 60;
                         int second=(int)secondTotal  %  60;
                         video.setDuration(minute+":"+second);
