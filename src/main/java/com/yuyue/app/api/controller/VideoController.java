@@ -47,13 +47,13 @@ public class VideoController {
         ReturnResult returnResult=new ReturnResult();
         LOGGER.info("upvideo is starting");
 
-        if(user==null || loginController.userAuth(user)==Boolean.FALSE){
+        if(user==null || loginController.userAuth(user)==false){
             returnResult.setMessage("未登录!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else if(file.isEmpty()){
             returnResult.setMessage("文件不能为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if(file.getSize() > 104857600){
+        }else if(file.getSize()>104857600){
             System.out.println("--------->");
             returnResult.setMessage("上传文件不可大于100MB!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -90,6 +90,10 @@ public class VideoController {
                     video.setSize(df.format(fileSize/1024/1024)+"MB");
                 }
                 System.out.println("转换后获取文件大小====="+video.getSize());
+
+                Timestamp timestamp = new Timestamp(new Date().getTime());
+                System.out.println(timestamp);
+                video.setUploadTime(timestamp);
                 video.setAuthorId(user.getId());
                 video.setUrl(realPath);
                 video.setCategory("DANCE");

@@ -1,8 +1,6 @@
 package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yuyue.app.annotation.CurrentUser;
-import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.AppVersion;
 import com.yuyue.app.api.domain.ReturnResult;
@@ -217,14 +215,4 @@ public class LoginController {
          }
          return ResultJSONUtils.getJSONObjectBean(result);
     }
-
-    public  boolean userAuth(AppUser user){
-        AppUser appUserById = loginService.getAppUserById(user.getId());
-        if (appUserById.equals(user.getPassword())){
-            return Boolean.TRUE;
-        }else {
-            return Boolean.FALSE;
-        }
-    }
-
 }
