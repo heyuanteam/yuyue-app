@@ -5,21 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
+
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Video implements Serializable {
+@NoArgsConstructor
+public class VideoCategory implements Serializable {
     private String id;
-    private String title;
-    private String size;
+    private String category;
     private String uploadTime;
-    private String authorId;
     private String url;
     private String description;
-    private int playAmount;
-    private int likeAmount;
-    private String category;
-    private String duration;
+    private String categoryNo;
 }

@@ -1,25 +1,23 @@
 package com.yuyue.app.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Video implements Serializable {
+public class Banner implements Serializable {
     private String id;
-    private String title;
-    private String size;
+    private String name;
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String uploadTime;
-    private String authorId;
     private String url;
     private String description;
-    private int playAmount;
-    private int likeAmount;
-    private String category;
-    private String duration;
+    private String status;
+    private int sort;
+
 }
