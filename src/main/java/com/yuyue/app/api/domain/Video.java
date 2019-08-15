@@ -16,7 +16,7 @@ public class Video implements Serializable {
     private String id;
     private String title;
     private String size;
-    private Date uploadTime;
+    private String uploadTime;
     private String authorId;
     private String url;
     private String description;
