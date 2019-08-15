@@ -4,12 +4,13 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppUser implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String  id;
     private String userNo;
     private String nickName;
@@ -27,8 +28,8 @@ public class AppUser implements Serializable {
     private String userType;
     private String userPerssion;
     private String userStatus;
-    private Date createTime;
-    private Date updateTime;
+    private String createTime;
+    private String updateTime;
     private String attentionId;
     private String collectionId;
     private String settlementId;
