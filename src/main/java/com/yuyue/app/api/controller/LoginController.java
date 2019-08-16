@@ -214,6 +214,11 @@ public class LoginController {
          return ResultJSONUtils.getJSONObjectBean(result);
     }
 
+    /**
+     * 获取登录信息
+     * @param user
+     * @return
+     */
     public  boolean userAuth( AppUser user){
         AppUser appUserById = loginService.getAppUserById(user.getId());
         if (appUserById.equals(user.getPassword())){

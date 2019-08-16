@@ -7,6 +7,7 @@ import com.yuyue.app.api.domain.AppVersion;
 import com.yuyue.app.api.mapper.AppVersionMapper;
 import com.yuyue.app.api.mapper.LoginMapper;
 import com.yuyue.app.api.service.LoginService;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class LoginServiceImpl implements LoginService {
     private LoginMapper loginMapper;
 
 
-    public AppVersion getAppVersion(String appVersion) {
-        return appVersionMapper.getAppVersion(appVersion);
+    public AppVersion getAppVersion(String systemType) {
+        return appVersionMapper.getAppVersion(systemType);
     }
 
     @Override
