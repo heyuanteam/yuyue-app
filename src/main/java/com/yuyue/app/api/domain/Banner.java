@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Banner implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String id;
     private String name;
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yuyue.app.api.mapper.LoginMapper" >
+    <select id="getAppUserMsg" resultType="com.yuyue.app.api.domain.AppUser" parameterType="String">
+        SELECT id,user_no userNo,user_nick_name nickName,user_real_name realName,id_type idType,id_card idCard,phone,sex,email,password,salt,
+            user_status userStatus,total balance,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,USER_PERMISSION userPerssion,
+            ATTENTION_ID attentionId,COLLECTION_ID collectionId,SETTLEMENT_ID settlementId,WORKS_ID worksId,VERSION_ID versionId,
+            DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime
+            FROM yuyue_merchant
+            where 1=1
+        <if test="phone!=null and phone!=''">and phone=#{phone}  </if>
+        <if test="id!=null and id!='' "> and   id=#{id}           </if>
+         LIMIT 1
+
+    </select>
 
 
 </mapper>

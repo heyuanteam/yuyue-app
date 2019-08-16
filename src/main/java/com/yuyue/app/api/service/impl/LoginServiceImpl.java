@@ -34,12 +34,12 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public AppUser getAppUserMsgByPhone(String phone) {
-        return loginMapper.getAppUserMsgByPhone(phone);
+        return loginMapper.getAppUserMsg(phone,null);
     }
 
     @Override
     public AppUser getAppUserById(String id) {
-        return loginMapper.getAppUserById(id);
+        return loginMapper.getAppUserMsg(null,id);
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppVersion implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String appVersionId;
     private String systemType;
     private String versionNo;
