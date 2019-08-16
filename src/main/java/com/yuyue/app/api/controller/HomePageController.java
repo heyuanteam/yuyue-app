@@ -24,24 +24,16 @@ import java.util.List;
 public class HomePageController {
     @Autowired
     private HomePageService homePageService;
-    ReturnResult returnResult=new ReturnResult();
+
+    private ReturnResult returnResult=new ReturnResult();
+
     @RequestMapping("getBanner")
     @ResponseBody
     public JSONObject getBanner() throws ParseException {
-
         List<Banner> banners = homePageService.getBanner();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        for (Banner banner:banners) {
-
-                System.out.println(banner);
-        }
-
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setMessage("轮播图返回成功");
         returnResult.setResult(banners);
-
+        returnResult.setMessage("轮播图返回成功");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -53,9 +45,6 @@ public class HomePageController {
         returnResult.setMessage("视频分类返回成功！");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
-
-
-
     }
 
 

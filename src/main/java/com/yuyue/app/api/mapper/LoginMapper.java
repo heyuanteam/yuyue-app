@@ -14,11 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface LoginMapper extends MyBaseMapper<AppUser> {
 
-    @Select("SELECT * FROM yuyue_merchant where PHONE=#{phone} LIMIT 1 ")
-    AppUser getAppUserMsgByPhone(@Param("phone") String phone);
 
-    @Select("SELECT * FROM yuyue_merchant where id=#{id} LIMIT 1 ")
-    AppUser getAppUserById(@Param("id") String id);
+    AppUser getAppUserMsg(@Param("phone") String phone,@Param("id") String id);
+
+
 
     @Transactional
     @Insert("insert into yuyue_merchant (ID,USER_NO,USER_NICK_NAME,USER_REAL_NAME,PHONE,PASSWORD,SALT,USER_STATUS) " +

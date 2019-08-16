@@ -43,8 +43,7 @@ public class VideoController {
     @LoginRequired
     public JSONObject upVideo(MultipartFile file, @CurrentUser AppUser user){
         ReturnResult returnResult=new ReturnResult();
-        LOGGER.info("upvideo is starting");
-
+        LOGGER.info("up video is starting");
         if(null == user || Boolean.FALSE == loginController.userAuth(user)){
             returnResult.setMessage("未登录!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -52,18 +51,15 @@ public class VideoController {
             returnResult.setMessage("文件不能为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else if(104857600 < file.getSize()){
-            System.out.println("--------->");
             returnResult.setMessage("上传文件不可大于100MB!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else {
             //获取文件名
             String fileName=file.getOriginalFilename();
             String newName=new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime())+fileName;
-            System.out.println("修改后的名字"+newName);
             String realPath=localPath+File.separator+newName;
             LOGGER.info("文件绝对路径--------------->"+realPath);
             File localFile=new File(realPath);
-
             //判断文件父目录是否存在
             if (!localFile.getParentFile().exists()) {
                 localFile.getParentFile().mkdir();
@@ -72,7 +68,6 @@ public class VideoController {
                 file.transferTo(localFile);
                 Video video=new Video();
                 video.setId(UUID.randomUUID().toString().replace("-","").toUpperCase());
-                LOGGER.info("----->"+video.getId());
                 video.setTitle(file.getOriginalFilename());
                 double fileSize=(double)file.getSize();
                 System.out.println("获取文件大小======="+fileSize);
@@ -87,7 +82,6 @@ public class VideoController {
                     System.out.println(fileSize/1024/1024);
                     video.setSize(df.format(fileSize/1024/1024)+"MB");
                 }
-                System.out.println("转换后获取文件大小====="+video.getSize());
                 video.setAuthorId(user.getId());
                 video.setUrl(realPath);
                 video.setCategory("DANCE");
@@ -95,7 +89,6 @@ public class VideoController {
                 video.setLikeAmount(0);
                 video.setPlayAmount(0);
                 System.out.println(video);
-
                 //获取文件时长
                 Encoder encoder=new Encoder();
                 try {
@@ -122,7 +115,6 @@ public class VideoController {
                 }
                 System.out.println("时间格式转换后"+video.getDuration());
                 videoService.addVideo(video);
-                System.out.println("---------------------------------------------------------------------------------->");
             } catch (IOException e) {
                 e.printStackTrace();
                 returnResult.setMessage("上传视频失败！");
