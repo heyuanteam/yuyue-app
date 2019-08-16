@@ -40,6 +40,7 @@ public class HomePageController {
 
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setMessage("轮播图返回成功");
+        returnResult.setResult(banners);
 
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
