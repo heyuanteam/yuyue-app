@@ -79,8 +79,10 @@ mybatis:
 # spring-boot默认打印输出info级别以上的，可在此处修改输出级别
 logging:
   config: classpath:logback-spring.xml
+  #打印sql#
   level:
-    root: info
+    com.yuyue.app.api.mapper: debug
+    #root: info
 
 fdfs:
   so-timeout: 1501 #上传的超时时间
