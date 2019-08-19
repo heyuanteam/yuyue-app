@@ -1,12 +1,7 @@
 package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSONObject;
-import com.yuyue.app.annotation.CurrentUser;
-import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.ReturnResult;
-import com.yuyue.app.api.domain.UploadFile;
 import com.yuyue.app.api.service.UploadFileService;
-import com.yuyue.app.utils.ResultJSONUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author: Lucifer
@@ -25,20 +19,19 @@ import java.util.List;
  **/
 
 @Controller
-@RequestMapping(value="/jsp", produces = "application/json; charset=UTF-8")
+@RequestMapping(value="/uploadFile", produces = "application/json; charset=UTF-8")
 public class UploadFileController {
     private static final Logger log = LoggerFactory.getLogger(UploadFileController.class);
 
     @Autowired
     private UploadFileService uploadFileService;
 
-
     /**
      * 删除单个文件
      *
      * @param id
      */
-    @RequestMapping(value = "/del")
+    @RequestMapping(value = "/delfile")
     @ResponseBody
     public JSONObject delfile(@RequestParam("id")String id) throws Exception {
         return uploadFileService.deleteFile(id);
@@ -50,7 +43,7 @@ public class UploadFileController {
      * @return
      * @throws IOException
      */
-    @PostMapping(value = "/uploadServer")
+    @RequestMapping(value = "/uploadServer")
     @ResponseBody
 //    @LoginRequired   @CurrentUser
     public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, AppUser user) throws Exception {

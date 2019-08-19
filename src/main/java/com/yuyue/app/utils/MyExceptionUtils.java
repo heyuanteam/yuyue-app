@@ -1,7 +1,7 @@
 package com.yuyue.app.utils;
 
 
-import com.yuyue.app.Exception.MyException;
+import com.yuyue.app.annotation.MyException;
 
 /**
  * CreateTime: 2019-08-01 18:14

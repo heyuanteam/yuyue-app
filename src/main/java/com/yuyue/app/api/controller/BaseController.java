@@ -12,7 +12,7 @@ import java.util.Map;
  * controller基类
  */
 public class BaseController {
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected static Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     protected Map<String,String> getParameterMap(HttpServletRequest request) {
         Map<String,String> map = new HashMap<>();

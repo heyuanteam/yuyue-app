@@ -53,8 +53,8 @@ public class UploadFileServiceImpl implements UploadFileService {
     public JSONObject deleteFile(String id) {
         UploadFile uploadFile = uploadFileMapper.selectById(id);
         if (uploadFile == null) {
-//            returnResult.setMessage("数据库中不存在！");
-//            return ResultJSONUtils.getJSONObjectBean(returnResult);
+            returnResult.setMessage("数据库中不存在！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else {
             try {
                 uploadFileMapper.deleteById(id);

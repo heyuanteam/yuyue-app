@@ -1,9 +1,7 @@
 package com.yuyue.app.api.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.Banner;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.domain.VideoCategory;
@@ -14,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -27,40 +22,18 @@ public class HomePageController {
 
     private ReturnResult returnResult=new ReturnResult();
 
-    @RequestMapping("getBanner")
-    @ResponseBody
-    public JSONObject getBanner() throws ParseException {
-        List<Banner> banners = homePageService.getBanner();
-        returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(banners);
-        returnResult.setMessage("轮播图返回成功");
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
-    }
-
-    @ResponseBody
-    @RequestMapping("getVideoCategory")
-    public JSONObject getVideoCategory(){
-        List<VideoCategory> videoControllers=homePageService.getVideoCategory();
-        returnResult.setResult(JSONObject.toJSON(videoControllers));
-        returnResult.setMessage("视频分类返回成功！");
-        returnResult.setStatus(Boolean.TRUE);
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
-    }
-
     @ResponseBody
     @RequestMapping("result")
     public JSONObject homePage(){
         List<Banner> banners = homePageService.getBanner();
         List<VideoCategory> categories=homePageService.getVideoCategory();
-        Map<String,List> map=new HashMap<>();
+        Map<String,List> map= Maps.newHashMap();
         map.put("banners",banners);
         map.put("categories",categories);
         returnResult.setResult(JSONObject.toJSON(map));
-        returnResult.setMessage("返回成功！");
+        returnResult.setMessage("返回轮播图和节目表演成功！");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
-
-
 
 }

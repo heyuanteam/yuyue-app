@@ -21,17 +21,18 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping(value="/login", produces = "application/json; charset=UTF-8")
 public class LoginController {
-    private Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
     private LoginService loginService;
     @Autowired
     private RedisTemplate redisTemplate;
 
+    private ReturnResult result=new ReturnResult();
+
     @ResponseBody
     @RequestMapping( "/version")
     public JSONObject getUserName(@RequestParam(value = "appVersion") String appVersion) {
-        ReturnResult result = new ReturnResult();
         try {
             if(StringUtils.isEmpty(appVersion)){
                 result.setMessage("版本号为空！");
@@ -65,7 +66,6 @@ public class LoginController {
     @ResponseBody
     public JSONObject loginByPassword(@RequestParam(value = "password")String password,
                                       @RequestParam(value = "phone")String phone) throws Exception {
-        ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)){
                 result.setMessage("账号密码不能为空!");
@@ -105,7 +105,6 @@ public class LoginController {
     @ResponseBody
     public JSONObject editPassword(@RequestParam(value = "password")String password,@RequestParam(value = "code")String code,
                                       @RequestParam(value = "phone")String phone) throws Exception {
-        ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)){
                 result.setMessage("账号密码不能为空!");
@@ -139,7 +138,6 @@ public class LoginController {
     @RequestMapping("/loginByPhone")
     @ResponseBody
     public JSONObject loginByPhone(@RequestParam(value = "phone")String phone,@RequestParam("code")String code){
-        ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(code)){
                 result.setMessage("验证码为空！");
@@ -177,7 +175,6 @@ public class LoginController {
     public JSONObject regist(@RequestParam(value = "phone")String phone,@RequestParam("code")String code,@RequestParam(value = "password")String password) throws Exception {
 
          Pattern pattern = Pattern.compile("^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$");
-         ReturnResult result = new ReturnResult();
          try {
              if (!code.equals(redisTemplate.opsForValue().get(phone).toString())){
                  result.setMessage("验证码错误！");

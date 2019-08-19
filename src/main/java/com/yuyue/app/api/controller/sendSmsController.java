@@ -27,7 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value="/send", produces = "application/json; charset=UTF-8")
 public class sendSmsController extends BaseController{
-    private Logger LOGGER = LoggerFactory.getLogger(sendSmsController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(sendSmsController.class);
 
     @Autowired
     private SmsUtil smsUtil;
@@ -36,6 +36,7 @@ public class sendSmsController extends BaseController{
 
     private static final String signName = "娱悦APP";
     private static final String templateCode = "SMS_172100731";
+    private ReturnResult result =new ReturnResult();
 
     /**
      * 发送消息验证码，通用接口
@@ -43,7 +44,6 @@ public class sendSmsController extends BaseController{
     @RequestMapping("/sendSms")
     @ResponseBody
     public JSONObject sendSms(HttpServletRequest request){
-        ReturnResult result = new ReturnResult();
         Map<String, String> map = getParameterMap(request);
         HashMap<String,String> hashMap = Maps.newHashMap();
         String lcode = RandomSaltUtil.randomNumber(6);

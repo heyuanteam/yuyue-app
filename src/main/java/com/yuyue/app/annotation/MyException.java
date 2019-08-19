@@ -1,4 +1,4 @@
-package com.yuyue.app.Exception;
+package com.yuyue.app.annotation;
 
 /**
  * CreateTime: 2018-12-18 22:31

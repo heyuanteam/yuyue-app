@@ -12,15 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface UserCommentMapper extends MyBaseMapper<UploadFile> {
+public interface UserCommentMapper extends MyBaseMapper<UserComment> {
 
 
     @Select("SELECT * FROM yuyue_user_comment WHERE VIDEO_ID = #{videoId}")
     List<UserComment> getAllComment(String videoId);
 
     @Transactional
-    @Insert("INSERT into yuyue_user_comment (ID,VIDEO_ID,USER_ID,USER_NAME,USER_HEAD_URL,TEXT,CREATE_TIME,SCORE) " +
-            "VALUES (#{id}, #{videoId}, #{userId}, #{userName}, #{headUrl}, #{text}, #{createTime}, #{score} )")
+    @Insert("INSERT into yuyue_user_comment (ID,VIDEO_ID,USER_ID,USER_NAME,USER_HEAD_URL,TEXT,SCORE) " +
+            "VALUES (#{id}, #{videoId}, #{userId}, #{userName}, #{headUrl}, #{text}, #{score} )")
     void addComment(UserComment comment );
 
     @Transactional

@@ -19,7 +19,7 @@ public class UserComment implements Serializable {
     private String headUrl;
     private String text;
     //private int likeCount;
-    private Date createTime;
+    private String createTime;
     private String score;
 
 

@@ -10,7 +10,6 @@ import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import com.yuyue.app.api.domain.ReturnResult;
 import it.sauronsoftware.jave.MultimediaInfo;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
