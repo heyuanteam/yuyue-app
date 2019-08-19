@@ -14,6 +14,6 @@ public class IController {
     @RequestMapping(value="/", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String hello() {
-        return "Hello ！ 娱悦APP ！";
+        return "Hello ！ 娱悦APP ！ ";
     }
 }

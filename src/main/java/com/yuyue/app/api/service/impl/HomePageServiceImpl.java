@@ -4,7 +4,6 @@ import com.yuyue.app.api.domain.Banner;
 import com.yuyue.app.api.domain.VideoCategory;
 import com.yuyue.app.api.mapper.BannerMapper;
 import com.yuyue.app.api.mapper.VideoCategoryMapper;
-import com.yuyue.app.api.mapper.VideoMapper;
 import com.yuyue.app.api.service.HomePageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
