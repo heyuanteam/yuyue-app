@@ -8,8 +8,10 @@
             DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime
             FROM yuyue_merchant
             where 1=1
-        <if test="phone!=null and phone!=''">and phone=#{phone}  </if>
-        <if test="id!=null and id!='' "> and   id=#{id}           </if>
+            <choose>
+        <when test="phone!=null and phone!=''">   and phone=#{phone}  </when>
+        <when test="id!=null and id!='' "> and   id=#{id}           </when>
+            </choose>
          LIMIT 1
 
     </select>

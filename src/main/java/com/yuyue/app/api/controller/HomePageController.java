@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "homePage", produces = "application/json; charset=UTF-8")
@@ -43,6 +43,20 @@ public class HomePageController {
         List<VideoCategory> videoControllers=homePageService.getVideoCategory();
         returnResult.setResult(JSONObject.toJSON(videoControllers));
         returnResult.setMessage("视频分类返回成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    @ResponseBody
+    @RequestMapping("result")
+    public JSONObject homePage(){
+        List<Banner> banners = homePageService.getBanner();
+        List<VideoCategory> categories=homePageService.getVideoCategory();
+        Map<String,List> map=new HashMap<>();
+        map.put("banners",banners);
+        map.put("categories",categories);
+        returnResult.setResult(JSONObject.toJSON(map));
+        returnResult.setMessage("返回成功！");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }

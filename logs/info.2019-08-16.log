@@ -1142,3 +1142,5 @@ Error starting ApplicationContext. To display the auto-configuration report re-r
 2019-08-16 11:12:04,167 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - FrameworkServlet 'dispatcherServlet': initialization started
 2019-08-16 11:12:04,197 [http-nio-8080-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - FrameworkServlet 'dispatcherServlet': initialization completed in 29 ms
 2019-08-16 11:12:04,249 [http-nio-8080-exec-1] INFO  com.yuyue.app.api.controller.sendSmsController - 验证码：==========795606
+2019-08-16 12:00:10,028 [http-nio-8080-exec-3] INFO  com.yuyue.app.api.controller.sendSmsController - 验证码：==========418841
+2019-08-16 12:00:19,269 [http-nio-8080-exec-4] INFO  com.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
