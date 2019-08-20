@@ -1,7 +1,7 @@
 package com.yuyue.app.api.service;
 import com.alibaba.fastjson.JSONObject;
 import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.UploadFile;
+import com.yuyue.app.api.domain.UploadFileVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +22,7 @@ public interface UploadFileService {
      *
      * @return
      */
-    JSONObject UploadFilesToServer(MultipartFile[] files, AppUser user)throws Exception;
+    JSONObject UploadFilesToServer(MultipartFile[] files, AppUser user,String fileType,String vedioAddress)throws Exception;
 
     /**
      * 从fastdfs服务器下载文件
@@ -44,5 +44,11 @@ public interface UploadFileService {
      * @param size
      * @return
      */
-    List<UploadFile> getVdeio(String tableName,int bdgin, int size);
+    List<UploadFileVo> getVdeio(String tableName, int bdgin, int size);
+
+    /**
+     * 视频播放量
+     * @param id
+     */
+    void getVdieoCount(String id);
 }

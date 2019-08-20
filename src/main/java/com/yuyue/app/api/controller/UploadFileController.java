@@ -19,7 +19,7 @@ import java.io.IOException;
  **/
 
 @Controller
-@RequestMapping(value="/uploadFile", produces = "application/json; charset=UTF-8")
+@RequestMapping(value="/jsp", produces = "application/json; charset=UTF-8")
 public class UploadFileController {
     private static final Logger log = LoggerFactory.getLogger(UploadFileController.class);
 
@@ -46,8 +46,8 @@ public class UploadFileController {
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
 //    @LoginRequired   @CurrentUser
-    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, AppUser user) throws Exception {
-        return uploadFileService.UploadFilesToServer(files,user);
+    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, AppUser user,String fileType,String vedioAddress) throws Exception {
+        return uploadFileService.UploadFilesToServer(files,user,fileType,vedioAddress);
     }
 
     /**
@@ -71,5 +71,14 @@ public class UploadFileController {
         uploadFileService.likeCount(videoId);
     }
 
+    /**
+     * 视频播放量
+     * @param videoId
+     */
+    @RequestMapping("getVdieoCount")
+    @ResponseBody
+    public void getVdieoCount(String videoId) {
+        uploadFileService.getVdieoCount(videoId);
+    }
 
 }

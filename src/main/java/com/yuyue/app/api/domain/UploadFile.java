@@ -19,8 +19,10 @@ public class UploadFile implements Serializable {
     private String id;
 //  文件名
     private String filesName;
-//      文件名
+//  时间
     private String uploadTime;
+//  视频第一帧图片链接
+    private String vedioAddress;
 //  文件地址
     private String filesPath;
 //  文件类型

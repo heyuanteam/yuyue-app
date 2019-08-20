@@ -3,10 +3,7 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.yuyue.app.api.domain.Banner;
-import com.yuyue.app.api.domain.ReturnResult;
-import com.yuyue.app.api.domain.UploadFile;
-import com.yuyue.app.api.domain.VideoCategory;
+import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.HomePageService;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.utils.ResultJSONUtils;
@@ -49,19 +46,19 @@ public class HomePageController {
     @ResponseBody
     @RequestMapping("getVideo")
     public JSONObject getVideo(String page){
-        List<UploadFile> list = Lists.newArrayList();
+        List<UploadFileVo> list = Lists.newArrayList();
         if (StringUtils.isEmpty(page)) {
             page = "1";
         }
         int limit = 5;
         int begin = (Integer.parseInt(page) - 1) * limit;
-        List<UploadFile> vdeio_0 = uploadFileService.getVdeio("yuyue_upload_file_0",begin, limit);
-        List<UploadFile> vdeio_1 = uploadFileService.getVdeio("yuyue_upload_file_1",begin, limit);
-        Iterator<UploadFile> iterator_0 = vdeio_0.iterator();
+        List<UploadFileVo> vdeio_0 = uploadFileService.getVdeio("yuyue_upload_file_0",begin, limit);
+        List<UploadFileVo> vdeio_1 = uploadFileService.getVdeio("yuyue_upload_file_1",begin, limit);
+        Iterator<UploadFileVo> iterator_0 = vdeio_0.iterator();
         while(iterator_0.hasNext()) {
             list.add(iterator_0.next());
         }
-        Iterator<UploadFile> iterator_1 = vdeio_1.iterator();
+        Iterator<UploadFileVo> iterator_1 = vdeio_1.iterator();
         while(iterator_1.hasNext()) {
             list.add(iterator_1.next());
         }

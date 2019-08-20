@@ -1,17 +1,18 @@
 package com.yuyue.app.api.service.impl;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.google.common.collect.Maps;
 import com.yuyue.app.api.controller.LoginController;
-import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.ReturnResult;
-import com.yuyue.app.api.domain.UploadFile;
-import com.yuyue.app.api.domain.Variables;
+import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.mapper.UploadFileMapper;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.utils.MD5Utils;
 import com.yuyue.app.utils.ResultJSONUtils;
+import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,7 +77,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject UploadFilesToServer(MultipartFile[] files, AppUser user) throws Exception{
+    public JSONObject UploadFilesToServer(MultipartFile[] files, AppUser user,String fileType,String vedioAddress) throws Exception{
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -85,6 +86,8 @@ public class UploadFileServiceImpl implements UploadFileService {
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }*/
         List<String> listMDs = new ArrayList();
+        List<UploadFile> lists = new ArrayList();
+        HashMap<String,Object> hashMap = Maps.newHashMap();
         Map<String, Integer> stringMap = new HashMap<>();
         for (int i = 0; i < files.length; i++) {
             if(104857600 < files[i].getSize()){
@@ -101,22 +104,27 @@ public class UploadFileServiceImpl implements UploadFileService {
                     uploadFile.setFilesName(files[i].getOriginalFilename());
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
                     uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
-//                    uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
+                    if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
+                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
+                        uploadFile.setFilesType("video");
+                        uploadFile.setVedioAddress(vedioAddress);
+                    } else {
+                        uploadFile.setFilesType("picture");
+                    }
                     uploadFile.setFilesMD5(MD5Utils.getMd5ByUrl("http://"+uploadFile.getFilesPath()));
-                    uploadFile.setFilesType("picture");
                     log.info("文件存储在服务器的路径==============>{}", Variables.ip_home + "/" + storePath.getFullPath());
 
 //                    if (uploadFileMapper.selectByFilesMD5(uploadFile.getFilesMD5()) > 0) {
 //                        throw new RuntimeException("第" + (i + 1) + "个文件，数据库已存在");
 //                    }
-
+                    lists.add(uploadFile);
                     listMDs.add(uploadFile.getFilesPath());
                  /*伪造异常，测试文件部分上传失败，是否会清空此次上传的所有文件
                   fileList.get(10000000);*/
                     uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",uid),
                             uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
                             uploadFile.getFilesMD5(),uploadFile.getFileSize(),uploadFile.getAuthorId(),uploadFile.getDescription(),
-                            uploadFile.getDuration());
+                            uploadFile.getDuration(),uploadFile.getVedioAddress());
 
 //                  uploadFileMapper.insertList(listMDs);
                     //数据库修改
@@ -135,6 +143,8 @@ public class UploadFileServiceImpl implements UploadFileService {
         }
         returnResult.setMessage("上传文件成功!");
         returnResult.setStatus(Boolean.TRUE);
+        hashMap.put("uploadFile", JSONArray.parseArray(JSON.toJSONString(lists)));
+        returnResult.setResult(hashMap);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -169,8 +179,13 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     @Override
-    public List<UploadFile> getVdeio(String tableName, int bdgin, int size) {
+    public List<UploadFileVo> getVdeio(String tableName, int bdgin, int size) {
         return uploadFileMapper.getVdeio(tableName,bdgin,size);
+    }
+
+    @Override
+    public void getVdieoCount(String id) {
+        uploadFileMapper.getVdieoCount(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id);
     }
 
     /**
