@@ -51,13 +51,13 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public JSONObject deleteFile(String id) {
-        UploadFile uploadFile = uploadFileMapper.selectById(id);
+        UploadFile uploadFile = uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id);
         if (uploadFile == null) {
             returnResult.setMessage("数据库中不存在！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else {
             try {
-                uploadFileMapper.deleteById(id);
+                uploadFileMapper.deleteById(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id);
                 String[] split = uploadFile.getFilesPath().split("/");
                 this.storageClient.deleteFile(split[1] +"/"+ split[2] +"/"+ split[3] +"/"+ split[4] +"/"+ split[5]);
             } catch (Exception e) {
@@ -103,7 +103,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                     uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
 //                    uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
                     uploadFile.setFilesMD5(MD5Utils.getMd5ByUrl("http://"+uploadFile.getFilesPath()));
-                    uploadFile.setFilesType("vedio");
+                    uploadFile.setFilesType("picture");
                     log.info("文件存储在服务器的路径==============>{}", Variables.ip_home + "/" + storePath.getFullPath());
 
 //                    if (uploadFileMapper.selectByFilesMD5(uploadFile.getFilesMD5()) > 0) {
@@ -113,7 +113,10 @@ public class UploadFileServiceImpl implements UploadFileService {
                     listMDs.add(uploadFile.getFilesPath());
                  /*伪造异常，测试文件部分上传失败，是否会清空此次上传的所有文件
                   fileList.get(10000000);*/
-                    uploadFileMapper.insertUploadFile(uploadFile);
+                    uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",uid),
+                            uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
+                            uploadFile.getFilesMD5(),uploadFile.getFileSize(),uploadFile.getAuthorId(),uploadFile.getDescription(),
+                            uploadFile.getDuration());
 
 //                  uploadFileMapper.insertList(listMDs);
                     //数据库修改
@@ -162,7 +165,12 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     @Override
     public void likeCount(String videoId) {
-        uploadFileMapper.likeCount(videoId);
+        uploadFileMapper.likeCount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+    }
+
+    @Override
+    public List<UploadFile> getVdeio(String tableName, int bdgin, int size) {
+        return uploadFileMapper.getVdeio(tableName,bdgin,size);
     }
 
     /**

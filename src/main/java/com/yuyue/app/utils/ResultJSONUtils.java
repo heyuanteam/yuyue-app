@@ -21,6 +21,19 @@ public class ResultJSONUtils {
     }
 
     /**
+     * 获取hash值分表，物理分表
+     * @param tableName
+     * @param tableId
+     * @return
+     */
+    public static String getHashValue(String tableName, String tableId){
+        StringBuilder name = new StringBuilder(tableName);
+        int temp = tableId.hashCode() % 2 == 0 ? 0 : 1; //几张表，就是几
+        String append = name.append(temp).toString();
+        return append;
+    }
+
+    /**
      * 格式化 文件大小
      * @param fileSize
      * @return

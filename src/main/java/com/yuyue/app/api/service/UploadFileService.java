@@ -32,5 +32,17 @@ public interface UploadFileService {
      */
     void downloadFile(String filesName, String filesPath, HttpServletResponse response) throws IOException;
 
+    /**
+     * 视频点赞
+     * @param id
+     */
     void likeCount(String id);
+
+    /**
+     * 默认每张表查询五表记录
+     * @param bdgin
+     * @param size
+     * @return
+     */
+    List<UploadFile> getVdeio(String tableName,int bdgin, int size);
 }
