@@ -31,8 +31,5 @@ public class UserCommentServiceImpl implements UserCommentService{
         return getAllComment(videoId);
     }
 
-    @Override
-    public void likeCount(String videoId) {
-        userCommentMapper.likeCount(videoId);
-    }
+
 }

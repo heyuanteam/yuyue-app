@@ -5,13 +5,11 @@ import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.domain.UserComment;
-import com.yuyue.app.api.mapper.UserCommentMapper;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UserCommentService;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +28,7 @@ public class UserCommentController extends BaseController{
     @Autowired
     private UserCommentService userCommentService;
     @Autowired
+
     private LoginService loginService;
 
     private ReturnResult returnResult =new ReturnResult();
@@ -83,11 +82,7 @@ public class UserCommentController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-    @RequestMapping("likeCount")
-    @ResponseBody
-    public void likeCount(String videoId) {
-        userCommentService.likeCount(videoId);
-    }
+
 
 
 

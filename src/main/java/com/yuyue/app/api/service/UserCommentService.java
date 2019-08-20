@@ -14,6 +14,6 @@ public interface UserCommentService {
     List<UserComment> deleteComment(String id,String videoId);
 
 
-    void likeCount(String id);
+
 
 }

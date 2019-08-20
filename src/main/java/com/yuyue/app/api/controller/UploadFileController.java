@@ -61,4 +61,14 @@ public class UploadFileController {
         uploadFileService.downloadFile(filesName, filesPath, response);
     }
 
+    /**
+     * 视频点赞
+     * @param videoId
+     */
+    @RequestMapping("likeCount")
+    @ResponseBody
+    public void likeCount(String videoId) {
+        uploadFileService.likeCount(videoId);
+    }
+
 }

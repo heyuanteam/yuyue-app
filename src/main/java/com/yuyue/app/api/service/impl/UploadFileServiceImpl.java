@@ -160,6 +160,11 @@ public class UploadFileServiceImpl implements UploadFileService {
         outputStream.write(bytes);
     }
 
+    @Override
+    public void likeCount(String videoId) {
+        uploadFileMapper.likeCount(videoId);
+    }
+
     /**
      * 校验文件
      *

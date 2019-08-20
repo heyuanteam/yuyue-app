@@ -26,7 +26,4 @@ public interface UserCommentMapper extends MyBaseMapper<UserComment> {
     @Delete("DELETE FROM yuyue_user_comment WHERE ID = #{id}")
     void deleteComment(String id);
 
-    @Transactional
-    @Update("UPDATE yuyue_upload_file SET likeAmount = likeAmount  +  1  WHERE id = #{id}")
-    void likeCount(String id);
 }

@@ -31,4 +31,6 @@ public interface UploadFileService {
      * @param filesPath
      */
     void downloadFile(String filesName, String filesPath, HttpServletResponse response) throws IOException;
+
+    void likeCount(String id);
 }

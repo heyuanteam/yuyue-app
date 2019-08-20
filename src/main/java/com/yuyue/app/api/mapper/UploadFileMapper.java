@@ -31,4 +31,8 @@ public interface UploadFileMapper extends BaseMapper<UploadFile>, MySqlMapper<Up
             "(id,filesName,filesPath,filesType,filesMD5,fileSize,authorId,description,duration) VALUES " +
             "(#{id},#{filesName},#{filesPath},#{filesType},#{filesMD5},#{fileSize},#{authorId},#{description},#{duration}) ")
     void insertUploadFile(UploadFile uploadFile);
+
+    @Transactional
+    @Update("UPDATE yuyue_upload_file SET likeAmount = likeAmount  +  1  WHERE id = #{id}")
+    void likeCount(String id);
 }
