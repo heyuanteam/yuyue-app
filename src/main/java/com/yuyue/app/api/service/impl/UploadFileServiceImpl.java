@@ -105,13 +105,13 @@ public class UploadFileServiceImpl implements UploadFileService {
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
                     uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
                     if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
-                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
+//                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
                         uploadFile.setFilesType("video");
                         uploadFile.setVedioAddress(vedioAddress);
                     } else {
                         uploadFile.setFilesType("picture");
                     }
-                    uploadFile.setFilesMD5(MD5Utils.getMd5ByUrl("http://"+uploadFile.getFilesPath()));
+//                    uploadFile.setFilesMD5(MD5Utils.getMd5ByUrl("http://"+uploadFile.getFilesPath()));
                     log.info("文件存储在服务器的路径==============>{}", Variables.ip_home + "/" + storePath.getFullPath());
 
 //                    if (uploadFileMapper.selectByFilesMD5(uploadFile.getFilesMD5()) > 0) {
@@ -123,8 +123,8 @@ public class UploadFileServiceImpl implements UploadFileService {
                   fileList.get(10000000);*/
                     uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",uid),
                             uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
-                            uploadFile.getFilesMD5(),uploadFile.getFileSize(),uploadFile.getAuthorId(),uploadFile.getDescription(),
-                            uploadFile.getDuration(),uploadFile.getVedioAddress());
+                            uploadFile.getFileSize(),uploadFile.getAuthorId(),uploadFile.getDescription(),
+                            uploadFile.getVedioAddress());
 
 //                  uploadFileMapper.insertList(listMDs);
                     //数据库修改

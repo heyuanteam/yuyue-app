@@ -23,12 +23,11 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
 
     @Transactional
     @Insert("INSERT INTO ${tableName} " +
-            "(id,filesName,filesPath,filesType,filesMD5,fileSize,authorId,description,duration,vedioAddress) VALUES " +
-            "(#{id},#{filesName},#{filesPath},#{filesType},#{filesMD5},#{fileSize},#{authorId},#{description},#{duration},#{vedioAddress})")
+            "(id,filesName,filesPath,filesType,fileSize,authorId,description,vedioAddress) VALUES " +
+            "(#{id},#{filesName},#{filesPath},#{filesType},#{fileSize},#{authorId},#{description},#{vedioAddress})")
     void insertUploadFile(@Param("tableName") String tableName,@Param("id") String id,@Param("filesName") String filesName,
-                          @Param("filesPath") String filesPath, @Param("filesType") String filesType,@Param("filesMD5") String filesMD5,
-                          @Param("fileSize") String fileSize,@Param("authorId") String authorId, @Param("description") String description,
-                          @Param("duration") String duration,@Param("vedioAddress")String vedioAddress);
+                          @Param("filesPath") String filesPath, @Param("filesType") String filesType, @Param("fileSize") String fileSize,
+                          @Param("authorId") String authorId, @Param("description") String description,@Param("vedioAddress")String vedioAddress);
 
     @Transactional
     @Update("UPDATE ${tableName} SET likeAmount = likeAmount  +  1  WHERE id = #{id}")

@@ -27,8 +27,6 @@ public class UploadFile implements Serializable {
     private String filesPath;
 //  文件类型
     private String filesType;
-//  文件MD5值
-    private String filesMD5;
 //  文件大小
     private String fileSize;
 //    作者iD
@@ -40,5 +38,5 @@ public class UploadFile implements Serializable {
 //    点赞量
     private String likeAmount;
 //    时长
-    private String duration;
+//    private String duration;
 }
