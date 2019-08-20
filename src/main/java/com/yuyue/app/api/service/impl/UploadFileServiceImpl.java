@@ -88,7 +88,6 @@ public class UploadFileServiceImpl implements UploadFileService {
         List<String> listMDs = new ArrayList();
         List<UploadFile> lists = new ArrayList();
         HashMap<String,Object> hashMap = Maps.newHashMap();
-        Map<String, Integer> stringMap = new HashMap<>();
         for (int i = 0; i < files.length; i++) {
             if(104857600 < files[i].getSize()){
                 returnResult.setMessage("上传文件不可大于100MB!");
@@ -103,7 +102,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                     uploadFile.setId(uid.toUpperCase());
                     uploadFile.setFilesName(files[i].getOriginalFilename());
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
-                    uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
+//                    uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
                     if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
 //                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
                         uploadFile.setFilesType("video");
@@ -123,8 +122,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                   fileList.get(10000000);*/
                     uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",uid),
                             uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
-                            uploadFile.getFileSize(),uploadFile.getAuthorId(),uploadFile.getDescription(),
-                            uploadFile.getVedioAddress());
+                            uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVedioAddress());
 
 //                  uploadFileMapper.insertList(listMDs);
                     //数据库修改

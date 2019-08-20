@@ -28,7 +28,7 @@ public class UploadFile implements Serializable {
 //  文件类型
     private String filesType;
 //  文件大小
-    private String fileSize;
+//    private String fileSize;
 //    作者iD
     private String authorId;
 //    描述

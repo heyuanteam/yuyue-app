@@ -19,7 +19,7 @@ import java.io.IOException;
  **/
 
 @Controller
-@RequestMapping(value="/jsp", produces = "application/json; charset=UTF-8")
+@RequestMapping(value="/uploadFile", produces = "application/json; charset=UTF-8")
 public class UploadFileController {
     private static final Logger log = LoggerFactory.getLogger(UploadFileController.class);
 
