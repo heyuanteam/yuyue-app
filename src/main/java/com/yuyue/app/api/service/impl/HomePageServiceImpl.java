@@ -15,24 +15,15 @@ public class HomePageServiceImpl implements HomePageService {
     private BannerMapper bannerMapper;
     @Autowired
     private VideoCategoryMapper videoCategoryMapper;
+
     @Override
     public List<Banner> getBanner() {
-        List<Banner> banners = bannerMapper.getBanner();
-        for (Banner b: banners
-             ) {
-            System.out.println(b);
-        }
-        return banners;
+        return bannerMapper.getBanner();
     }
 
     @Override
     public List<VideoCategory> getVideoCategory() {
-        List<VideoCategory> videoCategories=videoCategoryMapper.getVideoCategory();
-        for (VideoCategory videoCategory:videoCategories
-             ) {
-            System.out.println(videoCategory);
-        }
-        return videoCategories;
+        return videoCategoryMapper.getVideoCategory();
     }
 
 

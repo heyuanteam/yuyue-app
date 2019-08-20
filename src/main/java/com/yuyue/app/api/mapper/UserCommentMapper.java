@@ -1,6 +1,5 @@
 package com.yuyue.app.api.mapper;
 
-import com.yuyue.app.api.domain.UploadFile;
 import com.yuyue.app.api.domain.UserComment;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;

@@ -60,7 +60,7 @@ public class UserCommentController extends BaseController{
             comment.setScore("0");
             List<UserComment> comments =userCommentService.addComment(comment,mapValue.get("videoId"));
             if(CollectionUtils.isEmpty(comments)){
-                returnResult.setMessage("暂无评论评论！");
+                returnResult.setMessage("暂无评论！");
             } else {
                 map.put("comment",comments);
                 returnResult.setMessage("评论成功！");

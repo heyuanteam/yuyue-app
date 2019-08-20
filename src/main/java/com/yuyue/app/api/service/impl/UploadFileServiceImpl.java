@@ -114,6 +114,8 @@ public class UploadFileServiceImpl implements UploadFileService {
                  /*伪造异常，测试文件部分上传失败，是否会清空此次上传的所有文件
                   fileList.get(10000000);*/
                     uploadFileMapper.insertUploadFile(uploadFile);
+
+//                  uploadFileMapper.insertList(listMDs);
                     //数据库修改
 //                uploadFileMapper.updateById(uploadFile);
 //                uploadFileList.add(uploadFileMapper.selectById(uploadFiles.get(i).getId()));
