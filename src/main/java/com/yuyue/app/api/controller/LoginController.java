@@ -224,4 +224,24 @@ public class LoginController {
             return Boolean.FALSE;
         }
     }
+
+    /**
+     * 获取实时信息
+     * @param user
+     * @return
+     */
+    @RequestMapping("/getMessage")
+    @ResponseBody
+    public JSONObject getMessage(AppUser user){
+        AppUser appUserById = loginService.getAppUserById(user.getId());
+        if (appUserById == null){
+            result.setMessage("查询数据失败！");
+        }else {
+            result.setMessage("注册成功！");
+            result.setStatus(Boolean.TRUE);
+            result.setToken(loginService.getToken(appUserById));
+            result.setResult(JSONObject.toJSON(appUserById));
+        }
+        return ResultJSONUtils.getJSONObjectBean(result);
+    }
 }
