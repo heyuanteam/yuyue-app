@@ -90,4 +90,3 @@ fdfs:
   tracker-list: 101.37.252.177:22122
   pool:
     jmx-enabled: false
-

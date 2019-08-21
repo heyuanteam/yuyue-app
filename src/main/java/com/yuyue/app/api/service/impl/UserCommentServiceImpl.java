@@ -5,14 +5,12 @@ import com.yuyue.app.api.mapper.UserCommentMapper;
 import com.yuyue.app.api.service.UserCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 @Service
 public class UserCommentServiceImpl implements UserCommentService{
 
     @Autowired
     private UserCommentMapper userCommentMapper;
-
 
     @Override
     public List<UserComment> getAllComment(String videoId) {

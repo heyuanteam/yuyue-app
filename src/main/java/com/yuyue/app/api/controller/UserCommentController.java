@@ -1,5 +1,4 @@
 package com.yuyue.app.api.controller;
-
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.AppUser;
@@ -7,6 +6,7 @@ import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.domain.UserComment;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UserCommentService;
+import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -28,7 +28,8 @@ public class UserCommentController extends BaseController{
     @Autowired
     private UserCommentService userCommentService;
     @Autowired
-
+    private RedisUtil redisUtil;
+    @Autowired
     private LoginService loginService;
 
     private ReturnResult returnResult =new ReturnResult();
@@ -36,8 +37,24 @@ public class UserCommentController extends BaseController{
 
     @RequestMapping("getAllComment")
     @ResponseBody
-    public List<UserComment> getAllComment(String videoId) {
-        return userCommentService.getAllComment(videoId);
+    public JSONObject getAllComment(String videoId) {
+        List<UserComment> userCommentList =null;
+        //设置缓存
+        if(redisUtil.existsKey(videoId)){
+            userCommentList=(List<UserComment>)(Object)redisUtil.getList(videoId, 0, -1);
+            for (Object  user: userCommentList
+            ) {
+                System.out.println("redis缓存取出的数据"+user);
+            }
+        }else {
+            userCommentList = userCommentService.getAllComment(videoId);
+            System.out.println("查询数据库并存储redis");
+            redisUtil.setListAll(videoId,userCommentList,600);
+        }
+        returnResult.setMessage("返回成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(JSONObject.toJSON(userCommentList));
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     @RequestMapping("addComment")
@@ -56,6 +73,7 @@ public class UserCommentController extends BaseController{
             AppUser appUser = loginService.getAppUserById(mapValue.get("userId"));
             comment.setUserName(appUser.getNickName());
             comment.setText(mapValue.get("text"));
+            comment.setHeadUrl(appUser.getHeadpUrl());
             comment.setScore("0");
             List<UserComment> comments =userCommentService.addComment(comment,mapValue.get("videoId"));
             if(CollectionUtils.isEmpty(comments)){

@@ -14,7 +14,7 @@ import java.util.List;
 public interface UserCommentMapper extends MyBaseMapper<UserComment> {
 
 
-    @Select("SELECT * FROM yuyue_user_comment WHERE VIDEO_ID = #{videoId}")
+    @Select("SELECT * FROM yuyue_user_comment WHERE VIDEO_ID = #{videoId} ORDER BY CREATE_TIME desc")
     List<UserComment> getAllComment(String videoId);
 
     @Transactional
