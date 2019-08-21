@@ -88,11 +88,11 @@ public class UploadFileServiceImpl implements UploadFileService {
         List<String> listMDs = new ArrayList();
         List<UploadFile> lists = new ArrayList();
         HashMap<String,Object> hashMap = Maps.newHashMap();
-        for (int i = 0; i < files.length; i++) {
-            if(104857600 < files[i].getSize()){
-                returnResult.setMessage("上传文件不可大于100MB!");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }else {
+        if(104857600 < files[0].getSize()){
+            returnResult.setMessage("上传文件不可大于100MB!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else {
+             for (int i = 0; i < files.length; i++) {
                 try {
                     String subFileType = files[i].getContentType().substring(files[i].getContentType().indexOf("/") + 1);
                     //上传
