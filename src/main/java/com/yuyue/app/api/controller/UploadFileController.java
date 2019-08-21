@@ -51,6 +51,19 @@ public class UploadFileController {
     }
 
     /**
+     * 我的发布
+     *
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/getRelease")
+    @ResponseBody
+//    @LoginRequired   @CurrentUser
+    public JSONObject getRelease(String id, String categoryId,String title,String description) throws Exception {
+        return uploadFileService.getRelease(id,categoryId,title,description);
+    }
+
+    /**
      * 单个文件下载
      *
      * @param filesName
@@ -67,8 +80,8 @@ public class UploadFileController {
      */
     @RequestMapping("likeCount")
     @ResponseBody
-    public void likeCount(String videoId) {
-        uploadFileService.likeCount(videoId);
+    public JSONObject likeCount(String videoId) {
+        return uploadFileService.likeCount(videoId);
     }
 
     /**

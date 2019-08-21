@@ -172,8 +172,11 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     @Override
-    public void likeCount(String videoId) {
+    public JSONObject likeCount(String videoId) {
         uploadFileMapper.likeCount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+        returnResult.setMessage("点赞成功!");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     @Override
@@ -184,6 +187,14 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     public void getVdieoCount(String id) {
         uploadFileMapper.getVdieoCount(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id);
+    }
+
+    @Override
+    public JSONObject getRelease(String id, String categoryId, String title, String description) {
+        uploadFileMapper.getRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id,categoryId,title,description);
+        returnResult.setMessage("发布成功!");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**

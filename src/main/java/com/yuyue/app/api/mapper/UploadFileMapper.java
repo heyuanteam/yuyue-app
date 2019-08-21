@@ -34,6 +34,11 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     void likeCount(@Param("tableName")String tableName,@Param("id")String id);
 
     @Transactional
+    @Update("UPDATE ${tableName} SET categoryId=#{categoryId},title=#{title},description=#{description}  WHERE id = #{id}")
+    void getRelease(@Param("tableName")String tableName,@Param("id")String id,@Param("categoryId")String categoryId,
+                       @Param("title")String title,@Param("description")String description);
+
+    @Transactional
     @Update("UPDATE ${tableName} SET playAmount = playAmount + 1 WHERE id = #{id}")
     void getVdieoCount(@Param("tableName")String tableName,@Param("id")String id);
 }

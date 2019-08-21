@@ -36,7 +36,7 @@ public interface UploadFileService {
      * 视频点赞
      * @param id
      */
-    void likeCount(String id);
+    JSONObject likeCount(String id);
 
     /**
      * 默认每张表查询五表记录
@@ -51,4 +51,14 @@ public interface UploadFileService {
      * @param id
      */
     void getVdieoCount(String id);
+
+    /**
+     * 我的发布
+     * @param id
+     * @param categoryId
+     * @param title
+     * @param description
+     * @return
+     */
+    JSONObject getRelease(String id, String categoryId, String title, String description);
 }
