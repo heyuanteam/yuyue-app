@@ -6,6 +6,8 @@ import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.service.BarrageService;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,14 +21,15 @@ import java.util.UUID;
 @RestController
 @RequestMapping("barrage")
 public class BarrageController extends BaseController{
-    private ReturnResult returnResult=new ReturnResult();
-    private Map<String, List<Barrage>> map=new HashMap<>();
+    private static Logger log = LoggerFactory.getLogger(BarrageController.class);
+
     @Autowired
     private BarrageService barrageService;
     @Autowired
     private RedisUtil redisUtil;
 
-
+    private ReturnResult returnResult=new ReturnResult();
+    private Map<String, List<Barrage>> map=new HashMap<>();
 
     @RequestMapping("getBarrages")
     @ResponseBody
@@ -43,7 +46,6 @@ public class BarrageController extends BaseController{
             list = barrageService.getBarrages(videoId);
             redisUtil.setListAll(videoId,list,6000);
         }
-
         //数据与传入的时间做业务处理
         map.put("barrage",list);
         returnResult.setResult(JSONObject.toJSON(map));
@@ -63,14 +65,9 @@ public class BarrageController extends BaseController{
         barrage.setVideoId(mapValue.get("videoId"));
         barrageService.addBarrage(barrage);
 
-        returnResult.setMessage("发送成功！");
+        returnResult.setMessage("添加成功！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult("");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
-
-
-
     }
-
 
 }

@@ -18,6 +18,5 @@ public class BarrageServiceImpl implements BarrageService {
     }
 
     @Override
-    public void addBarrage(Barrage barrage) { barrageMapper.addBarrage(barrage);
-    }
+    public void addBarrage(Barrage barrage) { barrageMapper.addBarrage(barrage); }
 }

@@ -18,5 +18,5 @@ public class Barrage implements Serializable {
     private String userId;
     private String userName;
     private String headUrl;
-    private Date createTime;
+    private String createTime;
 }
