@@ -19,14 +19,20 @@ public class UploadFile implements Serializable {
     private String id;
 //  文件名
     private String filesName;
+//  标题
+    private String title;
+//  节目视频分类
+    private String categoryId;
+//  时间
+    private String uploadTime;
+//  视频第一帧图片链接
+    private String vedioAddress;
 //  文件地址
     private String filesPath;
 //  文件类型
     private String filesType;
-//  文件MD5值
-    private String filesMD5;
 //  文件大小
-    private String fileSize;
+//    private String fileSize;
 //    作者iD
     private String authorId;
 //    描述
@@ -36,5 +42,5 @@ public class UploadFile implements Serializable {
 //    点赞量
     private String likeAmount;
 //    时长
-    private String duration;
+//    private String duration;
 }

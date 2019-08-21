@@ -46,8 +46,21 @@ public class UploadFileController {
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
 //    @LoginRequired   @CurrentUser
-    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, AppUser user) throws Exception {
-        return uploadFileService.UploadFilesToServer(files,user);
+    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, AppUser user,String fileType,String vedioAddress) throws Exception {
+        return uploadFileService.UploadFilesToServer(files,user,fileType,vedioAddress);
+    }
+
+    /**
+     * 我的发布
+     *
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/getRelease")
+    @ResponseBody
+//    @LoginRequired   @CurrentUser
+    public JSONObject getRelease(String id, String categoryId,String title,String description) throws Exception {
+        return uploadFileService.getRelease(id,categoryId,title,description);
     }
 
     /**
@@ -67,8 +80,18 @@ public class UploadFileController {
      */
     @RequestMapping("likeCount")
     @ResponseBody
-    public void likeCount(String videoId) {
-        uploadFileService.likeCount(videoId);
+    public JSONObject likeCount(String videoId) {
+        return uploadFileService.likeCount(videoId);
+    }
+
+    /**
+     * 视频播放量
+     * @param videoId
+     */
+    @RequestMapping("getVdieoCount")
+    @ResponseBody
+    public void getVdieoCount(String videoId) {
+        uploadFileService.getVdieoCount(videoId);
     }
 
 }

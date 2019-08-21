@@ -12,17 +12,17 @@
 </head>
 <body>
 <div style="text-align: center;margin-top: 50px">
-    <form action="upVideo" method="post" enctype="multipart/form-data">
+    <form action="uploadServer" method="post" enctype="multipart/form-data">
         <p><input type="file" name="file"/></p>
         <p><input type="submit" value="上传视频"/></p>
     </form>
 </div>
 
-<div style="text-align: center;margin-top: 50px">
+<%--<div style="text-align: center;margin-top: 50px">
     <form action="upImage" method="post" enctype="multipart/form-data">
         <p><input type="file" name="file"/></p>
         <p><input type="submit" value="上传图片"/></p>
     </form>
-</div>
+</div>--%>
 </body>
 </html>

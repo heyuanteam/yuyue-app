@@ -10,8 +10,11 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
+import java.text.Collator;
+import java.util.*;
 
 public class MD5Utils {
+    private static final String[] hex = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
 
     /**
      * 对字符串md5加密
@@ -92,4 +95,59 @@ public class MD5Utils {
         }
         return md5;
     }
+
+    public static String signDatashwx(Map SortedMap, String md5Key) {
+        List stringSort = new ArrayList();
+        Iterator i$ = SortedMap.entrySet().iterator();
+        do {
+            if (!i$.hasNext())
+                break;
+            java.util.Map.Entry entry = (java.util.Map.Entry) i$.next();
+            if (entry.getValue() != null && !"".equals(entry.getValue()) && !"null".equals(entry.getValue())
+                    && !((String) entry.getKey()).equals("sign") && !((String) entry.getKey()).equals("pl_sign"))
+                stringSort.add(entry.getKey());
+        } while (true);
+        Collections.sort(stringSort, Collator.getInstance(Locale.CHINA));
+        StringBuffer signDatas = new StringBuffer();
+        for (int i = 0; i < stringSort.size(); i++)
+            signDatas.append((String) stringSort.get(i)).append("=").append((String) SortedMap.get(stringSort.get(i))).append("&");
+
+        System.out.println(signDatas.toString());
+        String s = signDatas.toString();
+        s = s.substring(0, s.length() - 1);
+        s = (new StringBuilder()).append(s).append("&key=").append(md5Key).toString();
+        System.out.println("签名之前的数据为----------------------" + s);
+        return wxEncode(s.toString()).toUpperCase();
+    }
+
+    public static String wxEncode(String password) {
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] byteArray = md5.digest(password.getBytes("utf-8"));
+            String passwordMD5 = byteArrayToHexString(byteArray);
+            return passwordMD5;
+        } catch (Exception e) {
+            e.fillInStackTrace();
+        }
+        return password;
+    }
+
+    private static String byteArrayToHexString(byte[] byteArray) {
+        StringBuffer sb = new StringBuffer();
+        for (byte b : byteArray) {
+            sb.append(byteToHexChar(b));
+        }
+        return sb.toString();
+    }
+
+    private static Object byteToHexChar(byte b) {
+        int n = b;
+        if (n < 0) {
+            n = 256 + n;
+        }
+        int d1 = n / 16;
+        int d2 = n % 16;
+        return hex[d1] + hex[d2];
+    }
+
 }
