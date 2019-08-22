@@ -32,7 +32,7 @@ public class LoginController {
 
     @ResponseBody
     @RequestMapping( "/version")
-    public JSONObject getUserName(@RequestParam(value = "appVersion") String appVersion) {
+    public JSONObject getVersion(@RequestParam(value = "appVersion") String appVersion) {
         try {
             if(StringUtils.isEmpty(appVersion)){
                 result.setMessage("版本号为空！");
@@ -187,7 +187,6 @@ public class LoginController {
                  } else {
                      //uuid
                      String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
-
                      String salt = RandomSaltUtil.generetRandomSaltCode(4);
                      AppUser appUser=new AppUser();
                      appUser.setId(uuid);

@@ -1,9 +1,12 @@
 package com.yuyue.app.api.controller;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.domain.UserComment;
+import com.yuyue.app.api.domain.UserCommentVo;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UserCommentService;
 import com.yuyue.app.utils.RedisUtil;
@@ -20,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
+/**
+ * @author ly
+ */
 @RequestMapping(value="userComment", produces = "application/json; charset=UTF-8")
 @RestController
 public class UserCommentController extends BaseController{
@@ -33,27 +39,30 @@ public class UserCommentController extends BaseController{
     private LoginService loginService;
 
     private ReturnResult returnResult =new ReturnResult();
-    private Map<String,List> map= Maps.newHashMap();
+    private Map<String,Object> map= Maps.newHashMap();
 
     @RequestMapping("getAllComment")
     @ResponseBody
     public JSONObject getAllComment(String videoId) {
-        List<UserComment> userCommentList =null;
+        List<UserCommentVo> userCommentList =null;
         //设置缓存
-        if(redisUtil.existsKey(videoId)){
-            userCommentList=(List<UserComment>)(Object)redisUtil.getList(videoId, 0, -1);
-            for (Object  user: userCommentList
-            ) {
+        if(redisUtil.existsKey("comment"+videoId)){
+            userCommentList = JSON.parseObject((String) redisUtil.getString("comment" + videoId),
+                    new TypeReference<List<UserCommentVo>>() {});
+            for (UserCommentVo  user: userCommentList) {
                 System.out.println("redis缓存取出的数据"+user);
             }
         }else {
             userCommentList = userCommentService.getAllComment(videoId);
-            System.out.println("查询数据库并存储redis");
-            redisUtil.setListAll(videoId,userCommentList,600);
+            String str = JSON.toJSONString(userCommentList);
+            redisUtil.setString("comment"+videoId,str,600);
+            System.out.println("查询数据库并存储redis---->>>>>>>"+str);
         }
+        map.put("comment",userCommentList);
+        map.put("commentNum",userCommentList.size());
         returnResult.setMessage("返回成功！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(JSONObject.toJSON(userCommentList));
+        returnResult.setResult(JSONObject.toJSON(map));
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -64,22 +73,19 @@ public class UserCommentController extends BaseController{
         if (StringUtils.isEmpty(mapValue.get("userId")) || StringUtils.isEmpty(mapValue.get("videoId"))) {
             returnResult.setMessage("用户id为空！或视频id为空！");
         } else {
-            System.out.println(mapValue.get("userId")+"----->"+mapValue.get("videoId")+"------>"+mapValue.get("text"));
             UserComment comment=new UserComment();
             String id= UUID.randomUUID().toString().replace("-","").toUpperCase();
             comment.setId(id);
             comment.setVideoId(mapValue.get("videoId"));
             comment.setUserId(mapValue.get("userId"));
             AppUser appUser = loginService.getAppUserById(mapValue.get("userId"));
-            comment.setUserName(appUser.getNickName());
             comment.setText(mapValue.get("text"));
-            comment.setHeadUrl(appUser.getHeadpUrl());
-            comment.setScore("0");
-            List<UserComment> comments =userCommentService.addComment(comment,mapValue.get("videoId"));
+            List<UserCommentVo> comments =userCommentService.addComment(comment,mapValue.get("videoId"));
             if(CollectionUtils.isEmpty(comments)){
                 returnResult.setMessage("暂无评论！");
             } else {
                 map.put("comment",comments);
+                map.put("commentNum",comments.size());
                 returnResult.setMessage("评论成功！");
                 returnResult.setStatus(Boolean.TRUE);
                 returnResult.setResult(JSONObject.toJSON(map));
@@ -92,8 +98,9 @@ public class UserCommentController extends BaseController{
     @ResponseBody
     public JSONObject deleteComment(HttpServletRequest request) {
         Map<String, String> mapValue = getParameterMap(request);
-        List<UserComment> userComments=userCommentService.deleteComment(mapValue.get("id"),mapValue.get("videoId"));
+        List<UserCommentVo> userComments=userCommentService.deleteComment(mapValue.get("id"),mapValue.get("videoId"));
         map.put("comment",userComments);
+        map.put("commentNum",userComments.size());
         returnResult.setMessage("删除成功！");
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(JSONObject.toJSON(map));

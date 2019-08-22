@@ -1,9 +1,9 @@
-package com.yuyue.app.text;
+package com.yuyue.app.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-public class SimpleText {
+public class SimpleTest {
     @Autowired
     private RedisTemplate redisTemplate;
 

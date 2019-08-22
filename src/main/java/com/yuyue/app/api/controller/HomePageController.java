@@ -1,6 +1,9 @@
 package com.yuyue.app.api.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.*;
@@ -38,21 +41,20 @@ public class HomePageController {
 
     @ResponseBody
     @RequestMapping("result")
-    /**
-     * 首页展示轮播图
-     */
     public JSONObject homePage(){
         List<Banner> banners=null;
         List<VideoCategory> categories=null;
-        if (redisUtil.existsKey("banners") && redisUtil.existsKey("categories")){
-            banners = (List<Banner>)(Object)redisUtil.getList("banners", 0, -1);
-            categories = (List<VideoCategory>)(Object)redisUtil.getList("categories", 0, -1);
+        if (redisUtil.existsKey("newbanners") && redisUtil.existsKey("newcategories")){
+            banners=JSON.parseObject((String)redisUtil.getString("newbanners" ),
+                    new TypeReference<List<Banner>>() {});
+            categories =JSON.parseObject((String)redisUtil.getString("newcategories" ),
+                    new TypeReference<List<VideoCategory>>() {});
             System.out.println("------redis缓存中取出数据-------");
         }else {
             banners = homePageService.getBanner();
-            redisUtil.setListAll("banners", banners, 86400);
+            redisUtil.setString("newbanners", JSON.toJSONString(banners),6000);
             categories=homePageService.getVideoCategory();
-            redisUtil.setList("categories",categories);
+            redisUtil.setString("newcategories",JSON.toJSONString(categories));
         }
         map.put("banners",banners);
         map.put("categories",categories);
@@ -66,9 +68,7 @@ public class HomePageController {
     @RequestMapping("getVideo")
     public JSONObject getVideo(String page){
         List<UploadFileVo> list = Lists.newArrayList();
-        if (StringUtils.isEmpty(page)) {
-            page = "1";
-        }
+        if (StringUtils.isEmpty(page))  page = "1";
         int limit = 5;
         int begin = (Integer.parseInt(page) - 1) * limit;
         List<UploadFileVo> vdeio_0 = uploadFileService.getVdeio("yuyue_upload_file_0",begin, limit);

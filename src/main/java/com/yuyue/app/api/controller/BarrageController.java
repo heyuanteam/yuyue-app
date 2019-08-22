@@ -1,6 +1,8 @@
 package com.yuyue.app.api.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.yuyue.app.api.domain.Barrage;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.service.BarrageService;
@@ -39,12 +41,17 @@ public class BarrageController extends BaseController{
         final String date = mapValue.get("date");
         List<Barrage> list =null;
         if(redisUtil.existsKey(videoId)){
-            System.out.println("--------redis-------");
-             list = (List<Barrage>)(Object)redisUtil.getList(videoId, 0, -1);
+            /* list = (List<Barrage>)(Object)redisUtil.getList(videoId, 0, -1);*/
+            list=JSON.parseObject((String) redisUtil.getString("barrage" + videoId),
+                    new TypeReference<List<Barrage>>() {});
+            for (Barrage b: list) {
+                System.out.println("--------redis-------"+b);
+            }
             //数据与传入的时间做业务处理
         }else {
             list = barrageService.getBarrages(videoId);
-            redisUtil.setListAll(videoId,list,6000);
+            redisUtil.setString("barrage"+videoId, JSON.toJSONString(list),6000);
+            /*redisUtil.setListAll(videoId,list,6000);*/
         }
         //数据与传入的时间做业务处理
         map.put("barrage",list);
