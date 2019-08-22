@@ -12,6 +12,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserComment implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String id;
     private String videoId;
     private String userId;
@@ -21,7 +23,5 @@ public class UserComment implements Serializable {
     private int commentNum;
     private String createTime;
     private String score;
-
-
 
 }

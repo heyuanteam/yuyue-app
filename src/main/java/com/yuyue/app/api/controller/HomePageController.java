@@ -36,11 +36,11 @@ public class HomePageController {
     private ReturnResult returnResult=new ReturnResult();
     private Map<String,List> map= Maps.newHashMap();
 
-    @ResponseBody
-    @RequestMapping("result")
     /**
      * 首页展示轮播图
      */
+    @ResponseBody
+    @RequestMapping("result")
     public JSONObject homePage(){
         List<Banner> banners=null;
         List<VideoCategory> categories=null;
