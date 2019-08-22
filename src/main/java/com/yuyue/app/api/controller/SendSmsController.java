@@ -2,8 +2,6 @@ package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.aliyuncs.exceptions.ClientException;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.utils.RandomSaltUtil;
@@ -13,21 +11,18 @@ import com.yuyue.app.utils.SmsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping(value="/send", produces = "application/json; charset=UTF-8")
-public class sendSmsController extends BaseController{
-    private static Logger LOGGER = LoggerFactory.getLogger(sendSmsController.class);
+public class SendSmsController extends BaseController{
+    private static Logger LOGGER = LoggerFactory.getLogger(SendSmsController.class);
 
     @Autowired
     private SmsUtil smsUtil;
