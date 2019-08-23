@@ -23,8 +23,6 @@ public class UserAttentionController extends BaseController {
     private UploadFileService uploadFileService;
     private ReturnResult returnResult =new ReturnResult();
 
-
-
     /**
      * 查询用户所有的关注
      * @param userId
@@ -40,16 +38,13 @@ public class UserAttentionController extends BaseController {
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        for (Attention attention: userAttention
-             ) {
+        for (Attention attention: userAttention) {
             System.out.println("作者id:"+attention.getAuthorId());
 
             List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(attention.getAuthorId());
-            for (UploadFile uploadFile:videoByAuthorId
-                 ) {
+            for (UploadFile uploadFile:videoByAuthorId) {
                 System.out.println("获取作者上传的视频id:"+uploadFile.getId());
             }
-
         }
         returnResult.setMessage("返回成功！！");
         returnResult.setStatus(Boolean.TRUE);
@@ -64,7 +59,7 @@ public class UserAttentionController extends BaseController {
     @RequestMapping("addAttention")
     @ResponseBody
     public JSONObject addAttention(String authorId){
-
+        returnResult.setMessage("返回成功！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -77,7 +72,7 @@ public class UserAttentionController extends BaseController {
     @ResponseBody
     public JSONObject deteleAttention(String authorId){
 
-
+        returnResult.setMessage("返回成功！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
 
     }

@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface UserCommentMapper extends MyBaseMapper<UserComment> {
 
-
     /*
       评论做分页
     @Select("SELECT comment.ID id,comment.TEXT text,.comment.VIDEO_ID videoId,comment.USER_ID userId," +

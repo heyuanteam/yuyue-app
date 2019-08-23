@@ -57,8 +57,7 @@ public class UserCommentController extends BaseController{
         int begin = (Integer.parseInt(page) - 1) * limit;
         if (redisUtil.existsKey("comment" + videoId)) {
             userCommentList = JSON.parseObject((String) redisUtil.getString("comment" + videoId),
-                    new TypeReference<List<UserCommentVo>>() {
-                    });
+                    new TypeReference<List<UserCommentVo>>() {});
             for (UserCommentVo user : userCommentList) {
                 System.out.println("redis缓存取出的数据" + user);
             }
@@ -67,22 +66,59 @@ public class UserCommentController extends BaseController{
             String str = JSON.toJSONString(userCommentList);
             redisUtil.setString("comment" + videoId, str, 600);
             System.out.println("查询数据库并存储redis---->>>>>>>" + str);
-        } if(userCommentList.isEmpty()) {
-                returnResult.setMessage("暂无评论！");
-                returnResult.setStatus(Boolean.TRUE);
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
-            map.put("comment", userCommentList);
-            map.put("commentNum", userCommentList.size());
-            returnResult.setMessage("返回成功！");
+        }
+        if(userCommentList.isEmpty()) {
+            returnResult.setMessage("暂无评论！");
             returnResult.setStatus(Boolean.TRUE);
-            returnResult.setResult(JSONObject.toJSON(map));
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
+        map.put("comment", userCommentList);
+        map.put("commentNum", userCommentList.size());
+        returnResult.setMessage("返回成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(JSONObject.toJSON(map));
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
 
+    @RequestMapping("addComment")
+    @ResponseBody
+    public JSONObject addComment(HttpServletRequest request) {
+        Map<String, String> mapValue = getParameterMap(request);
+        if (StringUtils.isEmpty(mapValue.get("userId")) || StringUtils.isEmpty(mapValue.get("videoId"))) {
+            returnResult.setMessage("用户id为空！或视频id为空！");
+        } else {
+            UserComment comment=new UserComment();
+            String id= UUID.randomUUID().toString().replace("-","").toUpperCase();
+            comment.setId(id);
+            comment.setVideoId(mapValue.get("videoId"));
+            comment.setUserId(mapValue.get("userId"));
+            AppUser appUser = loginService.getAppUserById(mapValue.get("userId"));
+            comment.setText(mapValue.get("text"));
+            List<UserCommentVo> comments =userCommentService.addComment(comment,mapValue.get("videoId"));
+            if(CollectionUtils.isEmpty(comments)){
+                returnResult.setMessage("暂无评论！");
+            } else {
+                map.put("comment",comments);
+                map.put("commentNum",comments.size());
+                returnResult.setMessage("评论成功！");
+                returnResult.setStatus(Boolean.TRUE);
+                returnResult.setResult(JSONObject.toJSON(map));
+            }
+        }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
 
-
-
-
+    @RequestMapping("deleteComment")
+    @ResponseBody
+    public JSONObject deleteComment(HttpServletRequest request) {
+        Map<String, String> mapValue = getParameterMap(request);
+        List<UserCommentVo> userComments=userCommentService.deleteComment(mapValue.get("id"),mapValue.get("videoId"));
+        map.put("comment",userComments);
+        map.put("commentNum",userComments.size());
+        returnResult.setMessage("删除成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(JSONObject.toJSON(map));
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
 
 }
