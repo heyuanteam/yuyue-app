@@ -20,4 +20,8 @@ public interface LoginService {
 
     //获取token
     String getToken(AppUser user);
+
+    void updateAppUser(String id, String nickName, String realName, String idCard, String phone, String sex,
+                       String headpUrl, String userStatus, String addrDetail, String education, String wechat,
+                       String signature, String userUrl, String cardZUrl, String cardFUrl, String ciphertextPwd);
 }

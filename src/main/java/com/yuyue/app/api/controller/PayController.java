@@ -285,8 +285,8 @@ public class PayController{
      * @throws
      */
     public Map<String, Object> doIosRequest(String TransactionID,String Payload, int userId) throws Exception {
-        Map<String, Object> map = new HashMap<String, Object>();
-        Map<String, Object> mapChange = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> mapChange = new HashMap<>();
         System.out.println("客户端传过来的值1："+TransactionID+"客户端传过来的值2："+Payload);
 
         String verifyResult = IosVerifyUtils.buyAppVerify(Payload,1); //1.先线上测试 发送平台验证
