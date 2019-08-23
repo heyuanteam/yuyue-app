@@ -24,4 +24,13 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
     @Transactional
     @Update("UPDATE yuyue_merchant b SET b.`PASSWORD` = #{password} WHERE b.PHONE = #{phone}")
     void editPassword(@Param("phone") String phone,@Param("password") String password);
+
+    @Transactional
+    void updateAppUser(@Param("id") String id, @Param("nickName") String nickName,@Param("realName") String realName,
+                       @Param("idCard") String idCard,@Param("phone") String phone, @Param("sex") String sex,
+                       @Param("headpUrl") String headpUrl,@Param("userStatus") String userStatus, @Param("addrDetail") String addrDetail,
+                       @Param("education") String education,@Param("wechat") String wechat,@Param("signature") String signature,
+                       @Param("userUrl") String userUrl,@Param("cardZUrl") String cardZUrl,@Param("cardFUrl") String cardFUrl,
+                       @Param("password") String password);
+
 }

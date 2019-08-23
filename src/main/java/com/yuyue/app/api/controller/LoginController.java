@@ -1,6 +1,8 @@
 package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yuyue.app.annotation.CurrentUser;
+import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.AppVersion;
 import com.yuyue.app.api.domain.ReturnResult;
@@ -181,9 +183,9 @@ public class LoginController {
 
          Pattern pattern = Pattern.compile("^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$");
          try {
-             if (!code.equals(redisTemplate.opsForValue().get(phone).toString())){
+             /*if (!code.equals(redisTemplate.opsForValue().get(phone).toString())){
                  result.setMessage("验证码错误！");
-             }else if(pattern.matcher(phone).matches() == false || phone.length()!=11){
+             }else */if(pattern.matcher(phone).matches() == false || phone.length()!=11){
                  result.setMessage("手机号输入错误！");
              } else {
                  AppUser appUserMsgByPhone = loginService.getAppUserMsgByPhone(phone);
@@ -201,7 +203,6 @@ public class LoginController {
                      appUser.setPhone(phone);
                      appUser.setPassword(MD5Utils.getMD5Str(password+salt));
                      appUser.setSalt(salt);//盐
-                     appUser.setUserStatus("0");
                      loginService.addUser(appUser);
                      result.setMessage("注册成功！");
                      result.setStatus(Boolean.TRUE);
@@ -220,7 +221,7 @@ public class LoginController {
      * @param user
      * @return
      */
-    public  boolean userAuth( AppUser user){
+    public  boolean userAuth(AppUser user){
         AppUser appUserById = loginService.getAppUserById(user.getId());
         if (appUserById.equals(user.getPassword())){
             return Boolean.TRUE;
@@ -236,15 +237,49 @@ public class LoginController {
      */
     @RequestMapping("/getMessage")
     @ResponseBody
-    public JSONObject getMessage(AppUser user){
+    @LoginRequired
+    public JSONObject getMessage(@CurrentUser AppUser user){
         AppUser appUserById = loginService.getAppUserById(user.getId());
         if (appUserById == null){
             result.setMessage("查询数据失败！");
         }else {
-            result.setMessage("注册成功！");
+            result.setMessage("获取成功！");
             result.setStatus(Boolean.TRUE);
             result.setToken(loginService.getToken(appUserById));
             result.setResult(JSONObject.toJSON(appUserById));
+        }
+        return ResultJSONUtils.getJSONObjectBean(result);
+    }
+
+    /**
+     * 修改信息
+     * @param user
+     * @return
+     */
+    @RequestMapping("/updateAppUser")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject updateAppUser(@CurrentUser AppUser user,String nickName, String realName, String idCard,
+                                    String phone, String sex, String headpUrl, String userStatus, String addrDetail,
+                                    String education, String wechat, String signature,String password,
+                                    String userUrl,String cardZUrl,String cardFUrl) throws Exception {
+        if(StringUtils.isEmpty(user.getId())){
+            result.setMessage("ID为空！");
+        } else {
+            AppUser appUserById = loginService.getAppUserById(user.getId());
+            if (appUserById == null){
+                result.setMessage("修改失败！该用户不存在！");
+            }else {
+                LOGGER.info("============"+user.toString());
+                String ciphertextPwd = MD5Utils.getMD5Str(password + user.getSalt());
+                loginService.updateAppUser(user.getId(),nickName,realName,idCard,phone,sex,headpUrl, userStatus,
+                        addrDetail, education,wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd);
+                result.setMessage("修改成功！");
+                result.setStatus(Boolean.TRUE);
+                AppUser appUser = loginService.getAppUserById(user.getId());
+                result.setToken(loginService.getToken(appUser));
+                result.setResult(JSONObject.toJSON(appUser));
+            }
         }
         return ResultJSONUtils.getJSONObjectBean(result);
     }

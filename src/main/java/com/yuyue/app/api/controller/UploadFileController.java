@@ -1,5 +1,7 @@
 package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSONObject;
+import com.yuyue.app.annotation.CurrentUser;
+import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.service.UploadFileService;
 import org.slf4j.Logger;
@@ -45,8 +47,8 @@ public class UploadFileController {
      */
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
-//    @LoginRequired   @CurrentUser
-    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, AppUser user,String fileType,String vedioAddress) throws Exception {
+    @LoginRequired
+    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user, String fileType, String vedioAddress) throws Exception {
         return uploadFileService.UploadFilesToServer(files,user,fileType,vedioAddress);
     }
 

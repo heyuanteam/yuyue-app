@@ -24,21 +24,28 @@ public class AppUser implements Serializable {
     private String email;
     private String password;
     private String salt;
-    private BigDecimal balance;
+    private BigDecimal total;
     private String sex;
     private String addrDetail;
     private String headpUrl;
     private String userType;
-    private String userPerssion;
     private String userStatus;
     private String createTime;
     private String updateTime;
-    private String attentionId;
-    private String collectionId;
-    private String settlementId;
-    private String worksId;
-    private String versionId;
-
+    private String attentionTotal;
+    private String collectionTotal;
+//    学历
+    private String education;
+//    微信
+    private String wechat;
+//    个性签名
+    private String signature;
+//    正面人物图片
+    private String userUrl;
+//    正面身份证
+    private String cardZUrl;
+//    反面身份证
+    private String cardFUrl;
 
 
 //    用户id			id            	  string

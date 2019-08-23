@@ -1,10 +1,96 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yuyue.app.api.mapper.LoginMapper" >
+    <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
+    <resultMap id="BaseResultMap" type="com.yuyue.app.api.domain.AppUser">
+        <id column="ID" property="id" jdbcType="VARCHAR"/>
+        <result column="USER_NO" property="userNo" jdbcType="VARCHAR"/>
+        <result column="USER_NICK_NAME" property="nickName" jdbcType="VARCHAR"/>
+        <result column="USER_REAL_NAME" property="realName" jdbcType="VARCHAR"/>
+        <result column="ID_TYPE" property="idType" jdbcType="VARCHAR"/>
+        <result column="ID_CARD" property="idCard" jdbcType="VARCHAR"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="SEX" property="sex" jdbcType="VARCHAR"/>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR"/>
+        <result column="SALT" property="salt" jdbcType="VARCHAR"/>
+        <result column="USER_STATUS" property="userStatus" jdbcType="VARCHAR"/>
+        <result column="TOTAL" property="total" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="ADDR_DETAIL" property="addrDetail" jdbcType="VARCHAR"/>
+        <result column="HEADP_URL" property="headpUrl" jdbcType="VARCHAR"/>
+        <result column="USER_TYPE" property="userType" jdbcType="VARCHAR"/>
+        <result column="ATTENTION_TOTAL" property="attentionTotal" jdbcType="VARCHAR"/>
+        <result column="COLLECTION_TOTAL" property="collectionTotal" jdbcType="VARCHAR"/>
+        <result column="education" property="education" jdbcType="VARCHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="signature" property="signature" jdbcType="VARCHAR"/>
+        <result column="cardFUrl" property="cardFUrl" jdbcType="VARCHAR"/>
+        <result column="cardZUrl" property="cardZUrl" jdbcType="VARCHAR"/>
+        <result column="userUrl" property="userUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <update id="updateAppUser" parameterType="com.yuyue.app.api.domain.AppUser">
+        UPDATE yuyue_merchant b
+        <set>
+            <if test="nickName!=null and nickName!=''">
+                b.`USER_NICK_NAME` = #{nickName},
+            </if>
+            <if test="sex!=null and sex!=''">
+                b.`SEX` = #{sex},
+            </if>
+            <if test="wechat!=null and wechat!=''">
+                b.`wechat` = #{wechat},
+            </if>
+            <if test="education!=null and education!=''">
+                b.`education` = #{education},
+            </if>
+            <if test="signature!=null and signature!=''">
+                b.`signature` = #{signature},
+            </if>
+            <if test="headpUrl!=null and headpUrl!=''">
+                b.`HEADP_URL` = #{headpUrl},
+            </if>
+            <if test="realName!=null and realName!=''">
+                b.`USER_REAL_NAME` = #{realName},
+            </if>
+            <if test="idCard!=null and idCard!=''">
+                b.`ID_CARD` = #{idCard},
+            </if>
+            <if test="phone!=null and phone!=''">
+                b.`PHONE` = #{phone},
+            </if>
+            <if test="userStatus!=null and userStatus!=''">
+                b.`USER_STATUS` = #{userStatus},
+            </if>
+            <if test="addrDetail!=null and addrDetail!=''">
+                b.`ADDR_DETAIL` = #{addrDetail},
+            </if>
+            <if test="userUrl!=null and userUrl!=''">
+                b.`userUrl` = #{userUrl},
+            </if>
+            <if test="cardZUrl!=null and cardZUrl!=''">
+                b.`cardZUrl` = #{cardZUrl},
+            </if>
+            <if test="cardFUrl!=null and cardFUrl!=''">
+                b.`cardFUrl` = #{cardFUrl},
+            </if>
+            <if test="password!=null and password!=''">
+                b.`PASSWORD` = #{password},
+            </if>
+        </set>
+        WHERE 1=1
+        <if test="id!=null and id!=''">
+            and b.id = #{id}
+        </if>
+
+    </update>
+
     <select id="getAppUserMsg" resultType="com.yuyue.app.api.domain.AppUser" parameterType="String">
         SELECT id,user_no userNo,user_nick_name nickName,user_real_name realName,id_type idType,id_card idCard,phone,sex,email,password,salt,
-            user_status userStatus,total balance,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,USER_PERMISSION userPerssion,
-            ATTENTION_ID attentionId,COLLECTION_ID collectionId,SETTLEMENT_ID settlementId,WORKS_ID worksId,VERSION_ID versionId,
+            user_status userStatus,total balance,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,
+        ATTENTION_TOTAL attentionTotal,COLLECTION_TOTAL collectionTotal,ATTENTION_TOTAL attentionTotal,education ,wechat ,signature ,
             DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime
             FROM yuyue_merchant
             where 1=1
