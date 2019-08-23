@@ -40,7 +40,7 @@ public class HomePageController {
     private Map<String,List> map= Maps.newHashMap();
 
     /**
-     * 首页展示轮播图
+     * 首页展示轮播图及视频种类
      */
     @ResponseBody
     @RequestMapping("result")
@@ -67,6 +67,11 @@ public class HomePageController {
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 获取首页视频列表
+     * @param page
+     * @return
+     */
     @ResponseBody
     @RequestMapping("getVideo")
     public JSONObject getVideo(String page){

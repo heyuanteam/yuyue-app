@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
 
+import static java.util.Collections.addAll;
+
 
 /**
  * @author: Lucifer
@@ -200,7 +202,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     /**
      * 校验文件
      *
-     * @param file
+     * @param
      * @throws IOException
      */
 //    public void checkFileType(int i, MultipartFile file) throws IOException {
@@ -217,4 +219,12 @@ public class UploadFileServiceImpl implements UploadFileService {
 //            throw new RuntimeException("上传失败，" + "第" + (i + 1) + "个文件内容不符合要求");
 //        }
 //    }
+     public List<UploadFile> getVideoByAuthorId(String authorId){
+
+         String tableName0="yuyue_upload_file_0";
+         String tableName1="yuyue_upload_file_1";
+         List<UploadFile> videoByAuthorId = uploadFileMapper.getVideoByAuthorId(tableName0, authorId);
+         videoByAuthorId.addAll(uploadFileMapper.getVideoByAuthorId(tableName1, authorId));
+         return videoByAuthorId;
+    }
 }

@@ -30,6 +30,11 @@ public class LoginController {
 
     private ReturnResult result=new ReturnResult();
 
+    /**
+     * 获取版本号
+     * @param appVersion
+     * @return
+     */
     @ResponseBody
     @RequestMapping( "/version")
     public JSONObject getVersion(@RequestParam(value = "appVersion") String appVersion) {

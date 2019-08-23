@@ -17,8 +17,8 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
     AppUser getAppUserMsg(@Param("phone") String phone,@Param("id") String id);
 
     @Transactional
-    @Insert("insert into yuyue_merchant (ID,USER_NO,USER_NICK_NAME,USER_REAL_NAME,PHONE,PASSWORD,SALT,USER_STATUS) " +
-            "values (#{id},#{userNo},#{nickName},#{realName},#{phone},#{password},#{salt},#{userStatus})")
+    @Insert("insert into yuyue_merchant (ID,USER_NO,USER_NICK_NAME,USER_REAL_NAME,PHONE,PASSWORD,SALT) " +
+            "values (#{id},#{userNo},#{nickName},#{realName},#{phone},#{password},#{salt})")
     void addUser(AppUser appUser);
 
     @Transactional

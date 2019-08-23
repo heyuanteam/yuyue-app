@@ -33,6 +33,11 @@ public class BarrageController extends BaseController{
     private ReturnResult returnResult=new ReturnResult();
     private Map<String, List<Barrage>> map=new HashMap<>();
 
+    /**
+     * 获取弹幕信息
+     * @param request
+     * @return
+     */
     @RequestMapping("getBarrages")
     @ResponseBody
     public JSONObject getBarrages(HttpServletRequest request){
@@ -61,6 +66,11 @@ public class BarrageController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 发送弹幕
+     * @param request
+     * @return
+     */
     @RequestMapping("addBarrages")
     @ResponseBody
     public JSONObject addBarrages(HttpServletRequest request){

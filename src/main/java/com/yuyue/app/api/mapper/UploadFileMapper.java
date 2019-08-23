@@ -13,6 +13,8 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Select("select * from ${tableName} where id = #{id}")
     UploadFile selectById(@Param("tableName")String tableName,@Param("id")String id);
 
+
+
     @Select("select b.id,COUNT(c.ID) count,DATE_FORMAT(b.uploadTime ,'%Y-%m-%d %H:%i:%s') uploadTime,b.filesName,b.filesPath,b.filesType,b.fileSize,b.authorId,b.description,b.playAmount,b.likeAmount,b.duration " +
             "from ${tableName} b,yuyue_user_comment c WHERE c.VIDEO_ID=b.id and b.filesType = 'vedio' GROUP BY b.id ORDER BY b.uploadTime OR b.playAmount OR b.likeAmount DESC LIMIT #{bdgin},#{size}")
     List<UploadFileVo> getVdeio(@Param("tableName")String tableName, @Param("bdgin")int bdgin, @Param("size")int size);
@@ -41,4 +43,7 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Transactional
     @Update("UPDATE ${tableName} SET playAmount = playAmount + 1 WHERE id = #{id}")
     void getVdieoCount(@Param("tableName")String tableName,@Param("id")String id);
+
+    @Select("SELECT * FROM ${tableName} WHERE authorId = #{authorId}")
+    List<UploadFile> getVideoByAuthorId(@Param("tableName") String tableName,@Param("authorId") String authorId);
 }
