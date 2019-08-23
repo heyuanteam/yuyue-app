@@ -256,7 +256,7 @@ public class LoginController {
      * @param user
      * @return
      */
-    @RequestMapping("/updateAppUser")
+    @RequestMapping(value = "/updateAppUser", produces = "application/json; charset=UTF-8")
     @ResponseBody
     @LoginRequired
     public JSONObject updateAppUser(@CurrentUser AppUser user,String nickName, String realName, String idCard,

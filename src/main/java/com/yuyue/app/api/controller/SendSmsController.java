@@ -36,7 +36,7 @@ public class SendSmsController extends BaseController{
     /**
      * 发送消息验证码，通用接口
      */
-    @RequestMapping("/sendSms")
+    @RequestMapping(value = "/sendSms", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public JSONObject sendSms(HttpServletRequest request){
         Map<String, String> map = getParameterMap(request);

@@ -80,6 +80,11 @@ public class UserCommentController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 用户添加评论
+     * @param request
+     * @return
+     */
     @RequestMapping("addComment")
     @ResponseBody
     public JSONObject addComment(HttpServletRequest request) {
@@ -108,6 +113,11 @@ public class UserCommentController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 用户删除评论
+     * @param request
+     * @return
+     */
     @RequestMapping("deleteComment")
     @ResponseBody
     public JSONObject deleteComment(HttpServletRequest request) {

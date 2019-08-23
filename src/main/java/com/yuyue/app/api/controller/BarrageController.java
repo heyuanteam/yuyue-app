@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("barrage")
+@RequestMapping(value = "barrage" ,produces = "application/json; charset=UTF-8")
 public class BarrageController extends BaseController{
     private static Logger log = LoggerFactory.getLogger(BarrageController.class);
 
