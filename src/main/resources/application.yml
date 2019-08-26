@@ -93,6 +93,8 @@ fdfs:
 
 #极光推送
 jpush:
+  #ced8805d8d62e42cca2f5bda
   appKey: c9b42236019679709d0d0ebe
+  #b8dae5591819e15fc3543cb6
   masterSecret: ba4e6c2302185825bbc50cb0
   apnsProduction: false   # 是否生成环境，true表示生成环境
