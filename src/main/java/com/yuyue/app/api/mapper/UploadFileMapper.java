@@ -42,6 +42,6 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Update("UPDATE ${tableName} SET playAmount = playAmount + 1 WHERE id = #{id}")
     void getVdieoCount(@Param("tableName")String tableName,@Param("id")String id);
 
-    @Select("SELECT * FROM ${tableName} WHERE authorId = #{authorId}")
+    @Select("SELECT * FROM ${tableName} WHERE authorId = #{authorId} ORDER BY uploadTime DESC")
     List<UploadFile> getVideoByAuthorId(@Param("tableName") String tableName,@Param("authorId") String authorId);
 }

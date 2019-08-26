@@ -1,6 +1,9 @@
 package com.yuyue.app.api.mapper;
 
 import com.yuyue.app.api.domain.Attention;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
@@ -13,20 +16,23 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      * @param userId
      * @return
      */
-    @Select("SELECT authorId FROM yuyue_attention WHERE userId = #{userId} AND status = '1'")
+    @Select("SELECT * FROM yuyue_attention WHERE userId = #{userId} AND status = '1'")
     public List<Attention> getUserAttention(String userId);
 
     /**
      * 添加关注
-     * @param authorId
+     * @param ,userId,authorId
      * @return
      */
-    public List<Attention> addAttention(String authorId);
+    @Insert("INSERT into yuyue_attention (id,userId,authorId) " +
+            "VALUES (#{id}, #{userId}, #{authorId})")
+    public void addAttention(@Param("id") String id, @Param("userId")String userId,@Param("authorId") String authorId);
 
     /**
      * 删除用户关注
-     * @param authorId
+     * @param userId  authorId
      * @return
      */
-    public List<Attention> deteleAttention(String authorId);
+    @Delete("DELETE FROM yuyue_attention WHERE userId = #{userId} and authorId = #{authorId}")
+    public void cancelAttention(@Param("userId")String userId,@Param("authorId") String authorId);
 }

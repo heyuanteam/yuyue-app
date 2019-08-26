@@ -2,13 +2,10 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.ReturnResult;
-import com.yuyue.app.api.domain.UserComment;
-import com.yuyue.app.api.domain.UserCommentVo;
+import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
+import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
@@ -38,9 +35,11 @@ public class UserCommentController extends BaseController{
     private RedisUtil redisUtil;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private UploadFileService uploadFileService;
 
     private ReturnResult returnResult =new ReturnResult();
-    private Map<String,Object> map= Maps.newHashMap();
+    private Map<String,Object> map= Maps.newTreeMap();
 
     /**
      * 获取视频中所有的评论
@@ -49,12 +48,9 @@ public class UserCommentController extends BaseController{
      */
     @RequestMapping("getAllComment")
     @ResponseBody
-    public JSONObject getAllComment(String videoId,String page) {
+    public JSONObject getAllComment(String videoId) {
         List<UserCommentVo> userCommentList = null;
         //设置缓存
-        if (StringUtils.isEmpty(page)) page = "1";
-        int limit = 10;
-        int begin = (Integer.parseInt(page) - 1) * limit;
         if (redisUtil.existsKey("comment" + videoId)) {
             userCommentList = JSON.parseObject((String) redisUtil.getString("comment" + videoId),
                     new TypeReference<List<UserCommentVo>>() {});
@@ -129,6 +125,81 @@ public class UserCommentController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(JSONObject.toJSON(map));
         return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 查询用户所有的关注
+     * @param userId
+     * @return
+     */
+    @RequestMapping("getUserAttention")
+    @ResponseBody
+    public JSONObject getUserAttention(String userId){
+        Map<String,Object> map= Maps.newTreeMap();
+        List<Attention> userAttention = userCommentService.getUserAttention(userId);
+        if(userAttention.isEmpty()){
+            returnResult.setMessage("该用户没有关注！！");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        for (Attention attention: userAttention) {
+            System.out.println("作者id:"+attention.getAuthorId());
+            AppUser appUserById = loginService.getAppUserById(attention.getAuthorId());
+            List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(attention.getAuthorId());
+            if(videoByAuthorId.isEmpty()){
+                break;
+            }else{
+                    appUserById.setAuthorVideo(videoByAuthorId);
+                    System.out.println("---------------------");
+                    System.out.println(appUserById.getAuthorVideo().size());
+                    System.out.println(appUserById);
+                    map.put("ID"+appUserById.getId(),appUserById);
+
+
+                System.out.println("获取作者上传的视频id:"+appUserById.getId()+"视频数："+videoByAuthorId.size());
+            }
+
+        }
+
+        returnResult.setResult(map);
+        returnResult.setMessage("返回成功！！");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 添加关注
+     * @param authorId
+     * @return
+     */
+    @RequestMapping("addAttention")
+    @ResponseBody
+    public JSONObject addAttention(String userId,String authorId){
+        List<Attention> userAttention = userCommentService.getUserAttention(userId);
+        for (Attention attertion:userAttention
+             ) {
+            if (attertion.getAuthorId().equals(authorId)){
+                returnResult.setMessage("用户已关注！！");
+                returnResult.setStatus(Boolean.TRUE);
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+        }
+        String id =UUID.randomUUID().toString().replace("-","").toUpperCase();
+        userCommentService.addAttention(id,userId,authorId);
+        return getUserAttention(userId);
+    }
+
+    /**
+     * 删除用户关注
+     * @param userId,authorId
+     * @return
+     */
+    @RequestMapping("cancelAttention")
+    @ResponseBody
+    public JSONObject cancelAttention(String userId,String authorId){
+        userCommentService.cancelAttention(userId,authorId);
+        return getUserAttention(userId);
+
     }
 
 }
