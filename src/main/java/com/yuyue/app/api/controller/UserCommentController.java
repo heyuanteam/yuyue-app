@@ -152,18 +152,14 @@ public class UserCommentController extends BaseController{
             if(videoByAuthorId.isEmpty()){
                 break;
             }else{
-                    appUserById.setAuthorVideo(videoByAuthorId);
-                    System.out.println("---------------------");
-                    System.out.println(appUserById.getAuthorVideo().size());
-                    System.out.println(appUserById);
-                    map.put("ID"+appUserById.getId(),appUserById);
-
-
+                appUserById.setAuthorVideo(videoByAuthorId);
+                System.out.println("---------------------");
+                System.out.println(appUserById.getAuthorVideo().size());
+                System.out.println(appUserById);
+                map.put("ID"+appUserById.getId(),appUserById);
                 System.out.println("获取作者上传的视频id:"+appUserById.getId()+"视频数："+videoByAuthorId.size());
             }
-
         }
-
         returnResult.setResult(map);
         returnResult.setMessage("返回成功！！");
         returnResult.setStatus(Boolean.TRUE);
