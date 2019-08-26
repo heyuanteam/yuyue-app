@@ -118,7 +118,8 @@ public class UserCommentController extends BaseController{
      */
     @RequestMapping("deleteComment")
     @ResponseBody
-    public JSONObject deleteComment(HttpServletRequest request) {
+    @LoginRequired
+    public JSONObject deleteComment(HttpServletRequest request,@CurrentUser AppUser user) {
         Map<String, String> mapValue = getParameterMap(request);
         List<UserCommentVo> userComments=userCommentService.deleteComment(mapValue.get("id"),mapValue.get("videoId"));
         map.put("comment",userComments);
