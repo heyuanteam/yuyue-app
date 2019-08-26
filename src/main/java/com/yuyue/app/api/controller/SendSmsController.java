@@ -26,7 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(value="/send", produces = "application/json; charset=UTF-8")
 public class SendSmsController extends BaseController{
-    private static Logger LOGGER = LoggerFactory.getLogger(SendSmsController.class);
+    private static Logger log = LoggerFactory.getLogger(SendSmsController.class);
 
     @Autowired
     private SmsUtil smsUtil;
@@ -35,7 +35,7 @@ public class SendSmsController extends BaseController{
     @Autowired
     private JPushClients jPushClients;
 
-    //极光推送==============================================================
+    //极光推送
     @Value("${jpush.appKey}")
     private String appKey;
 
@@ -52,7 +52,7 @@ public class SendSmsController extends BaseController{
     /**
      * 发送消息验证码，通用接口
      */
-    @RequestMapping(value = "/sendSms", produces = "application/json; charset=UTF-8")
+    @RequestMapping("/sendSms")
     @ResponseBody
     public JSONObject sendSms(HttpServletRequest request){
         Map<String, String> map = getParameterMap(request);
@@ -64,7 +64,7 @@ public class SendSmsController extends BaseController{
             hashMap.put("code",lcode);
             map.put("param", JSON.toJSON(hashMap).toString());
 
-            LOGGER.info("验证码：=========="+lcode);
+            log.info("验证码：=========="+lcode);
 
 //            SendSmsResponse response = smsUtil.sendSms(
 //                    map.get("mobile"), map.get("template_code") , map.get("sign_name")  , map.get("param") );
@@ -85,12 +85,12 @@ public class SendSmsController extends BaseController{
                 result.setResult(lcode);
             } else {
                 result.setMessage("短信发送失败！");
-                LOGGER.info("短信发送失败！");
+                log.info("短信发送失败！");
             }
         } catch (Exception e) {
             e.printStackTrace();
             result.setMessage("短信发送失败！");
-            LOGGER.info("短信发送失败！");
+            log.info("短信发送失败！");
         }
         return ResultJSONUtils.getJSONObjectBean(result);
     }
@@ -98,12 +98,21 @@ public class SendSmsController extends BaseController{
     /**
      * 极光推送
      */
-    public void sendJPush() {
-        List<String> aliasList = Arrays.asList("239");
-        String notificationTitle = "notification_title";
-        String msgTitle = "msg_title";
-        String msgContent = "msg_content";
-        jPushClients.sendToAliasList(aliasList, notificationTitle, msgTitle, msgContent,
-                "exts",apnsProduction,masterSecret,appKey);
+    @RequestMapping("/sendJPush")
+    @ResponseBody
+    public JSONObject sendJPush(String notificationTitle,String msgTitle,String msgContent) {
+//        用户ID
+//        List<String> aliasList = Arrays.asList("239");
+        try {
+            jPushClients.sendToAll("通知内容标题", "消息内容标题", "消息内容", "扩展字段",
+                    apnsProduction,masterSecret,appKey);
+            result.setMessage("极光推送成功!");
+            result.setStatus(Boolean.TRUE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("极光推送失败！");
+            result.setMessage("极光推送失败！");
+        }
+        return ResultJSONUtils.getJSONObjectBean(result);
     }
 }
