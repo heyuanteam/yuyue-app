@@ -34,14 +34,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public AppUser getAppUserMsgByPhone(String phone) {
-        return loginMapper.getAppUserMsg(phone,null);
-    }
-
-    @Override
-    public AppUser getAppUserById(String id) {
-        return loginMapper.getAppUserMsg(null,id);
-    }
+    public AppUser getAppUserMsg(String password, String phone, String id) { return loginMapper.getAppUserMsg(password,phone,id); }
 
     @Override
     public void addUser(AppUser appUser) {
@@ -72,6 +65,5 @@ public class LoginServiceImpl implements LoginService {
         loginMapper.updateAppUser(id,nickName,realName,idCard,phone,sex,headpUrl, userStatus,
                 addrDetail, education,wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd);
     }
-
 
 }

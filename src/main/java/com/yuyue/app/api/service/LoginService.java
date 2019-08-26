@@ -9,10 +9,7 @@ public interface LoginService {
     AppVersion getAppVersion(String appVersion);
 
     //根据手机号查询
-    AppUser getAppUserMsgByPhone(String phone);
-
-    //根据ID查询
-    AppUser getAppUserById(String id);
+    AppUser getAppUserMsg(String password,String phone,String id);
 
     void addUser(AppUser appUser);
 

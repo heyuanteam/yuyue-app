@@ -47,7 +47,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             } catch (JWTDecodeException e) {
                 throw new RuntimeException("token无效，请重新登录");
             }
-            AppUser user = loginService.getAppUserById(userId);
+            AppUser user = loginService.getAppUserMsg("","",userId);
             if (user == null) {
                 throw new RuntimeException("用户不存在，请重新登录");
             }

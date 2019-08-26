@@ -95,8 +95,9 @@
             FROM yuyue_merchant
             where 1=1
             <choose>
-        <when test="phone!=null and phone!=''">   and phone=#{phone}  </when>
-        <when test="id!=null and id!='' "> and   id=#{id}           </when>
+                <when test="phone!=null and phone!=''">  and phone=#{phone}  </when>
+                <when test="id!=null and id!='' ">  and id=#{id}  </when>
+                <when test="password!=null and password!='' ">  and password=#{password}  </when>
             </choose>
          LIMIT 1
 

@@ -90,3 +90,9 @@ fdfs:
   tracker-list: 101.37.252.177:22122
   pool:
     jmx-enabled: false
+
+#极光推送
+jpush:
+  appKey: c9b42236019679709d0d0ebe
+  masterSecret: ba4e6c2302185825bbc50cb0
+  apnsProduction: false   # 是否生成环境，true表示生成环境
