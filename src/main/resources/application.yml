@@ -76,13 +76,6 @@ mybatis:
   mapperLocations: classpath:/mappers/*.xml
   configLocation: classpath:/mybatis-config.xml
 
-#mybatis分页插件
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql
-
 # spring-boot默认打印输出info级别以上的，可在此处修改输出级别
 logging:
   config: classpath:logback-spring.xml

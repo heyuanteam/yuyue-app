@@ -9,7 +9,7 @@ import com.yuyue.app.api.service.UserCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-@Service
+@Service(value = "UserCommentService")
 public class UserCommentServiceImpl implements UserCommentService{
 
     @Autowired

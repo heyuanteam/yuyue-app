@@ -83,7 +83,7 @@ public class BarrageController extends BaseController{
         barrage.setId(UUID.randomUUID().toString().toUpperCase());
         barrage.setUserId(mapValue.get("userId"));
         barrage.setText(mapValue.get("text"));
-        barrage.setVideoId(user.getId());
+        barrage.setVideoId(mapValue.get("videoId"));
         barrageService.addBarrage(barrage);
 
         returnResult.setMessage("添加成功！");

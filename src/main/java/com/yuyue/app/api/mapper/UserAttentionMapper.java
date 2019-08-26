@@ -17,7 +17,7 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      * @return
      */
     @Select("SELECT * FROM yuyue_attention WHERE userId = #{userId} AND status = '1'")
-    public List<Attention> getUserAttention(String userId);
+    List<Attention> getUserAttention(String userId);
 
     /**
      * 添加关注
@@ -26,7 +26,7 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      */
     @Insert("INSERT into yuyue_attention (id,userId,authorId) " +
             "VALUES (#{id}, #{userId}, #{authorId})")
-    public void addAttention(@Param("id") String id, @Param("userId")String userId,@Param("authorId") String authorId);
+    void addAttention(@Param("id") String id, @Param("userId")String userId,@Param("authorId") String authorId);
 
     /**
      * 删除用户关注
@@ -34,5 +34,5 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      * @return
      */
     @Delete("DELETE FROM yuyue_attention WHERE userId = #{userId} and authorId = #{authorId}")
-    public void cancelAttention(@Param("userId")String userId,@Param("authorId") String authorId);
+    void cancelAttention(@Param("userId")String userId,@Param("authorId") String authorId);
 }
