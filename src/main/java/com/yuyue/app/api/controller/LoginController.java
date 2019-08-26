@@ -222,14 +222,12 @@ public class LoginController {
     /**
      * 获取实时信息
      *
-     * @param user
      * @return
      */
     @RequestMapping("/getMessage")
     @ResponseBody
-    @LoginRequired
-    public JSONObject getMessage(@CurrentUser AppUser user) {
-        AppUser appUserById = loginService.getAppUserMsg("","",user.getId());
+    public JSONObject getMessage(String id) {
+        AppUser appUserById = loginService.getAppUserMsg("","",id);
         if (appUserById == null) {
             result.setMessage("查询数据失败！");
         } else {
