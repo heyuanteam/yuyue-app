@@ -81,7 +81,7 @@ public class BarrageController extends BaseController{
         Map<String, String> mapValue = getParameterMap(request);
         Barrage barrage = new Barrage();
         barrage.setId(UUID.randomUUID().toString().toUpperCase());
-        barrage.setUserId(mapValue.get("userId"));
+        barrage.setUserId(user.getId());
         barrage.setText(mapValue.get("text"));
         barrage.setVideoId(mapValue.get("videoId"));
         barrageService.addBarrage(barrage);
