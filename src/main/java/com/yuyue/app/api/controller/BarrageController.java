@@ -3,6 +3,9 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.yuyue.app.annotation.CurrentUser;
+import com.yuyue.app.annotation.LoginRequired;
+import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.Barrage;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.service.BarrageService;
@@ -73,13 +76,14 @@ public class BarrageController extends BaseController{
      */
     @RequestMapping("addBarrages")
     @ResponseBody
-    public JSONObject addBarrages(HttpServletRequest request){
+    @LoginRequired
+    public JSONObject addBarrages(@CurrentUser AppUser user, HttpServletRequest request){
         Map<String, String> mapValue = getParameterMap(request);
         Barrage barrage = new Barrage();
         barrage.setId(UUID.randomUUID().toString().toUpperCase());
         barrage.setUserId(mapValue.get("userId"));
         barrage.setText(mapValue.get("text"));
-        barrage.setVideoId(mapValue.get("videoId"));
+        barrage.setVideoId(user.getId());
         barrageService.addBarrage(barrage);
 
         returnResult.setMessage("添加成功！");

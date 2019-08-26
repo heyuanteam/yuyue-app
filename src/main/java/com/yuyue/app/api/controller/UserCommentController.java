@@ -3,6 +3,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Maps;
+import com.yuyue.app.annotation.CurrentUser;
+import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
@@ -83,17 +85,17 @@ public class UserCommentController extends BaseController{
      */
     @RequestMapping("addComment")
     @ResponseBody
-    public JSONObject addComment(HttpServletRequest request) {
+    @LoginRequired
+    public JSONObject addComment(HttpServletRequest request,@CurrentUser AppUser user) {
         Map<String, String> mapValue = getParameterMap(request);
-        if (StringUtils.isEmpty(mapValue.get("userId")) || StringUtils.isEmpty(mapValue.get("videoId"))) {
+        if (StringUtils.isEmpty(user.getId()) || StringUtils.isEmpty(mapValue.get("videoId"))) {
             returnResult.setMessage("用户id为空！或视频id为空！");
         } else {
             UserComment comment=new UserComment();
             String id= UUID.randomUUID().toString().replace("-","").toUpperCase();
             comment.setId(id);
             comment.setVideoId(mapValue.get("videoId"));
-            comment.setUserId(mapValue.get("userId"));
-            AppUser appUser = loginService.getAppUserMsg("","",mapValue.get("userId"));
+            comment.setUserId(user.getId());
             comment.setText(mapValue.get("text"));
             List<UserCommentVo> comments =userCommentService.addComment(comment,mapValue.get("videoId"));
             if(CollectionUtils.isEmpty(comments)){
@@ -129,14 +131,15 @@ public class UserCommentController extends BaseController{
 
     /**
      * 查询用户所有的关注
-     * @param userId
+     * @param user
      * @return
      */
     @RequestMapping("getUserAttention")
     @ResponseBody
-    public JSONObject getUserAttention(String userId){
+    @LoginRequired
+    public JSONObject getUserAttention(@CurrentUser AppUser user){
         Map<String,Object> map= Maps.newTreeMap();
-        List<Attention> userAttention = userCommentService.getUserAttention(userId);
+        List<Attention> userAttention = userCommentService.getUserAttention(user.getId());
         if(userAttention.isEmpty()){
             returnResult.setMessage("该用户没有关注！！");
             returnResult.setStatus(Boolean.TRUE);
@@ -174,8 +177,9 @@ public class UserCommentController extends BaseController{
      */
     @RequestMapping("addAttention")
     @ResponseBody
-    public JSONObject addAttention(String userId,String authorId){
-        List<Attention> userAttention = userCommentService.getUserAttention(userId);
+    @LoginRequired
+    public JSONObject addAttention(@CurrentUser AppUser user,String authorId){
+        List<Attention> userAttention = userCommentService.getUserAttention(user.getId());
         for (Attention attertion:userAttention
              ) {
             if (attertion.getAuthorId().equals(authorId)){
@@ -185,20 +189,21 @@ public class UserCommentController extends BaseController{
             }
         }
         String id =UUID.randomUUID().toString().replace("-","").toUpperCase();
-        userCommentService.addAttention(id,userId,authorId);
-        return getUserAttention(userId);
+        userCommentService.addAttention(id,user.getId(),authorId);
+        return getUserAttention(user);
     }
 
     /**
      * 删除用户关注
-     * @param userId,authorId
+     * @param user,authorId
      * @return
      */
     @RequestMapping("cancelAttention")
     @ResponseBody
-    public JSONObject cancelAttention(String userId,String authorId){
-        userCommentService.cancelAttention(userId,authorId);
-        return getUserAttention(userId);
+    @LoginRequired
+    public JSONObject cancelAttention(@CurrentUser AppUser user,String authorId){
+        userCommentService.cancelAttention(user.getId(),authorId);
+        return getUserAttention(user);
 
     }
 
