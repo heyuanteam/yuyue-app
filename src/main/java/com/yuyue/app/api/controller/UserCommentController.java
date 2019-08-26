@@ -144,7 +144,7 @@ public class UserCommentController extends BaseController{
         }
         for (Attention attention: userAttention) {
             System.out.println("作者id:"+attention.getAuthorId());
-            AppUser appUserById = loginService.getAppUserById(attention.getAuthorId());
+            AppUser appUserById = loginService.getAppUserMsg("","",attention.getAuthorId());
             List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(attention.getAuthorId());
             if(videoByAuthorId.isEmpty()){
                 break;
