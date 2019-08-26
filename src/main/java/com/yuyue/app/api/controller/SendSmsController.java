@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.config.JPushClients;
 import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
@@ -11,12 +12,15 @@ import com.yuyue.app.utils.SmsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,6 +32,18 @@ public class SendSmsController extends BaseController{
     private SmsUtil smsUtil;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private JPushClients jPushClients;
+
+    //极光推送==============================================================
+    @Value("${jpush.appKey}")
+    private String appKey;
+
+    @Value("${jpush.masterSecret}")
+    private String masterSecret;
+
+    @Value("${jpush.apnsProduction}")
+    private boolean apnsProduction;
 
     private static final String signName = "娱悦APP";
     private static final String templateCode = "SMS_172100731";
@@ -77,5 +93,17 @@ public class SendSmsController extends BaseController{
             LOGGER.info("短信发送失败！");
         }
         return ResultJSONUtils.getJSONObjectBean(result);
+    }
+
+    /**
+     * 极光推送
+     */
+    public void sendJPush() {
+        List<String> aliasList = Arrays.asList("239");
+        String notificationTitle = "notification_title";
+        String msgTitle = "msg_title";
+        String msgContent = "msg_content";
+        jPushClients.sendToAliasList(aliasList, notificationTitle, msgTitle, msgContent,
+                "exts",apnsProduction,masterSecret,appKey);
     }
 }

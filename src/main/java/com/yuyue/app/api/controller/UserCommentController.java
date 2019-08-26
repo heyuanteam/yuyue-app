@@ -97,7 +97,7 @@ public class UserCommentController extends BaseController{
             comment.setId(id);
             comment.setVideoId(mapValue.get("videoId"));
             comment.setUserId(mapValue.get("userId"));
-            AppUser appUser = loginService.getAppUserById(mapValue.get("userId"));
+            AppUser appUser = loginService.getAppUserMsg("","",mapValue.get("userId"));
             comment.setText(mapValue.get("text"));
             List<UserCommentVo> comments =userCommentService.addComment(comment,mapValue.get("videoId"));
             if(CollectionUtils.isEmpty(comments)){
