@@ -1,14 +1,18 @@
 package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.yuyue.app.api.domain.JPush;
 import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.api.service.SendSmsService;
 import com.yuyue.app.config.JPushClients;
 import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.SmsUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value="/send", produces = "application/json; charset=UTF-8")
@@ -34,6 +35,8 @@ public class SendSmsController extends BaseController{
     private RedisUtil redisUtil;
     @Autowired
     private JPushClients jPushClients;
+    @Autowired
+    private SendSmsService sendSmsService;
 
     //极光推送
     @Value("${jpush.appKey}")
@@ -103,10 +106,22 @@ public class SendSmsController extends BaseController{
     public JSONObject sendJPush(String notificationTitle,String msgTitle,String msgContent) {
 //        用户ID
 //        List<String> aliasList = Arrays.asList("239");
+//        String notificationTitle = "通知内容标题";
+//        String msgTitle = "消息内容标题";
+//        String msgContent = "消息内容";
+        List<JPush> list = sendSmsService.getValid();
         try {
-            jPushClients.sendToAll("通知内容标题", "消息内容标题", "消息内容", "扩展字段",
-                    apnsProduction,masterSecret,appKey);
+            if(CollectionUtils.isNotEmpty(list)){
+                for (int i = 0; i < list.size(); i++) {
+                    JPush jPush = list.get(i);
+                    if(jPush != null){
+                        jPushClients.sendToAll(jPush.getNotificationTitle(), jPush.getMsgTitle(), jPush.getMsgContent(), jPush.getExtras(),
+                                apnsProduction,masterSecret,appKey);
+                    }
+                }
+            }
             result.setMessage("极光推送成功!");
+            result.setResult(JSONArray.parseArray(JSON.toJSONString(list)));
             result.setStatus(Boolean.TRUE);
         } catch (Exception e) {
             e.printStackTrace();

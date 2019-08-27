@@ -21,8 +21,9 @@
         <result column="ADDR_DETAIL" property="addrDetail" jdbcType="VARCHAR"/>
         <result column="HEADP_URL" property="headpUrl" jdbcType="VARCHAR"/>
         <result column="USER_TYPE" property="userType" jdbcType="VARCHAR"/>
-        <result column="ATTENTION_TOTAL" property="attentionTotal" jdbcType="VARCHAR"/>
-        <result column="COLLECTION_TOTAL" property="collectionTotal" jdbcType="VARCHAR"/>
+        <result column="ATTENTION_TOTAL" property="attentionTotal" jdbcType="BIGINT"/>
+        <result column="LIKE_TOTAL" property="likeTotal" jdbcType="BIGINT"/>
+        <result column="COMMENT_TOTAL" property="commentTotal" jdbcType="BIGINT"/>
         <result column="education" property="education" jdbcType="VARCHAR"/>
         <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
         <result column="signature" property="signature" jdbcType="VARCHAR"/>
@@ -90,7 +91,7 @@
     <select id="getAppUserMsg" resultType="com.yuyue.app.api.domain.AppUser" parameterType="String">
         SELECT id,user_no userNo,user_nick_name nickName,user_real_name realName,id_type idType,id_card idCard,phone,sex,email,password,salt,
             user_status userStatus,total balance,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,
-        ATTENTION_TOTAL attentionTotal,COLLECTION_TOTAL collectionTotal,ATTENTION_TOTAL attentionTotal,education ,wechat ,signature ,
+        ATTENTION_TOTAL attentionTotal,LIKE_TOTAL likeTotal,COMMENT_TOTAL commentTotal,education ,wechat ,signature ,
             DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime
             FROM yuyue_merchant
             where 1=1
