@@ -104,29 +104,31 @@ public class SendSmsController extends BaseController{
     @RequestMapping("/sendJPush")
     @ResponseBody
     public JSONObject sendJPush(String notificationTitle,String msgTitle,String msgContent) {
-//        用户ID
+//        用户ID,别名
 //        List<String> aliasList = Arrays.asList("239");
 //        String notificationTitle = "通知内容标题";
 //        String msgTitle = "消息内容标题";
 //        String msgContent = "消息内容";
         List<JPush> list = sendSmsService.getValid();
-        try {
-            if(CollectionUtils.isNotEmpty(list)){
-                for (int i = 0; i < list.size(); i++) {
-                    JPush jPush = list.get(i);
-                    if(jPush != null){
+        if(CollectionUtils.isNotEmpty(list)){
+            for (int i = 0; i < list.size(); i++) {
+                JPush jPush = list.get(i);
+                if(jPush != null){
+                    try {
                         jPushClients.sendToAll(jPush.getNotificationTitle(), jPush.getMsgTitle(), jPush.getMsgContent(), jPush.getExtras(),
                                 apnsProduction,masterSecret,appKey);
+                        sendSmsService.updateValid("10B",jPush.getId());
+                        result.setMessage("极光推送成功!");
+                        result.setResult(JSONArray.parseArray(JSON.toJSONString(list)));
+                        result.setStatus(Boolean.TRUE);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        log.info("极光推送失败！");
+                        result.setMessage("极光推送失败！");
+                        sendSmsService.updateValid("10C",jPush.getId());
                     }
                 }
             }
-            result.setMessage("极光推送成功!");
-            result.setResult(JSONArray.parseArray(JSON.toJSONString(list)));
-            result.setStatus(Boolean.TRUE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.info("极光推送失败！");
-            result.setMessage("极光推送失败！");
         }
         return ResultJSONUtils.getJSONObjectBean(result);
     }

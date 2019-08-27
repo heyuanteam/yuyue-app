@@ -16,4 +16,8 @@ public class SendSmsServiceImpl implements SendSmsService {
 
     @Override
     public List<JPush> getValid() { return sendSmsMapper.getValid(); }
+
+    @Override
+    public void updateValid(String status, String id) { sendSmsMapper.updateValid(status,id); }
+
 }
