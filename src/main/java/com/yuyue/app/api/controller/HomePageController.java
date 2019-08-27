@@ -25,7 +25,7 @@ import java.util.*;
  * @author ly
  */
 @RestController
-@RequestMapping(value = "homePage", produces = "application/json; charset=UTF-8")
+@RequestMapping(value = "/homePage", produces = "application/json; charset=UTF-8")
 public class HomePageController {
     private static Logger log = LoggerFactory.getLogger(HomePageController.class);
 
@@ -43,7 +43,7 @@ public class HomePageController {
      * 首页展示轮播图及视频种类
      */
     @ResponseBody
-    @RequestMapping("result")
+    @RequestMapping("/result")
     public JSONObject homePage(){
         List<Banner> banners=null;
         List<VideoCategory> categories=null;
@@ -73,7 +73,7 @@ public class HomePageController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("getVideo")
+    @RequestMapping("/getVideo")
     public JSONObject getVideo(String page){
         List<UploadFileVo> list = Lists.newArrayList();
         if (StringUtils.isEmpty(page))  page = "1";

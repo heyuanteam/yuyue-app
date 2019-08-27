@@ -295,9 +295,7 @@ public class LoginController {
     @ResponseBody
     public JSONObject getJPush(String id,String city,String jpushName) {
         AppUser appUserById = loginService.getAppUserMsg("","",id);
-        if (appUserById == null) {
-            result.setMessage("未登录！");
-        } else {
+        if (appUserById != null) {
             loginService.updateAppUser(appUserById.getId(),"","","","","","",
                     "","","","","","","","",
                     "",city,jpushName);
@@ -306,6 +304,8 @@ public class LoginController {
             result.setToken(loginService.getToken(appUserById));
             result.setResult(JSONObject.toJSON(appUserById));
         }
+        result.setMessage("获取成功！");
+        result.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(result);
     }
 }

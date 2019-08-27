@@ -30,7 +30,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping(value = "pay", produces = "application/json; charset=UTF-8")
+@RequestMapping(value = "/pay", produces = "application/json; charset=UTF-8")
 public class PayController{
     private static Logger log = LoggerFactory.getLogger(PayController.class);
 
@@ -71,7 +71,7 @@ public class PayController{
     private ReturnResult returnResult =new ReturnResult();
 
     @ResponseBody
-    @RequestMapping("payYuYue")
+    @RequestMapping("/payYuYue")
     public JSONObject payYuYue(Order order)throws Exception {
         log.info("-------创建订单-----------");
 //        order.setTradeType("CZWX");
@@ -145,7 +145,7 @@ public class PayController{
      * @date:2018年7月18日 下午2:32:49
      */
     @ResponseBody
-    @RequestMapping(value = "wxpayNotify")
+    @RequestMapping(value = "/wxpayNotify")
     public JSONObject wxpay(HttpServletRequest request) throws Exception{
         log.info((new StringBuilder()).append("回调的内容为+++++++++++++++++++++++++++++++++").append(request).toString());
         BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
@@ -231,7 +231,7 @@ public class PayController{
      * @throws Exception
      */
     @ResponseBody
-    @RequestMapping(value = "alipayNotify")
+    @RequestMapping(value = "/alipayNotify")
     public JSONObject alipayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
         log.info("支付宝平台回调开始+++++++++++++++++++++++++++++++++");
         // 获取支付宝POST过来反馈信息

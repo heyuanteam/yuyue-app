@@ -93,10 +93,10 @@ public class UploadFileServiceImpl implements UploadFileService {
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } /*else if (null == user || Boolean.FALSE == loginController.userAuth(user)){
+        } else if (null == user){
             returnResult.setMessage("未登录!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }*/
+        }
         List<String> listMDs = new ArrayList();
         List<UploadFile> lists = new ArrayList();
         HashMap<String,Object> hashMap = Maps.newHashMap();
@@ -132,7 +132,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                     listMDs.add(uploadFile.getFilesPath());
                  /*伪造异常，测试文件部分上传失败，是否会清空此次上传的所有文件
                   fileList.get(10000000);*/
-                    uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),
+                    uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",user.getId()),
                             uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
                             uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVedioAddress());
 

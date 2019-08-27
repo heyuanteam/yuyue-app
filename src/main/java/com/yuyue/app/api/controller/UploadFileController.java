@@ -96,7 +96,7 @@ public class UploadFileController {
      * @param filesName
      * @param filesPath
      */
-    @RequestMapping(value = "downloadFile")
+    @RequestMapping(value = "/downloadFile")
     public void downloadFile(@RequestParam("filesName") String filesName,@RequestParam("filesPath") String filesPath, HttpServletResponse response) throws IOException {
         uploadFileService.downloadFile(filesName, filesPath, response);
     }
