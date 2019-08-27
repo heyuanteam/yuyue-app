@@ -1,7 +1,9 @@
 package com.yuyue.app.api.service.impl;
 
+import com.yuyue.app.api.domain.Address;
 import com.yuyue.app.api.domain.Banner;
 import com.yuyue.app.api.domain.VideoCategory;
+import com.yuyue.app.api.mapper.AddressMapper;
 import com.yuyue.app.api.mapper.BannerMapper;
 import com.yuyue.app.api.mapper.VideoCategoryMapper;
 import com.yuyue.app.api.service.HomePageService;
@@ -15,6 +17,8 @@ public class HomePageServiceImpl implements HomePageService {
     private BannerMapper bannerMapper;
     @Autowired
     private VideoCategoryMapper videoCategoryMapper;
+    @Autowired
+    private AddressMapper addressMapper;
 
     @Override
     public List<Banner> getBanner() {
@@ -25,6 +29,9 @@ public class HomePageServiceImpl implements HomePageService {
     public List<VideoCategory> getVideoCategory() {
         return videoCategoryMapper.getVideoCategory();
     }
+
+    @Override
+    public List<Address> getAddress() {return addressMapper.getAddress();}
 
 
 }

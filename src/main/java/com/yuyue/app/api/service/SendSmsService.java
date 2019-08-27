@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface SendSmsService {
     List<JPush> getValid();
+
+    void updateValid(String status, String id);
 }

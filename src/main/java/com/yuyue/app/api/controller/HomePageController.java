@@ -53,7 +53,7 @@ public class HomePageController {
             categories =JSON.parseObject((String)redisUtil.getString("newcategories" ),
                     new TypeReference<List<VideoCategory>>() {});
             System.out.println("------redis缓存中取出数据-------");
-        }else {
+        } else {
             banners = homePageService.getBanner();
             redisUtil.setString("newbanners", JSON.toJSONString(banners),6000);
             categories=homePageService.getVideoCategory();
@@ -100,4 +100,26 @@ public class HomePageController {
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 获取定位，省市区
+     *
+     * @return
+     */
+    @RequestMapping("/getCity")
+    @ResponseBody
+    public JSONObject getCity() {
+        List<Address> list = new ArrayList<>();
+        if (redisUtil.existsKey("shengshiqu")) {
+            list = JSON.parseObject((String) redisUtil.getString("shengshiqu"),
+                    new TypeReference<List<Address>>() {});
+            log.info("缓存获取省市区");
+        } else {
+            list = homePageService.getAddress();
+            redisUtil.setString("shengshiqu", JSON.toJSONString(list), 60*60*24*30);
+        }
+        returnResult.setMessage("获取成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(JSONArray.parseArray(JSON.toJSONString(list)));
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
 }
