@@ -1,15 +1,19 @@
 package com.yuyue.app.api.service.impl;
 
-import com.yuyue.app.api.domain.Attention;
-import com.yuyue.app.api.domain.Like;
-import com.yuyue.app.api.domain.UserComment;
-import com.yuyue.app.api.domain.UserCommentVo;
+import com.yuyue.app.api.domain.*;
+import com.yuyue.app.api.mapper.LikeMapper;
+import com.yuyue.app.api.mapper.UploadFileMapper;
 import com.yuyue.app.api.mapper.UserAttentionMapper;
 import com.yuyue.app.api.mapper.UserCommentMapper;
+import com.yuyue.app.api.service.LoginService;
+import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
+import com.yuyue.app.utils.ResultJSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.UUID;
+
 @Service(value = "UserCommentService")
 public class UserCommentServiceImpl implements UserCommentService{
 
@@ -17,6 +21,12 @@ public class UserCommentServiceImpl implements UserCommentService{
     private UserCommentMapper userCommentMapper;
     @Autowired
     private UserAttentionMapper userAttentionMapper;
+    @Autowired
+    private UploadFileService uploadFileService;
+    @Autowired
+    private LoginService loginService;
+    @Autowired
+    private LikeMapper likeMapper;
 
     @Override
     public List<UserCommentVo> getAllComment(String videoId) {
@@ -59,13 +69,34 @@ public class UserCommentServiceImpl implements UserCommentService{
     }
 
     @Override
+    public String getLikeStatus(String id, String videoId) {
+        return likeMapper.getLikeStatus(id,videoId);
+    }
+
+
+    @Override
     public void insertToLikeList(String id, String videoId) {
+
+        UploadFile uploadFile = uploadFileService.fileDetail(videoId);
+        AppUser appUserMsg = loginService.getAppUserMsg("", "", id);
+        Like like=new Like();
+        like.setAuthorId(uploadFile.getAuthorId());
+        like.setVideoTittle(uploadFile.getFilesName());
+        like.setVideoId(videoId);
+        like.setHeadUrl(appUserMsg.getHeadpUrl());
+        like.setUserId(id);
+        like.setUserName(appUserMsg.getNickName());
+        like.setId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+        like.setStatus("1");
+        likeMapper.insertToLikeList(like);
+
+
 
     }
 
     @Override
     public List<Like> getLikeList(String id) {
-        return null;
+        return likeMapper.getLikeList(id);
     }
 
 }

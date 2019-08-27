@@ -46,6 +46,16 @@ public class UploadFileServiceImpl implements UploadFileService {
     private ReturnResult returnResult=new ReturnResult();
 
     /**
+     * 视频详情
+     * @param id
+     * @return
+     */
+    @Override
+    public UploadFile fileDetail(String id) {
+        return uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_", id), id);
+    }
+
+    /**
      * 根据id删除数据库数据,删掉storage文件
      *
      * @param id

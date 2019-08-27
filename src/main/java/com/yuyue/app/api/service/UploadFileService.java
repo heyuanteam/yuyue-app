@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface UploadFileService {
 
+    UploadFile fileDetail(String id);
+
     /**
      * 根据文件名称删除文件
      *

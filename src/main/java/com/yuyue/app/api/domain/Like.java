@@ -12,11 +12,12 @@ public class Like implements Serializable {
     private static final long serialVersionUID = 1L;
     private String id;
     private String videoId;
-    private String vedeoTitile;
+    private String videoTittle;
     private String userId;
     private String authorId;
     private String userName;
     private String headUrl;
     private String createTime;
+    private String status;
 
 }

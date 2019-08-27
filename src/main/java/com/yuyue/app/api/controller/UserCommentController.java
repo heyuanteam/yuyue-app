@@ -221,11 +221,22 @@ public class UserCommentController extends BaseController{
      * @param videoId
      * @return
      */
-    @RequestMapping("getUserAttention")
+    @RequestMapping("insertToLikeList")
     @ResponseBody
     @LoginRequired
     public JSONObject insertToLikeList(@CurrentUser AppUser user,String videoId){
-        return null;
+        if(userCommentService.getLikeStatus(user.getId(),videoId).equals("1")){
+            returnResult.setMessage("已点赞");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else {
+            userCommentService.insertToLikeList(user.getId(),videoId);
+            uploadFileService.likeAcount(videoId);
+            userCommentService.insertToLikeList(user.getId(),videoId);
+            returnResult.setMessage("点赞成功");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
     }
 
     /**
@@ -234,10 +245,16 @@ public class UserCommentController extends BaseController{
      * @param
      * @return
      */
-    @RequestMapping("getUserAttention")
+    @RequestMapping("getLikeList")
     @ResponseBody
     @LoginRequired
     public JSONObject getLikeList(@CurrentUser AppUser user){
-        return null;
+        List<Like> likeList = userCommentService.getLikeList(user.getId());
+        Map<String,List> map=Maps.newHashMap();
+        map.put("Like",likeList);
+        returnResult.setResult(map);
+        returnResult.setMessage("已点赞");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }

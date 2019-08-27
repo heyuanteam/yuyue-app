@@ -3,6 +3,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
+import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.domain.UploadFile;
 import com.yuyue.app.api.mapper.UploadFileMapper;
 import com.yuyue.app.api.service.LoginService;
@@ -35,6 +36,22 @@ public class UploadFileController {
     private UploadFileMapper uploadFileMapper;
     @Autowired
     private LoginService loginService;
+
+
+    /**
+     * 视频详情
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/fileDetail")
+    @ResponseBody
+    public JSONObject  fileDetail(String id){
+        ReturnResult returnResult=new ReturnResult();
+        returnResult.setMessage("返回成功!");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(uploadFileService.fileDetail(id));
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
 
     /**
      * 删除单个文件

@@ -46,6 +46,12 @@ public interface UserCommentService {
     int getFansSum(String authorId);
 
     /**
+     * 获取用户点赞状态
+     * @return
+     */
+    String getLikeStatus(String id, String videoId);
+
+    /**
      * 用户添加视频点赞
      * @param id
      * @param videoId
