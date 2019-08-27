@@ -21,9 +21,9 @@
         <result column="ADDR_DETAIL" property="addrDetail" jdbcType="VARCHAR"/>
         <result column="HEADP_URL" property="headpUrl" jdbcType="VARCHAR"/>
         <result column="USER_TYPE" property="userType" jdbcType="VARCHAR"/>
-        <result column="ATTENTION_TOTAL" property="attentionTotal" jdbcType="bigint"/>
-        <result column="LIKE_TOTAL" property="likeTotal" jdbcType="bigint"/>
-        <result column="COMMENT_TOTAL" property="commentTotal" jdbcType="bigint"/>
+        <result column="ATTENTION_TOTAL" property="attentionTotal" jdbcType="BIGINT"/>
+        <result column="LIKE_TOTAL" property="likeTotal" jdbcType="BIGINT"/>
+        <result column="COMMENT_TOTAL" property="commentTotal" jdbcType="BIGINT"/>
         <result column="education" property="education" jdbcType="VARCHAR"/>
         <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
         <result column="signature" property="signature" jdbcType="VARCHAR"/>

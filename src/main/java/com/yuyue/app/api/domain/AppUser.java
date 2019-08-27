@@ -33,9 +33,12 @@ public class AppUser implements Serializable {
     private String userStatus;
     private String createTime;
     private String updateTime;
+//    用户关注数量(粉丝量)
     private String attentionTotal;
-    private String commentTotal;
+//    点赞量
     private String likeTotal;
+//    评论数量
+    private String commentTotal;
 //    学历
     private String education;
 //    微信
