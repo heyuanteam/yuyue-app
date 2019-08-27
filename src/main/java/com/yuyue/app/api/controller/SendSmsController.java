@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping(value="/send", produces = "application/json; charset=UTF-8")
+//@Component
 public class SendSmsController extends BaseController{
     private static Logger log = LoggerFactory.getLogger(SendSmsController.class);
 
@@ -103,7 +105,8 @@ public class SendSmsController extends BaseController{
      */
     @RequestMapping("/sendJPush")
     @ResponseBody
-    public JSONObject sendJPush(String notificationTitle,String msgTitle,String msgContent) {
+//    @Async // 异步方法
+    public JSONObject sendJPush() {
 //        用户ID,别名
 //        List<String> aliasList = Arrays.asList("239");
 //        String notificationTitle = "通知内容标题";
