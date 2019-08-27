@@ -40,16 +40,16 @@ public class UploadFileController {
 
     /**
      * 视频详情
-     * @param id
+     * @param
      * @return
      */
     @RequestMapping(value = "/fileDetail")
     @ResponseBody
-    public JSONObject  fileDetail(String id){
+    public JSONObject  fileDetail(String authorId,String videoId){
         ReturnResult returnResult=new ReturnResult();
         returnResult.setMessage("返回成功!");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(uploadFileService.fileDetail(id));
+        returnResult.setResult(uploadFileService.fileDetail(authorId,videoId));
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -60,8 +60,8 @@ public class UploadFileController {
      */
     @RequestMapping(value = "/delfile")
     @ResponseBody
-    public JSONObject delfile(@RequestParam("id")String id) throws Exception {
-        return uploadFileService.deleteFile(id);
+    public JSONObject delfile(@RequestParam("id")String id,String authorId) throws Exception {
+        return uploadFileService.deleteFile(authorId,id);
     }
 
     /**
@@ -73,8 +73,8 @@ public class UploadFileController {
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
     @LoginRequired
-    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user, String fileType, String vedioAddress) throws Exception {
-        return uploadFileService.UploadFilesToServer(files,user,fileType,vedioAddress);
+    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user,String authorId, String fileType, String vedioAddress) throws Exception {
+        return uploadFileService.UploadFilesToServer(authorId,files,user,fileType,vedioAddress);
     }
 
     /**
@@ -86,8 +86,8 @@ public class UploadFileController {
     @RequestMapping(value = "/getRelease")
     @ResponseBody
 //    @LoginRequired   @CurrentUser
-    public JSONObject getRelease(String id, String categoryId,String title,String description) throws Exception {
-        return uploadFileService.getRelease(id,categoryId,title,description);
+    public JSONObject getRelease(String id, String authorId,String categoryId,String title,String description) throws Exception {
+        return uploadFileService.getRelease(id,authorId,categoryId,title,description);
     }
 
     /**
@@ -99,39 +99,6 @@ public class UploadFileController {
     @RequestMapping(value = "downloadFile")
     public void downloadFile(@RequestParam("filesName") String filesName,@RequestParam("filesPath") String filesPath, HttpServletResponse response) throws IOException {
         uploadFileService.downloadFile(filesName, filesPath, response);
-    }
-
-    /**
-     * 视频点赞
-     * @param videoId
-     */
-    @RequestMapping("likeAcount")
-    @ResponseBody
-    public JSONObject likeAcount(String videoId) {
-        UploadFile uploadFile = uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_", videoId), videoId);
-        AppUser appUserMsg = loginService.getAppUserMsg("", "", uploadFile.getAuthorId());
-
-        return uploadFileService.likeAcount(videoId);
-    }
-
-    /**
-     * 视频评论量
-     * @param videoId
-     */
-    @RequestMapping("commentAmount")
-    @ResponseBody
-    public JSONObject commentAmount(String videoId) {
-       return uploadFileService.commentAmount(videoId);
-    }
-
-    /**
-     * 视频关注量
-     * @param videoId
-     */
-    @RequestMapping("attentionAmount")
-    @ResponseBody
-    public JSONObject attentionAmount(String videoId) {
-       return uploadFileService.attentionAmount(videoId);
     }
 
 }

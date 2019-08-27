@@ -11,21 +11,21 @@ import java.util.List;
 
 public interface UploadFileService {
 
-    UploadFile fileDetail(String id);
+    UploadFile fileDetail(String userId,String videoId);
 
     /**
      * 根据文件名称删除文件
      *
      * @return
      */
-    JSONObject deleteFile(String id) throws Exception;
+    JSONObject deleteFile(String authorId,String id) throws Exception;
 
     /**
      * 上传文件到fastdfs图片服务器
      *
      * @return
      */
-    JSONObject UploadFilesToServer(MultipartFile[] files, AppUser user,String fileType,String vedioAddress)throws Exception;
+    JSONObject UploadFilesToServer(String authorId,MultipartFile[] files,AppUser user,String fileType,String vedioAddress)throws Exception;
 
     /**
      * 从fastdfs服务器下载文件
@@ -37,22 +37,22 @@ public interface UploadFileService {
 
     /**
      * 视频点赞量
-     * @param id
+     * @param
      */
-    JSONObject likeAcount(String id);
+    JSONObject likeAcount(String authorId,String videoId);
 
     /**
      * 视频评论量
-     * @param id
+     * @param
      */
-    JSONObject commentAmount(String id);
+    JSONObject commentAmount(String authorId,String videoId);
 
 
     /**
      * 视频关注量
-     * @param id
+     * @param
      */
-    JSONObject attentionAmount(String id);
+    JSONObject attentionAmount(String authorId);
 
     /**
      * 默认每张表查询五表记录
@@ -72,11 +72,11 @@ public interface UploadFileService {
      * @param description
      * @return
      */
-    JSONObject getRelease(String id, String categoryId, String title, String description);
+    JSONObject getRelease(String id,String authorId,String categoryId, String title, String description);
 
     /**
      *
-     * @param authorId
+     * @param
      * @return
      */
      List<UploadFile> getVideoByAuthorId(String authorId);

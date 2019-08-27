@@ -1,11 +1,9 @@
 package com.yuyue.app.api.mapper;
 
 import com.yuyue.app.api.domain.Attention;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Repository
@@ -28,6 +26,13 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
             "VALUES (#{id}, #{userId}, #{authorId})")
     void addAttention(@Param("id") String id, @Param("userId")String userId,@Param("authorId") String authorId);
 
+    /**
+     * 作者关注总数+1
+     * @param authorId
+     */
+    @Transactional
+    @Update("UPDATE yuyue_merchant  SET ATTENTION_TOTAL =ATTENTION_TOTAL +1  WHERE id =  #{authorId}")
+    void userAttentionAmount(String authorId);
     /**
      * 删除用户关注
      * @param userId  authorId

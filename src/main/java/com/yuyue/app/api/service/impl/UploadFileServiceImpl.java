@@ -47,12 +47,12 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     /**
      * 视频详情
-     * @param id
+     * @param
      * @return
      */
     @Override
-    public UploadFile fileDetail(String id) {
-        return uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_", id), id);
+    public UploadFile fileDetail(String authorId,String videoId) {
+        return uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_", authorId), videoId);
     }
 
     /**
@@ -63,14 +63,14 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject deleteFile(String id) {
-        UploadFile uploadFile = uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id);
+    public JSONObject deleteFile(String authorId,String id) {
+        UploadFile uploadFile = uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id);
         if (uploadFile == null) {
             returnResult.setMessage("数据库中不存在！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else {
             try {
-                uploadFileMapper.deleteById(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id);
+                uploadFileMapper.deleteById(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id);
                 String[] split = uploadFile.getFilesPath().split("/");
                 this.storageClient.deleteFile(split[1] +"/"+ split[2] +"/"+ split[3] +"/"+ split[4] +"/"+ split[5]);
             } catch (Exception e) {
@@ -89,7 +89,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject UploadFilesToServer(MultipartFile[] files, AppUser user,String fileType,String vedioAddress) throws Exception{
+    public JSONObject UploadFilesToServer(String authorId,MultipartFile[] files, AppUser user,String fileType,String vedioAddress) throws Exception{
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -132,7 +132,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                     listMDs.add(uploadFile.getFilesPath());
                  /*伪造异常，测试文件部分上传失败，是否会清空此次上传的所有文件
                   fileList.get(10000000);*/
-                    uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",uid),
+                    uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),
                             uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
                             uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVedioAddress());
 
@@ -207,8 +207,8 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public JSONObject getRelease(String id, String categoryId, String title, String description) {
-        uploadFileMapper.getRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id,categoryId,title,description);
+    public JSONObject getRelease(String id, String authorId,String categoryId, String title, String description) {
+        uploadFileMapper.getRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description);
         returnResult.setMessage("发布成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -237,16 +237,11 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     /**
      * 通过作者id查询本人上传的所有视频
-     * @param authorId
+     * @param
      * @return
      */
      public List<UploadFile> getVideoByAuthorId(String authorId){
-
-         String tableName0="yuyue_upload_file_0";
-         String tableName1="yuyue_upload_file_1";
-         List<UploadFile> videoByAuthorId = uploadFileMapper.getVideoByAuthorId(tableName0, authorId);
-         videoByAuthorId.addAll(uploadFileMapper.getVideoByAuthorId(tableName1, authorId));
-         return videoByAuthorId;
+         return uploadFileMapper.getVideoByAuthorId(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), authorId);
     }
 
 
@@ -256,9 +251,9 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public JSONObject likeAcount(String videoId) {
-        uploadFileMapper.likeAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
-        uploadFileMapper.userLikeAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+    public JSONObject likeAcount(String authorId,String videoId) {
+        uploadFileMapper.likeAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
+        uploadFileMapper.userLikeAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
         returnResult.setMessage("点赞成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -271,23 +266,23 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public JSONObject commentAmount(String videoId) {
-        uploadFileMapper.commentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
-        uploadFileMapper.userCommentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+    public JSONObject commentAmount(String authorId,String videoId) {
+        uploadFileMapper.commentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
+        uploadFileMapper.userCommentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
         returnResult.setMessage("评论成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**
-     *视频表、用户表关注量+1
-     * @param videoId
+     *用户表关注量+1
+     * @param
      * @return
      */
     @Override
-    public JSONObject attentionAmount(String videoId) {
-        uploadFileMapper.attentionAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
-        uploadFileMapper.userAttentionAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+    public JSONObject attentionAmount(String authorId) {
+        /*uploadFileMapper.attentionAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",userId),videoId);*/
+        uploadFileMapper.userAttentionAmount(authorId);
         returnResult.setMessage("关注成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);

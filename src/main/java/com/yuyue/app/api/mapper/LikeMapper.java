@@ -16,7 +16,7 @@ public interface LikeMapper extends MyBaseMapper<Like> {
     String getLikeStatus(@Param("userId")String userId,@Param("videoId")String videoId);
 
     @Insert("INSERT INTO yuyue_like_list   (ID,VIDEO_ID,USER_ID,AUTHOR_ID,USER_NAME,VIDEO_NAME,HEADP_URL,STATUS)  " +
-            "VALUES  (#{id},#{videoId},#{userId},#{authorId},#{videoTittle},#{headUrl},#{status})")
+            "VALUES  (#{id},#{videoId},#{userId},#{authorId},#{userName},#{videoTittle},#{headUrl},#{status})")
     void insertToLikeList(Like like);
 
     @Select("SELECT ID id,VIDEO_ID videoId,USER_ID userId,AUTHOR_ID authorId, USER_NAME userName,VIDEO_NAME videoTittle,HEADP_URL headUrl,STATUS  status,  CREATE_TIME createTime " +

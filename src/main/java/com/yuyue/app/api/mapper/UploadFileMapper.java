@@ -37,9 +37,9 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Update("UPDATE ${tableName} SET commentAmount = commentAmount + 1 WHERE id = #{id}")
     void commentAmount(@Param("tableName")String tableName,@Param("id")String id);
 
-    @Transactional
+   /* @Transactional
     @Update("UPDATE ${tableName} SET attentionAmount = attentionAmount + 1 WHERE id = #{id}")
-    void attentionAmount(@Param("tableName")String tableName,@Param("id")String id);
+    void attentionAmount(@Param("tableName")String tableName,@Param("id")String id);*/
 
     @Transactional
     @Update("UPDATE yuyue_merchant u SET u.LIKE_TOTAL =u.LIKE_TOTAL +1  WHERE u.id =(SELECT authorId FROM ${tableName} WHERE id = #{id} )")
@@ -51,8 +51,8 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     void userCommentAmount(@Param("tableName")String tableName,@Param("id")String id);
 
     @Transactional
-    @Update("UPDATE yuyue_merchant u SET u.ATTENTION_TOTAL =u.ATTENTION_TOTAL +1  WHERE u.id =(SELECT authorId FROM ${tableName} WHERE id = #{id} )")
-    void userAttentionAmount(@Param("tableName")String tableName,@Param("id")String id);
+    @Update("UPDATE yuyue_merchant  SET ATTENTION_TOTAL =ATTENTION_TOTAL +1  WHERE id =  #{authorId}")
+    void userAttentionAmount(String authorId);
 
     @Transactional
     @Update("UPDATE ${tableName} SET categoryId=#{categoryId},title=#{title},description=#{description}  WHERE id = #{id}")

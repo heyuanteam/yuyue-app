@@ -11,7 +11,7 @@ public interface UserCommentService {
     List<UserCommentVo> getAllComment(String videoId );
 
 
-    List<UserCommentVo> addComment(UserComment comment ,String videoId);
+    List<UserCommentVo> addComment(UserComment comment);
 
 
     List<UserCommentVo> deleteComment(String id,String videoId);
@@ -49,14 +49,14 @@ public interface UserCommentService {
      * 获取用户点赞状态
      * @return
      */
-    String getLikeStatus(String id, String videoId);
+    String getLikeStatus(String userId,String videoId);
 
     /**
      * 用户添加视频点赞
-     * @param id
+     * @param
      * @param videoId
      */
-    void insertToLikeList( String id,String videoId);
+    void insertToLikeList( String userId,String authirId, String videoId);
 
     /**
      *作者查看点赞列表信息

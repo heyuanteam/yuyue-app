@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- * @author ly
+ * @author ly   This Controller class provides user attention, likes, comments
  */
 @RequestMapping(value="userComment", produces = "application/json; charset=UTF-8")
 @RestController
@@ -80,7 +80,7 @@ public class UserCommentController extends BaseController{
 
     /**
      * 用户添加评论
-     * @param request
+     * @param request(videoId,authorId,token)
      * @return
      */
     @RequestMapping("addComment")
@@ -97,7 +97,10 @@ public class UserCommentController extends BaseController{
             comment.setVideoId(mapValue.get("videoId"));
             comment.setUserId(user.getId());
             comment.setText(mapValue.get("text"));
-            List<UserCommentVo> comments =userCommentService.addComment(comment,mapValue.get("videoId"));
+            //用户表，视频表评论数+1
+            uploadFileService.commentAmount(mapValue.get("authorId"),mapValue.get("videoId"));
+            //数据插入到Comment表中
+            List<UserCommentVo> comments =userCommentService.addComment(comment);
             if(CollectionUtils.isEmpty(comments)){
                 returnResult.setMessage("暂无评论！");
             } else {
@@ -186,12 +189,15 @@ public class UserCommentController extends BaseController{
             }
         }
         String id =UUID.randomUUID().toString().replace("-","").toUpperCase();
+        //用户表中的关注数据+1
+        uploadFileService.attentionAmount(authorId);
+        //数据添加至Attention表中
         userCommentService.addAttention(id,user.getId(),authorId);
         return getUserAttention(user);
     }
 
     /**
-     * 删除用户关注
+     * 取消用户关注
      * @param user,authorId
      * @return
      */
@@ -204,6 +210,11 @@ public class UserCommentController extends BaseController{
 
     }
 
+    /**
+     * 获取用户粉丝量
+     * @param user
+     * @return
+     */
     @RequestMapping("getFansSum")
     @ResponseBody
     @LoginRequired
@@ -224,16 +235,20 @@ public class UserCommentController extends BaseController{
     @RequestMapping("insertToLikeList")
     @ResponseBody
     @LoginRequired
-    public JSONObject insertToLikeList(@CurrentUser AppUser user,String videoId){
-        if(userCommentService.getLikeStatus(user.getId(),videoId).equals("1")){
-            returnResult.setMessage("已点赞");
+    public JSONObject insertToLikeList(@CurrentUser AppUser user,String authorId,String videoId){
+        String likeStatus = userCommentService.getLikeStatus(user.getId(), videoId);
+        System.out.println("---------------------"+likeStatus);
+        if(likeStatus == null || "0".equals(likeStatus)){
+            //用户表及视频表中的字段LIKE_TOTAL +1;
+            uploadFileService.likeAcount(authorId,videoId);
+            //点赞的数据添加至LIKE表中
+            userCommentService.insertToLikeList(user.getId(),authorId,videoId);
+            returnResult.setMessage("点赞成功");
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
+
         }else {
-            userCommentService.insertToLikeList(user.getId(),videoId);
-            uploadFileService.likeAcount(videoId);
-            userCommentService.insertToLikeList(user.getId(),videoId);
-            returnResult.setMessage("点赞成功");
+            returnResult.setMessage("视频已点赞");
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
@@ -250,10 +265,14 @@ public class UserCommentController extends BaseController{
     @LoginRequired
     public JSONObject getLikeList(@CurrentUser AppUser user){
         List<Like> likeList = userCommentService.getLikeList(user.getId());
-        Map<String,List> map=Maps.newHashMap();
-        map.put("Like",likeList);
-        returnResult.setResult(map);
-        returnResult.setMessage("已点赞");
+        if(likeList.isEmpty()){
+            returnResult.setMessage("暂无点赞");
+        }else {
+            Map<String,List> map=Maps.newHashMap();
+            map.put("Like",likeList);
+            returnResult.setResult(map);
+            returnResult.setMessage("返回成功");
+        }
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
