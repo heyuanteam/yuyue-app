@@ -34,10 +34,23 @@ public interface UploadFileService {
     void downloadFile(String filesName, String filesPath, HttpServletResponse response) throws IOException;
 
     /**
-     * 视频点赞
+     * 视频点赞量
      * @param id
      */
-    JSONObject likeCount(String id);
+    JSONObject likeAcount(String id);
+
+    /**
+     * 视频评论量
+     * @param id
+     */
+    JSONObject commentAmount(String id);
+
+
+    /**
+     * 视频关注量
+     * @param id
+     */
+    JSONObject attentionAmount(String id);
 
     /**
      * 默认每张表查询五表记录
@@ -47,11 +60,7 @@ public interface UploadFileService {
      */
     List<UploadFileVo> getVdeio(String tableName, int bdgin, int size);
 
-    /**
-     * 视频播放量
-     * @param id
-     */
-    void getVdieoCount(String id);
+
 
     /**
      * 我的发布

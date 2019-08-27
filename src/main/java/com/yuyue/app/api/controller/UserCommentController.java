@@ -204,4 +204,40 @@ public class UserCommentController extends BaseController{
 
     }
 
+    @RequestMapping("getFansSum")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject getFansSum(@CurrentUser AppUser user){
+        userCommentService.getFansSum(user.getId());
+        returnResult.setMessage("返回成功！！");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+
+    }
+
+    /**
+     *用户添加视频点赞
+     * @param user
+     * @param videoId
+     * @return
+     */
+    @RequestMapping("getUserAttention")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject insertToLikeList(@CurrentUser AppUser user,String videoId){
+        return null;
+    }
+
+    /**
+     *作者查看点赞列表信息
+     * @param user
+     * @param
+     * @return
+     */
+    @RequestMapping("getUserAttention")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject getLikeList(@CurrentUser AppUser user){
+        return null;
+    }
 }

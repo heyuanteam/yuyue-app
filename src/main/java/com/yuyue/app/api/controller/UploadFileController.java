@@ -3,7 +3,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
+import com.yuyue.app.api.domain.UploadFile;
+import com.yuyue.app.api.mapper.UploadFileMapper;
+import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
+import com.yuyue.app.utils.ResultJSONUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,10 @@ public class UploadFileController {
 
     @Autowired
     private UploadFileService uploadFileService;
+    @Autowired
+    private UploadFileMapper uploadFileMapper;
+    @Autowired
+    private LoginService loginService;
 
     /**
      * 删除单个文件
@@ -80,20 +88,33 @@ public class UploadFileController {
      * 视频点赞
      * @param videoId
      */
-    @RequestMapping("likeCount")
+    @RequestMapping("likeAcount")
     @ResponseBody
-    public JSONObject likeCount(String videoId) {
-        return uploadFileService.likeCount(videoId);
+    public JSONObject likeAcount(String videoId) {
+        UploadFile uploadFile = uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_", videoId), videoId);
+        AppUser appUserMsg = loginService.getAppUserMsg("", "", uploadFile.getAuthorId());
+
+        return uploadFileService.likeAcount(videoId);
     }
 
     /**
-     * 视频播放量
+     * 视频评论量
      * @param videoId
      */
-    @RequestMapping("getVdieoCount")
+    @RequestMapping("commentAmount")
     @ResponseBody
-    public void getVdieoCount(String videoId) {
-        uploadFileService.getVdieoCount(videoId);
+    public JSONObject commentAmount(String videoId) {
+       return uploadFileService.commentAmount(videoId);
+    }
+
+    /**
+     * 视频关注量
+     * @param videoId
+     */
+    @RequestMapping("attentionAmount")
+    @ResponseBody
+    public JSONObject attentionAmount(String videoId) {
+       return uploadFileService.attentionAmount(videoId);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.yuyue.app.api.service;
 
 import com.yuyue.app.api.domain.Attention;
+import com.yuyue.app.api.domain.Like;
 import com.yuyue.app.api.domain.UserComment;
 import com.yuyue.app.api.domain.UserCommentVo;
 
@@ -21,21 +22,43 @@ public interface UserCommentService {
      * @param userId
      * @return
      */
-    public List<Attention> getUserAttention(String userId);
+     List<Attention> getUserAttention(String userId);
 
     /**
      * 添加关注
      * @param authorId
      * @return
      */
-    public void addAttention(String id,String userId,String authorId);
+     void addAttention(String id,String userId,String authorId);
 
     /**
      * 删除用户关注
      * @param authorId
      * @return
      */
-    public void cancelAttention(String userId,String authorId);
+     void cancelAttention(String userId,String authorId);
+
+    /**
+     * 获取粉丝数
+     * @param authorId
+     * @return
+     */
+    int getFansSum(String authorId);
+
+    /**
+     * 用户添加视频点赞
+     * @param id
+     * @param videoId
+     */
+    void insertToLikeList( String id,String videoId);
+
+    /**
+     *作者查看点赞列表信息
+     * @param id
+     * @param
+     * @return
+     */
+    List<Like> getLikeList(String id);
 
 
 

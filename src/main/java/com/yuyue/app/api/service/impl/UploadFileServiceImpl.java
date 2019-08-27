@@ -173,24 +173,29 @@ public class UploadFileServiceImpl implements UploadFileService {
         outputStream.write(bytes);
     }
 
-    @Override
-    public JSONObject likeCount(String videoId) {
-        uploadFileMapper.likeCount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
-        returnResult.setMessage("点赞成功!");
-        returnResult.setStatus(Boolean.TRUE);
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
-    }
 
+
+    /**
+     *
+     * @param tableName
+     * @param bdgin
+     * @param size
+     * @return
+     */
     @Override
     public List<UploadFileVo> getVdeio(String tableName, int bdgin, int size) {
         return uploadFileMapper.getVdeio(tableName,bdgin,size);
     }
 
-    @Override
-    public void getVdieoCount(String id) {
-        uploadFileMapper.getVdieoCount(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id);
-    }
 
+    /**
+     *
+     * @param id
+     * @param categoryId
+     * @param title
+     * @param description
+     * @return
+     */
     @Override
     public JSONObject getRelease(String id, String categoryId, String title, String description) {
         uploadFileMapper.getRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",id),id,categoryId,title,description);
@@ -219,6 +224,12 @@ public class UploadFileServiceImpl implements UploadFileService {
 //            throw new RuntimeException("上传失败，" + "第" + (i + 1) + "个文件内容不符合要求");
 //        }
 //    }
+
+    /**
+     * 通过作者id查询本人上传的所有视频
+     * @param authorId
+     * @return
+     */
      public List<UploadFile> getVideoByAuthorId(String authorId){
 
          String tableName0="yuyue_upload_file_0";
@@ -226,5 +237,49 @@ public class UploadFileServiceImpl implements UploadFileService {
          List<UploadFile> videoByAuthorId = uploadFileMapper.getVideoByAuthorId(tableName0, authorId);
          videoByAuthorId.addAll(uploadFileMapper.getVideoByAuthorId(tableName1, authorId));
          return videoByAuthorId;
+    }
+
+
+    /**
+     *视频表、用户表点赞量+1
+     * @param videoId
+     * @return
+     */
+    @Override
+    public JSONObject likeAcount(String videoId) {
+        uploadFileMapper.likeAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+        uploadFileMapper.userLikeAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+        returnResult.setMessage("点赞成功!");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+
+    /**
+     *视频表、用户表评论量+1
+     * @param videoId
+     * @return
+     */
+    @Override
+    public JSONObject commentAmount(String videoId) {
+        uploadFileMapper.commentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+        uploadFileMapper.userCommentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+        returnResult.setMessage("评论成功!");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     *视频表、用户表关注量+1
+     * @param videoId
+     * @return
+     */
+    @Override
+    public JSONObject attentionAmount(String videoId) {
+        uploadFileMapper.attentionAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+        uploadFileMapper.userAttentionAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",videoId),videoId);
+        returnResult.setMessage("关注成功!");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }

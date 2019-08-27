@@ -13,8 +13,8 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Select("select * from ${tableName} where id = #{id}")
     UploadFile selectById(@Param("tableName")String tableName,@Param("id")String id);
 
-    @Select("select b.id,COUNT(c.ID) count,DATE_FORMAT(b.uploadTime ,'%Y-%m-%d %H:%i:%s') uploadTime,b.filesName,b.filesPath,b.filesType,b.fileSize,b.authorId,b.description,b.playAmount,b.likeAmount,b.duration " +
-            "from ${tableName} b,yuyue_user_comment c WHERE c.VIDEO_ID=b.id and b.filesType = 'vedio' GROUP BY b.id ORDER BY b.uploadTime OR b.playAmount OR b.likeAmount DESC LIMIT #{bdgin},#{size}")
+    @Select("select b.id,COUNT(c.ID) count,DATE_FORMAT(b.uploadTime ,'%Y-%m-%d %H:%i:%s') uploadTime,b.filesName,b.filesPath,b.filesType,b.fileSize,b.authorId,b.description,b.commentAmount,b.likeAmount,b.attentionAmount,b.duration " +
+            "from ${tableName} b,yuyue_user_comment c WHERE c.VIDEO_ID=b.id and b.filesType = 'vedio' GROUP BY b.id ORDER BY b.uploadTime OR b.commentAmount OR b.likeAmount or b.attentionAmount DESC LIMIT #{bdgin},#{size}")
     List<UploadFileVo> getVdeio(@Param("tableName")String tableName, @Param("bdgin")int bdgin, @Param("size")int size);
 
     @Transactional
@@ -31,17 +31,34 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
 
     @Transactional
     @Update("UPDATE ${tableName} SET likeAmount = likeAmount  +  1  WHERE id = #{id}")
-    void likeCount(@Param("tableName")String tableName,@Param("id")String id);
+    void likeAmount(@Param("tableName")String tableName,@Param("id")String id);
+
+    @Transactional
+    @Update("UPDATE ${tableName} SET commentAmount = commentAmount + 1 WHERE id = #{id}")
+    void commentAmount(@Param("tableName")String tableName,@Param("id")String id);
+
+    @Transactional
+    @Update("UPDATE ${tableName} SET attentionAmount = attentionAmount + 1 WHERE id = #{id}")
+    void attentionAmount(@Param("tableName")String tableName,@Param("id")String id);
+
+    @Transactional
+    @Update("UPDATE yuyue_merchant u SET u.LIKE_TOTAL =u.LIKE_TOTAL +1  WHERE u.id =(SELECT authorId FROM ${tableName} WHERE id = #{id} )")
+    void userLikeAmount(@Param("tableName")String tableName,@Param("id")String id);
+
+
+    @Transactional
+    @Update("UPDATE yuyue_merchant u SET u.COMMENT_TOTAL =u.COMMENT_TOTAL +1  WHERE u.id =(SELECT authorId FROM ${tableName} WHERE id = #{id} )")
+    void userCommentAmount(@Param("tableName")String tableName,@Param("id")String id);
+
+    @Transactional
+    @Update("UPDATE yuyue_merchant u SET u.ATTENTION_TOTAL =u.ATTENTION_TOTAL +1  WHERE u.id =(SELECT authorId FROM ${tableName} WHERE id = #{id} )")
+    void userAttentionAmount(@Param("tableName")String tableName,@Param("id")String id);
 
     @Transactional
     @Update("UPDATE ${tableName} SET categoryId=#{categoryId},title=#{title},description=#{description}  WHERE id = #{id}")
     void getRelease(@Param("tableName")String tableName,@Param("id")String id,@Param("categoryId")String categoryId,
                        @Param("title")String title,@Param("description")String description);
 
-    @Transactional
-    @Update("UPDATE ${tableName} SET playAmount = playAmount + 1 WHERE id = #{id}")
-    void getVdieoCount(@Param("tableName")String tableName,@Param("id")String id);
-
-    @Select("SELECT * FROM ${tableName} WHERE authorId = #{authorId} ORDER BY uploadTime DESC")
+    @Select("SELECT * FROM ${tableName} WHERE authorId = #{authorId} ORDER BY uploadTime DESC ")
     List<UploadFile> getVideoByAuthorId(@Param("tableName") String tableName,@Param("authorId") String authorId);
 }

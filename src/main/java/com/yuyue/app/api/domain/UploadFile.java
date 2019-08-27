@@ -37,10 +37,12 @@ public class UploadFile implements Serializable {
     private String authorId;
 //    描述
     private String description;
-//    播放量
-    private String playAmount;
+//    评论量
+    private String commentAmount;
 //    点赞量
     private String likeAmount;
+//    关注量
+    private String attentionAmount;
 //    时长
 //    private String duration;
 }

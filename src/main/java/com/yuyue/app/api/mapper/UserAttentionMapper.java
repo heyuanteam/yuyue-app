@@ -35,4 +35,7 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      */
     @Delete("DELETE FROM yuyue_attention WHERE userId = #{userId} and authorId = #{authorId}")
     void cancelAttention(@Param("userId")String userId,@Param("authorId") String authorId);
+
+    @Select("SELECT COUNT(userId) from yuyue_attention where authorId = #{ authorId }")
+    int getFansSum(String authorId);
 }

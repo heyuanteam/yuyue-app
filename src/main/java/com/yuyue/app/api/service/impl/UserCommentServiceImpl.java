@@ -1,6 +1,7 @@
 package com.yuyue.app.api.service.impl;
 
 import com.yuyue.app.api.domain.Attention;
+import com.yuyue.app.api.domain.Like;
 import com.yuyue.app.api.domain.UserComment;
 import com.yuyue.app.api.domain.UserCommentVo;
 import com.yuyue.app.api.mapper.UserAttentionMapper;
@@ -50,6 +51,21 @@ public class UserCommentServiceImpl implements UserCommentService{
     @Override
     public void cancelAttention(String userId,String authorId) {
          userAttentionMapper.cancelAttention(userId,authorId);
+    }
+
+    @Override
+    public int getFansSum( String authorId) {
+        return userAttentionMapper.getFansSum(authorId);
+    }
+
+    @Override
+    public void insertToLikeList(String id, String videoId) {
+
+    }
+
+    @Override
+    public List<Like> getLikeList(String id) {
+        return null;
     }
 
 }
