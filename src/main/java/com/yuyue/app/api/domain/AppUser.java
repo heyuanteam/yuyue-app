@@ -22,7 +22,10 @@ public class AppUser implements Serializable {
     private String idType;
     private String idCard;
     private String phone;
-    private String email;
+//    定位城市
+    private String city;
+//    极光别名
+    private String jpushName;
     private String password;
     private String salt;
     private BigDecimal total;

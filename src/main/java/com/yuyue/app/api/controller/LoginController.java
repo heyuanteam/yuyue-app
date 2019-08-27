@@ -277,12 +277,35 @@ public class LoginController {
         }
         LOGGER.info("============" + user.toString());
         loginService.updateAppUser(user.getId(),nickName,realName,idCard,phone,sex,headpUrl, userStatus,
-                            addrDetail, education,wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd);
+                            addrDetail, education,wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,"","");
         result.setMessage("修改成功！");
         result.setStatus(Boolean.TRUE);
         AppUser appUser = loginService.getAppUserMsg("","",user.getId());
         result.setToken(loginService.getToken(appUser));
         result.setResult(JSONObject.toJSON(appUser));
+        return ResultJSONUtils.getJSONObjectBean(result);
+    }
+
+    /**
+     * 获取定位和极光别名，ID
+     *
+     * @return
+     */
+    @RequestMapping("/getJPush")
+    @ResponseBody
+    public JSONObject getJPush(String id,String city,String jpushName) {
+        AppUser appUserById = loginService.getAppUserMsg("","",id);
+        if (appUserById == null) {
+            result.setMessage("未登录！");
+        } else {
+            loginService.updateAppUser(appUserById.getId(),"","","","","","",
+                    "","","","","","","","",
+                    "",city,jpushName);
+            result.setMessage("获取成功！");
+            result.setStatus(Boolean.TRUE);
+            result.setToken(loginService.getToken(appUserById));
+            result.setResult(JSONObject.toJSON(appUserById));
+        }
         return ResultJSONUtils.getJSONObjectBean(result);
     }
 }
