@@ -39,17 +39,17 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             // 执行认证
             String token = request.getHeader("token");  // 从 http 请求头中取出 token
             if (token == null) {
-                throw new RuntimeException("无token，请重新登录");
+                throw new RuntimeException("信息已失效，请重新登录");
             }
             String userId;
             try {
                 userId = String.valueOf(JWT.decode(token).getAudience().get(0));  // 获取 token 中的 user id
             } catch (JWTDecodeException e) {
-                throw new RuntimeException("token无效，请重新登录");
+                throw new RuntimeException("信息已失效，请重新登录");
             }
             AppUser user = loginService.getAppUserMsg("","",userId);
             if (user == null) {
-                throw new RuntimeException("用户不存在，请重新登录");
+                throw new RuntimeException("信息已失效，请重新登录");
             }
             // 验证 token
             try {
@@ -57,7 +57,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 try {
                     verifier.verify(token);
                 } catch (JWTVerificationException e) {
-                    throw new RuntimeException("token无效，请重新登录");
+                    throw new RuntimeException("信息已失效，请重新登录");
                 }
             } catch (UnsupportedEncodingException ignore) {}
             request.setAttribute("currentUser", user);
