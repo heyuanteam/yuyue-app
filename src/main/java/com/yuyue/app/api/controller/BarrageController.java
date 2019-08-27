@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "barrage" ,produces = "application/json; charset=UTF-8")
+@RequestMapping(value = "/barrage" ,produces = "application/json; charset=UTF-8")
 public class BarrageController extends BaseController{
     private static Logger log = LoggerFactory.getLogger(BarrageController.class);
 
@@ -41,7 +41,7 @@ public class BarrageController extends BaseController{
      * @param request
      * @return
      */
-    @RequestMapping("getBarrages")
+    @RequestMapping("/getBarrages")
     @ResponseBody
     public JSONObject getBarrages(HttpServletRequest request){
         Map<String, String> mapValue = getParameterMap(request);
@@ -74,7 +74,7 @@ public class BarrageController extends BaseController{
      * @param request
      * @return
      */
-    @RequestMapping("addBarrages")
+    @RequestMapping("/addBarrages")
     @ResponseBody
     @LoginRequired
     public JSONObject addBarrages(@CurrentUser AppUser user, HttpServletRequest request){

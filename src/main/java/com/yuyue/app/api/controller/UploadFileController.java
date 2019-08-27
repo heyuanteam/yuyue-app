@@ -96,7 +96,7 @@ public class UploadFileController {
      * @param filesName
      * @param filesPath
      */
-    @RequestMapping(value = "downloadFile")
+    @RequestMapping(value = "/downloadFile")
     public void downloadFile(@RequestParam("filesName") String filesName,@RequestParam("filesPath") String filesPath, HttpServletResponse response) throws IOException {
         uploadFileService.downloadFile(filesName, filesPath, response);
     }
@@ -105,7 +105,7 @@ public class UploadFileController {
      * 视频点赞
      * @param videoId
      */
-    @RequestMapping("likeAcount")
+    @RequestMapping("/likeAcount")
     @ResponseBody
     public JSONObject likeAcount(String videoId) {
         UploadFile uploadFile = uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_", videoId), videoId);
@@ -118,7 +118,7 @@ public class UploadFileController {
      * 视频评论量
      * @param videoId
      */
-    @RequestMapping("commentAmount")
+    @RequestMapping("/commentAmount")
     @ResponseBody
     public JSONObject commentAmount(String videoId) {
        return uploadFileService.commentAmount(videoId);
@@ -128,7 +128,7 @@ public class UploadFileController {
      * 视频关注量
      * @param videoId
      */
-    @RequestMapping("attentionAmount")
+    @RequestMapping("/attentionAmount")
     @ResponseBody
     public JSONObject attentionAmount(String videoId) {
        return uploadFileService.attentionAmount(videoId);

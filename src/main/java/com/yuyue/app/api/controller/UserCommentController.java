@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * @author ly
  */
-@RequestMapping(value="userComment", produces = "application/json; charset=UTF-8")
+@RequestMapping(value="/userComment", produces = "application/json; charset=UTF-8")
 @RestController
 public class UserCommentController extends BaseController{
     private static final Logger log = LoggerFactory.getLogger(UploadFileController.class);
@@ -48,7 +48,7 @@ public class UserCommentController extends BaseController{
      * @param videoId
      * @return
      */
-    @RequestMapping("getAllComment")
+    @RequestMapping("/getAllComment")
     @ResponseBody
     public JSONObject getAllComment(String videoId) {
         List<UserCommentVo> userCommentList = null;
@@ -83,7 +83,7 @@ public class UserCommentController extends BaseController{
      * @param request
      * @return
      */
-    @RequestMapping("addComment")
+    @RequestMapping("/addComment")
     @ResponseBody
     @LoginRequired
     public JSONObject addComment(HttpServletRequest request,@CurrentUser AppUser user) {
@@ -116,7 +116,7 @@ public class UserCommentController extends BaseController{
      * @param request
      * @return
      */
-    @RequestMapping("deleteComment")
+    @RequestMapping("/deleteComment")
     @ResponseBody
     @LoginRequired
     public JSONObject deleteComment(HttpServletRequest request,@CurrentUser AppUser user) {
@@ -135,7 +135,7 @@ public class UserCommentController extends BaseController{
      * @param user
      * @return
      */
-    @RequestMapping("getUserAttention")
+    @RequestMapping("/getUserAttention")
     @ResponseBody
     @LoginRequired
     public JSONObject getUserAttention(@CurrentUser AppUser user){
@@ -172,7 +172,7 @@ public class UserCommentController extends BaseController{
      * @param authorId
      * @return
      */
-    @RequestMapping("addAttention")
+    @RequestMapping("/addAttention")
     @ResponseBody
     @LoginRequired
     public JSONObject addAttention(@CurrentUser AppUser user,String authorId){
@@ -195,7 +195,7 @@ public class UserCommentController extends BaseController{
      * @param user,authorId
      * @return
      */
-    @RequestMapping("cancelAttention")
+    @RequestMapping("/cancelAttention")
     @ResponseBody
     @LoginRequired
     public JSONObject cancelAttention(@CurrentUser AppUser user,String authorId){
@@ -204,7 +204,7 @@ public class UserCommentController extends BaseController{
 
     }
 
-    @RequestMapping("getFansSum")
+    @RequestMapping("/getFansSum")
     @ResponseBody
     @LoginRequired
     public JSONObject getFansSum(@CurrentUser AppUser user){
@@ -221,7 +221,7 @@ public class UserCommentController extends BaseController{
      * @param videoId
      * @return
      */
-    @RequestMapping("insertToLikeList")
+    @RequestMapping("/insertToLikeList")
     @ResponseBody
     @LoginRequired
     public JSONObject insertToLikeList(@CurrentUser AppUser user,String videoId){
@@ -245,7 +245,7 @@ public class UserCommentController extends BaseController{
      * @param
      * @return
      */
-    @RequestMapping("getLikeList")
+    @RequestMapping("/getLikeList")
     @ResponseBody
     @LoginRequired
     public JSONObject getLikeList(@CurrentUser AppUser user){
