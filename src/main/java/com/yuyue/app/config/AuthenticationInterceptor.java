@@ -21,8 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 
 
-
-
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     private LoginService loginService;

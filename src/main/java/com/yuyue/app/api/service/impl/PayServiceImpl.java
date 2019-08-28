@@ -27,4 +27,7 @@ public class PayServiceImpl implements PayService {
     public void updateOrderStatus(String responseCode, String responseMessage, String status,String orderno) {
         payMapper.updateOrderStatus(responseCode,responseMessage,status,orderno);
     }
+
+    @Override
+    public void updateTotal(String merchantId, String money) { payMapper.updateTotal(merchantId,money); }
 }

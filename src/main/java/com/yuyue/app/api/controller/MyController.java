@@ -1,14 +1,14 @@
 package com.yuyue.app.api.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
-import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.Barrage;
-import com.yuyue.app.api.domain.Feedback;
-import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.utils.ResultJSONUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -54,6 +55,25 @@ public class MyController extends BaseController{
 
         returnResult.setMessage("添加成功！");
         returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 充值记录
+     * @return
+     */
+    @RequestMapping("/getMoneyList")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject getMoneyList(@CurrentUser AppUser user){
+        List<Order> list = myService.getMoneyList(user.getId());
+        if(CollectionUtils.isEmpty(list)){
+            returnResult.setMessage("暂无充值记录！");
+        } else {
+            returnResult.setMessage("查询成功！");
+        }
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(JSONArray.parseArray(JSON.toJSONString(list)));
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }

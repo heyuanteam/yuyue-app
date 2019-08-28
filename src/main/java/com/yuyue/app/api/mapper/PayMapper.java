@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -28,4 +29,10 @@ public interface PayMapper extends MyBaseMapper<Order> {
             "WHERE b.orderNo = #{orderNo} ")
     void updateOrderStatus(@Param("responseCode") String responseCode,@Param("responseMessage") String responseMessage,
                            @Param("status") String status, @Param("orderNo") String orderNo);
+
+    @Update("UPDATE yuyue_merchant b SET b.TOTAL = b.TOTAL + #{money} WHERE b.ID = #{merchantId} ")
+    void updateTotal(@Param("merchantId") String merchantId,@Param("money") String money);
+
+    @Select("SELECT * FROM yuyue_order b WHERE b.merchantId = #{id} AND b.`status` = '10B' ")
+    List<Order> getMoneyList(@Param("id") String id);
 }
