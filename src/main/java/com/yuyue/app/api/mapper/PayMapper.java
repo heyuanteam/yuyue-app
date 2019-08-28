@@ -33,6 +33,6 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Update("UPDATE yuyue_merchant b SET b.TOTAL = b.TOTAL + #{money} WHERE b.ID = #{merchantId} ")
     void updateTotal(@Param("merchantId") String merchantId,@Param("money") String money);
 
-    @Select("SELECT * FROM yuyue_order b WHERE b.merchantId = #{id} ")
+    @Select("SELECT * FROM yuyue_order b WHERE b.merchantId = #{id} AND b.`status` = '10B' ")
     List<Order> getMoneyList(@Param("id") String id);
 }
