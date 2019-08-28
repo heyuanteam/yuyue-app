@@ -23,7 +23,7 @@ public class JPush implements Serializable {
     private String  msgContent;
 //    扩展字段
     private String  extras;
-//    是否有效（默认1，有效，0，无效）
+//    是否有效
     private String  valid;
     private String createTime;
 
