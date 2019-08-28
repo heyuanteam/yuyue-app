@@ -96,12 +96,13 @@ public class PayController{
         log.info("订单详情============"+order.toString());
         try {
             Map map = new HashMap();
+            String moneyD = new BigDecimal(order.getMoney()).multiply(new BigDecimal(100)).toString();
             map.put("appid", wxAppId);
             map.put("mch_id", wxMchID);
             map.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));
             map.put("body", "yuyue-礼物充值");
             map.put("out_trade_no", order.getId());
-            map.put("total_fee", order.getMoney());
+            map.put("total_fee", moneyD);
             map.put("spbill_create_ip", "101.37.252.177");
             map.put("trade_type", "APP");
             map.put("notify_url", wxNotifyUrl);
@@ -135,6 +136,7 @@ public class PayController{
             log.info("支付失败！参数不对！");
             returnResult.setMessage("支付失败！参数不对！");
             payService.updateStatus(order.getId(),"10C");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
@@ -197,8 +199,7 @@ public class PayController{
             model.setTimeoutExpress("30m");
 
             // 将分制金额换成元制金额保留两位小数
-            String moneyD = new BigDecimal(order.getMoney()).divide(new BigDecimal(100))
-                    .setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+            String moneyD = new BigDecimal(order.getMoney()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
             model.setTotalAmount(moneyD);
             model.setProductCode("QUICK_MSECURITY_PAY");// 固定值
             request.setBizModel(model);
@@ -220,6 +221,7 @@ public class PayController{
             log.info("支付失败！参数不对！");
             returnResult.setMessage("支付失败！参数不对！");
             payService.updateStatus(order.getId(),"10C");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
