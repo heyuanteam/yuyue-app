@@ -170,6 +170,7 @@ public class PayController{
                     orderNo.setResponseMessage(object.get("result_code").toString());
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(),orderNo.getResponseMessage(),orderNo.getStatus(),orderNo.getOrderNo());
+                    payService.updateTotal(orderNo.getMerchantId(),orderNo.getMoney());
                     returnResult.setMessage("微信回调成功！");
                     returnResult.setStatus(Boolean.TRUE);
                 }
@@ -269,6 +270,7 @@ public class PayController{
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(),orderNo.getResponseMessage(),orderNo.getStatus(),orderNo.getOrderNo());
+                    payService.updateTotal(orderNo.getMerchantId(),orderNo.getMoney());
                     returnResult.setMessage("支付宝回调成功！");
                     returnResult.setStatus(Boolean.TRUE);
                 }

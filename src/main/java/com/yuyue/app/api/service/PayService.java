@@ -12,4 +12,6 @@ public interface PayService {
     void updateStatus(String id,String status);
 
     void updateOrderStatus(String responseCode, String responseMessage, String status,String orderno);
+
+    void updateTotal(String merchantId, String money);
 }
