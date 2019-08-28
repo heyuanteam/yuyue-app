@@ -1,5 +1,6 @@
 package com.yuyue.app.config;
 
+import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -19,10 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 
+import static com.sun.xml.internal.ws.api.message.Packet.State.ServerResponse;
+
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     private LoginService loginService;
+
+    private ReturnResult returnResult=new ReturnResult();
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 如果不是映射到方法直接通过
@@ -39,17 +44,41 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             // 执行认证
             String token = request.getHeader("token");  // 从 http 请求头中取出 token
             if (token == null) {
-                throw new RuntimeException("信息已失效，请重新登录");
+                returnResult.setMessage("信息已失效，请重新登录");
+                returnResult.setCode("01");
+                //设置状态码
+                response.setStatus(500);
+                response.setContentType("application/json;charset=UTF-8");
+                //将 登录失败 信息打包成json格式返回
+                response.getWriter().write(JSON.toJSONString(returnResult));
+//                throw new RuntimeException("信息已失效，请重新登录");
+                return false;
             }
-            String userId;
+            String userId = "";
             try {
                 userId = String.valueOf(JWT.decode(token).getAudience().get(0));  // 获取 token 中的 user id
             } catch (JWTDecodeException e) {
-                throw new RuntimeException("信息已失效，请重新登录");
+                returnResult.setMessage("信息已失效，请重新登录");
+                returnResult.setCode("01");
+                //设置状态码
+                response.setStatus(500);
+                response.setContentType("application/json;charset=UTF-8");
+                //将 登录失败 信息打包成json格式返回
+                response.getWriter().write(JSON.toJSONString(returnResult));
+//                throw new RuntimeException("信息已失效，请重新登录");
+                return false;
             }
             AppUser user = loginService.getAppUserMsg("","",userId);
             if (user == null) {
-                throw new RuntimeException("信息已失效，请重新登录");
+                returnResult.setMessage("信息已失效，请重新登录");
+                returnResult.setCode("01");
+                //设置状态码
+                response.setStatus(500);
+                response.setContentType("application/json;charset=UTF-8");
+                //将 登录失败 信息打包成json格式返回
+                response.getWriter().write(JSON.toJSONString(returnResult));
+//                throw new RuntimeException("信息已失效，请重新登录");
+                return false;
             }
             // 验证 token
             try {
@@ -57,7 +86,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 try {
                     verifier.verify(token);
                 } catch (JWTVerificationException e) {
-                    throw new RuntimeException("信息已失效，请重新登录");
+                    returnResult.setMessage("信息已失效，请重新登录");
+                    returnResult.setCode("01");
+                    //设置状态码
+                    response.setStatus(500);
+                    response.setContentType("application/json;charset=UTF-8");
+                    //将 登录失败 信息打包成json格式返回
+                    response.getWriter().write(JSON.toJSONString(returnResult));
+//                throw new RuntimeException("信息已失效，请重新登录");
+                    return false;
                 }
             } catch (UnsupportedEncodingException ignore) {}
             request.setAttribute("currentUser", user);

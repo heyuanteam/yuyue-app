@@ -93,6 +93,7 @@ public class PayController{
 
     public JSONObject payWX(Order order)throws Exception {
         log.info("-------weixinAPP支付统一下单-----------");
+        log.info("订单详情============"+order.toString());
         try {
             Map map = new HashMap();
             map.put("appid", wxAppId);
