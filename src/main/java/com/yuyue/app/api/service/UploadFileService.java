@@ -2,7 +2,6 @@ package com.yuyue.app.api.service;
 import com.alibaba.fastjson.JSONObject;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.UploadFile;
-import com.yuyue.app.api.domain.UploadFileVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -55,12 +54,24 @@ public interface UploadFileService {
     JSONObject attentionAmount(String authorId);
 
     /**
+     * 取消关注，关注量-1
+     * @param authorId
+     */
+    void reduceAttentionAmount(String authorId);
+
+    /**
+     * 删除评论， 评论量 -1
+     * @param authorId
+     * @param videoId
+     */
+    void reduceCommentAmount(String authorId,String videoId);
+    /**
      * 默认每张表查询五表记录
      * @param bdgin
      * @param size
      * @return
      */
-    List<UploadFileVo> getVdeio(String tableName, int bdgin, int size);
+    List<UploadFile> getVideo(String tableName, int bdgin, int size);
 
 
 

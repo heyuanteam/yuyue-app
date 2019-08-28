@@ -75,17 +75,17 @@ public class HomePageController {
     @ResponseBody
     @RequestMapping("/getVideo")
     public JSONObject getVideo(String page){
-        List<UploadFileVo> list = Lists.newArrayList();
+        List<UploadFile> list = Lists.newArrayList();
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 5;
         int begin = (Integer.parseInt(page) - 1) * limit;
-        List<UploadFileVo> vdeio_0 = uploadFileService.getVdeio("yuyue_upload_file_0",begin, limit);
-        List<UploadFileVo> vdeio_1 = uploadFileService.getVdeio("yuyue_upload_file_1",begin, limit);
-        Iterator<UploadFileVo> iterator_0 = vdeio_0.iterator();
+        List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit);
+        List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit);
+        Iterator<UploadFile> iterator_0 = vdeio_0.iterator();
         while(iterator_0.hasNext()) {
             list.add(iterator_0.next());
         }
-        Iterator<UploadFileVo> iterator_1 = vdeio_1.iterator();
+        Iterator<UploadFile> iterator_1 = vdeio_1.iterator();
         while(iterator_1.hasNext()) {
             list.add(iterator_1.next());
         }

@@ -36,15 +36,13 @@ public class UserCommentServiceImpl implements UserCommentService{
     }
 
     @Override
-    public List<UserCommentVo> addComment(UserComment comment) {
+    public void addComment(UserComment comment) {
         userCommentMapper.addComment(comment);
-        return getAllComment(comment.getVideoId());
     }
 
     @Override
-    public List<UserCommentVo> deleteComment(String id,String videoId) {
+    public void deleteComment(String id,String videoId) {
         userCommentMapper.deleteComment(id);
-        return getAllComment(videoId);
     }
 
     @Override

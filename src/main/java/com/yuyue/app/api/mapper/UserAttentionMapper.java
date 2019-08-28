@@ -34,7 +34,7 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
     @Update("UPDATE yuyue_merchant  SET ATTENTION_TOTAL =ATTENTION_TOTAL +1  WHERE id =  #{authorId}")
     void userAttentionAmount(String authorId);
     /**
-     * 删除用户关注
+     * 用户删除关注
      * @param userId  authorId
      * @return
      */

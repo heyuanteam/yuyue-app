@@ -112,6 +112,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                     UploadFile uploadFile = new UploadFile();
                     String uid = UUID.randomUUID().toString().replaceAll("-", "");
                     uploadFile.setId(uid.toUpperCase());
+                    uploadFile.setAuthorId(user.getId());
                     uploadFile.setFilesName(files[i].getOriginalFilename());
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
 //                    uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
@@ -193,8 +194,8 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public List<UploadFileVo> getVdeio(String tableName, int bdgin, int size) {
-        return uploadFileMapper.getVdeio(tableName,bdgin,size);
+    public List<UploadFile> getVideo(String tableName, int bdgin, int size) {
+        return uploadFileMapper.getVideo(tableName,bdgin,size);
     }
 
 
@@ -253,7 +254,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     public JSONObject likeAcount(String authorId,String videoId) {
         uploadFileMapper.likeAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
-        uploadFileMapper.userLikeAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
+        uploadFileMapper.userLikeAmount(authorId);
         returnResult.setMessage("点赞成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -268,7 +269,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     public JSONObject commentAmount(String authorId,String videoId) {
         uploadFileMapper.commentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
-        uploadFileMapper.userCommentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
+        uploadFileMapper.userCommentAmount(authorId);
         returnResult.setMessage("评论成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -287,4 +288,26 @@ public class UploadFileServiceImpl implements UploadFileService {
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+
+    /**
+     * 取消关注，关注量-1
+     * @param authorId
+     */
+    @Override
+    public void reduceAttentionAmount(String authorId){
+        uploadFileMapper.reduceAttentionAmount(authorId);
+    }
+
+    /**
+     * 删除评论， 评论量 -1
+     * @param authorId
+     * @param videoId
+     */
+    @Override
+    public void reduceCommentAmount(String authorId,String videoId){
+        uploadFileMapper.delCommentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), videoId);
+        uploadFileMapper.delUserCommentAmount(authorId);
+    }
+
+
 }

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 
-import static com.sun.xml.internal.ws.api.message.Packet.State.ServerResponse;
+
 
 
 public class AuthenticationInterceptor implements HandlerInterceptor {

@@ -11,10 +11,10 @@ public interface UserCommentService {
     List<UserCommentVo> getAllComment(String videoId );
 
 
-    List<UserCommentVo> addComment(UserComment comment);
+    void addComment(UserComment comment);
 
 
-    List<UserCommentVo> deleteComment(String id,String videoId);
+    void deleteComment(String id,String videoId);
 
 
     /**

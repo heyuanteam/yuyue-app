@@ -18,9 +18,9 @@ public interface UserCommentMapper extends MyBaseMapper<UserComment> {
             "FROM yuyue_user_comment comment left join yuyue_merchant user on comment.user_id = user.id " +
             "where VIDEO_ID = #{videoId} ORDER BY comment.CREATE_TIME desc limit #{began} ,#{size}")
     List<UserCommentVo> getAllComment(@Param(value = "videoId") String videoId, @Param("began") int began, @Param("size") int size);*/
-    @Select("SELECT comment.ID id,comment.TEXT text,.comment.VIDEO_ID videoId,comment.USER_ID userId," +
-            "DATE_FORMAT(comment.CREATE_TIME,'%Y-%m-%d %H:%i:%s') createTime ,user.USER_NICK_NAME userName,user.HEADP_URL headUrl " +
-            "FROM yuyue_user_comment comment left join yuyue_merchant user on comment.user_id = user.id " +
+    @Select("SELECT comment.ID as id,comment.TEXT as text,comment.VIDEO_ID as videoId,comment.USER_ID as userId," +
+            "DATE_FORMAT(comment.CREATE_TIME,'%Y-%m-%d %H:%i:%s') as createTime ,user.USER_NICK_NAME as userName,user.HEADP_URL as  headUrl " +
+            "FROM yuyue_user_comment as comment left join yuyue_merchant as user on comment.user_id = user.id " +
             "where VIDEO_ID = #{videoId} ORDER BY comment.CREATE_TIME desc ")
     List<UserCommentVo> getAllComment(@Param(value = "videoId") String videoId);
     @Transactional
