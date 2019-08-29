@@ -44,6 +44,8 @@ public class UploadFileController {
         ReturnResult returnResult=new ReturnResult();
         returnResult.setMessage("返回成功!");
         returnResult.setStatus(Boolean.TRUE);
+        log.info("====videoId===="+videoId);
+        log.info("====authorId===="+authorId);
         returnResult.setResult(uploadFileService.fileDetail(authorId,videoId));
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }

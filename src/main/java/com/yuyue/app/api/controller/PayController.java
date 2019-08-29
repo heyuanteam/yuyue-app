@@ -75,6 +75,9 @@ public class PayController{
     public JSONObject payYuYue(Order order)throws Exception {
         ReturnResult returnResult =new ReturnResult();
         log.info("-------创建订单-----------");
+        order.setOrderNo("YYCZ"+RandomSaltUtil.randomNumber(14));
+        order.setStatus("10A");
+        order.setStatusCode("100001");
 //        order.setTradeType("CZWX");
 //        order.setMoney("100");
 //        order.setModle("13576034501");
@@ -350,12 +353,9 @@ public class PayController{
     }
 
     //创建订单
-    public void createOrder(Order Order){
-        Order.setId(RandomSaltUtil.generetRandomSaltCode(32));
-        Order.setOrderNo("YYCZ"+RandomSaltUtil.randomNumber(14));
-        Order.setStatus("10A");
-        Order.setStatusCode("100001");
-        payService.createOrder(Order);
+    public void createOrder(Order order){
+        order.setId(RandomSaltUtil.generetRandomSaltCode(32));
+        payService.createOrder(order);
     }
 
 }
