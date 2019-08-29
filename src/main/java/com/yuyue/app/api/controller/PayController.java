@@ -68,11 +68,12 @@ public class PayController{
             "oMlcgRB6BTKG59S+KVso1O9Cxx52lvYqisuei8OnNwmMxK+++psZXmdDuNpUc4OJXdA7Bc0zbwDedtxRJE3zNDONOOwIDAQAB";
     private static final String AliPayNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/alipayNotify";
 
-    private ReturnResult returnResult =new ReturnResult();
+
 
     @ResponseBody
     @RequestMapping("/payYuYue")
     public JSONObject payYuYue(Order order)throws Exception {
+        ReturnResult returnResult =new ReturnResult();
         log.info("-------创建订单-----------");
 //        order.setTradeType("CZWX");
 //        order.setMoney("100");
@@ -92,6 +93,7 @@ public class PayController{
     }
 
     public JSONObject payWX(Order order)throws Exception {
+        ReturnResult returnResult =new ReturnResult();
         log.info("-------weixinAPP支付统一下单-----------");
         log.info("订单详情============"+order.toString());
         try {
@@ -150,6 +152,7 @@ public class PayController{
     @ResponseBody
     @RequestMapping(value = "/wxpayNotify")
     public JSONObject wxpay(HttpServletRequest request) throws Exception{
+        ReturnResult returnResult =new ReturnResult();
         log.info((new StringBuilder()).append("回调的内容为+++++++++++++++++++++++++++++++++").append(request).toString());
         BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
         StringBuffer buffer = new StringBuffer();
@@ -185,6 +188,7 @@ public class PayController{
      * @return
      */
     public JSONObject payZFB(Order order)throws Exception {
+        ReturnResult returnResult =new ReturnResult();
         log.info("======支付宝APP支付统一下单接口==============");
         try {
             // 实例化客户端
@@ -237,6 +241,7 @@ public class PayController{
     @ResponseBody
     @RequestMapping(value = "/alipayNotify")
     public JSONObject alipayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ReturnResult returnResult =new ReturnResult();
         log.info("支付宝平台回调开始+++++++++++++++++++++++++++++++++");
         // 获取支付宝POST过来反馈信息
         Map<String, String> params = new HashMap<String, String>();
@@ -290,6 +295,7 @@ public class PayController{
      * @throws
      */
     public Map<String, Object> doIosRequest(String TransactionID,String Payload, int userId) throws Exception {
+        ReturnResult returnResult =new ReturnResult();
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> mapChange = new HashMap<>();
         System.out.println("客户端传过来的值1："+TransactionID+"客户端传过来的值2："+Payload);

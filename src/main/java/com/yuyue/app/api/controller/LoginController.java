@@ -30,8 +30,6 @@ public class LoginController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    private ReturnResult result = new ReturnResult();
-
     /**
      * 获取版本号
      *
@@ -41,6 +39,7 @@ public class LoginController {
     @ResponseBody
     @RequestMapping("/version")
     public JSONObject getVersion(@RequestParam(value = "appVersion") String appVersion) {
+        ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(appVersion)) {
                 result.setMessage("版本号为空！");
@@ -74,6 +73,7 @@ public class LoginController {
     @ResponseBody
     public JSONObject loginByPassword(@RequestParam(value = "password") String password,
                                       @RequestParam(value = "phone") String phone) throws Exception {
+        ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)) {
                 result.setMessage("账号密码不能为空!");
@@ -113,6 +113,7 @@ public class LoginController {
     @ResponseBody
     public JSONObject editPassword(@RequestParam(value = "password") String password, @RequestParam(value = "code") String code,
                                    @RequestParam(value = "phone") String phone) throws Exception {
+        ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)) {
                 result.setMessage("账号密码不能为空!");
@@ -147,6 +148,7 @@ public class LoginController {
     @RequestMapping("/loginByPhone")
     @ResponseBody
     public JSONObject loginByPhone(@RequestParam(value = "phone") String phone, @RequestParam("code") String code) {
+        ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(code)) {
                 result.setMessage("验证码为空！");
@@ -183,7 +185,7 @@ public class LoginController {
     @RequestMapping("/regist")
     @ResponseBody
     public JSONObject regist(@RequestParam(value = "phone") String phone, @RequestParam("code") String code, @RequestParam(value = "password") String password) throws Exception {
-
+        ReturnResult result = new ReturnResult();
         Pattern pattern = Pattern.compile("^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$");
         try {
             if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
@@ -227,6 +229,7 @@ public class LoginController {
     @RequestMapping("/getMessage")
     @ResponseBody
     public JSONObject getMessage(String id) {
+        ReturnResult result = new ReturnResult();
         AppUser appUserById = loginService.getAppUserMsg("","",id);
         if (appUserById == null) {
             result.setMessage("查询数据失败！");
@@ -253,6 +256,7 @@ public class LoginController {
                                     String signature, String password, String oldPassword,String code,
                                     String userUrl, String cardZUrl, String cardFUrl) throws Exception {
         String ciphertextPwd = "";
+        ReturnResult result = new ReturnResult();
         if (StringUtils.isNotEmpty(password) && StringUtils.isNotEmpty(oldPassword)) {
             oldPassword = MD5Utils.getMD5Str(oldPassword + user.getSalt());
             AppUser appUserMsg = loginService.getAppUserMsg(oldPassword, "", "");
@@ -294,6 +298,7 @@ public class LoginController {
     @RequestMapping("/getJPush")
     @ResponseBody
     public JSONObject getJPush(String id,String city,String jpushName) {
+        ReturnResult result = new ReturnResult();
         AppUser appUserById = loginService.getAppUserMsg("","",id);
         if (appUserById != null) {
             loginService.updateAppUser(appUserById.getId(),"","","","","","",

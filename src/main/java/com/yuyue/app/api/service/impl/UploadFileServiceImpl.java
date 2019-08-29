@@ -40,10 +40,9 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Autowired
     private FastFileStorageClient storageClient;
 
-    @Autowired
-    private LoginController loginController;
 
-    private ReturnResult returnResult=new ReturnResult();
+
+
 
     /**
      * 视频详情
@@ -64,6 +63,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public JSONObject deleteFile(String authorId,String id) {
+        ReturnResult returnResult=new ReturnResult();
         UploadFile uploadFile = uploadFileMapper.selectById(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id);
         if (uploadFile == null) {
             returnResult.setMessage("数据库中不存在！");
@@ -90,6 +90,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public JSONObject UploadFilesToServer(String authorId,MultipartFile[] files, AppUser user,String fileType,String vedioAddress) throws Exception{
+        ReturnResult returnResult=new ReturnResult();
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -209,6 +210,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     public JSONObject getRelease(String id, String authorId,String categoryId, String title, String description) {
+        ReturnResult returnResult=new ReturnResult();
         uploadFileMapper.getRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description);
         returnResult.setMessage("发布成功!");
         returnResult.setStatus(Boolean.TRUE);
@@ -253,6 +255,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     public JSONObject likeAcount(String authorId,String videoId) {
+        ReturnResult returnResult=new ReturnResult();
         uploadFileMapper.likeAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
         uploadFileMapper.userLikeAmount(authorId);
         returnResult.setMessage("点赞成功!");
@@ -268,6 +271,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     public JSONObject commentAmount(String authorId,String videoId) {
+        ReturnResult returnResult=new ReturnResult();
         uploadFileMapper.commentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
         uploadFileMapper.userCommentAmount(authorId);
         returnResult.setMessage("评论成功!");
@@ -282,6 +286,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     public JSONObject attentionAmount(String authorId) {
+        ReturnResult returnResult=new ReturnResult();
         /*uploadFileMapper.attentionAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",userId),videoId);*/
         uploadFileMapper.userAttentionAmount(authorId);
         returnResult.setMessage("关注成功!");

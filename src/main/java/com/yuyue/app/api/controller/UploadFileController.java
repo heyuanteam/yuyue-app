@@ -32,11 +32,6 @@ public class UploadFileController {
 
     @Autowired
     private UploadFileService uploadFileService;
-    @Autowired
-    private UploadFileMapper uploadFileMapper;
-    @Autowired
-    private LoginService loginService;
-
 
     /**
      * 视频详情

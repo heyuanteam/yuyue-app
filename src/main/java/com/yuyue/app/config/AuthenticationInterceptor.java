@@ -25,9 +25,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     private LoginService loginService;
 
-    private ReturnResult returnResult=new ReturnResult();
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        ReturnResult returnResult=new ReturnResult();
         // 如果不是映射到方法直接通过
         if (!(handler instanceof HandlerMethod)) {
             return true;

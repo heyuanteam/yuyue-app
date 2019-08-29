@@ -33,7 +33,6 @@ public class BarrageController extends BaseController{
     @Autowired
     private RedisUtil redisUtil;
 
-    private ReturnResult returnResult=new ReturnResult();
     private Map<String, List<Barrage>> map=new HashMap<>();
 
     /**
@@ -44,6 +43,7 @@ public class BarrageController extends BaseController{
     @RequestMapping("/getBarrages")
     @ResponseBody
     public JSONObject getBarrages(HttpServletRequest request){
+        ReturnResult returnResult=new ReturnResult();
         Map<String, String> mapValue = getParameterMap(request);
         final String videoId = mapValue.get("videoId");
         final String date = mapValue.get("date");
@@ -78,6 +78,7 @@ public class BarrageController extends BaseController{
     @ResponseBody
     @LoginRequired
     public JSONObject addBarrages(@CurrentUser AppUser user, HttpServletRequest request){
+        ReturnResult returnResult=new ReturnResult();
         Map<String, String> mapValue = getParameterMap(request);
         Barrage barrage = new Barrage();
         barrage.setId(UUID.randomUUID().toString().toUpperCase());

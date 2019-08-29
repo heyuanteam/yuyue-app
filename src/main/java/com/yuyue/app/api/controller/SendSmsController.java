@@ -52,7 +52,6 @@ public class SendSmsController extends BaseController{
 
     private static final String signName = "娱悦APP";
     private static final String templateCode = "SMS_172100731";
-    private ReturnResult result =new ReturnResult();
 
     /**
      * 发送消息验证码，通用接口
@@ -62,6 +61,7 @@ public class SendSmsController extends BaseController{
     public JSONObject sendSms(HttpServletRequest request){
         Map<String, String> map = getParameterMap(request);
         HashMap<String,String> hashMap = Maps.newHashMap();
+        ReturnResult result =new ReturnResult();
         String lcode = RandomSaltUtil.randomNumber(6);
         try {
             map.put("template_code", templateCode);
@@ -113,6 +113,7 @@ public class SendSmsController extends BaseController{
 //        String msgTitle = "消息内容标题";
 //        String msgContent = "消息内容";
         List<JPush> list = sendSmsService.getValid();
+        ReturnResult result =new ReturnResult();
         if(CollectionUtils.isNotEmpty(list)){
             for (int i = 0; i < list.size(); i++) {
                 JPush jPush = list.get(i);

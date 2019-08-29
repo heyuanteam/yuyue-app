@@ -42,7 +42,6 @@ public class UserCommentController extends BaseController{
     private UploadFileService uploadFileService;
 
 
-    private Map<String,Object> map= Maps.newTreeMap();
 
     /**
      * 获取视频中所有的评论
@@ -53,6 +52,7 @@ public class UserCommentController extends BaseController{
     @ResponseBody
     public JSONObject getAllComment(String videoId) {
         ReturnResult returnResult =new ReturnResult();
+        Map<String,Object> map= Maps.newTreeMap();
         List<UserCommentVo> userCommentList = null;
         //设置缓存
         if (redisUtil.existsKey("comment" + videoId)) {
@@ -163,6 +163,7 @@ public class UserCommentController extends BaseController{
     @ResponseBody
     @LoginRequired
     public JSONObject getVideoByAuthorId(@CurrentUser AppUser user,String authorId){
+        Map<String,Object> map= Maps.newTreeMap();
         ReturnResult returnResult =new ReturnResult();
         List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(authorId);
         if(videoByAuthorId.isEmpty()){

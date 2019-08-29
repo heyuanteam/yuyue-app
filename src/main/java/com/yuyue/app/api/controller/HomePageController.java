@@ -36,8 +36,7 @@ public class HomePageController {
     @Autowired
     private UploadFileService uploadFileService;
 
-    private ReturnResult returnResult=new ReturnResult();
-    private Map<String,List> map= Maps.newHashMap();
+
 
     /**
      * 首页展示轮播图及视频种类
@@ -45,6 +44,8 @@ public class HomePageController {
     @ResponseBody
     @RequestMapping("/result")
     public JSONObject homePage(){
+        Map<String,List> map= Maps.newHashMap();
+        ReturnResult returnResult=new ReturnResult();
         List<Banner> banners=null;
         List<VideoCategory> categories=null;
         if (redisUtil.existsKey("newbanners") && redisUtil.existsKey("newcategories")){
@@ -75,6 +76,8 @@ public class HomePageController {
     @ResponseBody
     @RequestMapping("/getVideo")
     public JSONObject getVideo(String page){
+        Map<String,List> map= Maps.newHashMap();
+        ReturnResult returnResult=new ReturnResult();
         List<UploadFile> list = Lists.newArrayList();
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 5;
@@ -108,6 +111,8 @@ public class HomePageController {
     @RequestMapping("/getCity")
     @ResponseBody
     public JSONObject getCity() {
+        Map<String,List> map= Maps.newHashMap();
+        ReturnResult returnResult=new ReturnResult();
         List<Address> list = new ArrayList<>();
         if (redisUtil.existsKey("shengshiqu")) {
             list = JSON.parseObject((String) redisUtil.getString("shengshiqu"),

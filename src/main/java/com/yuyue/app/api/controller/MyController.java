@@ -33,7 +33,7 @@ public class MyController extends BaseController{
     @Autowired
     private MyService myService;
 
-    private ReturnResult returnResult=new ReturnResult();
+
 
     /**
      * 意见反馈提交
@@ -45,6 +45,7 @@ public class MyController extends BaseController{
     @LoginRequired
     public JSONObject addBarrages(@CurrentUser AppUser user, HttpServletRequest request){
         Map<String, String> mapValue = getParameterMap(request);
+        ReturnResult returnResult=new ReturnResult();
         Feedback feedback = new Feedback();
         feedback.setId(UUID.randomUUID().toString().replace("-", "").toUpperCase());
         feedback.setContact(mapValue.get("contact"));
@@ -52,7 +53,6 @@ public class MyController extends BaseController{
         feedback.setDetails(mapValue.get("details"));
         feedback.setUserId(user.getId());
         myService.insertFeedback(feedback);
-
         returnResult.setMessage("添加成功！");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -67,6 +67,7 @@ public class MyController extends BaseController{
     @LoginRequired
     public JSONObject getMoneyList(@CurrentUser AppUser user){
         List<Order> list = myService.getMoneyList(user.getId());
+        ReturnResult returnResult=new ReturnResult();
         if(CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无充值记录！");
         } else {
