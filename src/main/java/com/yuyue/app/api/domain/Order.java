@@ -37,5 +37,7 @@ public class Order implements Serializable {
     private String responseMessage;
 //    商户ID
     private String merchantId;
+//    收礼物的那个人
+    private String sourceId;
 
 }
