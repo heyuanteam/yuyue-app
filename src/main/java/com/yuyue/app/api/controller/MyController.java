@@ -73,7 +73,7 @@ public class MyController extends BaseController{
         List<Order> list = myService.getMoneyList(user.getId());
         ReturnResult returnResult=new ReturnResult();
         if(CollectionUtils.isEmpty(list)){
-            returnResult.setMessage("暂无充值记录！");
+            returnResult.setMessage("暂无消费记录！");
         } else {
             returnResult.setMessage("查询成功！");
         }
