@@ -83,12 +83,19 @@ public class MyController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 广告推广申请
+     * @param request
+     * @return
+     */
+
     @RequestMapping("/addAdvertisemenInfo")
     @ResponseBody
-    public JSONObject addAdvertisemenInfo(HttpServletRequest request){
+    @LoginRequired
+    public JSONObject addAdvertisemenInfo(@CurrentUser AppUser appUser, HttpServletRequest request){
         Map<String, String> parameterMap = getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
-        String userId=parameterMap.get("userId");
+        String userId=appUser.getId();
         String merchantAddr=parameterMap.get("merchantAddr");
         String businessLicense=parameterMap.get("businessLicense");
         String IdCard=parameterMap.get("IdCard");
@@ -126,7 +133,11 @@ public class MyController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-
+    /**
+     * 查看广告推广申请信息
+     * @param appUser
+     * @return
+     */
     @RequestMapping("/getAdvertisementInfo")
     @ResponseBody
     @LoginRequired
