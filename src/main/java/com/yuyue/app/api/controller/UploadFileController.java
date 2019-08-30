@@ -90,11 +90,12 @@ public class UploadFileController extends  BaseController{
         System.out.println(map);
         returnResult.setMessage("返回成功!!");
         returnResult.setStatus(Boolean.TRUE);
+        log.info("====videoId===="+videoId);
+        log.info("====authorId===="+authorId);
+        returnResult.setResult(uploadFileService.fileDetail(authorId,videoId));
         returnResult.setResult(map);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
-
-
 
     /**
      * 删除单个文件

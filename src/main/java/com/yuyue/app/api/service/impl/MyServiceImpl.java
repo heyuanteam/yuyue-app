@@ -4,8 +4,10 @@ import com.yuyue.app.api.domain.Advertisement;
 import com.yuyue.app.api.domain.Feedback;
 import com.yuyue.app.api.domain.Order;
 import com.yuyue.app.api.mapper.AdvertisementMapper;
+import com.yuyue.app.api.domain.ShowName;
 import com.yuyue.app.api.mapper.FeedbackMapper;
 import com.yuyue.app.api.mapper.PayMapper;
+import com.yuyue.app.api.mapper.ShowNameMapper;
 import com.yuyue.app.api.service.MyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ public class MyServiceImpl implements MyService {
     private FeedbackMapper feedbackMapper;
     @Autowired
     private PayMapper payMapper;
+    @Autowired
+    private ShowNameMapper showNameMapper;
     @Autowired
     private AdvertisementMapper advertisementMapper;
 
@@ -37,4 +41,7 @@ public class MyServiceImpl implements MyService {
     public Advertisement getAdvertisementInfo(String userId) {
         return advertisementMapper.getAdvertisementInfo(userId);
     }
+
+    @Override
+    public void insertShowName(ShowName showName) { showNameMapper.insertShowName(showName); }
 }

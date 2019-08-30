@@ -3,6 +3,7 @@ package com.yuyue.app.api.service;
 import com.yuyue.app.api.domain.Advertisement;
 import com.yuyue.app.api.domain.Feedback;
 import com.yuyue.app.api.domain.Order;
+import com.yuyue.app.api.domain.ShowName;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface MyService {
 
 
     Advertisement getAdvertisementInfo(String userId);
+
+    void insertShowName(ShowName showName);
 }
