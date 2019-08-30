@@ -13,9 +13,9 @@ public class Advertisement implements Serializable {
 
     //广告申请Id
     private String id;
+    //必填
     //用户id
     private String userId;
-    //必填
     //商家地址
     private String merchantAddr;
     //营业执照
@@ -49,8 +49,8 @@ public class Advertisement implements Serializable {
     private String applicationTime;
     //推广时间
     private String spreadTime;
-
-
+    //广告审核状态
+    private String status;
 
 
 }

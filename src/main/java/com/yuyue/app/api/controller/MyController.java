@@ -57,7 +57,7 @@ public class MyController extends BaseController{
             feedback.setDetails(mapValue.get("details"));
             feedback.setUserId(user.getId());
             myService.insertFeedback(feedback);
-            returnResult.setMessage("添加成功！");
+            returnResult.setMessage("反馈成功！");
             returnResult.setStatus(Boolean.TRUE);
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -95,6 +95,11 @@ public class MyController extends BaseController{
     public JSONObject addAdvertisemenInfo(@CurrentUser AppUser appUser, HttpServletRequest request){
         Map<String, String> parameterMap = getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
+        if(myService.getAdvertisementInfo(appUser.getId()) !=null ){
+            returnResult.setMessage("已提交,待审核");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         String userId=appUser.getId();
         String merchantAddr=parameterMap.get("merchantAddr");
         String businessLicense=parameterMap.get("businessLicense");
