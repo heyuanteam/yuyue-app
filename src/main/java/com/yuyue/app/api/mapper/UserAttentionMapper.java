@@ -43,4 +43,7 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
 
     @Select("SELECT COUNT(userId) from yuyue_attention where authorId = #{ authorId }")
     int getFansSum(String authorId);
+
+    @Select("SELECT STATUS FROM yuyue_attention WHERE userId = #{userId}  AND  authorId = #{authorId}")
+    String getAttentionStatus(@Param("userId") String userId,@Param("authorId") String authorId);
 }

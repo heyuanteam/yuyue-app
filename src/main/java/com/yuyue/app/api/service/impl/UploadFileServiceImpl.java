@@ -188,7 +188,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 
 
     /**
-     *
+     * 获取视频，并做分页
      * @param tableName
      * @param bdgin
      * @param size
@@ -201,7 +201,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 
 
     /**
-     *
+     *我的发布
      * @param id
      * @param categoryId
      * @param title

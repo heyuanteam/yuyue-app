@@ -86,7 +86,7 @@ public interface UploadFileService {
     JSONObject getRelease(String id,String authorId,String categoryId, String title, String description);
 
     /**
-     *
+     *通过作者id 获取视频
      * @param
      * @return
      */

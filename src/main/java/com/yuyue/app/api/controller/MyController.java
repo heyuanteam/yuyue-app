@@ -7,7 +7,9 @@ import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.MyService;
+import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
+import com.yuyue.app.utils.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,4 +79,62 @@ public class MyController extends BaseController{
         returnResult.setResult(JSONArray.parseArray(JSON.toJSONString(list)));
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+    @RequestMapping("/addAdvertisemenInfo")
+    @ResponseBody
+    public JSONObject addAdvertisemenInfo(HttpServletRequest request){
+        Map<String, String> parameterMap = getParameterMap(request);
+        ReturnResult returnResult =new ReturnResult();
+        String userId=parameterMap.get("userId");
+        String merchantAddr=parameterMap.get("merchantAddr");
+        String businessLicense=parameterMap.get("businessLicense");
+        String IdCard=parameterMap.get("IdCard");
+        String agencyCode=parameterMap.get("agencyCode");
+        String merchantName=parameterMap.get("merchantName");
+        String phone=parameterMap.get("phone");
+        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(merchantAddr) || StringUtils.isEmpty(businessLicense)  || StringUtils.isEmpty(IdCard)
+                || StringUtils.isEmpty(agencyCode) || StringUtils.isEmpty(merchantName) || StringUtils.isEmpty(phone) ){
+            returnResult.setMessage("必填项存在空值");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        Advertisement advertisement=new Advertisement();
+        advertisement.setId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+        //必填的属性
+        advertisement.setUserId(userId);
+        advertisement.setMerchantAddr(merchantAddr);
+        advertisement.setBusinessLicense(businessLicense);
+        advertisement.setIdCard(IdCard);
+        advertisement.setAgencyCode(agencyCode);
+        advertisement.setMerchantName(merchantName);
+        advertisement.setPhone(phone);
+
+        //选填的属性
+        advertisement.setProduceAddr(parameterMap.get("produceAddr"));
+        advertisement.setFixedPhone(parameterMap.get("fixedPhone"));
+        advertisement.setEmail(parameterMap.get("email"));
+        advertisement.setWx(parameterMap.get("wx"));
+        advertisement.setQqNum(parameterMap.get("qqNum"));
+        advertisement.setMerchandiseUrl(parameterMap.get("merchandiseUrl"));
+        advertisement.setTelephone(parameterMap.get("telephone"));
+        System.out.println(advertisement);
+        myService.addAdvertisemenInfo(advertisement);
+        returnResult.setMessage("信息插入成功");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+
+
+    @RequestMapping("/getAdvertisementInfo")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject getAdvertisementInfo(@CurrentUser AppUser appUser){
+        ReturnResult returnResult =new ReturnResult();
+        returnResult.setResult(myService.getAdvertisementInfo(appUser.getId()));
+        returnResult.setMessage("信息返回成功");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+
+
 }

@@ -32,4 +32,6 @@ public interface UserCommentMapper extends MyBaseMapper<UserComment> {
     @Delete("DELETE FROM yuyue_user_comment WHERE ID = #{id}")
     void deleteComment(String id);
 
+
+
 }

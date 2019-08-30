@@ -52,6 +52,10 @@ public class UserCommentController extends BaseController{
     @ResponseBody
     public JSONObject getAllComment(String videoId) {
         ReturnResult returnResult =new ReturnResult();
+        if(videoId.isEmpty()){
+            returnResult.setMessage("视频id不能为空!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         Map<String,Object> map= Maps.newTreeMap();
         List<UserCommentVo> userCommentList = null;
         //设置缓存
@@ -64,19 +68,18 @@ public class UserCommentController extends BaseController{
         } else {
             userCommentList = userCommentService.getAllComment(videoId);
             String str = JSON.toJSONString(userCommentList);
-            redisUtil.setString("comment" + videoId, str, 60);
+            redisUtil.setString("comment" + videoId, str, 1);
             System.out.println("查询数据库并存储redis---->>>>>>>" + str);
         }
         if(userCommentList.isEmpty()) {
             returnResult.setMessage("暂无评论！");
-            returnResult.setStatus(Boolean.TRUE);
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else {
+            returnResult.setMessage("返回成功！");
         }
         map.put("comment", userCommentList);
         map.put("commentNum", userCommentList.size());
-        returnResult.setMessage("返回成功！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(JSONObject.toJSON(map));
+        returnResult.setResult(map);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -91,17 +94,19 @@ public class UserCommentController extends BaseController{
     public JSONObject addComment(HttpServletRequest request,@CurrentUser AppUser user) {
         Map<String, String> mapValue = getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
-        if (StringUtils.isEmpty(user.getId()) || StringUtils.isEmpty(mapValue.get("videoId"))) {
-            returnResult.setMessage("用户id为空！或视频id为空！");
+        String videoId=mapValue.get("videoId");
+        String authorId=mapValue.get("authorId");
+        if(authorId.isEmpty() || videoId.isEmpty() || user.getId().isEmpty()){
+            returnResult.setMessage("作者id或视频id不能为空!!");
         } else {
             UserComment comment=new UserComment();
             String id= UUID.randomUUID().toString().replace("-","").toUpperCase();
             comment.setId(id);
-            comment.setVideoId(mapValue.get("videoId"));
+            comment.setVideoId(videoId);
             comment.setUserId(user.getId());
             comment.setText(mapValue.get("text"));
             //用户表，视频表评论数+1
-            uploadFileService.commentAmount(mapValue.get("authorId"),mapValue.get("videoId"));
+            uploadFileService.commentAmount(authorId,videoId);
             //数据插入到Comment表中
             userCommentService.addComment(comment);
             returnResult.setMessage("评论成功！");
@@ -121,13 +126,19 @@ public class UserCommentController extends BaseController{
     public JSONObject deleteComment(HttpServletRequest request,@CurrentUser AppUser user) {
         ReturnResult returnResult =new ReturnResult();
         Map<String, String> mapValue = getParameterMap(request);
-        //通过评论id查询是否存在此评论
+        String commentId=mapValue.get("id");
+        String videoId=mapValue.get("videoId");
+        String authorId=mapValue.get("authorId");
+        if(authorId.isEmpty() || videoId.isEmpty() || user.getId().isEmpty()){
+            returnResult.setMessage("作者id或视频id不能为空!!");
+        }else {
+            //通过评论id查询是否存在此评论
+            userCommentService.deleteComment(commentId,videoId);
+            uploadFileService.reduceCommentAmount(authorId,videoId);
+            returnResult.setMessage("删除成功！");
+            returnResult.setStatus(Boolean.TRUE);
+        }
 
-        userCommentService.deleteComment(mapValue.get("id"),mapValue.get("videoId"));
-        uploadFileService.reduceCommentAmount(mapValue.get("authorId"),mapValue.get("videoId"));
-
-        returnResult.setMessage("删除成功！");
-        returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -165,17 +176,20 @@ public class UserCommentController extends BaseController{
     public JSONObject getVideoByAuthorId(@CurrentUser AppUser user,String authorId){
         Map<String,Object> map= Maps.newTreeMap();
         ReturnResult returnResult =new ReturnResult();
+        if(authorId.isEmpty()  || user.getId().isEmpty()){
+            returnResult.setMessage("作者id不能为空!!");
+        }
         List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(authorId);
         if(videoByAuthorId.isEmpty()){
             returnResult.setResult(map);
+            returnResult.setMessage("暂无视频！！");
+            returnResult.setStatus(Boolean.TRUE);
+
+        }else {
+            returnResult.setResult(videoByAuthorId);
             returnResult.setMessage("返回成功！！");
             returnResult.setStatus(Boolean.TRUE);
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-
-          returnResult.setResult(videoByAuthorId);
-          returnResult.setMessage("返回成功！！");
-          returnResult.setStatus(Boolean.TRUE);
           return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -190,6 +204,10 @@ public class UserCommentController extends BaseController{
     public JSONObject addAttention(@CurrentUser AppUser user,String authorId){
         ReturnResult returnResult=new ReturnResult();
         List<Attention> userAttention = userCommentService.getUserAttention(user.getId());
+        if(authorId.isEmpty()  || user.getId().isEmpty()){
+            returnResult.setMessage("作者id不能为空!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         for (Attention attertion:userAttention
              ) {
             if (attertion.getAuthorId().equals(authorId)){
@@ -218,7 +236,12 @@ public class UserCommentController extends BaseController{
     @LoginRequired
     public JSONObject cancelAttention(@CurrentUser AppUser user,String authorId){
         ReturnResult returnResult=new ReturnResult();
+        if(authorId.isEmpty()  || user.getId().isEmpty()){
+            returnResult.setMessage("作者id不能为空!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         List<Attention> userAttentions = userCommentService.getUserAttention(user.getId());
+
         if(userAttentions.isEmpty()){
             returnResult.setMessage("暂无关注！！");
         }
@@ -267,6 +290,10 @@ public class UserCommentController extends BaseController{
     @LoginRequired
     public JSONObject insertToLikeList(@CurrentUser AppUser user,String authorId,String videoId){
         ReturnResult returnResult =new ReturnResult();
+        if(authorId.isEmpty() || videoId.isEmpty() ){
+            returnResult.setMessage("作者id或视频id不能为空!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         String likeStatus = userCommentService.getLikeStatus(user.getId(), videoId);
         System.out.println("---------------------"+likeStatus);
         if(likeStatus == null || "0".equals(likeStatus)){
@@ -277,13 +304,40 @@ public class UserCommentController extends BaseController{
             returnResult.setMessage("点赞成功");
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-
         }else {
             returnResult.setMessage("视频已点赞");
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
     }
+    /**
+     *查询用户视频点赞状态
+     * @param user
+     * @param videoId
+     * @return
+     */
+    /* @RequestMapping("/getLikeStatus")
+    @ResponseBody
+    @LoginRequired
+   public JSONObject getLikeStatus(@CurrentUser AppUser user,String videoId){
+        ReturnResult returnResult =new ReturnResult();
+        if( videoId.isEmpty() ){
+            returnResult.setMessage("视频id不能为空!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        String likeStatus = userCommentService.getLikeStatus(user.getId(), videoId);
+        if(likeStatus == null || "0".equals(likeStatus)){
+            returnResult.setMessage("未点赞");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else {
+            returnResult.setMessage("已点赞");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+    }
+*/
+
 
     /**
      *作者查看点赞列表信息

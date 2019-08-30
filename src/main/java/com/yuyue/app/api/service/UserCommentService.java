@@ -39,6 +39,15 @@ public interface UserCommentService {
      void cancelAttention(String userId,String authorId);
 
     /**
+     * 获取用户关注状态
+     * @param userId
+     * @param authorId
+     * @return
+     */
+     String getAttentionStatus(String userId,String authorId);
+
+
+    /**
      * 获取粉丝数
      * @param authorId
      * @return

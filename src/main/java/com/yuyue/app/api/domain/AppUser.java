@@ -28,6 +28,7 @@ public class AppUser implements Serializable {
     private String jpushName;
     private String password;
     private String salt;
+
     private BigDecimal total;
     private String sex;
     private String addrDetail;

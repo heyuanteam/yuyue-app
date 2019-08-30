@@ -44,6 +44,15 @@ public class UserCommentServiceImpl implements UserCommentService{
     public void deleteComment(String id,String videoId) {
         userCommentMapper.deleteComment(id);
     }
+    /**
+     * 获取用户关注状态
+     * @param userId
+     * @param authorId
+     * @return
+     */
+    public String getAttentionStatus(String userId,String authorId){
+        return userAttentionMapper.getAttentionStatus(userId,authorId);
+    }
 
     @Override
     public List<Attention> getUserAttention(String userId) {
