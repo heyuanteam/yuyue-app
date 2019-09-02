@@ -12,9 +12,8 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Select("select * from ${tableName} where id = #{id}")
     UploadFile selectById(@Param("tableName")String tableName,@Param("id")String id);
 
-    @Select("select b.id,DATE_FORMAT(b.uploadTime ,'%Y-%m-%d %H:%i:%s') uploadTime,b.filesName,b.filesPath,b.filesType,b.fileSize,b.authorId,b.description,b.commentAmount,b.likeAmount,b.attentionAmount,b.duration " +
-            "from ${tableName} b WHERE   b.filesType = 'video' GROUP BY b.id ORDER BY b.uploadTime OR b.commentAmount OR b.likeAmount or b.attentionAmount DESC LIMIT #{bdgin},#{size}")
-    List<UploadFile> getVideo(@Param("tableName")String tableName, @Param("bdgin")int bdgin, @Param("size")int size);
+
+    List<UploadFile> getVideo(@Param("tableName")String tableName, @Param("bdgin")int bdgin, @Param("size")int size,@Param("categoryId")String categoryId);
 
     @Transactional
     @Delete("delete from ${tableName} where id = #{id}")

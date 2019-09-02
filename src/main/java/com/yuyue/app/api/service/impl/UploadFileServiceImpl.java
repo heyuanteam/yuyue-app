@@ -89,7 +89,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject UploadFilesToServer(String authorId,MultipartFile[] files, AppUser user,String fileType,String vedioAddress) throws Exception{
+    public JSONObject UploadFilesToServer(String authorId,MultipartFile[] files, AppUser user,String fileType,String vedioAddress,String categoryId) throws Exception{
         ReturnResult returnResult=new ReturnResult();
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
@@ -113,6 +113,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                     UploadFile uploadFile = new UploadFile();
                     String uid = UUID.randomUUID().toString().replaceAll("-", "");
                     uploadFile.setId(uid.toUpperCase());
+                    uploadFile.setCategoryId(categoryId);
                     uploadFile.setAuthorId(user.getId());
                     uploadFile.setFilesName(files[i].getOriginalFilename());
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
@@ -195,8 +196,8 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public List<UploadFile> getVideo(String tableName, int bdgin, int size) {
-        return uploadFileMapper.getVideo(tableName,bdgin,size);
+    public List<UploadFile> getVideo(String tableName, int bdgin, int size,String categoryId) {
+        return uploadFileMapper.getVideo(tableName,bdgin,size,categoryId);
     }
 
 

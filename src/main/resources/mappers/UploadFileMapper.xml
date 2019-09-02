@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuyue.app.api.mapper.UploadFileMapper" >
+
+
+    <select id="getVideo" resultType="com.yuyue.app.api.domain.UploadFile" parameterType="String">
+        select b.id,DATE_FORMAT(b.uploadTime ,'%Y-%m-%d %H:%i:%s') uploadTime,b.filesName,b.filesPath,b.filesType,b.fileSize,b.authorId,
+        b.description,b.commentAmount,b.likeAmount,b.attentionAmount,b.duration
+        from ${tableName} b WHERE  1=1 and b.filesType = 'video'
+            <choose>
+                <when test="categoryId!=null and categoryId!=''">  and b.categoryId=#{categoryId}  </when>
+
+            </choose>
+        GROUP BY b.id ORDER BY b.uploadTime OR b.commentAmount
+        OR b.likeAmount or b.attentionAmount DESC
+         LIMIT #{bdgin},#{size}
+
+    </select>
+
+
+
+</mapper>

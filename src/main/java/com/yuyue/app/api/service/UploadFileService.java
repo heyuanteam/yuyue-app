@@ -24,7 +24,7 @@ public interface UploadFileService {
      *
      * @return
      */
-    JSONObject UploadFilesToServer(String authorId,MultipartFile[] files,AppUser user,String fileType,String vedioAddress)throws Exception;
+    JSONObject UploadFilesToServer(String authorId,MultipartFile[] files,AppUser user,String fileType,String vedioAddress,String categoryId)throws Exception;
 
     /**
      * 从fastdfs服务器下载文件
@@ -71,7 +71,7 @@ public interface UploadFileService {
      * @param size
      * @return
      */
-    List<UploadFile> getVideo(String tableName, int bdgin, int size);
+    List<UploadFile> getVideo(String tableName, int bdgin, int size,String categoryId);
 
 
 

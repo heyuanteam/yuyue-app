@@ -7,7 +7,6 @@ import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.domain.UploadFile;
-import com.yuyue.app.api.mapper.UploadFileMapper;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
@@ -68,16 +67,20 @@ public class UploadFileController extends  BaseController{
         }
         Map<String,Object> map= Maps.newTreeMap();
         if (userId.isEmpty()){
-            map.put("LikeStatus","0");
+            //用户没有登录情况下，显示视频点赞量，作者关注量
+            map.put("LikeStatus",uploadFile.getLikeAmount());
             map.put("AttentionStatus","0");
         }else {
-            String commentStatus=userCommentService.getLikeStatus(userId, videoId);
-            if(StringUtils.isEmpty(commentStatus) || "0".equals(commentStatus)){
+            String likeStatus=userCommentService.getLikeStatus(userId, videoId);
+            //用户未点赞该视频
+            if(StringUtils.isEmpty(likeStatus) || "0".equals(likeStatus)){
                 map.put("LikeStatus","0");
             }else
+            //已点赞
             map.put("LikeStatus","1");
             String attentionStatus = userCommentService.getAttentionStatus(userId, authorId);
-            System.out.println(commentStatus+"-----"+attentionStatus);
+            System.out.println(likeStatus+"-----"+attentionStatus);
+            //用户关注该视频作者状态
             if (StringUtils.isEmpty(attentionStatus) || "0".equals(attentionStatus))
             map.put("AttentionStatus","0");
             else
@@ -123,8 +126,8 @@ public class UploadFileController extends  BaseController{
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
     @LoginRequired
-    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user,String authorId, String fileType, String vedioAddress) throws Exception {
-        return uploadFileService.UploadFilesToServer(authorId,files,user,fileType,vedioAddress);
+    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user,String authorId, String fileType, String vedioAddress,String categoryId) throws Exception {
+        return uploadFileService.UploadFilesToServer(authorId,files,user,fileType,vedioAddress,categoryId);
     }
 
     /**
@@ -137,7 +140,6 @@ public class UploadFileController extends  BaseController{
     @ResponseBody
 //    @LoginRequired   @CurrentUser
     public JSONObject getRelease(String id, String authorId,String categoryId,String title,String description) throws Exception {
-        ReturnResult returnResult=new ReturnResult();
         return uploadFileService.getRelease(id,authorId,categoryId,title,description);
     }
 
@@ -151,5 +153,7 @@ public class UploadFileController extends  BaseController{
     public void downloadFile(@RequestParam("filesName") String filesName,@RequestParam("filesPath") String filesPath, HttpServletResponse response) throws IOException {
         uploadFileService.downloadFile(filesName, filesPath, response);
     }
+
+
 
 }

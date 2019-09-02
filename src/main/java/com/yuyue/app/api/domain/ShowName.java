@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * 演出申请类
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

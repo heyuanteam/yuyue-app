@@ -5,6 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+
+/**
+ * 广告推广表
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
