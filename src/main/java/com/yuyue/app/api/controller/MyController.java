@@ -7,6 +7,7 @@ import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.MyService;
+import com.yuyue.app.api.service.UserCommentService;
 import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
@@ -34,6 +35,8 @@ public class MyController extends BaseController{
 
     @Autowired
     private MyService myService;
+    @Autowired
+    private UserCommentService userCommentService;
 
     /**
      * 意见反馈提交
@@ -153,6 +156,30 @@ public class MyController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+
+    /**
+     * 我的评论
+     * @param appUser
+     * @param videoId
+     * @return
+     */
+    @RequestMapping("/myComments")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject getAllCommentByUserId(@CurrentUser AppUser appUser,String videoId){
+        ReturnResult returnResult=new ReturnResult();
+        List<UserCommentVo> allComment = userCommentService.getAllComment("", appUser.getId());
+        if (StringUtils.isEmpty(allComment)){
+            returnResult.setMessage("暂无评论!!");
+        }else {
+            returnResult.setMessage("返回成功");
+        }
+        //以后拓展业务,评论中展示视频的名称及图片
+        returnResult.setResult(allComment);
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
 
     /**
      * 演出申请

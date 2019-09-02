@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author ly
  */
@@ -33,4 +35,6 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
                        @Param("userUrl") String userUrl,@Param("cardZUrl") String cardZUrl,@Param("cardFUrl") String cardFUrl,
                        @Param("password") String password,@Param("city") String city,@Param("jpushName") String jpushName);
 
+
+    List<AppUser> getAppUserMsgToLike(@Param("userId")String userId,@Param("content")String content);
 }

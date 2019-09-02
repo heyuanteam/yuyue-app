@@ -111,6 +111,57 @@
          LIMIT 1
 
     </select>
+    <select id="getAppUserMsgToLike" resultType="com.yuyue.app.api.domain.AppUser" parameterType="String">
+        SELECT
+        id,
+        user_no userNo,
+        user_nick_name nickName,
+        user_real_name realName,
+        id_type idType,
+        id_card idCard,
+        phone,
+        sex,
+        city,
+        jpushName,
+        PASSWORD,
+        salt,
+        user_status userStatus,
+        total,
+        ADDR_DETAIL addrDetail,
+        HEADP_URL headpUrl,
+        USER_TYPE userType,
+        cardFUrl,
+        cardZUrl,
+        userUrl,
+        ATTENTION_TOTAL attentionTotal,
+        LIKE_TOTAL likeTotal,
+        COMMENT_TOTAL commentTotal,
+        education,
+        wechat,
+        signature,
+        DATE_FORMAT(
+        create_time,
+        '%Y-%m-%d %H:%i:%s'
+        ) createTime,
+        DATE_FORMAT(
+        update_time,
+        '%Y-%m-%d %H:%i:%s'
+        ) updateTime
+        FROM
+        yuyue_merchant
+        WHERE
+        user_nick_name LIKE "%"#{content}"%"
+        AND ID IN (
+        SELECT
+        authorId
+        FROM
+        yuyue_attention
+        WHERE
+        userId = #{userId}
+        )
+
+
+    </select>
 
 
 </mapper>

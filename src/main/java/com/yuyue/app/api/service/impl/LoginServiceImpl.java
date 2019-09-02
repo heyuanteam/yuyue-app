@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 
 /**
@@ -36,6 +37,16 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public AppUser getAppUserMsg(String password, String phone, String id) { return loginMapper.getAppUserMsg(password,phone,id); }
 
+    /**
+     * 通过用户名模糊查询用户信息
+     * @param userId
+     * @param content
+     * @return
+     */
+    @Override
+    public List<AppUser> getAppUserMsgToLike(String userId, String content){
+        return loginMapper.getAppUserMsgToLike(userId,content);
+    }
     @Override
     public void addUser(AppUser appUser) {
         loginMapper.addUser(appUser);

@@ -13,13 +13,13 @@ import com.yuyue.app.api.service.UserCommentService;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -66,9 +66,9 @@ public class UserCommentController extends BaseController{
                 System.out.println("redis缓存取出的数据" + user);
             }
         } else {
-            userCommentList = userCommentService.getAllComment(videoId);
+            userCommentList = userCommentService.getAllComment(videoId,"");
             String str = JSON.toJSONString(userCommentList);
-            redisUtil.setString("comment" + videoId, str, 1);
+            redisUtil.setString("comment" + videoId, str, 60);
             System.out.println("查询数据库并存储redis---->>>>>>>" + str);
         }
         if(userCommentList.isEmpty()) {
@@ -83,6 +83,8 @@ public class UserCommentController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+
+
     /**
      * 用户添加评论
      * @param request(videoId,authorId,token)
@@ -92,6 +94,7 @@ public class UserCommentController extends BaseController{
     @ResponseBody
     @LoginRequired
     public JSONObject addComment(HttpServletRequest request,@CurrentUser AppUser user) {
+
         Map<String, String> mapValue = getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         String videoId=mapValue.get("videoId");
@@ -150,7 +153,8 @@ public class UserCommentController extends BaseController{
     @RequestMapping("/getUserAttention")
     @ResponseBody
     @LoginRequired
-    public JSONObject getUserAttention(@CurrentUser AppUser user){
+    public JSONObject getUserAttention(@CurrentUser AppUser user,String content){
+
         ReturnResult returnResult =new ReturnResult();
         List<AppUser> appUserList= Lists.newArrayList();
         System.out.println("---------"+user.getId());
@@ -160,11 +164,21 @@ public class UserCommentController extends BaseController{
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        for (Attention attention:userAttentions
-             ) {
-            AppUser appUserMsg = loginService.getAppUserMsg("", "", attention.getAuthorId());
-            appUserList.add(appUserMsg);
+        if (StringUtils.isNotEmpty(content)){
+            appUserList = loginService.getAppUserMsgToLike(user.getId(), content);
+            if (appUserList.isEmpty()){
+                returnResult.setMessage("查无此人！！");
+                returnResult.setStatus(Boolean.TRUE);
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+        }else {
+            for (Attention attention:userAttentions
+            ) {
+                AppUser appUserMsg = loginService.getAppUserMsg("", "", attention.getAuthorId());
+                appUserList.add(appUserMsg);
+            }
         }
+
         returnResult.setResult(appUserList);
         returnResult.setMessage("返回成功！！");
         returnResult.setStatus(Boolean.TRUE);

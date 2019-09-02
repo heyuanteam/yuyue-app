@@ -3,7 +3,11 @@ package com.yuyue.app.api.service;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.AppVersion;
 
+import java.util.List;
+
 public interface LoginService {
+    //通过用户名模糊查询用户信息
+    List<AppUser> getAppUserMsgToLike(String userId, String content);
 
     //查詢版本
     AppVersion getAppVersion(String appVersion);

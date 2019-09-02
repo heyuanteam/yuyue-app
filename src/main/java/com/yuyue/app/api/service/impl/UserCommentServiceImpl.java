@@ -31,9 +31,10 @@ public class UserCommentServiceImpl implements UserCommentService{
 
 
     @Override
-    public List<UserCommentVo> getAllComment(String videoId) {
-        return userCommentMapper.getAllComment(videoId);
+    public List<UserCommentVo> getAllComment(String videoId,String userId) {
+        return userCommentMapper.getAllComment(videoId,userId);
     }
+
 
     @Override
     public void addComment(UserComment comment) {

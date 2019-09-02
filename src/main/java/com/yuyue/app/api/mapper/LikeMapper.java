@@ -19,7 +19,7 @@ public interface LikeMapper extends MyBaseMapper<Like> {
             "VALUES  (#{id},#{videoId},#{userId},#{authorId},#{userName},#{videoTittle},#{headUrl},#{status})")
     void insertToLikeList(Like like);
 
-    @Select("SELECT ID id,VIDEO_ID videoId,USER_ID userId,AUTHOR_ID authorId, USER_NAME userName,VIDEO_NAME videoTittle,HEADP_URL headUrl,STATUS  status,  CREATE_TIME createTime " +
-            "FROM yuyue_like_list WHERE AUTHOR_ID = #{id}")
+    @Select("SELECT ID id,VIDEO_ID videoId,USER_ID userId,AUTHOR_ID authorId, USER_NAME userName,VIDEO_NAME videoTittle,HEADP_URL headUrl," +
+            "STATUS  status, DATE_FORMAT(CREATE_TIME ,'%Y-%m-%d %H:%i:%s') createTime  FROM yuyue_like_list WHERE AUTHOR_ID = #{id}")
     List<Like> getLikeList(String id);
 }
