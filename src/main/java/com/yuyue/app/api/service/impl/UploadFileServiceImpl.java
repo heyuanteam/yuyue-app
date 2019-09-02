@@ -101,7 +101,7 @@ public class UploadFileServiceImpl implements UploadFileService {
         List<String> listMDs = new ArrayList();
         List<UploadFile> lists = new ArrayList();
         HashMap<String,Object> hashMap = Maps.newHashMap();
-        if(104857600 < files[0].getSize()){
+        if(157286400 < files[0].getSize()){
             returnResult.setMessage("上传文件不可大于100MB!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else {
