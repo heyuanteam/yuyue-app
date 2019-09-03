@@ -3,6 +3,7 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
@@ -98,9 +99,15 @@ public class MyController extends BaseController{
     public JSONObject addAdvertisemenInfo(@CurrentUser AppUser appUser, HttpServletRequest request){
         Map<String, String> parameterMap = getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
-        if(myService.getAdvertisementInfo(appUser.getId()) !=null ){
-            returnResult.setMessage("已提交,待审核");
-            returnResult.setStatus(Boolean.TRUE);
+        Advertisement advertisementInfo = myService.getAdvertisementInfo(appUser.getId());
+        if( StringUtils.isNotNull(advertisementInfo) ){
+            if("10B".equals(advertisementInfo.getStatus())){
+                returnResult.setMessage("审核通过！！");
+                returnResult.setStatus(Boolean.TRUE);
+            }else {
+                returnResult.setMessage("已提交，待审核");
+            }
+            returnResult.setResult(advertisementInfo);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         String userId=appUser.getId();
@@ -153,7 +160,11 @@ public class MyController extends BaseController{
     @LoginRequired
     public JSONObject getAdvertisementInfo(@CurrentUser AppUser appUser){
         ReturnResult returnResult =new ReturnResult();
-        returnResult.setResult(myService.getAdvertisementInfo(appUser.getId()));
+        Advertisement advertisementInfo = myService.getAdvertisementInfo(appUser.getId());
+        if (StringUtils.isNull(advertisementInfo)){
+            returnResult.setResult(new Object());
+        }else
+            returnResult.setResult(advertisementInfo);
         returnResult.setMessage("信息返回成功");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -193,6 +204,18 @@ public class MyController extends BaseController{
     public JSONObject insertShowName(@CurrentUser AppUser user, HttpServletRequest request){
         Map<String, String> mapValue = getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
+        ShowName showInfo = myService.getShowInfo(user.getId());
+        if (StringUtils.isNotNull(showInfo)){
+            if("10B".equals(showInfo.getStatus())){
+                returnResult.setMessage("审核通过！！");
+                returnResult.setStatus(Boolean.TRUE);
+            }else {
+                returnResult.setMessage("已提交，待审核");
+
+            }
+            returnResult.setResult(showInfo);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         if(StringUtils.isEmpty(mapValue.get("teamName")) || StringUtils.isEmpty(mapValue.get("size"))
                 || StringUtils.isEmpty(mapValue.get("address")) || StringUtils.isEmpty(mapValue.get("cardZUrl"))
                 || StringUtils.isEmpty(mapValue.get("cardFUrl")) || StringUtils.isEmpty(mapValue.get("categoryId"))
@@ -218,6 +241,26 @@ public class MyController extends BaseController{
             returnResult.setMessage("添加成功！");
             returnResult.setStatus(Boolean.TRUE);
         }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 查看广告推广申请信息
+     * @param appUser
+     * @return
+     */
+    @RequestMapping("/getShowInfo")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject getShowInfo(@CurrentUser AppUser appUser){
+        ReturnResult returnResult =new ReturnResult();
+        ShowName showInfo = myService.getShowInfo(appUser.getId());
+        if (StringUtils.isNull(showInfo)){
+            returnResult.setResult(new Object());
+        }else
+            returnResult.setResult(showInfo);
+        returnResult.setMessage("信息返回成功");
+        returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }

@@ -21,4 +21,6 @@ public interface MyService {
     Advertisement getAdvertisementInfo(String userId);
 
     void insertShowName(ShowName showName);
+
+    ShowName getShowInfo(String id);
 }

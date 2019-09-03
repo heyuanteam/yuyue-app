@@ -14,4 +14,5 @@ public interface HomePageService {
     YuyueSite getSite(String id);
     List<YuyueSite> getSiteList();
     List<SiteShow> getShow(String siteId);
+
 }

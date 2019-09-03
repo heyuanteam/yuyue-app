@@ -41,5 +41,7 @@ public class ShowName implements Serializable {
     private String mail;
 //    微信
     private String weChat;
+//    演出申请状态
+    private String status;
 
 }

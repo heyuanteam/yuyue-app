@@ -44,4 +44,9 @@ public class MyServiceImpl implements MyService {
 
     @Override
     public void insertShowName(ShowName showName) { showNameMapper.insertShowName(showName); }
+
+    @Override
+    public ShowName getShowInfo(String id){
+        return showNameMapper.getShowInfo(id);
+    }
 }
