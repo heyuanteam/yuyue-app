@@ -126,8 +126,8 @@ public class UploadFileController extends  BaseController{
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
     @LoginRequired
-    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user,String authorId, String fileType, String vedioAddress,String categoryId) throws Exception {
-        return uploadFileService.UploadFilesToServer(authorId,files,user,fileType,vedioAddress,categoryId);
+    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user) throws Exception {
+        return uploadFileService.UploadFilesToServer(files,user);
     }
 
     /**
@@ -138,9 +138,9 @@ public class UploadFileController extends  BaseController{
      */
     @RequestMapping(value = "/getRelease")
     @ResponseBody
-//    @LoginRequired   @CurrentUser
-    public JSONObject getRelease(String id, String authorId,String categoryId,String title,String description) throws Exception {
-        return uploadFileService.getRelease(id,authorId,categoryId,title,description);
+    @LoginRequired
+    public JSONObject getRelease(@CurrentUser AppUser user,String id,String categoryId,String title,String description, String fileType, String vedioAddress) throws Exception {
+        return uploadFileService.getRelease(id,user.getId(),categoryId,title,description,fileType,vedioAddress);
     }
 
     /**

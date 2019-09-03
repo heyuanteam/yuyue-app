@@ -89,7 +89,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject UploadFilesToServer(String authorId,MultipartFile[] files, AppUser user,String fileType,String vedioAddress,String categoryId) throws Exception{
+    public JSONObject UploadFilesToServer(MultipartFile[] files, AppUser user) throws Exception{
         ReturnResult returnResult=new ReturnResult();
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
@@ -113,18 +113,10 @@ public class UploadFileServiceImpl implements UploadFileService {
                     UploadFile uploadFile = new UploadFile();
                     String uid = UUID.randomUUID().toString().replaceAll("-", "");
                     uploadFile.setId(uid.toUpperCase());
-                    uploadFile.setCategoryId(categoryId);
                     uploadFile.setAuthorId(user.getId());
                     uploadFile.setFilesName(files[i].getOriginalFilename());
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
 //                    uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
-                    if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
-//                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
-                        uploadFile.setFilesType("video");
-                        uploadFile.setVedioAddress(vedioAddress);
-                    } else {
-                        uploadFile.setFilesType("picture");
-                    }
 //                    uploadFile.setFilesMD5(MD5Utils.getMd5ByUrl("http://"+uploadFile.getFilesPath()));
                     log.info("文件存储在服务器的路径==============>{}", Variables.ip_home + "/" + storePath.getFullPath());
 
@@ -210,9 +202,18 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public JSONObject getRelease(String id, String authorId,String categoryId, String title, String description) {
+    public JSONObject getRelease(String id, String authorId,String categoryId, String title, String description,String fileType,String vedioAddress) {
         ReturnResult returnResult=new ReturnResult();
-        uploadFileMapper.getRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description);
+        UploadFile uploadFile = new UploadFile();
+        if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
+//                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
+            uploadFile.setFilesType("video");
+            uploadFile.setVedioAddress(vedioAddress);
+        } else {
+            uploadFile.setFilesType("picture");
+        }
+        uploadFileMapper.getRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description,
+                uploadFile.getFilesType(),uploadFile.getVedioAddress());
         returnResult.setMessage("发布成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
