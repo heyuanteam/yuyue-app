@@ -24,8 +24,10 @@ public class Advertisement implements Serializable {
     private String merchantAddr;
     //营业执照
     private String businessLicense;
-    //法人身份证
-    private String idCard;
+    //法人身份证正面
+    private String idCardZM;
+    //法人身份证反面
+    private String idCardFM;
     //机构代码
     private String agencyCode;
     //商家名称

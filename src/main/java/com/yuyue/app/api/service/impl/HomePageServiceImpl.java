@@ -1,11 +1,7 @@
 package com.yuyue.app.api.service.impl;
 
-import com.yuyue.app.api.domain.Address;
-import com.yuyue.app.api.domain.Banner;
-import com.yuyue.app.api.domain.VideoCategory;
-import com.yuyue.app.api.mapper.AddressMapper;
-import com.yuyue.app.api.mapper.BannerMapper;
-import com.yuyue.app.api.mapper.VideoCategoryMapper;
+import com.yuyue.app.api.domain.*;
+import com.yuyue.app.api.mapper.*;
 import com.yuyue.app.api.service.HomePageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +15,10 @@ public class HomePageServiceImpl implements HomePageService {
     private VideoCategoryMapper videoCategoryMapper;
     @Autowired
     private AddressMapper addressMapper;
+    @Autowired
+    private YuyueSiteMapper yuyueSiteMapper;
+    @Autowired
+    private YuyueSiteShowMapper yuyueSiteShowMapper;
 
     @Override
     public List<Banner> getBanner() {
@@ -32,6 +32,21 @@ public class HomePageServiceImpl implements HomePageService {
 
     @Override
     public List<Address> getAddress() {return addressMapper.getAddress();}
+
+    @Override
+    public YuyueSite getSite(String id) {
+        return yuyueSiteMapper.getSite(id);
+    }
+
+    @Override
+    public List<YuyueSite> getSiteList() {
+        return yuyueSiteMapper.getSiteList();
+    }
+
+    @Override
+    public List<SiteShow> getShow(String siteId){
+        return yuyueSiteShowMapper.getShow(siteId);
+    }
 
 
 }

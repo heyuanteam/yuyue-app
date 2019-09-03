@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdvertisementMapper extends MyBaseMapper<Advertisement> {
 
-    @Insert("INSERT INTO yuyue_advertisement_info  (id,userId,merchantAddr,businessLicense,idCard,agencyCode," +
+    @Insert("INSERT INTO yuyue_advertisement_info  (id,userId,merchantAddr,businessLicense,idCardZM,idCardFM,agencyCode," +
             "merchantName,phone,produceAddr,fixedPhone,email,wx,qqNum,merchandiseUrl,telephone) \n" +
-            " VALUES (#{id},#{userId},#{merchantAddr},#{businessLicense},#{idCard},#{agencyCode},#{merchantName},#{phone}," +
+            " VALUES (#{id},#{userId},#{merchantAddr},#{businessLicense},#{idCardZM},#{idCardFM},#{agencyCode},#{merchantName},#{phone}," +
             "#{produceAddr},#{fixedPhone},#{email},#{wx},#{qqNum},#{merchandiseUrl},#{telephone})")
     void addAdvertisemenInfo(Advertisement advertisement);
 

@@ -128,4 +128,42 @@ public class HomePageController {
         returnResult.setResult(JSONArray.parseArray(JSON.toJSONString(list)));
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+
+    @RequestMapping("/getSite")
+    @ResponseBody
+    public JSONObject getSite(String id){
+        ReturnResult returnResult=new ReturnResult();
+        if (StringUtils.isEmpty(id)){
+            List<YuyueSite> siteList = homePageService.getSiteList();
+            if (StringUtils.isEmpty(siteList)){
+                returnResult.setMessage("暂无信息！！");
+            }else
+                returnResult.setMessage("返回成功！！");
+            for (YuyueSite yuyueSite:siteList
+                 ) {
+                System.out.println(yuyueSite);
+            }
+            returnResult.setStatus(Boolean.TRUE);
+            returnResult.setResult(siteList);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else {
+            Map<String,Object> map=Maps.newHashMap();
+            YuyueSite site = homePageService.getSite(id);
+            if (StringUtils.isNull(site)){
+                returnResult.setMessage("暂无信息！！");
+            }else
+                returnResult.setMessage("返回信息！！");
+            List<SiteShow> showList = homePageService.getShow(id);
+            if (StringUtils.isNull(showList))
+                returnResult.setMessage("暂无节目");
+            else
+                returnResult.setMessage("节目表单返回成功");
+            map.put("site",site);
+            map.put("showList",showList);
+            returnResult.setStatus(Boolean.TRUE);
+            returnResult.setResult(map);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
+    }
 }

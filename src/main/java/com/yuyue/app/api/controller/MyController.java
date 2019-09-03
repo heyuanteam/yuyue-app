@@ -106,12 +106,13 @@ public class MyController extends BaseController{
         String userId=appUser.getId();
         String merchantAddr=parameterMap.get("merchantAddr");
         String businessLicense=parameterMap.get("businessLicense");
-        String IdCard=parameterMap.get("IdCard");
+        String idCardZM=parameterMap.get("idCardZM");
+        String idCardFM=parameterMap.get("idCardFM");
         String agencyCode=parameterMap.get("agencyCode");
         String merchantName=parameterMap.get("merchantName");
         String phone=parameterMap.get("phone");
-        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(merchantAddr) || StringUtils.isEmpty(businessLicense)  || StringUtils.isEmpty(IdCard)
-                || StringUtils.isEmpty(agencyCode) || StringUtils.isEmpty(merchantName) || StringUtils.isEmpty(phone) ){
+        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(merchantAddr) || StringUtils.isEmpty(businessLicense)  || StringUtils.isEmpty(idCardZM)
+               ||StringUtils.isEmpty(idCardFM) || StringUtils.isEmpty(agencyCode) || StringUtils.isEmpty(merchantName) || StringUtils.isEmpty(phone) ){
             returnResult.setMessage("必填项存在空值");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
@@ -121,7 +122,8 @@ public class MyController extends BaseController{
         advertisement.setUserId(userId);
         advertisement.setMerchantAddr(merchantAddr);
         advertisement.setBusinessLicense(businessLicense);
-        advertisement.setIdCard(IdCard);
+        advertisement.setIdCardZM(idCardZM);
+        advertisement.setIdCardFM(idCardFM);
         advertisement.setAgencyCode(agencyCode);
         advertisement.setMerchantName(merchantName);
         advertisement.setPhone(phone);

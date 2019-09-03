@@ -9,7 +9,7 @@ import java.net.InetSocketAddress;
 public class Variables {
 
     //安装fastdfs的虚拟机的ip
-    public static final String ip_home = "101.37.252.177:8888";
+    public static final String ip_home = "http://101.37.252.177:8888";
 
     //组名，跟你在fastdfs配置文件中的一致
     public static final String groupName = "/group1";
