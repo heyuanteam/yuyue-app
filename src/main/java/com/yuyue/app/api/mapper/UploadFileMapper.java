@@ -69,19 +69,15 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
 
 
     @Transactional
-    @Update("UPDATE ${tableName} SET categoryId=#{categoryId},title=#{title},description=#{description}  WHERE id = #{id}")
+    @Update("UPDATE ${tableName} SET categoryId=#{categoryId},title=#{title},description=#{description}" +
+            ",filesType=#{filesType},vedioAddress=#{vedioAddress}  WHERE id = #{id}")
     void getRelease(@Param("tableName")String tableName,@Param("id")String id,@Param("categoryId")String categoryId,
-                    @Param("title")String title,@Param("description")String description);
+                    @Param("title")String title,@Param("description")String description,
+                    @Param("filesType") String filesType,@Param("vedioAddress") String vedioAddress);
+
    /* @Transactional
     @Update("UPDATE ${tableName} SET attentionAmount = attentionAmount + 1 WHERE id = #{id}")
     void attentionAmount(@Param("tableName")String tableName,@Param("id")String id);*/
-
-
-
-
-
-
-
 
     @Select("SELECT * FROM ${tableName} WHERE authorId = #{authorId} ORDER BY uploadTime DESC ")
     List<UploadFile> getVideoByAuthorId(@Param("tableName") String tableName,@Param("authorId") String authorId);
