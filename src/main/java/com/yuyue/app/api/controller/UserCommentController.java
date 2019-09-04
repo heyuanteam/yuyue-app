@@ -193,7 +193,7 @@ public class UserCommentController extends BaseController{
         if(authorId.isEmpty()  || user.getId().isEmpty()){
             returnResult.setMessage("作者id不能为空!!");
         }
-        List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(authorId);
+        List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthor(authorId);
         if(videoByAuthorId.isEmpty()){
             returnResult.setResult(map);
             returnResult.setMessage("暂无视频！！");

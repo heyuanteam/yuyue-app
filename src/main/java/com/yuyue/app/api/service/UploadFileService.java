@@ -83,7 +83,7 @@ public interface UploadFileService {
      * @param description
      * @return
      */
-    JSONObject getRelease(String id,String authorId,String categoryId, String title, String description, String fileType, String vedioAddress);
+    JSONObject addRelease(String id,String authorId,String categoryId, String title, String description, String fileType, String vedioAddress);
 
     /**
      *通过作者id 获取视频
@@ -91,6 +91,12 @@ public interface UploadFileService {
      * @return
      */
      List<UploadFile> getVideoByAuthorId(String authorId);
+    /**
+     *用户通过作者id查询本人上传的视频,只展示通过审核的视频
+     * @param authorId
+     * @return
+     */
+    List<UploadFile> getVideoByAuthor(String authorId);
 
 
 }

@@ -24,6 +24,7 @@ import java.io.*;
 import java.util.*;
 
 import static java.util.Collections.addAll;
+import static java.util.Collections.emptyList;
 
 
 /**
@@ -194,7 +195,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 
 
     /**
-     *我的发布
+     *视频发布
      * @param id
      * @param categoryId
      * @param title
@@ -202,9 +203,27 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public JSONObject getRelease(String id, String authorId,String categoryId, String title, String description,String fileType,String vedioAddress) {
+    public JSONObject addRelease(String id, String authorId,String categoryId, String title, String description,String fileType,String vedioAddress) {
         ReturnResult returnResult=new ReturnResult();
         UploadFile uploadFile = new UploadFile();
+        if(StringUtils.isEmpty(id)){
+            returnResult.setMessage("视频id不可为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }if(StringUtils.isEmpty(title)){
+            returnResult.setMessage("标题不可为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }if (StringUtils.isEmpty(fileType)){
+            returnResult.setMessage("视频类型不可为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }if(StringUtils.isEmpty(vedioAddress)){
+            returnResult.setMessage("第一帧图片不可为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }if (StringUtils.isEmpty(categoryId)){
+            returnResult.setMessage("视频种类不可为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
+
         if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
 //                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
             uploadFile.setFilesType("video");
@@ -241,12 +260,21 @@ public class UploadFileServiceImpl implements UploadFileService {
 //    }
 
     /**
-     * 通过作者id查询本人上传的所有视频
+     * 通过作者id查询本人上传的所有视频,展示所有状态的视频
      * @param
      * @return
      */
      public List<UploadFile> getVideoByAuthorId(String authorId){
          return uploadFileMapper.getVideoByAuthorId(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), authorId);
+    }
+
+    /**
+     *用户通过作者id查询本人上传的视频,只展示通过审核的视频
+     * @param authorId
+     * @return
+     */
+    public List<UploadFile> getVideoByAuthor(String authorId){
+        return uploadFileMapper.getVideoByAuthor(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), authorId);
     }
 
 

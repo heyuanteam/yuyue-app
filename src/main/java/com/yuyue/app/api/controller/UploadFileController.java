@@ -131,16 +131,16 @@ public class UploadFileController extends  BaseController{
     }
 
     /**
-     * 我的发布
+     * 视频发布
      *
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/getRelease")
+    @RequestMapping(value = "/addRelease")
     @ResponseBody
     @LoginRequired
-    public JSONObject getRelease(@CurrentUser AppUser user,String id,String categoryId,String title,String description, String fileType, String vedioAddress) throws Exception {
-        return uploadFileService.getRelease(id,user.getId(),categoryId,title,description,fileType,vedioAddress);
+    public JSONObject addRelease(@CurrentUser AppUser user,String id,String categoryId,String title,String description, String fileType, String vedioAddress) throws Exception {
+        return uploadFileService.addRelease(id,user.getId(),categoryId,title,description,fileType,vedioAddress);
     }
 
     /**
