@@ -8,6 +8,9 @@ import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.yuyue.app.annotation.CurrentUser;
+import com.yuyue.app.annotation.LoginRequired;
+import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.Order;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.service.PayService;
@@ -72,7 +75,8 @@ public class PayController{
 
     @ResponseBody
     @RequestMapping("/payYuYue")
-    public JSONObject payYuYue(Order order)throws Exception {
+    @LoginRequired
+    public JSONObject payYuYue(Order order,@CurrentUser AppUser user)throws Exception {
         ReturnResult returnResult =new ReturnResult();
         log.info("-------创建订单-----------");
         order.setOrderNo("YYCZ"+RandomSaltUtil.randomNumber(14));
@@ -81,7 +85,7 @@ public class PayController{
 //        order.setTradeType("CZWX");
 //        order.setMoney("100");
 //        order.setModle("13576034501");
-//        order.setMerchantId("B044C53B38BA4E84B507E62402683E26");
+        order.setMerchantId(user.getId());
         createOrder(order);
         if (StringUtils.isEmpty(order.getId())){
             returnResult.setMessage("创建订单失败！缺少参数！");
