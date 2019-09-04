@@ -230,6 +230,10 @@ public class LoginController {
     @ResponseBody
     public JSONObject getMessage(String id) {
         ReturnResult result = new ReturnResult();
+        if(StringUtils.isEmpty(id)){
+            result.setMessage("缺少用户id!!!");
+            return ResultJSONUtils.getJSONObjectBean(result);
+        }
         AppUser appUserById = loginService.getAppUserMsg("","",id);
         if (appUserById == null) {
             result.setMessage("查询数据失败！");
