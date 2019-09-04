@@ -91,7 +91,11 @@ public interface UploadFileService {
      * @return
      */
      List<UploadFile> getVideoByAuthorId(String authorId);
-
+    /**
+     *用户通过作者id查询本人上传的视频,只展示通过审核的视频
+     * @param authorId
+     * @return
+     */
     List<UploadFile> getVideoByAuthor(String authorId);
 
 

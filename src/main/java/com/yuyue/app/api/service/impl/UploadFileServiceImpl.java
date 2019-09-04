@@ -24,6 +24,7 @@ import java.io.*;
 import java.util.*;
 
 import static java.util.Collections.addAll;
+import static java.util.Collections.emptyList;
 
 
 /**
@@ -214,7 +215,12 @@ public class UploadFileServiceImpl implements UploadFileService {
         }if(StringUtils.isEmpty(vedioAddress)){
             returnResult.setMessage("第一帧图片不可为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }if (StringUtils.isEmpty(categoryId)){
+            returnResult.setMessage("视频种类不可为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
+
+
         if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
 //                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
             uploadFile.setFilesType("video");
