@@ -17,7 +17,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createOrder(Order order);
 
-    @Select("SELECT * FROM yuyue_order b WHERE b.id = #{orderId} ")
+    @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_order b WHERE b.id = #{orderId} ")
     Order getOrderId(String orderId);
 
     @Transactional
@@ -33,6 +33,6 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Update("UPDATE yuyue_merchant b SET b.TOTAL = b.TOTAL + #{money} WHERE b.ID = #{merchantId} ")
     void updateTotal(@Param("merchantId") String merchantId,@Param("money") String money);
 
-    @Select("SELECT * FROM yuyue_order b WHERE b.merchantId = #{id} AND b.`status` = '10B' ")
+    @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_order b WHERE b.merchantId = #{id} AND b.`status` = '10B' ")
     List<Order> getMoneyList(@Param("id") String id);
 }

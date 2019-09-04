@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * 用户反馈类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

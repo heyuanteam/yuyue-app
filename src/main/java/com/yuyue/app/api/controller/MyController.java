@@ -246,7 +246,7 @@ public class MyController extends BaseController{
     }
 
     /**
-     * 查看广告推广申请信息
+     * 查看演出申请信息
      * @param appUser
      * @return
      */

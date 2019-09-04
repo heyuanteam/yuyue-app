@@ -49,7 +49,7 @@ public class AppUser implements Serializable {
     private String wechat;
 //    个性签名
     private String signature;
-//    正面人物图片
+//    用户正面照
     private String userUrl;
 //    正面身份证
     private String cardZUrl;
