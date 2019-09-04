@@ -79,6 +79,13 @@ public class PayController{
     public JSONObject payYuYue(Order order,@CurrentUser AppUser user)throws Exception {
         ReturnResult returnResult =new ReturnResult();
         log.info("-------创建订单-----------");
+        if(StringUtils.isEmpty(order.getMoney())){
+            returnResult.setMessage("充值金额不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }if (StringUtils.isEmpty(order.getTradeType())){
+            returnResult.setMessage("充值类型不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         order.setOrderNo("YYCZ"+RandomSaltUtil.randomNumber(14));
         order.setStatus("10A");
         order.setStatusCode("100001");
@@ -96,7 +103,8 @@ public class PayController{
         } else if("CZZFB".equals(order.getTradeType())){
             return payZFB(order);
         }
-        return null;
+        returnResult.setMessage("充值类型选择错误！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     public JSONObject payWX(Order order)throws Exception {
