@@ -248,6 +248,14 @@
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
+        <dependency>
+            <groupId>java</groupId>
+            <artifactId>javaup</artifactId>
+            <scope>system</scope>
+            <version>1.0.2</version>
+            <!--${basedir}项目的根目录-->
+            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/java-1.0.2.jar</systemPath>
+        </dependency>
 
         <!--fastdfs-->
         <dependency>
