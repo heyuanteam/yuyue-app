@@ -206,7 +206,10 @@ public class UploadFileServiceImpl implements UploadFileService {
     public JSONObject addRelease(String id, String authorId,String categoryId, String title, String description,String fileType,String vedioAddress) {
         ReturnResult returnResult=new ReturnResult();
         UploadFile uploadFile = new UploadFile();
-        if(StringUtils.isEmpty(title)){
+        if(StringUtils.isEmpty(id)){
+            returnResult.setMessage("视频id不可为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }if(StringUtils.isEmpty(title)){
             returnResult.setMessage("标题不可为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }if (StringUtils.isEmpty(fileType)){
