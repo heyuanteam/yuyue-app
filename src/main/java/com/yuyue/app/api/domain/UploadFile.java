@@ -45,5 +45,6 @@ public class UploadFile implements Serializable {
     private String commentAmount;
 //    时长
 //    private String duration;
-
+    //状态
+    private String status;
 }

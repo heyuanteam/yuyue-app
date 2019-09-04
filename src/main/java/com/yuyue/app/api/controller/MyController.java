@@ -3,13 +3,12 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.MyService;
+import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
-import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -38,6 +37,8 @@ public class MyController extends BaseController{
     private MyService myService;
     @Autowired
     private UserCommentService userCommentService;
+    @Autowired
+    private UploadFileService uploadFileService;
 
     /**
      * 意见反馈提交
@@ -261,6 +262,21 @@ public class MyController extends BaseController{
             returnResult.setResult(showInfo);
         returnResult.setMessage("信息返回成功");
         returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    @RequestMapping("/myRelease")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject myRelease(@CurrentUser AppUser appUser){
+        ReturnResult returnResult =new ReturnResult();
+        List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(appUser.getId());
+        if (StringUtils.isEmpty(videoByAuthorId)){
+            returnResult.setMessage("暂无发布视频");
+        }else
+            returnResult.setMessage("返回成功！！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(videoByAuthorId);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }
