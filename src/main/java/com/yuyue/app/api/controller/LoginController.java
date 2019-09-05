@@ -228,13 +228,14 @@ public class LoginController {
      */
     @RequestMapping("/getMessage")
     @ResponseBody
-    public JSONObject getMessage(String id) {
+    @LoginRequired
+    public JSONObject getMessage(@CurrentUser AppUser user) {
         ReturnResult result = new ReturnResult();
-        if(StringUtils.isEmpty(id)){
+        if(StringUtils.isEmpty(user.getId())){
             result.setMessage("缺少用户id!!!");
             return ResultJSONUtils.getJSONObjectBean(result);
         }
-        AppUser appUserById = loginService.getAppUserMsg("","",id);
+        AppUser appUserById = loginService.getAppUserMsg("","",user.getId());
         if (appUserById == null) {
             result.setMessage("查询数据失败！");
         } else {
