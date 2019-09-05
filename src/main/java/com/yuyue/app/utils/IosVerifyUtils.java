@@ -1,4 +1,5 @@
 package com.yuyue.app.utils;
+import javax.net.ssl.*;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -7,13 +8,6 @@ import java.net.URL;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 /**
  * 苹果IAP内购验证工具类
@@ -92,12 +86,12 @@ public class IosVerifyUtils {
      * @param str
      * @return
      */
-    public static String getBASE64(String str) {
+/*    public static String getBASE64(String str) {
         byte[] b = str.getBytes();
         String s = null;
         if (b != null) {
             s = new sun.misc.BASE64Encoder().encode(b);
         }
         return s;
-    }
+    }*/
 }

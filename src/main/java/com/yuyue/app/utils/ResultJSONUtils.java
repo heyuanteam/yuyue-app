@@ -1,17 +1,14 @@
 package com.yuyue.app.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yuyue.app.api.domain.ReturnResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
-import it.sauronsoftware.jave.Encoder;
-import it.sauronsoftware.jave.EncoderException;
-import com.yuyue.app.api.domain.ReturnResult;
-import it.sauronsoftware.jave.MultimediaInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ResultJSONUtils {
     private static Logger log = LoggerFactory.getLogger(ResultJSONUtils.class);
@@ -57,7 +54,7 @@ public class ResultJSONUtils {
      * 获取本地视频时长
      * @return
      */
-    public static String getVideoSize(String pathUrl){
+    /*public static String getVideoSize(String pathUrl){
         System.out.println("获取文件路径======="+pathUrl);
         //获取文件时长
         String videoSize = "";
@@ -86,13 +83,13 @@ public class ResultJSONUtils {
             log.info("视频格式转化失败！");
         }
         return videoSize;
-    }
+    }*/
 
     /**
      * 获取URL视频时长
      * @return
      */
-    public static String getVideoUrl(String pathUrl){
+    /*public static String getVideoUrl(String pathUrl){
         System.out.println("获取文件路径======="+pathUrl);
         //获取文件时长
         String videoSize = "";
@@ -123,7 +120,7 @@ public class ResultJSONUtils {
             log.info("视频格式转化失败！");
         }
         return videoSize;
-    }
+    }*/
 
     /**
      * @throws IOException

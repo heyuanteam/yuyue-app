@@ -6,11 +6,9 @@ import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.google.common.collect.Maps;
-import com.yuyue.app.api.controller.LoginController;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.mapper.UploadFileMapper;
 import com.yuyue.app.api.service.UploadFileService;
-import com.yuyue.app.utils.MD5Utils;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.util.*;
 
-import static java.util.Collections.addAll;
-import static java.util.Collections.emptyList;
+
 
 
 /**
@@ -112,11 +110,13 @@ public class UploadFileServiceImpl implements UploadFileService {
                     //上传
                     StorePath storePath = this.storageClient.uploadFile(files[i].getInputStream(), files[i].getSize(), subFileType, null);
                     UploadFile uploadFile = new UploadFile();
+                    System.out.println(files[i].getSize()+"------------------------");
                     String uid = UUID.randomUUID().toString().replaceAll("-", "");
                     uploadFile.setId(uid.toUpperCase());
                     uploadFile.setAuthorId(user.getId());
                     uploadFile.setFilesName(files[i].getOriginalFilename());
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
+
 //                    uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
 //                    uploadFile.setFilesMD5(MD5Utils.getMd5ByUrl("http://"+uploadFile.getFilesPath()));
                     log.info("文件存储在服务器的路径==============>{}", Variables.ip_home + "/" + storePath.getFullPath());
@@ -231,7 +231,7 @@ public class UploadFileServiceImpl implements UploadFileService {
         } else {
             uploadFile.setFilesType("picture");
         }
-        uploadFileMapper.getRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description,
+        uploadFileMapper.addRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description,
                 uploadFile.getFilesType(),uploadFile.getVedioAddress());
         returnResult.setMessage("发布成功!");
         returnResult.setStatus(Boolean.TRUE);

@@ -9,7 +9,13 @@ import java.util.List;
 
 @Repository
 public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
-    @Select("select * from ${tableName} where id = #{id}")
+    /**
+     * 获取视频详情
+     * @param tableName
+     * @param id
+     * @return
+     */
+    @Select("select *,DATE_FORMAT(UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') uploadTime from ${tableName} where id = #{id} and status = '10B'")
     UploadFile selectById(@Param("tableName")String tableName,@Param("id")String id);
 
 
@@ -71,7 +77,7 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Transactional
     @Update("UPDATE ${tableName} SET categoryId=#{categoryId},title=#{title},description=#{description}" +
             ",filesType=#{filesType},vedioAddress=#{vedioAddress}  WHERE id = #{id}")
-    void getRelease(@Param("tableName")String tableName,@Param("id")String id,@Param("categoryId")String categoryId,
+    void addRelease(@Param("tableName")String tableName,@Param("id")String id,@Param("categoryId")String categoryId,
                     @Param("title")String title,@Param("description")String description,
                     @Param("filesType") String filesType,@Param("vedioAddress") String vedioAddress);
 
@@ -79,9 +85,9 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Update("UPDATE ${tableName} SET attentionAmount = attentionAmount + 1 WHERE id = #{id}")
     void attentionAmount(@Param("tableName")String tableName,@Param("id")String id);*/
     //我的发布（作者）
-    @Select("SELECT * FROM ${tableName} WHERE authorId = #{authorId} ORDER BY uploadTime DESC ")
+    @Select("SELECT *,DATE_FORMAT(UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') uploadTime FROM ${tableName} WHERE authorId = #{authorId} ORDER BY UPLOAD_TIME DESC ")
     List<UploadFile> getVideoByAuthorId(@Param("tableName") String tableName,@Param("authorId") String authorId);
     //用户关注的作者视频,仅展示通过审核的作品
-    @Select("SELECT * FROM ${tableName} WHERE authorId = #{authorId} AND status = '10B' ORDER BY uploadTime DESC ")
+    @Select("SELECT *,DATE_FORMAT(UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') uploadTime FROM ${tableName} WHERE authorId = #{authorId} AND status = '10B' ORDER BY UPLOAD_TIME DESC ")
     List<UploadFile> getVideoByAuthor(@Param("tableName") String tableName,@Param("authorId") String authorId);
 }

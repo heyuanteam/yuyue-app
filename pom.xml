@@ -20,7 +20,7 @@
 
     <properties>
         <!--上线放开-->
-        <start-class>com.yuyue.app.AppApplication</start-class>
+        <!--<start-class>com.yuyue.app.AppApplication</start-class>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -38,20 +38,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <!-- 移除嵌入式tomcat插件,上线放开-->
-            <exclusions>
+            <!--<exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
-            </exclusions>
+            </exclusions>-->
         </dependency>
         <!--上线放开-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-servlet-api</artifactId>
             <version>8.0.36</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
@@ -248,14 +248,15 @@
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
-        <dependency>
+ <!--       <dependency>
             <groupId>java</groupId>
             <artifactId>javaup</artifactId>
             <scope>system</scope>
             <version>1.0.2</version>
-            <!--${basedir}项目的根目录-->
+            &lt;!&ndash;${basedir}项目的根目录&ndash;&gt;
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/java-1.0.2.jar</systemPath>
-        </dependency>
+        </dependency>-->
+
 
         <!--fastdfs-->
         <dependency>
