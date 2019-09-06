@@ -1,8 +1,6 @@
 package com.yuyue.app.api.mapper;
 
 import com.yuyue.app.api.domain.Barrage;
-import com.yuyue.app.api.domain.UserComment;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -14,13 +12,32 @@ import java.util.List;
 public interface BarrageMapper extends MyBaseMapper<Barrage> {
 
     //TIMES<600    展示当前时间与存储时间小于10分钟的所有弹幕
-    @Select(" SELECT * FROM ( SELECT *,ABS(TIMESTAMPDIFF(SECOND,NOW(),DURATION)) as TIMES " +
-            "from yuyue_video_barrage WHERE VIDEO_ID = #{videoId} )B WHERE B.TIMES<600  " )
-    List<Barrage> getBarrages(String videoId);
+/*    @Select(" SELECT * FROM ( SELECT *,ABS(TIMESTAMPDIFF(SECOND,NOW(),DURATION)) as TIMES " +
+            "from yuyue_video_barrage WHERE VIDEO_ID = #{videoId} )B WHERE B.TIMES<600  " )*/
+
+    @Select("SELECT\n" +
+            "\tBARRAGE_ID barrageId,\n" +
+            "\tUSER_ID userId,\n" +
+            "\tTEXT text,\n" +
+            "\tTIME_POINT timePoint,\n" +
+            "\tVIDEO_ID videoId,\n" +
+            "\tDATE_FORMAT(CREATE_TIME,'%Y-%m-%d %H:%i:%s') createTime,\n" +
+            "\tUSER_NAME userName,\n" +
+            "\tUSER_HEAD_URL userHeadUrl\n" +
+            "FROM\n" +
+            "\tyuyue_video_barrage\n" +
+            "WHERE\n" +
+            "\tTIME_POINT BETWEEN '00:00:01'\n" +
+            "AND '00:02:00'\n" +
+            "ORDER BY\n" +
+            "\tTIME_POINT")
+    List<Barrage> getBarrages(String videoId,String startTime,String endTime);
 
     @Transactional
-    @Insert("insert into yuyue_video_barrage (ID,VIDEO_ID,TEXT,USER_ID)  values  " +
-            "(#{id},#{videoId},#{text},#{userId})")
+    @Insert("insert into yuyue_video_barrage " +
+            "(BARRAGE_ID,USER_ID,VIDEO_ID,USER_NAME,USER_HEAD_URL,TEXT,TIME_POINT)  " +
+            "values  " +
+            "(#{barrageId},#{userId},#{videoId},#{userName},#{userHeadUrl},#{text},#{timePoint})")
     void addBarrage(Barrage barrage);
 
 }

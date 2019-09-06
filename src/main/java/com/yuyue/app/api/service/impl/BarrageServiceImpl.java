@@ -13,8 +13,8 @@ public class BarrageServiceImpl implements BarrageService {
     private BarrageMapper barrageMapper;
 
     @Override
-    public List<Barrage> getBarrages(String videoId) {
-        return barrageMapper.getBarrages(videoId);
+    public List<Barrage> getBarrages(String videoId,String startTime,String endTime) {
+        return barrageMapper.getBarrages(videoId,startTime,endTime);
     }
 
     @Override

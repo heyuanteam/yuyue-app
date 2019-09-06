@@ -26,6 +26,12 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
      */
     List<UploadFile> getVideo(@Param("tableName")String tableName, @Param("bdgin")int bdgin, @Param("size")int size,@Param("categoryId")String categoryId);
 
+
+    /**
+     * 删除视频
+     * @param tableName
+     * @param id
+     */
     @Transactional
     @Delete("delete from ${tableName} where id = #{id}")
     void deleteById(@Param("tableName")String tableName,@Param("id")String id);
