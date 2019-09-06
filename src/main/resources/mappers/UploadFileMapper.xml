@@ -4,15 +4,17 @@
 
 
     <select id="getVideo" resultType="com.yuyue.app.api.domain.UploadFile" parameterType="String">
-        select b.id,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') uploadTime,b.filesName,b.filesPath,
+        select
+        b.id,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') uploadTime,b.filesName,b.filesPath,
         b.filesType,b.fileSize,b.authorId,b.description,b.commentAmount,b.likeAmount,b.attentionAmount,
-        b.duration,b.title,b.vedioAddress,b.categoryId,b.status
-        from ${tableName} b WHERE  1=1 and b.filesType = 'video' and b.status ='10B'
+        b.duration,b.title,b.videoAddress,b.categoryId,b.status
+        from ${tableName} b
+        WHERE  1=1 and b.filesType = 'video' and b.status ='10B'
             <choose>
                 <when test="categoryId!=null and categoryId!=''">  and b.categoryId=#{categoryId}  </when>
-
             </choose>
-        GROUP BY b.id ORDER BY b.UPLOAD_TIME OR b.commentAmount
+        /*GROUP BY b.id */
+        ORDER BY b.UPLOAD_TIME OR b.commentAmount
         OR b.likeAmount or b.attentionAmount DESC
          LIMIT #{bdgin},#{size}
 

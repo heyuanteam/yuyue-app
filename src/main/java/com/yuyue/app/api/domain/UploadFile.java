@@ -2,8 +2,8 @@ package com.yuyue.app.api.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author: Lucifer
@@ -26,7 +26,7 @@ public class UploadFile implements Serializable {
 //  时间
     private String uploadTime;
 //  视频第一帧图片链接
-    private String vedioAddress;
+    private String videoAddress;
 //  文件地址
     private String filesPath;
 //  文件类型

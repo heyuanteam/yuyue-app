@@ -6,14 +6,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface PayMapper extends MyBaseMapper<Order> {
 
     @Transactional
-    @Insert("insert into yuyue_order (id,orderNo,tradeType,money,modle,status,statusCode,merchantId)  values  " +
-            "(#{id},#{orderNo},#{tradeType},#{money},#{modle},#{status},#{statusCode},#{merchantId})")
+    @Insert("insert into yuyue_order (id,orderNo,tradeType,money,mobile,status,statusCode,merchantId)  values  " +
+            "(#{id},#{orderNo},#{tradeType},#{money},#{mobile},#{status},#{statusCode},#{merchantId})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createOrder(Order order);
 

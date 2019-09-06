@@ -142,8 +142,8 @@ public class UploadFileController extends  BaseController{
     @RequestMapping(value = "/addRelease")
     @ResponseBody
     @LoginRequired
-    public JSONObject addRelease(@CurrentUser AppUser user,String categoryId,String title,String description, String fileType, String vedioAddress,String fileName,String filesPath) throws Exception {
-        return uploadFileService.addRelease(user.getId(),categoryId,title,description,fileType,vedioAddress,fileName,filesPath);
+    public JSONObject addRelease(@CurrentUser AppUser user,String categoryId,String title,String description, String fileType, String videoAddress,String fileName,String filesPath) throws Exception {
+        return uploadFileService.addRelease(user.getId(),categoryId,title,description,fileType,videoAddress,fileName,filesPath);
     }
 
     /**

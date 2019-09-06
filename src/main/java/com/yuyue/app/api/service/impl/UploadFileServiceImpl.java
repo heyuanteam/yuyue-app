@@ -197,7 +197,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     public JSONObject addRelease(String authorId,String categoryId, String title, String description,
-                                 String fileType,String vedioAddress,String fileName,String filesPath) {
+                                 String fileType,String videoAddress,String fileName,String filesPath) {
         ReturnResult returnResult=new ReturnResult();
         UploadFile uploadFile = new UploadFile();
         if(StringUtils.isEmpty(title)){
@@ -206,7 +206,7 @@ public class UploadFileServiceImpl implements UploadFileService {
         }else if(StringUtils.isEmpty(fileType)){
             returnResult.setMessage("视频类型不可为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if(StringUtils.isEmpty(vedioAddress)){
+        }else if(StringUtils.isEmpty(videoAddress)){
             returnResult.setMessage("第一帧图片不可为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else if(StringUtils.isEmpty(categoryId)){
@@ -230,7 +230,7 @@ public class UploadFileServiceImpl implements UploadFileService {
         if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
 //                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
             uploadFile.setFilesType("video");
-            uploadFile.setVedioAddress(vedioAddress);//图片的路径
+            uploadFile.setVideoAddress(videoAddress);//图片的路径
         } else {
             uploadFile.setFilesType("picture");
         }
@@ -238,7 +238,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 //                uploadFile.getFilesType(),uploadFile.getVedioAddress());
         uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),
                             uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
-                            uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVedioAddress());
+                            uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVideoAddress());
         returnResult.setMessage("发布成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);

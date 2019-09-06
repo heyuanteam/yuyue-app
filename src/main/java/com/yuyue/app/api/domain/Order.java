@@ -20,7 +20,7 @@ public class Order implements Serializable {
 //    交易金额
     private String money;
 //    手机号
-    private String modle;
+    private String mobile;
 //    交易状态
     private String status;
 //    字典状态code

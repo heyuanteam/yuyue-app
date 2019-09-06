@@ -91,7 +91,7 @@ public class PayController{
         order.setStatusCode("100001");
 //        order.setTradeType("CZWX");
 //        order.setMoney("100");
-//        order.setModle("13576034501");
+//        order.setMobile("13576034501");
         order.setMerchantId(user.getId());
         createOrder(order);
         if (StringUtils.isEmpty(order.getId())){
