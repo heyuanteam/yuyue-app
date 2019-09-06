@@ -13,7 +13,7 @@
             <choose>
                 <when test="categoryId!=null and categoryId!=''">  and b.categoryId=#{categoryId}  </when>
             </choose>
-        /*GROUP BY b.id */
+
         ORDER BY b.UPLOAD_TIME OR b.commentAmount
         OR b.likeAmount or b.attentionAmount DESC
          LIMIT #{bdgin},#{size}

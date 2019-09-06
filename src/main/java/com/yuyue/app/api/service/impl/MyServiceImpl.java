@@ -61,7 +61,7 @@ public class MyServiceImpl implements MyService {
      */
     @Override
     public List<Advertisement> getCommodityInfo(String merchantId, String spokesPersonId) {
-        return null;
+        return commodityMapper.getCommodityInfo(merchantId,spokesPersonId);
     }
 
 

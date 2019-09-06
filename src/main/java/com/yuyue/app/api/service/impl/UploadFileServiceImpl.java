@@ -222,10 +222,16 @@ public class UploadFileServiceImpl implements UploadFileService {
 
         String uid = UUID.randomUUID().toString().replaceAll("-", "");
         uploadFile.setId(uid.toUpperCase());
-        uploadFile.setAuthorId(authorId);
         uploadFile.setFilesName(fileName);
-        uploadFile.setDescription(description);
         uploadFile.setFilesPath(filesPath);//文件的路径
+        uploadFile.setAuthorId(authorId);
+        uploadFile.setDescription(description);
+        uploadFile.setVideoAddress(videoAddress);
+
+        uploadFile.setTitle(title);
+        uploadFile.setCategoryId(categoryId);
+
+
 
         if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
 //                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
@@ -234,11 +240,13 @@ public class UploadFileServiceImpl implements UploadFileService {
         } else {
             uploadFile.setFilesType("picture");
         }
+        System.out.println(uploadFile);
 //        uploadFileMapper.addRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description,
 //                uploadFile.getFilesType(),uploadFile.getVedioAddress());
         uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),
                             uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
-                            uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVideoAddress());
+                            uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVideoAddress(),
+                            uploadFile.getTitle(),uploadFile.getCategoryId());
         returnResult.setMessage("发布成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);

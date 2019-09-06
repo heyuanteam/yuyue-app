@@ -27,11 +27,13 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
 
     @Transactional
     @Insert("INSERT INTO ${tableName} " +
-            "(id,filesName,filesPath,filesType,authorId,description,vedioAddress) VALUES " +
-            "(#{id},#{filesName},#{filesPath},#{filesType},#{authorId},#{description},#{vedioAddress})")
+            "(id,filesName,filesPath,filesType,authorId,description,videoAddress,title,categoryId) VALUES " +
+            "(#{id},#{filesName},#{filesPath},#{filesType},#{authorId},#{description},#{videoAddress}," +
+            "#{title},#{categoryId})")
     void insertUploadFile(@Param("tableName") String tableName,@Param("id") String id,@Param("filesName") String filesName,
                           @Param("filesPath") String filesPath, @Param("filesType") String filesType, @Param("authorId") String authorId,
-                          @Param("description") String description,@Param("vedioAddress")String vedioAddress);
+                          @Param("description") String description,@Param("videoAddress")String videoAddress,
+                          @Param("title")String title,@Param("categoryId")String categoryId);
 
     /**
      * 插入视频信息

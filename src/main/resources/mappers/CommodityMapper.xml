@@ -21,15 +21,16 @@
         DATE_FORMAT(START_DATE ,'%Y-%m-%d %H:%i:%s') startDate,
         DATE_FORMAT(END_DATE ,'%Y-%m-%d %H:%i:%s') endDate,
         STATUS status
-        FROM yuyue_commodity where 1=1 and
+        FROM yuyue_commodity
+        where 1=1 and
         <if test="merchantId != null and merchantId != ''">
-            merchantId = #{merchantId}
+            MERCHANT_ID = #{merchantId}
         </if>
         <if test="spokesPersonId != null and spokesPersonId != ''">
-            spokesPersonId = #{spokesPersonId}
+            SPOKESPERSON_ID = #{spokesPersonId}
         </if>
         <if test="spokesPersonId != null and spokesPersonId != '' and merchantId != null and merchantId != ''">
-            spokesPersonId = #{spokesPersonId} and merchantId = #{merchantId}
+            SPOKESPERSON_ID = #{spokesPersonId} and MERCHANT_ID = #{merchantId}
         </if>
 
     </select>

@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.HomePageService;
+import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.utils.ResultJSONUtils;
@@ -35,6 +36,8 @@ public class HomePageController {
     private RedisUtil redisUtil;
     @Autowired
     private UploadFileService uploadFileService;
+    @Autowired
+    private LoginService loginService;
 
 
 
@@ -83,16 +86,39 @@ public class HomePageController {
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 5;
         int begin = (Integer.parseInt(page) - 1) * limit;
-        List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
-        List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);
-        Iterator<UploadFile> iterator_0 = vdeio_0.iterator();
+   /*     List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
+        List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);*/
+        List<UploadFile> uploadFilList0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
+        List<UploadFile> uploadFileList1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);
+
+        for (UploadFile uploadFile:uploadFilList0
+             ) {
+            //视频中插入作者信息
+            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
+            uploadFile.setAppUser(appUserMsg);
+            list.add(uploadFile);
+        }
+        for (UploadFile uploadFile:uploadFileList1
+        ) {
+            //视频中插入作者信息
+            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
+            uploadFile.setAppUser(appUserMsg);
+            list.add(uploadFile);
+        }
+    /*  Iterator<UploadFile> iterator_0 = vdeio_0.iterator();
         while(iterator_0.hasNext()) {
+            //视频中插入作者信息
+            AppUser appUserMsg = loginService.getAppUserMsg("", "", iterator_0.next().getAuthorId());
+            iterator_0.next().setAppUser(appUserMsg);
             list.add(iterator_0.next());
         }
         Iterator<UploadFile> iterator_1 = vdeio_1.iterator();
         while(iterator_1.hasNext()) {
+            //视频中插入作者信息
+            AppUser appUserMsg = loginService.getAppUserMsg("", "", iterator_1.next().getAuthorId());
+            iterator_1.next().setAppUser(appUserMsg);
             list.add(iterator_1.next());
-        }
+        }*/
         if(CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无视频！");
         } else {

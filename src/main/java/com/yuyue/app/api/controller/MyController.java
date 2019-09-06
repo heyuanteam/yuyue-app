@@ -313,7 +313,7 @@ public class MyController extends BaseController{
      * @param
      * @return
      */
-    @RequestMapping("/getCommodityInfo ")
+    @RequestMapping("/getCommodityInfo")
     @ResponseBody
     @LoginRequired
     public JSONObject getCommodityInfo(@CurrentUser AppUser appUser) {
