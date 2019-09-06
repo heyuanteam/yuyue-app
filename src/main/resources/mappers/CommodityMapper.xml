@@ -27,7 +27,7 @@
             MERCHANT_ID = #{merchantId}
         </if>
         <if test="spokesPersonId != null and spokesPersonId != ''">
-            SPOKESPERSON_ID = #{spokesPersonId}
+            SPOKESPERSON_ID = #{spokesPersonId} and status ='10B'
         </if>
         <if test="spokesPersonId != null and spokesPersonId != '' and merchantId != null and merchantId != ''">
             SPOKESPERSON_ID = #{spokesPersonId} and MERCHANT_ID = #{merchantId}

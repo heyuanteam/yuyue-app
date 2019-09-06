@@ -326,4 +326,15 @@ public class MyController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    @RequestMapping(value = "/getHotSaleCommodity")
+    @ResponseBody
+    public JSONObject getHotSaleCommodity(String authorId){
+        ReturnResult returnResult =new ReturnResult();
+        List<Advertisement> commodityInfoList = myService.getCommodityInfo("", authorId);
+        if (StringUtils.isEmpty(commodityInfoList)){
+            returnResult.setMessage("暂无代言商品！！");
+        }
+        returnResult.setResult(commodityInfoList);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
 }
