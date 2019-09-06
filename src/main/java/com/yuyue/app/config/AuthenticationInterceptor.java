@@ -45,7 +45,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 returnResult.setMessage("信息已失效，请重新登录");
                 returnResult.setCode("01");
                 //设置状态码
-                response.setStatus(500);
+//                response.setStatus(500);
                 response.setContentType("application/json;charset=UTF-8");
                 //将 登录失败 信息打包成json格式返回
                 response.getWriter().write(JSON.toJSONString(returnResult));
@@ -59,7 +59,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 returnResult.setMessage("信息已失效，请重新登录");
                 returnResult.setCode("01");
                 //设置状态码
-                response.setStatus(500);
+//                response.setStatus(500);
                 response.setContentType("application/json;charset=UTF-8");
                 //将 登录失败 信息打包成json格式返回
                 response.getWriter().write(JSON.toJSONString(returnResult));
@@ -71,7 +71,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 returnResult.setMessage("信息已失效，请重新登录");
                 returnResult.setCode("01");
                 //设置状态码
-                response.setStatus(500);
+//                response.setStatus(500);
                 response.setContentType("application/json;charset=UTF-8");
                 //将 登录失败 信息打包成json格式返回
                 response.getWriter().write(JSON.toJSONString(returnResult));
@@ -87,7 +87,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     returnResult.setMessage("信息已失效，请重新登录");
                     returnResult.setCode("01");
                     //设置状态码
-                    response.setStatus(500);
+//                    response.setStatus(500);
                     response.setContentType("application/json;charset=UTF-8");
                     //将 登录失败 信息打包成json格式返回
                     response.getWriter().write(JSON.toJSONString(returnResult));

@@ -88,6 +88,14 @@ public interface UploadFileService {
 
 
 
+    /**
+     * 我的发布
+     * @param categoryId
+     * @param title
+     * @param description
+     * @return
+     */
+    JSONObject addRelease(String authorId,String categoryId, String title, String description, String fileType, String vedioAddress,String fileName,String filesPath);
 
     /**
      *通过作者id 获取视频
