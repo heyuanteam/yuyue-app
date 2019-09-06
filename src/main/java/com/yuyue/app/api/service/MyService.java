@@ -1,9 +1,6 @@
 package com.yuyue.app.api.service;
 
-import com.yuyue.app.api.domain.Advertisement;
-import com.yuyue.app.api.domain.Feedback;
-import com.yuyue.app.api.domain.Order;
-import com.yuyue.app.api.domain.ShowName;
+import com.yuyue.app.api.domain.*;
 
 import java.util.List;
 
@@ -23,4 +20,18 @@ public interface MyService {
     void insertShowName(ShowName showName);
 
     ShowName getShowInfo(String id);
+
+    /**
+     *商家上传广告申请
+     * @param commodity
+     */
+    void commodityToSpread(Commodity commodity);
+
+    /**
+     * 公告代言人或者商家id 查询 广告
+     * @param merchantId
+     * @param spokesPersonId
+     * @return
+     */
+    List<Advertisement> getCommodityInfo(String merchantId, String spokesPersonId);
 }

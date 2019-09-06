@@ -279,4 +279,51 @@ public class MyController extends BaseController{
         returnResult.setResult(videoByAuthorId);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+    /**
+     *商家上传广告申请
+     * @param commodity
+     */
+    @RequestMapping("/commodityToSpread ")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject commodityToSpread (Commodity commodity){
+        ReturnResult returnResult =new ReturnResult();
+        if ( StringUtils.isEmpty(commodity.getCategory())
+                ||StringUtils.isEmpty(commodity.getCommodityName())
+                ||StringUtils.isEmpty(commodity.getAdWord())
+                ||StringUtils.isEmpty(commodity.getAdUrl())
+                ||StringUtils.isEmpty(commodity.getCommodityPrice())
+                ||StringUtils.isEmpty(commodity.getPayUrl())
+                ||StringUtils.isEmpty(commodity.getAdDuration())
+                ||StringUtils.isEmpty(commodity.getAdPrice())
+                ||StringUtils.isEmpty(commodity.getAddr())
+                ||StringUtils.isEmpty(commodity.getSpokesPersonId())
+                ||StringUtils.isEmpty(commodity.getMerchantId())){
+            returnResult.setMessage("上传的11个参数均不可为空！！");
+        }
+        commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+        returnResult.setMessage("商品信息上传成功，等待审核！！");
+        myService.commodityToSpread(commodity);
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+    /**
+     * 商家id 获取 广告列表
+     * @param appUser
+     * @param
+     * @return
+     */
+    @RequestMapping("/getCommodityInfo ")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject getCommodityInfo(@CurrentUser AppUser appUser) {
+        ReturnResult returnResult =new ReturnResult();
+        List<Advertisement> commodityInfoList = myService.getCommodityInfo(appUser.getId(), "");
+        if (StringUtils.isEmpty(commodityInfoList)){
+            returnResult.setMessage("暂无广告申请");
+        }
+        returnResult.setResult(commodityInfoList);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
 }

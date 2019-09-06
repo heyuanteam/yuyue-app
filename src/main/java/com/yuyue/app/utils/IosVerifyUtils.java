@@ -86,12 +86,12 @@ public class IosVerifyUtils {
      * @param str
      * @return
      */
-/*    public static String getBASE64(String str) {
+    public static String getBASE64(String str) {
         byte[] b = str.getBytes();
         String s = null;
         if (b != null) {
             s = new sun.misc.BASE64Encoder().encode(b);
         }
         return s;
-    }*/
+    }
 }

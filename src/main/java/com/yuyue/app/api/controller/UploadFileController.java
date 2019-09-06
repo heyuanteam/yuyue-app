@@ -1,4 +1,5 @@
 package com.yuyue.app.api.controller;
+
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.google.common.collect.Maps;
@@ -16,7 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -126,8 +129,11 @@ public class UploadFileController extends  BaseController{
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
     @LoginRequired
-    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user) throws Exception {
-        return uploadFileService.UploadFilesToServer(files,user);
+    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user, String fileType,String videoId) throws Exception {
+
+
+        return uploadFileService.UploadFilesToServer(files, user, fileType, videoId);
+
     }
 
     /**
@@ -139,8 +145,9 @@ public class UploadFileController extends  BaseController{
     @RequestMapping(value = "/addRelease")
     @ResponseBody
     @LoginRequired
-    public JSONObject addRelease(@CurrentUser AppUser user,String id,String categoryId,String title,String description, String fileType, String vedioAddress) throws Exception {
-        return uploadFileService.addRelease(id,user.getId(),categoryId,title,description,fileType,vedioAddress);
+    public JSONObject addRelease(@CurrentUser AppUser user,String videoId,String categoryId,String title,String description) throws Exception {
+        return uploadFileService.addRelease(videoId,user.getId(),categoryId,title,description);
+
     }
 
     /**

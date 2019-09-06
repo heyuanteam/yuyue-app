@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuyue.app.api.mapper.CommodityMapper">
+
+
+    <select id="getCommodityInfo" parameterType="String" resultType="com.yuyue.app.api.domain.Commodity">
+        SELECT
+        COMMODITY_ID commodityId,
+        CATEGORY category,
+        COMMODITY_NAME commodityName,
+        AD_WORD adWord,
+        AD_URL adUrl,
+        COMMODITY_PRICE commodityPrice,
+        PAY_URL payUrl,
+        AD_DURATION adDuration,
+        AD_PRICE adPrice,
+        ADDR addr,
+        SPOKESPERSON_ID spokesPersonId,
+        MERCHANT_ID merchantId,
+        DATE_FORMAT(APPLICATION_DATE ,'%Y-%m-%d %H:%i:%s') applicationTime,
+        DATE_FORMAT(START_DATE ,'%Y-%m-%d %H:%i:%s') startDate,
+        DATE_FORMAT(END_DATE ,'%Y-%m-%d %H:%i:%s') endDate,
+        STATUS status
+        FROM yuyue_commodity where 1=1 and
+        <if test="merchantId != null and merchantId != ''">
+            merchantId = #{merchantId}
+        </if>
+        <if test="spokesPersonId != null and spokesPersonId != ''">
+            spokesPersonId = #{spokesPersonId}
+        </if>
+        <if test="spokesPersonId != null and spokesPersonId != '' and merchantId != null and merchantId != ''">
+            spokesPersonId = #{spokesPersonId} and merchantId = #{merchantId}
+        </if>
+
+    </select>
+</mapper>
