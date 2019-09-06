@@ -93,15 +93,12 @@ public class UploadFileServiceImpl implements UploadFileService {
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (null == user){
-            returnResult.setMessage("未登录!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         List<String> listMDs = new ArrayList();
         List<UploadFile> lists = new ArrayList();
         HashMap<String,Object> hashMap = Maps.newHashMap();
         if(157286400 < files[0].getSize()){
-            returnResult.setMessage("上传文件不可大于100MB!");
+            returnResult.setMessage("上传文件不可大于150MB!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else {
              for (int i = 0; i < files.length; i++) {
@@ -110,10 +107,10 @@ public class UploadFileServiceImpl implements UploadFileService {
                     //上传
                     StorePath storePath = this.storageClient.uploadFile(files[i].getInputStream(), files[i].getSize(), subFileType, null);
                     UploadFile uploadFile = new UploadFile();
-                    System.out.println(files[i].getSize()+"------------------------");
-                    String uid = UUID.randomUUID().toString().replaceAll("-", "");
-                    uploadFile.setId(uid.toUpperCase());
-                    uploadFile.setAuthorId(user.getId());
+//                    System.out.println(files[i].getSize()+"------------------------");
+//                    String uid = UUID.randomUUID().toString().replaceAll("-", "");
+//                    uploadFile.setId(uid.toUpperCase());
+//                    uploadFile.setAuthorId(user.getId());
                     uploadFile.setFilesName(files[i].getOriginalFilename());
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
 
@@ -124,13 +121,13 @@ public class UploadFileServiceImpl implements UploadFileService {
 //                    if (uploadFileMapper.selectByFilesMD5(uploadFile.getFilesMD5()) > 0) {
 //                        throw new RuntimeException("第" + (i + 1) + "个文件，数据库已存在");
 //                    }
-                    lists.add(uploadFile);
-                    listMDs.add(uploadFile.getFilesPath());
-                 /*伪造异常，测试文件部分上传失败，是否会清空此次上传的所有文件
-                  fileList.get(10000000);*/
-                    uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",user.getId()),
-                            uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
-                            uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVedioAddress());
+//                    lists.add(uploadFile);
+//                    listMDs.add(uploadFile.getFilesPath());
+//                 /*伪造异常，测试文件部分上传失败，是否会清空此次上传的所有文件
+//                  fileList.get(10000000);*/
+//                    uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",user.getId()),
+//                            uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
+//                            uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVedioAddress());
 
 //                  uploadFileMapper.insertList(listMDs);
                     //数据库修改
@@ -139,10 +136,10 @@ public class UploadFileServiceImpl implements UploadFileService {
                 } catch (FileNotFoundException e) {
                     log.info("文件上传失败，正在清理文件==================>,{}", e.getMessage());
                     e.printStackTrace();
-                    for (int j = 0; j < listMDs.size(); j++) {
-                        String[] split = listMDs.get(j).split("/");
-                        this.storageClient.deleteFile(split[1] +"/"+ split[2] +"/"+ split[3] +"/"+ split[4] +"/"+ split[5]);
-                    }
+//                    for (int j = 0; j < listMDs.size(); j++) {
+//                        String[] split = listMDs.get(j).split("/");
+//                        this.storageClient.deleteFile(split[1] +"/"+ split[2] +"/"+ split[3] +"/"+ split[4] +"/"+ split[5]);
+//                    }
                     log.info("文件存储在服务器的失败=======>{}", e.getMessage());
                 }
             }
@@ -196,43 +193,55 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     /**
      *视频发布
-     * @param id
      * @param categoryId
      * @param title
      * @param description
      * @return
      */
     @Override
-    public JSONObject addRelease(String id, String authorId,String categoryId, String title, String description,String fileType,String vedioAddress) {
+    public JSONObject addRelease(String authorId,String categoryId, String title, String description,
+                                 String fileType,String vedioAddress,String fileName,String filesPath) {
         ReturnResult returnResult=new ReturnResult();
         UploadFile uploadFile = new UploadFile();
-        if(StringUtils.isEmpty(id)){
-            returnResult.setMessage("视频id不可为空");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }if(StringUtils.isEmpty(title)){
+        if(StringUtils.isEmpty(title)){
             returnResult.setMessage("标题不可为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }if (StringUtils.isEmpty(fileType)){
+        }else if(StringUtils.isEmpty(fileType)){
             returnResult.setMessage("视频类型不可为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }if(StringUtils.isEmpty(vedioAddress)){
+        }else if(StringUtils.isEmpty(vedioAddress)){
             returnResult.setMessage("第一帧图片不可为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }if (StringUtils.isEmpty(categoryId)){
+        }else if(StringUtils.isEmpty(categoryId)){
             returnResult.setMessage("视频种类不可为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if(StringUtils.isEmpty(fileName)){
+            returnResult.setMessage("文件名称不可为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if(StringUtils.isEmpty(filesPath)){
+            returnResult.setMessage("文件路径不可为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
+        String uid = UUID.randomUUID().toString().replaceAll("-", "");
+        uploadFile.setId(uid.toUpperCase());
+        uploadFile.setAuthorId(authorId);
+        uploadFile.setFilesName(fileName);
+        uploadFile.setDescription(description);
+        uploadFile.setFilesPath(filesPath);//文件的路径
 
         if(StringUtils.isNotEmpty(fileType) && "video".equals(fileType)){
 //                        uploadFile.setDuration(ResultJSONUtils.getVideoUrl("http://"+uploadFile.getFilesPath()));
             uploadFile.setFilesType("video");
-            uploadFile.setVedioAddress(vedioAddress);
+            uploadFile.setVedioAddress(vedioAddress);//图片的路径
         } else {
             uploadFile.setFilesType("picture");
         }
-        uploadFileMapper.addRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description,
-                uploadFile.getFilesType(),uploadFile.getVedioAddress());
+//        uploadFileMapper.addRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description,
+//                uploadFile.getFilesType(),uploadFile.getVedioAddress());
+        uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),
+                            uploadFile.getId(),uploadFile.getFilesName(),uploadFile.getFilesPath(),uploadFile.getFilesType(),
+                            uploadFile.getAuthorId(),uploadFile.getDescription(), uploadFile.getVedioAddress());
         returnResult.setMessage("发布成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
