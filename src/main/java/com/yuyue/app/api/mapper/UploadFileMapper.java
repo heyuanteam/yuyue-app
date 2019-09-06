@@ -25,20 +25,13 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Delete("delete from ${tableName} where id = #{id}")
     void deleteById(@Param("tableName")String tableName,@Param("id")String id);
 
-    /**
-     * 插入图片信息
-     * @param tableName
-     * @param id
-     * @param authorId
-     * @param videoAddress
-     */
     @Transactional
     @Insert("INSERT INTO ${tableName} " +
-                "(id,authorId,videoAddress) " +
-            "VALUES " +
-                "(#{id},#{authorId},#{videoAddress})")
-    void insertUploadFile(@Param("tableName") String tableName,@Param("id") String id, @Param("authorId") String authorId,
-                         @Param("videoAddress")String videoAddress);
+            "(id,filesName,filesPath,filesType,authorId,description,vedioAddress) VALUES " +
+            "(#{id},#{filesName},#{filesPath},#{filesType},#{authorId},#{description},#{vedioAddress})")
+    void insertUploadFile(@Param("tableName") String tableName,@Param("id") String id,@Param("filesName") String filesName,
+                          @Param("filesPath") String filesPath, @Param("filesType") String filesType, @Param("authorId") String authorId,
+                          @Param("description") String description,@Param("vedioAddress")String vedioAddress);
 
     /**
      * 插入视频信息

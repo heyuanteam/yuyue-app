@@ -24,20 +24,7 @@ public interface UploadFileService {
      *
      * @return
      */
-    JSONObject UploadFilesToServer(MultipartFile[] files,AppUser user,String fileType,String videoId)throws Exception;
-
-
-
-
-    /**
-     * 我的发布
-     * @param id
-     * @param categoryId
-     * @param title
-     * @param description
-     * @return
-     */
-    JSONObject addRelease(String id, String authorId,String categoryId, String title, String description);
+    JSONObject UploadFilesToServer(MultipartFile[] files,AppUser user)throws Exception;
 
     /**
      * 从fastdfs服务器下载文件

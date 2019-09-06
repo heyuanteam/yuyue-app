@@ -40,9 +40,6 @@ public class UploadFileServiceImpl implements UploadFileService {
     private FastFileStorageClient storageClient;
 
 
-
-
-
     /**
      * 视频详情
      * @param
@@ -121,7 +118,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 //                    if (uploadFileMapper.selectByFilesMD5(uploadFile.getFilesMD5()) > 0) {
 //                        throw new RuntimeException("第" + (i + 1) + "个文件，数据库已存在");
 //                    }
-//                    lists.add(uploadFile);
+                    lists.add(uploadFile);
 //                    listMDs.add(uploadFile.getFilesPath());
 //                 /*伪造异常，测试文件部分上传失败，是否会清空此次上传的所有文件
 //                  fileList.get(10000000);*/
