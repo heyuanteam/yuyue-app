@@ -89,10 +89,10 @@ public class PayController{
         order.setOrderNo("YYCZ"+RandomSaltUtil.randomNumber(14));
         order.setStatus("10A");
         order.setStatusCode("100001");
+        order.setMobile(user.getPhone());
+        order.setMerchantId(user.getId());
 //        order.setTradeType("CZWX");
 //        order.setMoney("100");
-//        order.setMobile("13576034501");
-        order.setMerchantId(user.getId());
         createOrder(order);
         if (StringUtils.isEmpty(order.getId())){
             returnResult.setMessage("创建订单失败！缺少参数！");
