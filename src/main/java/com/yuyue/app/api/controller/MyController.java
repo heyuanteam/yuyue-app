@@ -291,7 +291,7 @@ public class MyController extends BaseController{
      *商家上传广告申请
      * @param commodity
      */
-    @RequestMapping("/commodityToSpread ")
+    @RequestMapping("/commodityToSpread")
     @ResponseBody
     @LoginRequired
     public JSONObject commodityToSpread (Commodity commodity,String tradeType,@CurrentUser AppUser user){
@@ -317,7 +317,6 @@ public class MyController extends BaseController{
             Order order = new Order();
             order.setTradeType(tradeType);
             order.setMoney(bd.toString());
-            order.setMobile(user.getPhone());
             try {
                 jsonObject = payController.payYuYue(order, user);
                 if ("true".equals(jsonObject.getString("status"))){

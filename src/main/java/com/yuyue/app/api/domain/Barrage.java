@@ -24,7 +24,7 @@ public class Barrage implements Serializable {
     //用户头像
     private String userHeadUrl;
     //评论视频的时间点
-    private String timePoint;
+    private int timePoint;
     //创建时间
     private String createTime;
 }

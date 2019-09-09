@@ -32,7 +32,7 @@ public interface BarrageMapper extends MyBaseMapper<Barrage> {
             "AND #{endTime}\n" +
             "ORDER BY\n" +
             "\tTIME_POINT")
-    List<Barrage> getBarrages(@Param(value = "videoId") String videoId,@Param(value = "startTime")  String startTime, @Param(value = "endTime") String endTime);
+    List<Barrage> getBarrages(@Param(value = "videoId") String videoId, @Param(value = "startTime")  int startTime, @Param(value = "endTime") int endTime);
 
     @Transactional
     @Insert("insert into yuyue_video_barrage " +

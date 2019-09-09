@@ -11,6 +11,7 @@ import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
+import org.apache.commons.collections.list.TreeList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/barrage" ,produces = "application/json; charset=UTF-8")
@@ -48,16 +47,16 @@ public class BarrageController extends BaseController{
         ReturnResult returnResult=new ReturnResult();
         Map<String,String> mapValue = getParameterMap(request);
         final String videoId = mapValue.get("videoId");
-        final String startTime = mapValue.get("startTime");
-        final String endTime = mapValue.get("endTime");
+        final int startTime = Integer.parseInt(mapValue.get("startTime"));
+        final int endTime = Integer.parseInt(mapValue.get("endTime"));
         if (StringUtils.isEmpty(videoId)){
             returnResult.setMessage("视频不能为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if (StringUtils.isEmpty(startTime)){
-            returnResult.setMessage("时间段：开始时间不能为空");
+        }else if (startTime < 0){
+            returnResult.setMessage("时间段：开始时间错误");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if (StringUtils.isEmpty(endTime)){
-            returnResult.setMessage("时间段：结束时间不能为空");
+        }else if (endTime < 0  ||  startTime>endTime){
+            returnResult.setMessage("时间段：结束时间错误");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
     /*    List<Barrage> list =null;
@@ -74,9 +73,39 @@ public class BarrageController extends BaseController{
             *//*redisUtil.setListAll(videoId,list,6000);*//*
         }
         //数据与传入的时间做业务处理*/
-        List<Barrage> list =null;
-        list = barrageService.getBarrages(videoId,startTime,endTime);
-        returnResult.setResult(JSONObject.toJSON(list));
+        List<Barrage> list =barrageService.getBarrages(videoId,startTime,endTime);
+        Map<Integer,List> map= new TreeMap<>();
+        List textList=new TreeList();
+
+        for (int i=0;i<list.size();i++){
+            System.out.println(i+ ":"+list.get(i).getTimePoint());
+            if (i == 0){
+                textList.add(list.get(i).getText());
+                map.put(list.get(i).getTimePoint(),textList);
+                System.out.println("map"+map.keySet());
+                System.out.println("0"+list.get(i).getText());
+                System.out.println("0"+list.get(i).getTimePoint());
+            }else {
+                if (map.containsKey(list.get(i).getTimePoint()) ){
+                    textList.add(list.get(i).getText());
+                    map.put(list.get(i).getTimePoint(),textList);
+                    System.out.println("map"+map.keySet());
+                    System.out.println("相等"+list.get(i).getText());
+                    System.out.println("相等"+list.get(i).getTimePoint());
+                }else {
+                 /*   textList.clear();*/
+                    textList.removeAll(textList);
+                    System.out.println(StringUtils.isEmpty(textList));
+                    textList.add(list.get(i).getText());
+                    map.put(list.get(i).getTimePoint(),textList);
+                    System.out.println("map key:"+map.keySet()+"     map  value:"+map.values());
+                    System.out.println("不相等"+list.get(i).getText());
+                    System.out.println("不相等"+list.get(i).getTimePoint());
+                }
+            }
+
+        }
+        returnResult.setResult(map);
         returnResult.setMessage("发射弹幕！");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -96,15 +125,15 @@ public class BarrageController extends BaseController{
         Barrage barrage = new Barrage();
         String videoId=mapValue.get("videoId");
         String text=mapValue.get("text");
-        String timePoint=mapValue.get("timePoint");
+        int timePoint=Integer.parseInt(mapValue.get("timePoint"));
         if (StringUtils.isEmpty(videoId)){
             returnResult.setMessage("视频id不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }if (StringUtils.isEmpty(text)){
             returnResult.setMessage("弹幕内容不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }if (StringUtils.isEmpty(timePoint)){
-            returnResult.setMessage("时间点不能为空！！");
+        }if (timePoint < 0  ){
+            returnResult.setMessage("时间点错误！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         barrage.setBarrageId(UUID.randomUUID().toString().toUpperCase());
