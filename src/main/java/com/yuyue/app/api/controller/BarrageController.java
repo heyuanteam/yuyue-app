@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/barrage" ,produces = "application/json; charset=UTF-8")
@@ -75,35 +78,30 @@ public class BarrageController extends BaseController{
         //数据与传入的时间做业务处理*/
         List<Barrage> list =barrageService.getBarrages(videoId,startTime,endTime);
         Map<Integer,List> map= new TreeMap<>();
-        List textList=new TreeList();
-
+        List<String> textList=null;
         for (int i=0;i<list.size();i++){
-            System.out.println(i+ ":"+list.get(i).getTimePoint());
-            if (i == 0){
-                textList.add(list.get(i).getText());
-                map.put(list.get(i).getTimePoint(),textList);
-                System.out.println("map"+map.keySet());
-                System.out.println("0"+list.get(i).getText());
-                System.out.println("0"+list.get(i).getTimePoint());
-            }else {
                 if (map.containsKey(list.get(i).getTimePoint()) ){
                     textList.add(list.get(i).getText());
+                    for (String s:textList
+                         ) {
+                        System.out.println(s);
+                    }
                     map.put(list.get(i).getTimePoint(),textList);
                     System.out.println("map"+map.keySet());
-                    System.out.println("相等"+list.get(i).getText());
-                    System.out.println("相等"+list.get(i).getTimePoint());
                 }else {
-                 /*   textList.clear();*/
-                    textList.removeAll(textList);
-                    System.out.println(StringUtils.isEmpty(textList));
-                    textList.add(list.get(i).getText());
+                    /*textList.clear();*/
+                    /*textList.removeAll(textList);*/
+                    textList = new TreeList();
+                    String text = list.get(i).getText();
+                    System.out.println(text);
+                    textList.add(text);
                     map.put(list.get(i).getTimePoint(),textList);
-                    System.out.println("map key:"+map.keySet()+"     map  value:"+map.values());
-                    System.out.println("不相等"+list.get(i).getText());
-                    System.out.println("不相等"+list.get(i).getTimePoint());
+                    for (String s:textList
+                    ) {
+                        System.out.println("---"+s);
+                    }
+                    System.out.println("map0 key:"+map.keySet()+"     map0  value:"+map.values());
                 }
-            }
-
         }
         returnResult.setResult(map);
         returnResult.setMessage("发射弹幕！");
