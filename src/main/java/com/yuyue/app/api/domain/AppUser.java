@@ -1,10 +1,11 @@
 package com.yuyue.app.api.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,26 +17,43 @@ import java.util.List;
 public class AppUser implements Serializable {
     private static final long serialVersionUID = 1L;
     private String  id;
+    //用户No
     private String userNo;
+    //网名
     private String nickName;
+    //真实姓名
     private String realName;
+    //身份验证类型
     private String idType;
+    //身份证号
     private String idCard;
+    //电话
     private String phone;
 //    定位城市
     private String city;
 //    极光别名
     private String jpushName;
+    //用户密码
     private String password;
+    //盐
     private String salt;
-
+    //余额
     private BigDecimal total;
+    //收益
+    private BigDecimal income;
+    //性别
     private String sex;
+    //住址
     private String addrDetail;
+    //头像
     private String headpUrl;
+    //用户类型
     private String userType;
+    //用户状态
     private String userStatus;
+    //创建时间
     private String createTime;
+    //更新时间
     private String updateTime;
 //    用户关注数量(粉丝量)
     private String attentionTotal;

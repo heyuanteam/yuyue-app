@@ -3,7 +3,6 @@ package com.yuyue.app.api.mapper;
 import com.yuyue.app.api.domain.AppUser;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +34,11 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
                        @Param("userUrl") String userUrl,@Param("cardZUrl") String cardZUrl,@Param("cardFUrl") String cardFUrl,
                        @Param("password") String password,@Param("city") String city,@Param("jpushName") String jpushName);
 
-
+    /**
+     * 模糊查询   用户关注搜索
+     * @param userId
+     * @param content
+     * @return
+     */
     List<AppUser> getAppUserMsgToLike(@Param("userId")String userId,@Param("content")String content);
 }
