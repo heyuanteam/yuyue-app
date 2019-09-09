@@ -278,6 +278,11 @@ public class LoginController {
                 result.setMessage("验证码错误！");
                 return ResultJSONUtils.getJSONObjectBean(result);
             }
+        } else if (StringUtils.isNotEmpty(idCard)){
+            if(idCard.length() < 18){
+                result.setMessage("身份证号码错误！");
+                return ResultJSONUtils.getJSONObjectBean(result);
+            }
         }
         AppUser appUserById = loginService.getAppUserMsg("","",user.getId());
         if (appUserById == null) {
