@@ -183,8 +183,8 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public List<UploadFile> getVideo(String tableName, int bdgin, int size,String categoryId) {
-        return uploadFileMapper.getVideo(tableName,bdgin,size,categoryId);
+    public List<UploadFile> getVideo(String tableName, int bdgin, int size,String categoryId,String content) {
+        return uploadFileMapper.getVideo(tableName,bdgin,size,categoryId,content);
     }
 
 

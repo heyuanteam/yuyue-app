@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -39,6 +40,8 @@ public class MyController extends BaseController{
     private UserCommentService userCommentService;
     @Autowired
     private UploadFileService uploadFileService;
+    @Autowired
+    private PayController payController;
 
     /**
      * 意见反馈提交
@@ -94,10 +97,10 @@ public class MyController extends BaseController{
      * @return
      */
 
-    @RequestMapping("/addAdvertisemenInfo")
+    @RequestMapping("/addAdvertisementInfo")
     @ResponseBody
     @LoginRequired
-    public JSONObject addAdvertisemenInfo(@CurrentUser AppUser appUser, HttpServletRequest request){
+    public JSONObject addAdvertisementInfo(@CurrentUser AppUser appUser, HttpServletRequest request){
         Map<String, String> parameterMap = getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         Advertisement advertisementInfo = myService.getAdvertisementInfo(appUser.getId());
@@ -265,6 +268,11 @@ public class MyController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 我的发布
+     * @param appUser
+     * @return
+     */
     @RequestMapping("/myRelease")
     @ResponseBody
     @LoginRequired
@@ -286,8 +294,9 @@ public class MyController extends BaseController{
     @RequestMapping("/commodityToSpread ")
     @ResponseBody
     @LoginRequired
-    public JSONObject commodityToSpread (Commodity commodity){
+    public JSONObject commodityToSpread (Commodity commodity,String tradeType,@CurrentUser AppUser user){
         ReturnResult returnResult =new ReturnResult();
+        JSONObject jsonObject = null;
         if ( StringUtils.isEmpty(commodity.getCategory())
                 ||StringUtils.isEmpty(commodity.getCommodityName())
                 ||StringUtils.isEmpty(commodity.getAdWord())
@@ -297,15 +306,33 @@ public class MyController extends BaseController{
                 ||StringUtils.isEmpty(commodity.getAdDuration())
                 ||StringUtils.isEmpty(commodity.getAdPrice())
                 ||StringUtils.isEmpty(commodity.getAddr())
-                ||StringUtils.isEmpty(commodity.getSpokesPersonId())
-                ||StringUtils.isEmpty(commodity.getMerchantId())){
+                ||StringUtils.isEmpty(tradeType)
+                ||StringUtils.isEmpty(user.getId())){
             returnResult.setMessage("上传的11个参数均不可为空！！");
+        }else {
+            commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+            int amount = Integer.parseInt(commodity.getAdDuration()) * Integer.parseInt(commodity.getAdPrice());
+            BigDecimal bd  = new BigDecimal(amount);
+            System.out.println(bd);
+            Order order = new Order();
+            order.setTradeType(tradeType);
+            order.setMoney(bd.toString());
+            order.setMobile(user.getPhone());
+            try {
+                jsonObject = payController.payYuYue(order, user);
+                if ("true".equals(jsonObject.getString("status"))){
+                    returnResult.setMessage("订单生成，等待审核！！");
+                    returnResult.setStatus(Boolean.TRUE);
+                    myService.commodityToSpread(commodity);
+                    return ResultJSONUtils.getJSONObjectBean(returnResult);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
-        commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
-        returnResult.setMessage("商品信息上传成功，等待审核！！");
-        myService.commodityToSpread(commodity);
-        returnResult.setStatus(Boolean.TRUE);
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
+        return jsonObject;
+
     }
     /**
      * 商家id 获取 广告列表
@@ -323,9 +350,15 @@ public class MyController extends BaseController{
             returnResult.setMessage("暂无广告申请");
         }
         returnResult.setResult(commodityInfoList);
+        returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 获取爆款信息
+     * @param authorId
+     * @return
+     */
     @RequestMapping(value = "/getHotSaleCommodity")
     @ResponseBody
     public JSONObject getHotSaleCommodity(String authorId){
@@ -335,6 +368,26 @@ public class MyController extends BaseController{
             returnResult.setMessage("暂无代言商品！！");
         }
         returnResult.setResult(commodityInfoList);
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 获取广告费用信息
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/getAdvertisementFeeInfo")
+    @ResponseBody
+    public JSONObject getAdvertisementFeeInfo(){
+        ReturnResult returnResult =new ReturnResult();
+        SystemConfig advertisementFeeInfo = myService.getAdvertisementFeeInfo();
+        System.out.println(advertisementFeeInfo);
+        if (StringUtils.isNull(advertisementFeeInfo.getStatus())){
+            returnResult.setMessage("未查询到结果！！");
+        }
+        returnResult.setResult(JSONObject.parse(advertisementFeeInfo.getStatus()));
+        returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }

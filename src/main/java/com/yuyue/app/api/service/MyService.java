@@ -34,4 +34,11 @@ public interface MyService {
      * @return
      */
     List<Advertisement> getCommodityInfo(String merchantId, String spokesPersonId);
+
+    /**
+     * 获取广告费用信息
+     * @param
+     * @return
+     */
+     SystemConfig getAdvertisementFeeInfo();
 }

@@ -71,7 +71,7 @@ public class UploadFileController extends  BaseController{
         Map<String,Object> map= Maps.newTreeMap();
         if (userId.isEmpty()){
             //用户没有登录情况下，显示视频点赞量，作者关注量
-            map.put("LikeStatus",uploadFile.getLikeAmount());
+            map.put("LikeStatus",0);
             map.put("AttentionStatus","0");
         }else {
             String likeStatus=userCommentService.getLikeStatus(userId, videoId);

@@ -79,7 +79,7 @@ public class HomePageController {
      */
     @ResponseBody
     @RequestMapping("/getVideo")
-    public JSONObject getVideo(String page,String categoryId){
+    public JSONObject getVideo(String page,String categoryId,String content){
         Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
         List<UploadFile> list = Lists.newArrayList();
@@ -88,8 +88,8 @@ public class HomePageController {
         int begin = (Integer.parseInt(page) - 1) * limit;
    /*     List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
         List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);*/
-        List<UploadFile> uploadFilList0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
-        List<UploadFile> uploadFileList1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);
+        List<UploadFile> uploadFilList0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId,content);
+        List<UploadFile> uploadFileList1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId,content);
 
         for (UploadFile uploadFile:uploadFilList0
              ) {
@@ -155,6 +155,11 @@ public class HomePageController {
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 获取现场节目
+     * @param id
+     * @return
+     */
     @RequestMapping("/getSite")
     @ResponseBody
     public JSONObject getSite(String id){

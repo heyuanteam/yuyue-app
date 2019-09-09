@@ -2,6 +2,7 @@ package com.yuyue.app.api.mapper;
 
 import com.yuyue.app.api.domain.Barrage;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,11 +28,11 @@ public interface BarrageMapper extends MyBaseMapper<Barrage> {
             "FROM\n" +
             "\tyuyue_video_barrage\n" +
             "WHERE\n" +
-            "\tTIME_POINT BETWEEN '00:00:01'\n" +
-            "AND '00:02:00'\n" +
+            "\tTIME_POINT BETWEEN #{startTime}\n" +
+            "AND #{endTime}\n" +
             "ORDER BY\n" +
             "\tTIME_POINT")
-    List<Barrage> getBarrages(String videoId,String startTime,String endTime);
+    List<Barrage> getBarrages(@Param(value = "videoId") String videoId,@Param(value = "startTime")  String startTime, @Param(value = "endTime") String endTime);
 
     @Transactional
     @Insert("insert into yuyue_video_barrage " +

@@ -13,7 +13,9 @@
             <choose>
                 <when test="categoryId!=null and categoryId!=''">  and b.categoryId=#{categoryId}  </when>
             </choose>
-
+            <choose>
+                <when test="content!=null and content!=''">  and filesName LIKE "%"#{content}"%"  </when>
+            </choose>
         ORDER BY b.UPLOAD_TIME OR b.commentAmount
         OR b.likeAmount or b.attentionAmount DESC
          LIMIT #{bdgin},#{size}

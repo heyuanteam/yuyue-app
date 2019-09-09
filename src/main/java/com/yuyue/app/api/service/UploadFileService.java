@@ -71,7 +71,7 @@ public interface UploadFileService {
      * @param size
      * @return
      */
-    List<UploadFile> getVideo(String tableName, int bdgin, int size,String categoryId);
+    List<UploadFile> getVideo(String tableName, int bdgin, int size,String categoryId,String content);
 
 
 
