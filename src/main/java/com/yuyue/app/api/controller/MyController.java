@@ -301,22 +301,20 @@ public class MyController extends BaseController{
                 ||StringUtils.isEmpty(commodity.getCommodityName())
                 ||StringUtils.isEmpty(commodity.getAdWord())
                 ||StringUtils.isEmpty(commodity.getAdUrl())
-                ||StringUtils.isEmpty(commodity.getCommodityPrice())
                 ||StringUtils.isEmpty(commodity.getPayUrl())
                 ||StringUtils.isEmpty(commodity.getAdDuration())
                 ||StringUtils.isEmpty(commodity.getAdPrice())
                 ||StringUtils.isEmpty(commodity.getAddr())
                 ||StringUtils.isEmpty(tradeType)
                 ||StringUtils.isEmpty(user.getId())){
-            returnResult.setMessage("上传的11个参数均不可为空！！");
+            returnResult.setMessage("上传的10个参数均不可为空！！");
         }else {
             commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
-            int amount = Integer.parseInt(commodity.getAdDuration()) * Integer.parseInt(commodity.getAdPrice());
-            BigDecimal bd  = new BigDecimal(amount);
-            System.out.println(bd);
+            BigDecimal bds = new BigDecimal(commodity.getAdDuration()).multiply
+                    (new BigDecimal(commodity.getAdPrice())).setScale(2, BigDecimal.ROUND_HALF_UP);
             Order order = new Order();
             order.setTradeType(tradeType);
-            order.setMoney(bd.toString());
+            order.setMoney(bds);
             try {
                 jsonObject = payController.payYuYue(order, user);
                 if ("true".equals(jsonObject.getString("status"))){

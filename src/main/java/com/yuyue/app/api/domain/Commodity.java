@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +23,7 @@ public class Commodity implements Serializable {
     //广告音频图片
     private String adUrl;
     //商品价格
-    private String commodityPrice;
+    private BigDecimal commodityPrice;
     //购买链接
     private String payUrl;
     //广告申请时长
