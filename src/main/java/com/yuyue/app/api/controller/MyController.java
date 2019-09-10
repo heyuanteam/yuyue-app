@@ -322,6 +322,7 @@ public class MyController extends BaseController{
                 if ("true".equals(jsonObject.getString("status"))){
                     returnResult.setMessage("订单生成，等待审核！！");
                     returnResult.setStatus(Boolean.TRUE);
+                    returnResult.setResult(jsonObject.get("result"));
                     myService.commodityToSpread(commodity);
                     return ResultJSONUtils.getJSONObjectBean(returnResult);
                 }
