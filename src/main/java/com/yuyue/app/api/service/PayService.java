@@ -2,6 +2,7 @@ package com.yuyue.app.api.service;
 
 import com.yuyue.app.api.domain.Order;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 public interface PayService {
@@ -13,5 +14,5 @@ public interface PayService {
 
     void updateOrderStatus(String responseCode, String responseMessage, String status,String orderno);
 
-    void updateTotal(String merchantId, String money);
+    void updateTotal(String merchantId, BigDecimal money);
 }

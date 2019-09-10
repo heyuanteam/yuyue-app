@@ -6,6 +6,7 @@ import com.yuyue.app.api.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 @Service(value = "PayService")
@@ -29,5 +30,5 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public void updateTotal(String merchantId, String money) { payMapper.updateTotal(merchantId,money); }
+    public void updateTotal(String merchantId, BigDecimal money) { payMapper.updateTotal(merchantId,money); }
 }

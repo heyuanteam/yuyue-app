@@ -18,8 +18,15 @@ public class ScheduledTasks {
     @Autowired
     private SendSmsController sendSmsController;
 
-    @Scheduled(cron = "0 0/5 * * * *")
-    public void work() {
-        System.out.println(dateFormat.format(new Date())+"我被执行了------------------");
+    /**
+     * 自动提现
+     */
+    @Scheduled(cron = "0 0/3 * * * *")
+    public void outMoney() {
+        log.info("提现开始==================================>>>>>>>>>>>");
+
+
+
+        log.info("提现结束==================================>>>>>>>>>>>");
     }
 }

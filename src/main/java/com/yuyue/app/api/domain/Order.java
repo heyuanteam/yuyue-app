@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +19,7 @@ public class Order implements Serializable {
 //    交易类型
     private String tradeType;
 //    交易金额
-    private String money;
+    private BigDecimal money;
 //    手机号
     private String mobile;
 //    交易状态

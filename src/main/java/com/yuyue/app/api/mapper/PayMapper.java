@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -30,7 +31,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
                            @Param("status") String status, @Param("orderNo") String orderNo);
 
     @Update("UPDATE yuyue_merchant b SET b.TOTAL = b.TOTAL + #{money} WHERE b.ID = #{merchantId} ")
-    void updateTotal(@Param("merchantId") String merchantId,@Param("money") String money);
+    void updateTotal(@Param("merchantId") String merchantId,@Param("money") BigDecimal money);
 
     @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_order b WHERE b.merchantId = #{id} AND b.`status` = '10B' ")
     List<Order> getMoneyList(@Param("id") String id);

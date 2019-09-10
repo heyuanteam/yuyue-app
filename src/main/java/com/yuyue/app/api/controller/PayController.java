@@ -34,7 +34,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/pay", produces = "application/json; charset=UTF-8")
-public class PayController{
+public class PayController {
     private static Logger log = LoggerFactory.getLogger(PayController.class);
 
     @Autowired
@@ -72,21 +72,17 @@ public class PayController{
     private static final String AliPayNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/alipayNotify";
 
 
-
     @ResponseBody
     @RequestMapping("/payYuYue")
     @LoginRequired
-    public JSONObject payYuYue(Order order,@CurrentUser AppUser user)throws Exception {
-        ReturnResult returnResult =new ReturnResult();
+    public JSONObject payYuYue(Order order, @CurrentUser AppUser user) throws Exception {
+        ReturnResult returnResult = new ReturnResult();
         log.info("-------创建订单-----------");
-        if(StringUtils.isEmpty(order.getMoney())){
-            returnResult.setMessage("充值金额不能为空！！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }if (StringUtils.isEmpty(order.getTradeType())){
+        if (StringUtils.isEmpty(order.getTradeType())) {
             returnResult.setMessage("充值类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        order.setOrderNo("YYCZ"+RandomSaltUtil.randomNumber(14));
+        order.setOrderNo("YYCZ" + RandomSaltUtil.randomNumber(14));
         order.setStatus("10A");
         order.setStatusCode("100001");
         order.setMobile(user.getPhone());
@@ -94,26 +90,26 @@ public class PayController{
 //        order.setTradeType("CZWX");
 //        order.setMoney("100");
         createOrder(order);
-        if (StringUtils.isEmpty(order.getId())){
+        if (StringUtils.isEmpty(order.getId())) {
             returnResult.setMessage("创建订单失败！缺少参数！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        if("CZWX".equals(order.getTradeType())){
+        if ("CZWX".equals(order.getTradeType())) {
             return payWX(order);
-        } else if("CZZFB".equals(order.getTradeType())){
+        } else if ("CZZFB".equals(order.getTradeType())) {
             return payZFB(order);
         }
         returnResult.setMessage("充值类型选择错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-    public JSONObject payWX(Order order)throws Exception {
-        ReturnResult returnResult =new ReturnResult();
+    public JSONObject payWX(Order order) throws Exception {
+        ReturnResult returnResult = new ReturnResult();
         log.info("-------weixinAPP支付统一下单-----------");
-        log.info("订单详情============"+order.toString());
+        log.info("订单详情============" + order.toString());
         try {
             Map map = new HashMap();
-            String moneyD = new BigDecimal(order.getMoney()).multiply(new BigDecimal(100)).toString();
+            String moneyD = order.getMoney().multiply(new BigDecimal(100)).toString();
             map.put("appid", wxAppId);
             map.put("mch_id", wxMchID);
             map.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));
@@ -144,7 +140,7 @@ public class PayController{
             //maps.put("signType", "MD5");
             String signs = MD5Utils.signDatashwx(maps, KEY);
             maps.put("sign", signs);
-    //        return JSONObject.toJSONString(maps);
+            //        return JSONObject.toJSONString(maps);
             returnResult.setMessage("返回成功！");
             returnResult.setStatus(Boolean.TRUE);
             returnResult.setResult(JSONObject.toJSON(maps));
@@ -152,43 +148,43 @@ public class PayController{
             e.printStackTrace();
             log.info("支付失败！参数不对！");
             returnResult.setMessage("支付失败！参数不对！");
-            payService.updateStatus(order.getId(),"10C");
+            payService.updateStatus(order.getId(), "10C");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**
+     * @throws Exception
      * @Title:wxpayNotify
      * @Description:微信回调
-     * @throws Exception
      * @date:2018年7月18日 下午2:32:49
      */
     @ResponseBody
     @RequestMapping(value = "/wxpayNotify")
-    public JSONObject wxpay(HttpServletRequest request) throws Exception{
-        ReturnResult returnResult =new ReturnResult();
+    public JSONObject wxpay(HttpServletRequest request) throws Exception {
+        ReturnResult returnResult = new ReturnResult();
         log.info((new StringBuilder()).append("回调的内容为+++++++++++++++++++++++++++++++++").append(request).toString());
         BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
         StringBuffer buffer = new StringBuffer();
-        for(String line = " "; (line = br.readLine()) != null;)
+        for (String line = " "; (line = br.readLine()) != null; )
             buffer.append(line);
 
         log.info((new StringBuilder()).append("内容++++++++++++").append(buffer.toString()).toString());
         Map object = XMLUtils.xmlString2Map(buffer.toString());
         log.info((new StringBuilder()).append("返回的数据是+++++++").append(object).toString());
         String returnCode = object.get("return_code").toString();
-        if(returnCode.equals("SUCCESS")) {
+        if (returnCode.equals("SUCCESS")) {
             String orderId = object.get("out_trade_no").toString();
             log.info((new StringBuilder()).append("\u56DE\u8C03\uFF1A").append(orderId).toString());
-            if(StringUtils.isNotEmpty(orderId)) {
+            if (StringUtils.isNotEmpty(orderId)) {
                 Order orderNo = payService.getOrderId(orderId);
-                if(orderNo != null) {
+                if (orderNo != null) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
                     orderNo.setStatus("10B");
-                    payService.updateOrderStatus(orderNo.getResponseCode(),orderNo.getResponseMessage(),orderNo.getStatus(),orderNo.getOrderNo());
-                    payService.updateTotal(orderNo.getMerchantId(),orderNo.getMoney());
+                    payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
+                    payService.updateTotal(orderNo.getMerchantId(), orderNo.getMoney());
                     returnResult.setMessage("微信回调成功！");
                     returnResult.setStatus(Boolean.TRUE);
                 }
@@ -202,8 +198,8 @@ public class PayController{
      *
      * @return
      */
-    public JSONObject payZFB(Order order)throws Exception {
-        ReturnResult returnResult =new ReturnResult();
+    public JSONObject payZFB(Order order) throws Exception {
+        ReturnResult returnResult = new ReturnResult();
         log.info("======支付宝APP支付统一下单接口==============");
         try {
             // 实例化客户端
@@ -219,7 +215,7 @@ public class PayController{
             model.setTimeoutExpress("30m");
 
             // 将分制金额换成元制金额保留两位小数
-            String moneyD = new BigDecimal(order.getMoney()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+            String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
             model.setTotalAmount(moneyD);
             model.setProductCode("QUICK_MSECURITY_PAY");// 固定值
             request.setBizModel(model);
@@ -240,7 +236,7 @@ public class PayController{
             e.printStackTrace();
             log.info("支付失败！参数不对！");
             returnResult.setMessage("支付失败！参数不对！");
-            payService.updateStatus(order.getId(),"10C");
+            payService.updateStatus(order.getId(), "10C");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -256,12 +252,12 @@ public class PayController{
     @ResponseBody
     @RequestMapping(value = "/alipayNotify")
     public JSONObject alipayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ReturnResult returnResult =new ReturnResult();
+        ReturnResult returnResult = new ReturnResult();
         log.info("支付宝平台回调开始+++++++++++++++++++++++++++++++++");
         // 获取支付宝POST过来反馈信息
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         Map requestParams = request.getParameterMap();
-        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
             String name = (String) iter.next();
             String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
@@ -277,7 +273,7 @@ public class PayController{
         // boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String
         // publicKey, String charset, String sign_type)
         String orderId = params.get("out_trade_no");
-        boolean flag = AlipaySignature.rsaCheckV1(params,AliPayPublicKey, "UTF-8", "RSA2");
+        boolean flag = AlipaySignature.rsaCheckV1(params, AliPayPublicKey, "UTF-8", "RSA2");
         if (flag) {
             log.info("支付宝验签成功+++++++++++++++++++++++++++++++++");
             Order orderNo = payService.getOrderId(orderId);
@@ -289,8 +285,8 @@ public class PayController{
                     orderNo.setResponseCode(trxNo);
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
-                    payService.updateOrderStatus(orderNo.getResponseCode(),orderNo.getResponseMessage(),orderNo.getStatus(),orderNo.getOrderNo());
-                    payService.updateTotal(orderNo.getMerchantId(),orderNo.getMoney());
+                    payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
+                    payService.updateTotal(orderNo.getMerchantId(), orderNo.getMoney());
                     returnResult.setMessage("支付宝回调成功！");
                     returnResult.setStatus(Boolean.TRUE);
                 }
@@ -301,57 +297,56 @@ public class PayController{
     }
 
     /**
-     * @throws Exception
-     * 苹果内购支付
+     * @param TransactionID        ：交易单号 需要客户端传过来的参数1
+     * @param Payload：需要客户端传过来的参数2
+     * @throws Exception 苹果内购支付
+     * @throws
      * @Title: doIosRequest
      * @Description:Ios客户端内购支付
-     * @param TransactionID ：交易单号 需要客户端传过来的参数1
-     * @param Payload：需要客户端传过来的参数2
-     * @throws
      */
-    public Map<String, Object> doIosRequest(String TransactionID,String Payload, int userId) throws Exception {
-        ReturnResult returnResult =new ReturnResult();
+    public Map<String, Object> doIosRequest(String TransactionID, String Payload, int userId) throws Exception {
+        ReturnResult returnResult = new ReturnResult();
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> mapChange = new HashMap<>();
-        System.out.println("客户端传过来的值1："+TransactionID+"客户端传过来的值2："+Payload);
+        System.out.println("客户端传过来的值1：" + TransactionID + "客户端传过来的值2：" + Payload);
 
-        String verifyResult = IosVerifyUtils.buyAppVerify(Payload,1); //1.先线上测试 发送平台验证
+        String verifyResult = IosVerifyUtils.buyAppVerify(Payload, 1); //1.先线上测试 发送平台验证
         if (verifyResult == null) { // 苹果服务器没有返回验证结果
             System.out.println("无订单信息!");
         } else { // 苹果验证有返回结果
-            System.out.println("线上，苹果平台返回JSON:"+verifyResult);
+            System.out.println("线上，苹果平台返回JSON:" + verifyResult);
             JSONObject job = JSONObject.parseObject(verifyResult);
             String states = job.getString("status");
 
-            if("21007".equals(states)){	//是沙盒环境，应沙盒测试，否则执行下面
-                verifyResult = IosVerifyUtils.buyAppVerify(Payload,0);	//2.再沙盒测试 发送平台验证
-                System.out.println("沙盒环境，苹果平台返回JSON:"+verifyResult);
+            if ("21007".equals(states)) {    //是沙盒环境，应沙盒测试，否则执行下面
+                verifyResult = IosVerifyUtils.buyAppVerify(Payload, 0);    //2.再沙盒测试 发送平台验证
+                System.out.println("沙盒环境，苹果平台返回JSON:" + verifyResult);
                 job = JSONObject.parseObject(verifyResult);
                 states = job.getString("status");
             }
 
-            System.out.println("苹果平台返回值：job"+job);
-            if (states.equals("0")){ // 前端所提供的收据是有效的 验证成功
+            System.out.println("苹果平台返回值：job" + job);
+            if (states.equals("0")) { // 前端所提供的收据是有效的 验证成功
                 String r_receipt = job.getString("receipt");
                 JSONObject returnJson = JSONObject.parseObject(r_receipt);
                 String in_app = returnJson.getString("in_app");
-                JSONObject in_appJson = JSONObject.parseObject(in_app.substring(1, in_app.length()-1));
+                JSONObject in_appJson = JSONObject.parseObject(in_app.substring(1, in_app.length() - 1));
 
                 String product_id = in_appJson.getString("product_id");
                 String transaction_id = in_appJson.getString("transaction_id"); // 订单号
 /************************************************+自己的业务逻辑**********************************************************/
                 //如果单号一致 则保存到数据库
-                if(TransactionID.equals(transaction_id)){
-                    String [] moneys = product_id.split("\\.");
+                if (TransactionID.equals(transaction_id)) {
+                    String[] moneys = product_id.split("\\.");
 //                    System.out.println("用户ID："+userId+",要充值的钻石数："+moneys[moneys.length-1]);
 //                    mapChange = charge(Integer.parseInt(moneys[moneys.length-1]), 5, userId);
-                    map.put("money", moneys[moneys.length-1]);
+                    map.put("money", moneys[moneys.length - 1]);
                 }
 /************************************************+自己的业务逻辑end**********************************************************/
-                if((boolean) mapChange.get("success")){//用户钻石数量新增成功
+                if ((boolean) mapChange.get("success")) {//用户钻石数量新增成功
                     map.put("success", true);
                     map.put("message", "充值钻石成功！");
-                }else{
+                } else {
                     map.put("success", false);
                     map.put("message", "充值钻石失败！");
                 }
@@ -365,9 +360,14 @@ public class PayController{
     }
 
     //创建订单
-    public void createOrder(Order order){
+    public void createOrder(Order order) {
         order.setId(RandomSaltUtil.generetRandomSaltCode(32));
         payService.createOrder(order);
     }
 
+    //提现
+    public void ti(Order order) {
+        order.setId(RandomSaltUtil.generetRandomSaltCode(32));
+        payService.createOrder(order);
+    }
 }
