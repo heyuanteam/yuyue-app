@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Service(value = "PayService")
 public class PayServiceImpl implements PayService {
@@ -49,4 +48,14 @@ public class PayServiceImpl implements PayService {
 
     @Override
     public List<OutMoney> getOutMoneyList(String id) { return payMapper.getOutMoneyList(id); }
+
+    @Override
+    public void addMoney(String id, BigDecimal money) {
+
+    }
+
+    @Override
+    public void sendMoney(String id, BigDecimal money) {
+
+    }
 }
