@@ -50,12 +50,5 @@ public class PayServiceImpl implements PayService {
     public List<OutMoney> getOutMoneyList(String id) { return payMapper.getOutMoneyList(id); }
 
     @Override
-    public void addMoney(String id, BigDecimal money) {
-
-    }
-
-    @Override
-    public void sendMoney(String id, BigDecimal money) {
-
-    }
+    public void sendMoney(String id, BigDecimal money) { payMapper.sendMoney(id,money); }
 }

@@ -13,8 +13,8 @@ import java.util.List;
 public interface PayMapper extends MyBaseMapper<Order> {
 
     @Transactional
-    @Insert("insert into yuyue_order (id,orderNo,tradeType,money,mobile,status,statusCode,merchantId)  values  " +
-            "(#{id},#{orderNo},#{tradeType},#{money},#{mobile},#{status},#{statusCode},#{merchantId})")
+    @Insert("insert into yuyue_order (id,orderNo,tradeType,money,mobile,status,statusCode,merchantId,note,sourceId)  values  " +
+            "(#{id},#{orderNo},#{tradeType},#{money},#{mobile},#{status},#{statusCode},#{merchantId}),#{note}),#{sourceId})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createOrder(Order order);
 
@@ -34,6 +34,10 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Transactional
     @Update("UPDATE yuyue_merchant b SET b.TOTAL = b.TOTAL + #{money} WHERE b.ID = #{merchantId} ")
     void updateTotal(@Param("merchantId") String merchantId,@Param("money") BigDecimal money);
+
+    @Transactional
+    @Update("UPDATE yuyue_merchant b SET b.TOTAL = b.TOTAL - #{money} WHERE b.ID = #{merchantId} ")
+    void sendMoney(@Param("merchantId") String merchantId,@Param("money") BigDecimal money);
 
     @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_order b WHERE b.merchantId = #{id} AND b.`status` = '10B' ")
     List<Order> getMoneyList(@Param("id") String id);

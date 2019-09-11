@@ -8,6 +8,7 @@ import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.*;
+import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -446,10 +447,18 @@ public class MyController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         payService.sendMoney(appUser.getId(),new BigDecimal(mapValue.get("money")));
-        payService.addMoney(user.getId(), new BigDecimal(mapValue.get("money"))
+        payService.updateTotal(user.getId(), new BigDecimal(mapValue.get("money"))
                 .multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP));
         Order order = new Order();
-//      order.set
+        order.setOrderNo("YYXF" + RandomSaltUtil.randomNumber(14));
+        order.setStatus("10B");
+        order.setStatusCode("100001");
+        order.setMobile(appUser.getPhone());
+        order.setMerchantId(appUser.getId());
+        order.setSourceId(user.getId());
+        order.setMoney(new BigDecimal(mapValue.get("money")));
+        order.setNote("送礼物");
+        order.setTradeType("XF");
         payController.createOrder(order);
         returnResult.setMessage(appUser.getNickName()+"送"+user.getNickName()+" "+mapValue.get("money")+"和元币！");
         returnResult.setStatus(Boolean.TRUE);

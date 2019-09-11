@@ -26,7 +26,5 @@ public interface PayService {
 
     List<OutMoney> getOutMoneyList(String id);
 
-    void addMoney(String id, BigDecimal money);
-
     void sendMoney(String id, BigDecimal money);
 }
