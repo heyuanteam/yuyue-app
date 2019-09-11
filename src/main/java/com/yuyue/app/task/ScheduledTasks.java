@@ -1,6 +1,6 @@
 package com.yuyue.app.task;
 
-import com.yuyue.app.api.controller.SendSmsController;
+import com.yuyue.app.api.controller.PayController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Component
 public class ScheduledTasks {
@@ -16,12 +15,12 @@ public class ScheduledTasks {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     @Autowired
-    private SendSmsController sendSmsController;
+    private PayController payController;
 
     /**
      * 自动提现
      */
-    @Scheduled(cron = "0 0/3 * * * *")
+    @Scheduled(cron = "0 0/50 * * * *")
     public void outMoney() {
         log.info("提现开始==================================>>>>>>>>>>>");
 

@@ -4,14 +4,23 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayFundTransOrderQueryModel;
+import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
+import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.request.AlipayTradeWapPayRequest;
+import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
+import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.Order;
+import com.yuyue.app.api.domain.OutMoney;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.utils.*;
@@ -71,13 +80,18 @@ public class PayController {
             "oMlcgRB6BTKG59S+KVso1O9Cxx52lvYqisuei8OnNwmMxK+++psZXmdDuNpUc4OJXdA7Bc0zbwDedtxRJE3zNDONOOwIDAQAB";
     private static final String AliPayNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/alipayNotify";
 
+    //支付宝转账
+    private static final String gateway="https://openapi.alipay.com/gateway.do";//支付宝网关
+    //填写自己创建的app的对应参数
+    private static AlipayClient alipayClient = new DefaultAlipayClient
+            (gateway, AliAPPID, AliAppPrivateKey, "json", "utf-8", AliPayPublicKey,"RSA2");
 
     @ResponseBody
     @RequestMapping("/payYuYue")
     @LoginRequired
     public JSONObject payYuYue(Order order, @CurrentUser AppUser user) throws Exception {
         ReturnResult returnResult = new ReturnResult();
-        log.info("-------创建订单-----------");
+        log.info("-------创建充值订单-----------");
         if (StringUtils.isEmpty(order.getTradeType())) {
             returnResult.setMessage("充值类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -359,15 +373,109 @@ public class PayController {
         return map;
     }
 
-    //创建订单
+    //创建充值订单
     public void createOrder(Order order) {
         order.setId(RandomSaltUtil.generetRandomSaltCode(32));
         payService.createOrder(order);
     }
 
-    //提现
-    public void ti(Order order) {
-        order.setId(RandomSaltUtil.generetRandomSaltCode(32));
-        payService.createOrder(order);
+    //创建提现订单
+    public void createOut(OutMoney outMoney) {
+        outMoney.setId(RandomSaltUtil.generetRandomSaltCode(32));
+        payService.createOut(outMoney);
+    }
+
+    /**
+     * 用户提现
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/outMoney")
+    @LoginRequired
+    public JSONObject outMoney(OutMoney outMoney, @CurrentUser AppUser user) throws Exception {
+        ReturnResult returnResult = new ReturnResult();
+        log.info("-------提现订单-----------");
+        if (StringUtils.isEmpty(outMoney.getTradeType())) {
+            returnResult.setMessage("提现类型不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (StringUtils.isEmpty(outMoney.getRealName())){
+            returnResult.setMessage("真实姓名不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (StringUtils.isEmpty(outMoney.getMoneyNumber())){
+            returnResult.setMessage("收款账号不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (outMoney.getMoney() == null|| outMoney.getMoney().compareTo(BigDecimal.ZERO)==0){
+            returnResult.setMessage("转账的钱不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        outMoney.setOutNo("YYTX" + RandomSaltUtil.randomNumber(14));
+        outMoney.setMerchantId(user.getId());
+//        outMoney.setRealName("真实姓名");
+//        outMoney.setMoneyNumber("支付账号");
+//        outMoney.setTradeType("TXZFB");
+//        outMoney.setMoney(new BigDecimal("1"));
+
+        createOut(outMoney);
+        if (StringUtils.isEmpty(outMoney.getId())) {
+            returnResult.setMessage("创建提现订单失败！缺少参数！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        if ("TXZFB".equals(outMoney.getTradeType())) {
+            return outZFB(outMoney);
+        } else if ("TXWX".equals(outMoney.getTradeType())) {
+            return outWX(outMoney);
+        }
+        returnResult.setMessage("提现类型选择错误！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    //单笔提现到微信
+    private JSONObject outWX(OutMoney outMoney) {
+        ReturnResult returnResult = new ReturnResult();
+
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 单笔提现到支付宝账户
+     * https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.54Ty29&treeId=193&articleId=106236&docType=1
+     */
+    public JSONObject outZFB(OutMoney outMoney) {
+        ReturnResult returnResult = new ReturnResult();
+        AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
+        model.setOutBizNo(outMoney.getId());//生成订单号
+        model.setPayeeType("ALIPAY_LOGONID");//固定值
+        model.setPayeeAccount(outMoney.getMoneyNumber());
+        model.setAmount(outMoney.getMoney().toString());//金额
+        model.setPayerShowName("艺人收益");
+        model.setPayerRealName(outMoney.getRealName());
+        model.setRemark("单笔转账到支付宝");
+        try {
+            AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
+            request.setBizModel(model);
+            AlipayFundTransToaccountTransferResponse response = alipayClient.execute(request);
+            log.info("转账信息=======>"+response.getBody());
+            if (response.isSuccess()) {
+                JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("alipay_fund_trans_toaccount_transfer_response");
+                String msg = jsonObject.getString("msg");
+                String code = jsonObject.getString("code");
+                String outNo = jsonObject.getString("out_biz_no");
+                payService.updateOutStatus(code, msg, "10B", outNo);
+                payService.updateOutIncome(outMoney.getMerchantId(), outMoney.getMoney());
+                returnResult.setMessage("支付宝转账成功！");
+                returnResult.setStatus(Boolean.TRUE);
+                returnResult.setResult(response.getBody());
+            } else {
+                returnResult.setResult(response.getBody());
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("转账失败异常=======>"+e.getMessage());
+            returnResult.setMessage("支付宝转账失败！");
+        }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }
