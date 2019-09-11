@@ -84,58 +84,12 @@ public class WXShareController extends BaseController{
         //  获取URL 这里的URL指的是需要分享的那个页面地址,建议这里不要写成固定地址，而是获取当前地址.
         String url = request.getParameter("url");
 
+//=========================================================获取token=======================================================
 
         if (redisUtil.existsKey("WX_access_token")){
-//=========================================================获取ticket=======================================================
              access_token =JSONObject.toJSONString(redisUtil.getString("WX_access_token"));
-            String requestUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi"
-                    .replace("ACCESS_TOKEN", access_token);
-            System.out.println("-------------------------------");
-            System.out.println("redis获取access_token: "+access_token);
-            // 访问外部链接 获取凭证
-            JSONObject returnResultTicket = HttpAccessUtil.getReturnResult(requestUrl);
-            if(StringUtils.isNotNull(returnResultTicket)){
-                try {
-                    //获取票
-                    String ticket = returnResultTicket.getString("ticket");
-                    System.out.println("-------------------------------");
-                    System.out.println("获取的票ticket: "+ticket);
-                    //随机数
-                    String noncestr = RandomSaltUtil.generetRandomSaltCode(7);
-                    //时间戳
-                    String timestamp = Long.toString(System.currentTimeMillis() / 1000);
-                    //url参数
-                    /* String string1 = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + nonce_str + "&timestamp=" + timestamp + "&url="+ url;*/
-
-                    String param = "jsapi_ticket="+ticket+"&amp;noncestr="+noncestr+"×tamp="+timestamp+"&amp;url="+url;
-                    //参数加密  签名
-                    String signature = DigestUtils.md5Hex(param);
-                    System.out.println("-------------------------------");
-                    System.out.println("获取的签名signature:"+signature);
-
-                    Map<String, String> map = new HashMap<>();
-                    map.put("url", url);
-                    map.put("jsapi_ticket", ticket);
-                    map.put("nonceStr", noncestr);
-                    map.put("timestamp", timestamp);
-                    map.put("signature", signature);
-
-
-                    wxShare.setTicket(map.get("jsapi_ticket"));
-                    wxShare.setSignature(map.get("signature"));
-                    wxShare.setNoncestr(map.get("nonceStr"));
-                    wxShare.setTimestamp(map.get("timestamp"));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }else {
-                returnResult.setMessage("获取ticket失败！！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
         }else {
-//=========================================================获取token=======================================================
-            // 创建通过Api获取Token的链接与参数
+           // 创建通过Api获取Token的链接与参数
             String requestTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=SECRET"
                     .replace("APPID", appid)
                     .replace("SECRET", secret);
@@ -143,7 +97,7 @@ public class WXShareController extends BaseController{
             JSONObject returnResultToken = HttpAccessUtil.getReturnResult(requestTokenUrl);
             if (StringUtils.isNotNull(returnResultToken)){
                 // 获取Token值
-                access_token = returnResultToken.getString("access_token");
+                access_token = JSONObject.toJSONString(returnResultToken);
                 System.out.println("-------------------------------");
                 System.out.println("所获取的token:"+access_token);
                 redisUtil.setString("WX_access_token",access_token,7200);
@@ -158,6 +112,52 @@ public class WXShareController extends BaseController{
                 returnResult.setMessage("获取access_token失败！！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
+        }
+//=========================================================获取token=======================================================
+        System.out.println("access_token:"+access_token);
+        String requestUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi"
+                .replace("ACCESS_TOKEN", access_token);
+        // 访问外部链接 获取凭证
+        JSONObject returnResultTicket = HttpAccessUtil.getReturnResult(requestUrl);
+        if(StringUtils.isNotNull(returnResultTicket)){
+            try {
+                //获取票
+                String ticket = returnResultTicket.getString("ticket");
+                System.out.println("-------------------------------");
+                System.out.println(returnResultTicket);
+                System.out.println("获取的票ticket: "+ticket);
+                //随机数
+                String noncestr = RandomSaltUtil.generetRandomSaltCode(7);
+                //时间戳
+                String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+                //url参数
+                /* String string1 = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + nonce_str + "&timestamp=" + timestamp + "&url="+ url;*/
+
+                String param = "jsapi_ticket="+ticket+"&amp;noncestr="+noncestr+"×tamp="+timestamp+"&amp;url="+url;
+                //参数加密  签名
+                String signature = DigestUtils.md5Hex(param);
+                System.out.println("-------------------------------");
+                System.out.println("获取的签名signature:"+signature);
+
+                Map<String, String> map = new HashMap<>();
+                map.put("url", url);
+                map.put("jsapi_ticket", ticket);
+                map.put("nonceStr", noncestr);
+                map.put("timestamp", timestamp);
+                map.put("signature", signature);
+
+
+                wxShare.setTicket(map.get("jsapi_ticket"));
+                wxShare.setSignature(map.get("signature"));
+                wxShare.setNoncestr(map.get("nonceStr"));
+                wxShare.setTimestamp(map.get("timestamp"));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            returnResult.setMessage("获取ticket失败！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
         returnResult.setMessage("成功获取凭证！！");
