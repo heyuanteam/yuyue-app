@@ -40,5 +40,5 @@ public interface MyService {
      * @param
      * @return
      */
-     SystemConfig getAdvertisementFeeInfo();
+    List<AdPrice> getAdvertisementFeeInfo(String priceId);
 }

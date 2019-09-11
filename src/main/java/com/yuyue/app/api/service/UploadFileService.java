@@ -9,7 +9,11 @@ import java.io.IOException;
 import java.util.List;
 
 public interface UploadFileService {
-
+    /**
+     * 视频详情
+     *
+     * @return
+     */
     UploadFile fileDetail(String userId,String videoId);
 
     /**

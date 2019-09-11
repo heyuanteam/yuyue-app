@@ -2,7 +2,9 @@ package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.api.domain.UploadFile;
 import com.yuyue.app.api.domain.WXShare;
+import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -21,6 +23,8 @@ public class WXShareController extends BaseController{
     private static Logger log = LoggerFactory.getLogger(WXShareController.class);
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private UploadFileService uploadFileService;
 
 
     /**
@@ -63,7 +67,7 @@ public class WXShareController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
-    @RequestMapping("/WXShare")
+    @RequestMapping("/WX_WEB_Share")
     @ResponseBody
     public JSONObject wxShare(HttpServletRequest request){
         ReturnResult returnResult =new ReturnResult();
@@ -77,6 +81,7 @@ public class WXShareController extends BaseController{
         String access_token = "";
         //  获取URL 这里的URL指的是需要分享的那个页面地址,建议这里不要写成固定地址，而是获取当前地址.
         String url = request.getParameter("url");
+        System.out.println(url);
 
 //=========================================================获取token=======================================================
 
@@ -160,6 +165,24 @@ public class WXShareController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(wxShare);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    @RequestMapping("/wxAppShare")
+    @ResponseBody
+    public JSONObject wxAppShare(String authorId,String videoId){
+        ReturnResult returnResult =new ReturnResult();
+        UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
+
+        if(StringUtils.isNull(uploadFile)){
+            returnResult.setMessage("视频已删除!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        String shareUrl="";
+        returnResult.setMessage("获取URL成功！！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(shareUrl);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+
     }
 
 }

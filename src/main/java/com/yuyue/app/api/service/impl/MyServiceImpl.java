@@ -22,7 +22,7 @@ public class MyServiceImpl implements MyService {
     @Autowired
     private CommodityMapper commodityMapper;
     @Autowired
-    private SystemConfigMapper systemConfigMapper;
+    private AdPriceMapper adPriceMapper;
 
     @Override
     public void insertFeedback(Feedback feedback) { feedbackMapper.insertFeedback(feedback); }
@@ -67,8 +67,8 @@ public class MyServiceImpl implements MyService {
     }
 
     @Override
-    public SystemConfig getAdvertisementFeeInfo() {
-        return systemConfigMapper.getAdvertisementFeeInfo();
+    public List<AdPrice> getAdvertisementFeeInfo(String priceId) {
+        return adPriceMapper.getAdvertisementFeeInfo(priceId);
     }
 
 

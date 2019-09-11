@@ -64,7 +64,7 @@ public class UploadFileController extends  BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
-        if(uploadFile == null){
+        if(StringUtils.isNull(uploadFile)){
             returnResult.setMessage("视频已删除!!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }

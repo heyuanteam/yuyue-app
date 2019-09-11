@@ -3,6 +3,7 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
@@ -280,13 +281,16 @@ public class MyController extends BaseController{
     @LoginRequired
     public JSONObject myRelease(@CurrentUser AppUser appUser){
         ReturnResult returnResult =new ReturnResult();
+        Map<String,Object> map = Maps.newHashMap();
         List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(appUser.getId());
         if (StringUtils.isEmpty(videoByAuthorId)){
             returnResult.setMessage("暂无发布视频");
         }else
+            map.put("Author",appUser);
+            map.put("videoList",videoByAuthorId);
             returnResult.setMessage("返回成功！！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(videoByAuthorId);
+        returnResult.setResult(map);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
     /**
@@ -304,20 +308,27 @@ public class MyController extends BaseController{
                 ||StringUtils.isEmpty(commodity.getAdWord())
                 ||StringUtils.isEmpty(commodity.getAdUrl())
                 ||StringUtils.isEmpty(commodity.getPayUrl())
-                ||StringUtils.isEmpty(commodity.getAdDuration())
-                ||StringUtils.isEmpty(commodity.getAdPrice())
+                ||StringUtils.isEmpty(commodity.getPriceId())
                 ||StringUtils.isEmpty(commodity.getAddr())
                 ||StringUtils.isEmpty(tradeType)
                 ||StringUtils.isEmpty(user.getId())){
-            returnResult.setMessage("上传的10个参数均不可为空！！");
+            returnResult.setMessage("上传的9个参数均不可为空！！");
         }else {
             commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
             commodity.setMerchantId(user.getId());
-            BigDecimal bds = new BigDecimal(commodity.getAdDuration()).multiply
-                    (new BigDecimal(commodity.getAdPrice())).setScale(2, BigDecimal.ROUND_HALF_UP);
+           /* BigDecimal bds = new BigDecimal(commodity.getAdDuration()).multiply
+                    (new BigDecimal(commodity.getAdPrice())).setScale(2, BigDecimal.ROUND_HALF_UP);*/
+            List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(commodity.getPriceId());
+            if (StringUtils.isEmpty(advertisementFeeInfo)){
+                returnResult.setMessage("价格id传入错误！！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            AdPrice adPrice = advertisementFeeInfo.get(0);
+            Double adTotalPrice = Double.valueOf(adPrice.getAdTotalPrice())*Double.valueOf(adPrice.getAdDiscount());
+            BigDecimal bigDecimal = new BigDecimal(adTotalPrice);
             Order order = new Order();
             order.setTradeType(tradeType);
-            order.setMoney(bds);
+            order.setMoney(bigDecimal);
             try {
                 jsonObject = payController.payYuYue(order, user);
                 if ("true".equals(jsonObject.getString("status"))){
@@ -380,14 +391,12 @@ public class MyController extends BaseController{
      */
     @RequestMapping(value = "/getAdvertisementFeeInfo")
     @ResponseBody
-    public JSONObject getAdvertisementFeeInfo(){
+    public JSONObject getAdvertisementFeeInfo(String priceId){
         ReturnResult returnResult =new ReturnResult();
-        SystemConfig advertisementFeeInfo = myService.getAdvertisementFeeInfo();
+        List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(priceId);
         System.out.println(advertisementFeeInfo);
-        if (StringUtils.isNull(advertisementFeeInfo.getStatus())){
-            returnResult.setMessage("未查询到结果！！");
-        }
-        returnResult.setResult(JSONObject.parse(advertisementFeeInfo.getStatus()));
+
+        returnResult.setResult(advertisementFeeInfo);
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
