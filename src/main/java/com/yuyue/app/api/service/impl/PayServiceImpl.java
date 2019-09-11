@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 @Service(value = "PayService")
@@ -45,4 +46,7 @@ public class PayServiceImpl implements PayService {
     public void updateOutIncome(String merchantId, BigDecimal money) {
         payMapper.updateOutIncome(merchantId,money);
     }
+
+    @Override
+    public List<OutMoney> getOutMoneyList(String id) { return payMapper.getOutMoneyList(id); }
 }
