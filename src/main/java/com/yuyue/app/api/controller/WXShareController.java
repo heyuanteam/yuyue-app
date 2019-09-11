@@ -116,7 +116,7 @@ public class WXShareController extends BaseController{
             }
         }
 //=========================================================获取ticket=======================================================
-        // 获取凭证的访问链接
+        // 获取凭证的访问链接77777
         String requestUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi"
                 .replace("ACCESS_TOKEN", access_token);
 
