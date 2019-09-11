@@ -22,6 +22,7 @@ public class BaseController {
             String propertyValue = request.getParameter(propertyName.trim());
             map.put(propertyName,propertyValue);
         }
+        logger.info("前端传参=====>>>>>>>"+map.toString());
         return map;
     }
 }

@@ -6,10 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
-import com.yuyue.app.api.service.MyService;
-import com.yuyue.app.api.service.PayService;
-import com.yuyue.app.api.service.UploadFileService;
-import com.yuyue.app.api.service.UserCommentService;
+import com.yuyue.app.api.service.*;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -45,6 +42,8 @@ public class MyController extends BaseController{
     private PayController payController;
     @Autowired
     private PayService payService;
+    @Autowired
+    private LoginService loginService;
 
     /**
      * 意见反馈提交
@@ -408,6 +407,42 @@ public class MyController extends BaseController{
             returnResult.setMessage("暂无提现记录！");
         }
         returnResult.setResult(list);
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 送礼物
+     */
+    @RequestMapping(value = "/sendMoney")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject sendMoney(@CurrentUser AppUser appUser, HttpServletRequest request) {
+        ReturnResult returnResult = new ReturnResult();
+        Map<String, String> mapValue = getParameterMap(request);
+        if(StringUtils.isEmpty(mapValue.get("sourceId"))){
+            returnResult.setMessage("缺少送给用户ID！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        AppUser user = loginService.getAppUserMsg("","",mapValue.get("sourceId"));
+        if(StringUtils.isNull(user)){
+            returnResult.setMessage("您想送礼的用户，不存在！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        if (StringUtils.isEmpty(mapValue.get("money"))
+                || new BigDecimal(mapValue.get("money")).compareTo(BigDecimal.ZERO) == 0
+                || appUser.getTotal().compareTo(new BigDecimal(mapValue.get("money"))) == -1) {
+            returnResult.setCode("02");
+            returnResult.setMessage("您的金额不足，请去充值！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        payService.sendMoney(appUser.getId(),new BigDecimal(mapValue.get("money")));
+        payService.addMoney(user.getId(), new BigDecimal(mapValue.get("money"))
+                .multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP));
+        Order order = new Order();
+//      order.set
+        payController.createOrder(order);
+        returnResult.setMessage(appUser.getNickName()+"送"+user.getNickName()+" "+mapValue.get("money")+"和元币！");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
