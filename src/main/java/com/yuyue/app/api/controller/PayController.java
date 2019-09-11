@@ -124,7 +124,8 @@ public class PayController {
         log.info("订单详情============" + order.toString());
         try {
             Map map = new HashMap();
-            String moneyD = order.getMoney().multiply(new BigDecimal(100)).toString();
+            String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).toString();
+            log.info("金额==========>>>"+moneyD);
             map.put("appid", wxAppId);
             map.put("mch_id", wxMchID);
             map.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));

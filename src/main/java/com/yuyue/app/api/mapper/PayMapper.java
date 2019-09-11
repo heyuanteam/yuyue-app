@@ -14,7 +14,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
 
     @Transactional
     @Insert("insert into yuyue_order (id,orderNo,tradeType,money,mobile,status,statusCode,merchantId,note,sourceId)  values  " +
-            "(#{id},#{orderNo},#{tradeType},#{money},#{mobile},#{status},#{statusCode},#{merchantId}),#{note}),#{sourceId})")
+            "(#{id},#{orderNo},#{tradeType},#{money},#{mobile},#{status},#{statusCode},#{merchantId},#{note},#{sourceId})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createOrder(Order order);
 

@@ -446,7 +446,8 @@ public class MyController extends BaseController{
             returnResult.setMessage("您的金额不足，请去充值！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        payService.sendMoney(appUser.getId(),new BigDecimal(mapValue.get("money")));
+        BigDecimal money = new BigDecimal(mapValue.get("money"));
+        payService.sendMoney(appUser.getId(),money);
         payService.updateTotal(user.getId(), new BigDecimal(mapValue.get("money"))
                 .multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP));
         Order order = new Order();
