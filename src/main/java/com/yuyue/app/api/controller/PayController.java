@@ -409,7 +409,11 @@ public class PayController {
         } else if (outMoney.getMoney() == null|| outMoney.getMoney().compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("转账的钱不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (user.getIncome().compareTo(outMoney.getMoney()) == -1){
+            returnResult.setMessage("转账的钱不能高于收益！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
+
         outMoney.setOutNo("YYTX" + RandomSaltUtil.randomNumber(14));
         outMoney.setMerchantId(user.getId());
 //        outMoney.setRealName("真实姓名");
@@ -423,11 +427,11 @@ public class PayController {
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         if ("TXZFB".equals(outMoney.getTradeType())) {
-            return outZFB(outMoney);
+//            return outZFB(outMoney);
         } else if ("TXWX".equals(outMoney.getTradeType())) {
-            return outWX(outMoney);
+//            return outWX(outMoney);
         }
-        returnResult.setMessage("提现类型选择错误！！");
+        returnResult.setMessage("提现正在进行中！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -466,7 +470,7 @@ public class PayController {
                 payService.updateOutIncome(outMoney.getMerchantId(), outMoney.getMoney());
                 returnResult.setMessage("支付宝转账成功！");
                 returnResult.setStatus(Boolean.TRUE);
-                returnResult.setResult(response.getBody());
+                returnResult.setResult(JSONObject.parseObject(response.getBody()));
             } else {
                 returnResult.setResult(response.getBody());
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
