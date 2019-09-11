@@ -52,4 +52,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Transactional
     @Update("UPDATE yuyue_merchant b SET b.income = b.income - #{money} WHERE b.ID = #{merchantId} ")
     void updateOutIncome(String merchantId, BigDecimal money);
+
+    @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_out_money b WHERE b.merchantId = #{id} ")
+    List<OutMoney> getOutMoneyList(@Param("id") String id);
 }

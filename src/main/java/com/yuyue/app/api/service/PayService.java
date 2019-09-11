@@ -4,6 +4,7 @@ import com.yuyue.app.api.domain.Order;
 import com.yuyue.app.api.domain.OutMoney;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 public interface PayService {
@@ -22,4 +23,6 @@ public interface PayService {
     void updateOutStatus(String code, String msg, String s, String outNo);
 
     void updateOutIncome(String merchantId, BigDecimal money);
+
+    List<OutMoney> getOutMoneyList(String id);
 }

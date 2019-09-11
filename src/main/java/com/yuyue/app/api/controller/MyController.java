@@ -7,6 +7,7 @@ import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.MyService;
+import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
 import com.yuyue.app.utils.ResultJSONUtils;
@@ -42,6 +43,8 @@ public class MyController extends BaseController{
     private UploadFileService uploadFileService;
     @Autowired
     private PayController payController;
+    @Autowired
+    private PayService payService;
 
     /**
      * 意见反馈提交
@@ -386,6 +389,25 @@ public class MyController extends BaseController{
             returnResult.setMessage("未查询到结果！！");
         }
         returnResult.setResult(JSONObject.parse(advertisementFeeInfo.getStatus()));
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 提现记录
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/getOutMoneyList")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject getOutMoneyList(@CurrentUser AppUser appUser){
+        ReturnResult returnResult =new ReturnResult();
+        List<OutMoney> list = payService.getOutMoneyList(appUser.getId());
+        if (CollectionUtils.isEmpty(list)){
+            returnResult.setMessage("暂无提现记录！");
+        }
+        returnResult.setResult(list);
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
