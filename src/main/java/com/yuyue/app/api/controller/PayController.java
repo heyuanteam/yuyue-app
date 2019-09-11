@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -438,8 +439,112 @@ public class PayController {
     //单笔提现到微信
     private JSONObject outWX(OutMoney outMoney) {
         ReturnResult returnResult = new ReturnResult();
-
+//        String openId = request.getParameter("openid");
+//        String ip = request.getParameter("ip");
+//        String money = request.getParameter("money");
+//        String doctorId = request.getParameter("doctorId");
+//            // 参数组
+//            String appid = config.appid;
+//            String mch_id = config.mch_id;
+//            String nonce_str = RandCharsUtils.getRandomString(16);
+//            //是否校验用户姓名 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
+//            String checkName ="NO_CHECK";
+//            //等待确认转账金额,ip,openid的来源
+//            Integer amount = Integer.valueOf(money);
+//            String spbill_create_ip = ip;
+//            String partner_trade_no = UuIdUtils.getUUID();
+//            //描述
+//            String desc = "健康由我医师助手提现"+amount/100+"元";
+//            // 参数：开始生成第一次签名
+//            parameters.put("appid", appid);
+//            parameters.put("mch_id", mch_id);
+//            parameters.put("partner_trade_no", partner_trade_no);
+//            parameters.put("nonce_str", nonce_str);
+//            parameters.put("openId", openId);
+//            parameters.put("checkName", checkName);
+//            parameters.put("amount", amount);
+//            parameters.put("spbill_create_ip", spbill_create_ip);
+//            parameters.put("desc", desc);
+//            String sign = WXSignUtils.createSign("UTF-8", parameters);
+//            transfers.setAmount(amount);
+//            transfers.setCheck_name(checkName);
+//            transfers.setDesc(desc);
+//            transfers.setMch_appid(appid);
+//            transfers.setMchid(mch_id);
+//            transfers.setNonce_str(nonce_str);
+//            transfers.setOpenid(openId);
+//            transfers.setPartner_trade_no(partner_trade_no);
+//            transfers.setSign(sign);
+//            transfers.setSpbill_create_ip(spbill_create_ip);
+//            String xmlInfo = HttpXmlUtils.transferXml(transfers);
+//            try {
+//                CloseableHttpResponse response = HttpUtil.Post(weixinConstant.WITHDRAW_URL, xmlInfo, true);
+//                String transfersXml = EntityUtils.toString(response.getEntity(), "utf-8");
+//                Map<String, String> transferMap = HttpXmlUtils.parseRefundXml(transfersXml);
+//                if (transferMap.size()>0) {
+//                    if (transferMap.get("result_code").equals("SUCCESS") && transferMap.get("return_code").equals("SUCCESS")) {
+//                        //成功需要进行的逻辑操作，
+//
+//                    }
+//                }
+//                System.out.println("成功");
+//            } catch (Exception e) {
+//                log.error(e.getMessage());
+//                throw new BasicRuntimeException(this, "企业付款异常" + e.getMessage());
+//            }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 获取用户openID
+     * @Author  yuhao
+     * @param code
+     * @return  String
+     * @Date	2018年9月3日
+     */
+    public String getOpenId(String code){
+        System.out.println("code: " + code);
+        if (code != null) {
+            String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
+                    + "appid="+ wxAppId
+//                    + "&secret="+ APP_SECRET
+                    + "&code=" + code + "&grant_type=authorization_code";
+            String returnData = getReturnData(url);
+
+            JSONObject jsonObject;
+            try {
+                jsonObject = JSONObject.parseObject(returnData);
+                String openid = jsonObject.getString("openid");
+                //String access_token = jsonObject.getString("access_token");
+                System.out.println("openid:" + openid);
+                return openid;
+            } catch (Exception e) {
+                jsonObject = JSONObject.parseObject(returnData);
+                String errcode = jsonObject.getString("errcode");
+                System.out.println("errcode:" + errcode);
+            }
+        }
+        System.out.println("code为空");
+        return "";
+    }
+
+    public String getReturnData(String urlString) {
+        String res = "";
+        try {
+            URL url = new URL(urlString);
+            java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
+            conn.connect();
+            java.io.BufferedReader in = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(conn.getInputStream(), "UTF-8"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                res += line;
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     /**
