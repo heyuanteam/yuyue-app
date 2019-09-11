@@ -313,6 +313,7 @@ public class MyController extends BaseController{
             returnResult.setMessage("上传的10个参数均不可为空！！");
         }else {
             commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+            commodity.setMerchantId(user.getId());
             BigDecimal bds = new BigDecimal(commodity.getAdDuration()).multiply
                     (new BigDecimal(commodity.getAdPrice())).setScale(2, BigDecimal.ROUND_HALF_UP);
             Order order = new Order();
