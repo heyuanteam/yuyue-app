@@ -19,7 +19,7 @@ public class WXShare implements Serializable {
     private String ticket;
     private String noncestr;
     private String timestamp;
-    private String str;
+    private String appId;
     private String signature;
 
 

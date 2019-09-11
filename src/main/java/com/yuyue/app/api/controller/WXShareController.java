@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/share" ,method = RequestMethod.POST,produces = "application/json; charset=UTF-8")
@@ -24,8 +21,6 @@ public class WXShareController extends BaseController{
     private static Logger log = LoggerFactory.getLogger(WXShareController.class);
     @Autowired
     private RedisUtil redisUtil;
-
-
 
 
     /**
@@ -59,7 +54,6 @@ public class WXShareController extends BaseController{
         String text = request.getParameter("text");
         System.out.println(text);
 
-
         //start
         request.getParameter("url");
 
@@ -75,7 +69,7 @@ public class WXShareController extends BaseController{
         ReturnResult returnResult =new ReturnResult();
         WXShare wxShare= new WXShare();
         // 微信 appId
-        String appid = "wx82e0374be0e044a4";
+        String appId = "wx82e0374be0e044a4";
         // 微信secret  密钥
         String secret = "c08075181dce2ffe3f036734f168318f";
 
@@ -87,70 +81,72 @@ public class WXShareController extends BaseController{
 //=========================================================获取token=======================================================
 
         if (redisUtil.existsKey("WX_access_token")){
-             access_token =JSONObject.toJSONString(redisUtil.getString("WX_access_token"));
+            String redis_access_token =JSONObject.toJSONString(redisUtil.getString("WX_access_token"));
+            System.out.println(redis_access_token);
+             access_token = redis_access_token.substring(1,redis_access_token.length()-1);
+            /* redisUtil.deleteKey("WX_access_token");*/
+            System.out.println("-------------------------------");
+            System.out.println("redis中所获取的token:"+access_token);
         }else {
            // 创建通过Api获取Token的链接与参数
             String requestTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=SECRET"
-                    .replace("APPID", appid)
+                    .replace("APPID", appId)
                     .replace("SECRET", secret);
             //获取token的链接,通过该外部链接可以得到token
             JSONObject returnResultToken = HttpAccessUtil.getReturnResult(requestTokenUrl);
             if (StringUtils.isNotNull(returnResultToken)){
                 // 获取Token值
-                access_token = JSONObject.toJSONString(returnResultToken);
+                access_token = returnResultToken.getString("access_token");
                 System.out.println("-------------------------------");
                 System.out.println("所获取的token:"+access_token);
-                redisUtil.setString("WX_access_token",access_token,7200);
+                redisUtil.setString("WX_access_token",access_token,7000);
 
                 // 获取Token有效期值
                 Long expires_in = returnResultToken.getLong("expires_in");
                 System.out.println("expires_in:"+expires_in);
 
-                // 创建日期赋值为当前日期
-                Long createDate = new Date().getTime()/1000;
             }else {
                 returnResult.setMessage("获取access_token失败！！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
         }
-//=========================================================获取token=======================================================
-        System.out.println("access_token:"+access_token);
+//=========================================================获取ticket=======================================================
+        // 获取凭证的访问链接
         String requestUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi"
                 .replace("ACCESS_TOKEN", access_token);
-        // 访问外部链接 获取凭证
+
         JSONObject returnResultTicket = HttpAccessUtil.getReturnResult(requestUrl);
-        if(StringUtils.isNotNull(returnResultTicket)){
+        //获取凭证
+        String ticket = returnResultTicket.getString("ticket");
+        System.out.println("-------------------------------");
+        System.out.println("获取的票ticket: "+ticket);
+        if(StringUtils.isNotEmpty(ticket)){
             try {
-                //获取票
-                String ticket = returnResultTicket.getString("ticket");
-                System.out.println("-------------------------------");
-                System.out.println(returnResultTicket);
-                System.out.println("获取的票ticket: "+ticket);
+
                 //随机数
                 String noncestr = RandomSaltUtil.generetRandomSaltCode(7);
-                //时间戳
+                //时间戳   创建日期赋值为当前日期
                 String timestamp = Long.toString(System.currentTimeMillis() / 1000);
                 //url参数
                 /* String string1 = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + nonce_str + "&timestamp=" + timestamp + "&url="+ url;*/
-
                 String param = "jsapi_ticket="+ticket+"&amp;noncestr="+noncestr+"×tamp="+timestamp+"&amp;url="+url;
                 //参数加密  签名
                 String signature = DigestUtils.md5Hex(param);
                 System.out.println("-------------------------------");
                 System.out.println("获取的签名signature:"+signature);
 
-                Map<String, String> map = new HashMap<>();
+               /* Map<String, String> map = new HashMap<>();
                 map.put("url", url);
                 map.put("jsapi_ticket", ticket);
                 map.put("nonceStr", noncestr);
                 map.put("timestamp", timestamp);
-                map.put("signature", signature);
+                map.put("signature", signature);*/
 
-
-                wxShare.setTicket(map.get("jsapi_ticket"));
-                wxShare.setSignature(map.get("signature"));
-                wxShare.setNoncestr(map.get("nonceStr"));
-                wxShare.setTimestamp(map.get("timestamp"));
+                wxShare.setAppId(appId);
+                wxShare.setTicket(ticket);
+                wxShare.setSignature(signature);
+                wxShare.setNoncestr(noncestr);
+                wxShare.setTimestamp(timestamp);
 
             } catch (Exception e) {
                 e.printStackTrace();
