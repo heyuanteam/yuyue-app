@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuyue.app.api.mapper.AdPriceMapper">
+
+
+
+    <!-- 查询单条记录 -->
+    <select id="getAdvertisementFeeInfo"  parameterType="String" resultType="com.yuyue.app.api.domain.AdPrice">
+        SELECT ID priceId,
+        AD_DURATION adDuration,
+        AD_TOTAL_PRICE adTotalPrice,
+        AD_DISCOUNT adDiscount,
+        DATE_FORMAT(CRETA_TIME,'%Y-%m-%d %H:%i:%s') createTime
+        FROM yuyue_commodity_price where 1=1
+        <if test="priceId != null and priceId != ''">
+            and ID = #{priceId}
+        </if>
+
+    </select>
+</mapper>

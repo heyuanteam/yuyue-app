@@ -18,15 +18,14 @@ public interface CommodityMapper extends MyBaseMapper<Advertisement> {
             "\tAD_WORD,\n" +
             "\tAD_URL,\n" +
             "\tCOMMODITY_PRICE,\n" +
-            "\tAD_DURATION," +
+           "\tPRICE_ID," +
             "\tPAY_URL,\n" +
-            "\tAD_PRICE,\n" +
             "\tADDR,\n" +
             "\tSPOKESPERSON_ID,\n" +
             "\tMERCHANT_ID\n" +
             ")  VALUES \n" +
             "(#{commodityId},#{category},#{commodityName},#{adWord},#{adUrl},#{commodityPrice}," +
-            "#{adDuration},#{payUrl},#{adPrice},#{addr},#{spokesPersonId},#{merchantId})")
+            "#{priceId},#{payUrl},#{addr},#{spokesPersonId},#{merchantId})")
     void commodityToSpread(Commodity commodity);
 
 

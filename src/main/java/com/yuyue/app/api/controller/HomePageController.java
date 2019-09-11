@@ -120,6 +120,7 @@ public class HomePageController {
             list.add(iterator_1.next());
         }*/
         if(CollectionUtils.isEmpty(list)){
+            returnResult.setStatus(Boolean.TRUE);
             returnResult.setMessage("暂无视频！");
         } else {
             map.put("uploadFile", list);
