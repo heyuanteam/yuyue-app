@@ -41,4 +41,6 @@ public interface MyService {
      * @return
      */
     List<AdPrice> getAdvertisementFeeInfo(String priceId);
+
+    Feedback getFeedback(String details);
 }

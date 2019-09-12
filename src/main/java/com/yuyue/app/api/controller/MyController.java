@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -55,14 +56,16 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/feedback")
     @ResponseBody
-    public JSONObject addBarrages(HttpServletRequest request){
+    public JSONObject addBarrages(HttpServletRequest request, HttpServletResponse response){
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
+        ReturnResult returnResult=new ReturnResult();
         Map<String, String> mapValue = getParameterMap(request);
         String token = request.getHeader("token");
         String userId = "";
         if(StringUtils.isNotEmpty(token)){
             userId = String.valueOf(JWT.decode(token).getAudience().get(0));
         }
-        ReturnResult returnResult=new ReturnResult();
         if(StringUtils.isEmpty(mapValue.get("contact")) || StringUtils.isEmpty(mapValue.get("pictureUrl"))
                 || StringUtils.isEmpty(mapValue.get("details")) ){
             returnResult.setMessage("参数为空！");
@@ -73,6 +76,11 @@ public class MyController extends BaseController{
             feedback.setPictureUrl(mapValue.get("pictureUrl"));
             feedback.setDetails(mapValue.get("details"));
             feedback.setUserId(userId);
+            Feedback feed = myService.getFeedback(feedback.getDetails());
+            if(StringUtils.isNotNull(feed)){
+                returnResult.setMessage("请勿重复提交！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
             myService.insertFeedback(feedback);
             returnResult.setMessage("反馈成功！");
             returnResult.setStatus(Boolean.TRUE);
