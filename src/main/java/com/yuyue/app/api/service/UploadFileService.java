@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface UploadFileService {
     /**
@@ -28,7 +29,7 @@ public interface UploadFileService {
      *
      * @return
      */
-    JSONObject UploadFilesToServer(MultipartFile[] files,AppUser user)throws Exception;
+    JSONObject UploadFilesToServer(MultipartFile[] files)throws Exception;
 
     /**
      * 从fastdfs服务器下载文件
