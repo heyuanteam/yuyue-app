@@ -109,9 +109,9 @@ public class PayController {
             returnResult.setMessage("创建订单失败！缺少参数！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        if ("CZWX".equals(order.getTradeType())) {
+        if ("CZWX".equals(order.getTradeType()) || "GGWX".equals(order.getTradeType())) {
             return payWX(order);
-        } else if ("CZZFB".equals(order.getTradeType())) {
+        } else if ("CZZFB".equals(order.getTradeType()) || "GGZFB".equals(order.getTradeType())) {
             return payZFB(order);
         }
         returnResult.setMessage("充值类型选择错误！！");
@@ -124,7 +124,9 @@ public class PayController {
         log.info("订单详情============" + order.toString());
         try {
             Map map = new HashMap();
-            String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).toString();
+            log.info("金额==========>>>"+order.getMoney());
+            String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
+                    .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
             log.info("金额==========>>>"+moneyD);
             map.put("appid", wxAppId);
             map.put("mch_id", wxMchID);

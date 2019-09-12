@@ -314,6 +314,7 @@ public class MyController extends BaseController{
                 ||StringUtils.isEmpty(tradeType)
                 ||StringUtils.isEmpty(user.getId())){
             returnResult.setMessage("上传的9个参数均不可为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else {
             commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
             commodity.setMerchantId(user.getId());
@@ -325,8 +326,8 @@ public class MyController extends BaseController{
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             AdPrice adPrice = advertisementFeeInfo.get(0);
-            Double adTotalPrice = Double.valueOf(adPrice.getAdTotalPrice())*Double.valueOf(adPrice.getAdDiscount());
-            BigDecimal bigDecimal = new BigDecimal(adTotalPrice);
+            BigDecimal bigDecimal = new BigDecimal(adPrice.getAdTotalPrice()).multiply(new BigDecimal(adPrice.getAdDiscount()))
+                    .setScale(2, BigDecimal.ROUND_HALF_UP);
             Order order = new Order();
             order.setTradeType(tradeType);
             order.setMoney(bigDecimal);
@@ -342,10 +343,8 @@ public class MyController extends BaseController{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
         return jsonObject;
-
     }
     /**
      * 商家id 获取 广告列表
