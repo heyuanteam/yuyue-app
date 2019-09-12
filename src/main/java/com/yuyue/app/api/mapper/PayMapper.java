@@ -1,5 +1,6 @@
 package com.yuyue.app.api.mapper;
 
+import com.yuyue.app.api.domain.Gift;
 import com.yuyue.app.api.domain.Order;
 import com.yuyue.app.api.domain.OutMoney;
 import org.apache.ibatis.annotations.*;
@@ -39,6 +40,14 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Update("UPDATE yuyue_merchant b SET b.TOTAL = b.TOTAL - #{money} WHERE b.ID = #{merchantId} ")
     void sendMoney(@Param("merchantId") String merchantId,@Param("money") BigDecimal money);
 
+    @Transactional
+    @Update("UPDATE yuyue_merchant b SET b.income = b.income - #{money} WHERE b.ID = #{merchantId} ")
+    void updateOutIncome(@Param("merchantId") String merchantId,@Param("money") BigDecimal money);
+
+    @Transactional
+    @Update("UPDATE yuyue_merchant b SET b.income = b.income + #{money} WHERE b.ID = #{merchantId} ")
+    void addIncome(@Param("merchantId") String merchantId,@Param("money") BigDecimal money);
+
     @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_order b WHERE b.merchantId = #{id} AND b.`status` = '10B' ")
     List<Order> getMoneyList(@Param("id") String id);
 
@@ -53,10 +62,12 @@ public interface PayMapper extends MyBaseMapper<Order> {
             +" WHERE b.outNo = #{outNo} ")
     void updateOutStatus(String responseCode, String responseMessage, String status, String outNo);
 
-    @Transactional
-    @Update("UPDATE yuyue_merchant b SET b.income = b.income - #{money} WHERE b.ID = #{merchantId} ")
-    void updateOutIncome(String merchantId, BigDecimal money);
-
     @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_out_money b WHERE b.merchantId = #{id} ")
     List<OutMoney> getOutMoneyList(@Param("id") String id);
+
+    @Select("SELECT * FROM yuyue_gift")
+    List<Gift> getGiftList();
+
+    @Select("SELECT * FROM yuyue_gift where id= #{id} LIMIT 1 ")
+    Gift getGift(@Param("id") String id);
 }

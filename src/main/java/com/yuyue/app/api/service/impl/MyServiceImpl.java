@@ -71,5 +71,8 @@ public class MyServiceImpl implements MyService {
         return adPriceMapper.getAdvertisementFeeInfo(priceId);
     }
 
+    @Override
+    public Feedback getFeedback(String details) { return feedbackMapper.getFeedback(details); }
+
 
 }

@@ -3,6 +3,7 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.JWT;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -54,10 +56,16 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/feedback")
     @ResponseBody
-    @LoginRequired
-    public JSONObject addBarrages(@CurrentUser AppUser user, HttpServletRequest request){
-        Map<String, String> mapValue = getParameterMap(request);
+    public JSONObject addBarrages(HttpServletRequest request, HttpServletResponse response){
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
         ReturnResult returnResult=new ReturnResult();
+        Map<String, String> mapValue = getParameterMap(request);
+        String token = request.getHeader("token");
+        String userId = "";
+        if(StringUtils.isNotEmpty(token)){
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+        }
         if(StringUtils.isEmpty(mapValue.get("contact")) || StringUtils.isEmpty(mapValue.get("pictureUrl"))
                 || StringUtils.isEmpty(mapValue.get("details")) ){
             returnResult.setMessage("参数为空！");
@@ -67,7 +75,12 @@ public class MyController extends BaseController{
             feedback.setContact(mapValue.get("contact"));
             feedback.setPictureUrl(mapValue.get("pictureUrl"));
             feedback.setDetails(mapValue.get("details"));
-            feedback.setUserId(user.getId());
+            feedback.setUserId(userId);
+            Feedback feed = myService.getFeedback(feedback.getDetails());
+            if(StringUtils.isNotNull(feed)){
+                returnResult.setMessage("请勿重复提交！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
             myService.insertFeedback(feedback);
             returnResult.setMessage("反馈成功！");
             returnResult.setStatus(Boolean.TRUE);
@@ -219,7 +232,6 @@ public class MyController extends BaseController{
                 returnResult.setStatus(Boolean.TRUE);
             }else {
                 returnResult.setMessage("已提交，待审核");
-
             }
             returnResult.setResult(showInfo);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -326,8 +338,8 @@ public class MyController extends BaseController{
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             AdPrice adPrice = advertisementFeeInfo.get(0);
-            Double adTotalPrice = Double.valueOf(adPrice.getAdTotalPrice())*Double.valueOf(adPrice.getAdDiscount());
-            BigDecimal bigDecimal = new BigDecimal(adTotalPrice);
+            BigDecimal bigDecimal = new BigDecimal(adPrice.getAdTotalPrice()).multiply(new BigDecimal(adPrice.getAdDiscount()))
+                    .setScale(2, BigDecimal.ROUND_HALF_UP);
             Order order = new Order();
             order.setTradeType(tradeType);
             order.setMoney(bigDecimal);
@@ -343,10 +355,8 @@ public class MyController extends BaseController{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
         return jsonObject;
-
     }
     /**
      * 商家id 获取 广告列表
@@ -423,33 +433,53 @@ public class MyController extends BaseController{
     }
 
     /**
+     * 获取礼物列表
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/getGiftList")
+    @ResponseBody
+    public JSONObject getGiftList() {
+        log.info("获取礼物列表 ============>>>>getGiftList");
+        ReturnResult returnResult =new ReturnResult();
+        List<Gift> list = payService.getGiftList();
+        if (CollectionUtils.isEmpty(list)){
+            returnResult.setMessage("暂无礼物记录！");
+        }
+        returnResult.setResult(list);
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
      * 送礼物
      */
     @RequestMapping(value = "/sendMoney")
     @ResponseBody
     @LoginRequired
     public JSONObject sendMoney(@CurrentUser AppUser appUser, HttpServletRequest request) {
+        log.info("送礼物 ============>>>>sendMoney");
         ReturnResult returnResult = new ReturnResult();
         Map<String, String> mapValue = getParameterMap(request);
-        if(StringUtils.isEmpty(mapValue.get("sourceId"))){
+        if(StringUtils.isEmpty(mapValue.get("giftId"))){
+            returnResult.setMessage("缺少送给礼物ID！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if(StringUtils.isEmpty(mapValue.get("sourceId"))){
             returnResult.setMessage("缺少送给用户ID！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
+        Gift gift = payService.getGift(mapValue.get("giftId"));
         AppUser user = loginService.getAppUserMsg("","",mapValue.get("sourceId"));
         if(StringUtils.isNull(user)){
             returnResult.setMessage("您想送礼的用户，不存在！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        if (StringUtils.isEmpty(mapValue.get("money"))
-                || new BigDecimal(mapValue.get("money")).compareTo(BigDecimal.ZERO) == 0
-                || appUser.getTotal().compareTo(new BigDecimal(mapValue.get("money"))) == -1) {
+        }else if (appUser.getTotal().compareTo(gift.getGiftValue()) == -1) {
             returnResult.setCode("02");
             returnResult.setMessage("您的金额不足，请去充值！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        BigDecimal money = new BigDecimal(mapValue.get("money"));
-        payService.sendMoney(appUser.getId(),money);
-        payService.updateTotal(user.getId(), new BigDecimal(mapValue.get("money"))
+        payService.sendMoney(appUser.getId(),gift.getGiftValue());
+        payService.addIncome(user.getId(), gift.getGiftValue()
                 .multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP));
         Order order = new Order();
         order.setOrderNo("YYXF" + RandomSaltUtil.randomNumber(14));
@@ -458,11 +488,13 @@ public class MyController extends BaseController{
         order.setMobile(appUser.getPhone());
         order.setMerchantId(appUser.getId());
         order.setSourceId(user.getId());
-        order.setMoney(new BigDecimal(mapValue.get("money")));
-        order.setNote("送礼物");
+        order.setMoney(gift.getGiftValue());
+        order.setResponseMessage("送礼物");
+        order.setNote("SY");
         order.setTradeType("XF");
         payController.createOrder(order);
-        returnResult.setMessage(appUser.getNickName()+"送"+user.getNickName()+" "+mapValue.get("money")+"和元币！");
+        String s = appUser.getTotal().subtract(gift.getGiftValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        returnResult.setMessage(s);
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
