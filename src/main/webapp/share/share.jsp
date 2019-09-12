@@ -12,7 +12,7 @@
     <title>娱悦视频分享网页</title>
 </head>
 <body>
-    <h1>hello,world!</h1>
+    <h1>娱悦专用视频分享网页</h1>
 <body>
 
 
@@ -22,11 +22,13 @@
 
 
             <div style="text-align:center">
-            <video id = "video" width="700" height="400" controls >
-                <source src="${uploadFile.filesPath}" type="video/mp4" play()>
-                <source src="${uploadFile.filesPath}" type="video/ogg">
+            <video id = "video" width="700" height="400" controls="controls" allowFullScreen='true' x5-video-player-fullscreen="true" autoplay="autoplay" loop="loop">
+                <source src="${uploadFile.filesPath}" type="video/mp4" autoplay="autoplay">
+                <source src="${uploadFile.filesPath}" type="video/ogg" autoplay="autoplay">
+                您的浏览器不支持播放该视频！
             </video>
-            <button onclick="playPause()">播放/暂停</button>
+
+
             </div>
             <script>
                 var myVideo=document.getElementById("video");
@@ -43,6 +45,9 @@
             <h4>这是视频名：${uploadFile.filesName}</h4>
             <h4>这是路径：${uploadFile.filesPath}</h4>
             <h4>这是文件类型：${uploadFile.filesType}</h4>
+            <br>
+            <h2>用户评论</h2>
+
             <div class="alert alert-success">
                 <table border="2" align="center">
                     <tr>

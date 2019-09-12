@@ -1,10 +1,10 @@
 package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yuyue.app.api.domain.ReturnResult;
-import com.yuyue.app.api.domain.UploadFile;
-import com.yuyue.app.api.domain.WXShare;
+import com.yuyue.app.api.domain.*;
+import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
+import com.yuyue.app.api.service.UserCommentService;
 import com.yuyue.app.utils.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/share" ,method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
@@ -26,6 +28,10 @@ public class WXShareController extends BaseController{
     private RedisUtil redisUtil;
     @Autowired
     private UploadFileService uploadFileService;
+    @Autowired
+    private UserCommentService userCommentService;
+    @Autowired
+    private LoginService loginService;
 
 
     /**
@@ -169,16 +175,22 @@ public class WXShareController extends BaseController{
     }
 
     @RequestMapping("/wxAppShare")
-    public String wxAppShare(Model model){
-
+    public String wxAppShare(HttpServletResponse response, Model model,String authorId,String videoId){
+        response.setHeader("Access-Control-Allow-Origin","*");
         ReturnResult returnResult =new ReturnResult();
-        UploadFile uploadFile = uploadFileService.fileDetail("B044C53B38BA4E84B507E62402683E26", "9FC898F4B87F4C699D0B51D35894D91E");
+       /* UploadFile uploadFile = uploadFileService.fileDetail("B044C53B38BA4E84B507E62402683E26", "469C24BEA5344C1E9DBDE063B37265EA");
+        */
+        UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
+        List<UserCommentVo> allComment = userCommentService.getAllComment(videoId, "");
+        for (UserComment userComment:allComment
+             ) {
+            AppUser appUserMsg = loginService.getAppUserMsg("", "", userComment.getUserId());
+
+        }
+        model.addAttribute("comment",allComment);
         model.addAttribute("uploadFile",uploadFile);
         return  "forward:/share/share.jsp";
-        /*ModelAndView mode = new ModelAndView("wxAppShare");
 
-        mode.addObject("uploadFile",uploadFile);
-        return mode;*/
 
 
 
