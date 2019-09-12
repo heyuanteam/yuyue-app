@@ -3,6 +3,7 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.JWT;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
@@ -54,9 +55,13 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/feedback")
     @ResponseBody
-    @LoginRequired
-    public JSONObject addBarrages(@CurrentUser AppUser user, HttpServletRequest request){
+    public JSONObject addBarrages(HttpServletRequest request){
         Map<String, String> mapValue = getParameterMap(request);
+        String token = request.getHeader("token");
+        String userId = "";
+        if(StringUtils.isNotEmpty(token)){
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+        }
         ReturnResult returnResult=new ReturnResult();
         if(StringUtils.isEmpty(mapValue.get("contact")) || StringUtils.isEmpty(mapValue.get("pictureUrl"))
                 || StringUtils.isEmpty(mapValue.get("details")) ){
@@ -67,7 +72,7 @@ public class MyController extends BaseController{
             feedback.setContact(mapValue.get("contact"));
             feedback.setPictureUrl(mapValue.get("pictureUrl"));
             feedback.setDetails(mapValue.get("details"));
-            feedback.setUserId(user.getId());
+            feedback.setUserId(userId);
             myService.insertFeedback(feedback);
             returnResult.setMessage("反馈成功！");
             returnResult.setStatus(Boolean.TRUE);

@@ -513,7 +513,6 @@ public class PayController {
 //                    + "&secret="+ APP_SECRET
                     + "&code=" + code + "&grant_type=authorization_code";
             String returnData = getReturnData(url);
-
             JSONObject jsonObject;
             try {
                 jsonObject = JSONObject.parseObject(returnData);
