@@ -10,15 +10,16 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-@RestController
-@RequestMapping(value = "/share" ,method = RequestMethod.POST,produces = "application/json; charset=UTF-8")
+@Controller
+@RequestMapping(value = "/share" ,method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
 public class WXShareController extends BaseController{
     private static Logger log = LoggerFactory.getLogger(WXShareController.class);
     @Autowired
@@ -168,22 +169,24 @@ public class WXShareController extends BaseController{
     }
 
     @RequestMapping("/wxAppShare")
-    @ResponseBody
-    public JSONObject wxAppShare(String authorId,String videoId){
-        ReturnResult returnResult =new ReturnResult();
-        UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
+    public String wxAppShare(Model model){
 
-        if(StringUtils.isNull(uploadFile)){
-            returnResult.setMessage("视频已删除!!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        String shareUrl="";
-        returnResult.setMessage("获取URL成功！！");
-        returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(shareUrl);
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
+        ReturnResult returnResult =new ReturnResult();
+        UploadFile uploadFile = uploadFileService.fileDetail("B044C53B38BA4E84B507E62402683E26", "9FC898F4B87F4C699D0B51D35894D91E");
+        model.addAttribute("uploadFile",uploadFile);
+        return  "forward:/share/share.jsp";
+        /*ModelAndView mode = new ModelAndView("wxAppShare");
+
+        mode.addObject("uploadFile",uploadFile);
+        return mode;*/
+
+
+
+
 
     }
+
+
 
 }
 

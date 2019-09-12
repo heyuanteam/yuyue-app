@@ -1,10 +1,9 @@
 package com.yuyue.app.test;
 
-import org.apache.commons.collections.list.TreeList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 public class SimpleTest {
     @Autowired
@@ -12,17 +11,12 @@ public class SimpleTest {
 
     public static void main(String[] args) {
 
-        List<String> list =new TreeList();
-        list.add("aaaa");
-        list.add("aaaa");
-        list.add("aaaa");
-        list.add("bbbb");
-        list.add("bbbb");
-        for (String s:list
-             ) {
-            System.out.println(s);
-        }
+        String a="0.05";
+        String b="0.1";
+        BigDecimal bigDecimal = new BigDecimal(a).multiply(new BigDecimal(b)).setScale(2,BigDecimal.ROUND_HALF_UP);
+        System.out.println(bigDecimal);
 
-     }
+
+    }
 
 }

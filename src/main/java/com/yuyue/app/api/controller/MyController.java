@@ -314,6 +314,7 @@ public class MyController extends BaseController{
                 ||StringUtils.isEmpty(tradeType)
                 ||StringUtils.isEmpty(user.getId())){
             returnResult.setMessage("上传的9个参数均不可为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else {
             commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
             commodity.setMerchantId(user.getId());
