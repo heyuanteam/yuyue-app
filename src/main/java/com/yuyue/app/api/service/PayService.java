@@ -1,5 +1,6 @@
 package com.yuyue.app.api.service;
 
+import com.yuyue.app.api.domain.Gift;
 import com.yuyue.app.api.domain.Order;
 import com.yuyue.app.api.domain.OutMoney;
 
@@ -27,4 +28,10 @@ public interface PayService {
     List<OutMoney> getOutMoneyList(String id);
 
     void sendMoney(String id, BigDecimal money);
+
+    List<Gift> getGiftList();
+
+    Gift getGift(String id);
+
+    void addIncome(String id, BigDecimal setScale);
 }

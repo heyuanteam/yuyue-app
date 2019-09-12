@@ -421,33 +421,53 @@ public class MyController extends BaseController{
     }
 
     /**
+     * 获取礼物列表
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/getGiftList")
+    @ResponseBody
+    public JSONObject getGiftList() {
+        log.info("获取礼物列表 ============>>>>getGiftList");
+        ReturnResult returnResult =new ReturnResult();
+        List<Gift> list = payService.getGiftList();
+        if (CollectionUtils.isEmpty(list)){
+            returnResult.setMessage("暂无礼物记录！");
+        }
+        returnResult.setResult(list);
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
      * 送礼物
      */
     @RequestMapping(value = "/sendMoney")
     @ResponseBody
     @LoginRequired
     public JSONObject sendMoney(@CurrentUser AppUser appUser, HttpServletRequest request) {
+        log.info("送礼物 ============>>>>sendMoney");
         ReturnResult returnResult = new ReturnResult();
         Map<String, String> mapValue = getParameterMap(request);
-        if(StringUtils.isEmpty(mapValue.get("sourceId"))){
+        if(StringUtils.isEmpty(mapValue.get("giftId"))){
+            returnResult.setMessage("缺少送给礼物ID！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if(StringUtils.isEmpty(mapValue.get("sourceId"))){
             returnResult.setMessage("缺少送给用户ID！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
+        Gift gift = payService.getGift(mapValue.get("giftId"));
         AppUser user = loginService.getAppUserMsg("","",mapValue.get("sourceId"));
         if(StringUtils.isNull(user)){
             returnResult.setMessage("您想送礼的用户，不存在！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        if (StringUtils.isEmpty(mapValue.get("money"))
-                || new BigDecimal(mapValue.get("money")).compareTo(BigDecimal.ZERO) == 0
-                || appUser.getTotal().compareTo(new BigDecimal(mapValue.get("money"))) == -1) {
+        }else if (appUser.getTotal().compareTo(gift.getGiftValue()) == -1) {
             returnResult.setCode("02");
             returnResult.setMessage("您的金额不足，请去充值！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        BigDecimal money = new BigDecimal(mapValue.get("money"));
-        payService.sendMoney(appUser.getId(),money);
-        payService.updateTotal(user.getId(), new BigDecimal(mapValue.get("money"))
+        payService.sendMoney(appUser.getId(),gift.getGiftValue());
+        payService.addIncome(user.getId(), gift.getGiftValue()
                 .multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP));
         Order order = new Order();
         order.setOrderNo("YYXF" + RandomSaltUtil.randomNumber(14));
@@ -456,11 +476,12 @@ public class MyController extends BaseController{
         order.setMobile(appUser.getPhone());
         order.setMerchantId(appUser.getId());
         order.setSourceId(user.getId());
-        order.setMoney(new BigDecimal(mapValue.get("money")));
+        order.setMoney(gift.getGiftValue());
         order.setNote("送礼物");
         order.setTradeType("XF");
         payController.createOrder(order);
-        returnResult.setMessage(appUser.getNickName()+"送"+user.getNickName()+" "+mapValue.get("money")+"和元币！");
+        String s = appUser.getTotal().subtract(gift.getGiftValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        returnResult.setMessage(s);
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
