@@ -219,7 +219,6 @@ public class MyController extends BaseController{
                 returnResult.setStatus(Boolean.TRUE);
             }else {
                 returnResult.setMessage("已提交，待审核");
-
             }
             returnResult.setResult(showInfo);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -477,7 +476,8 @@ public class MyController extends BaseController{
         order.setMerchantId(appUser.getId());
         order.setSourceId(user.getId());
         order.setMoney(gift.getGiftValue());
-        order.setNote("送礼物");
+        order.setResponseMessage("送礼物");
+        order.setNote("SY");
         order.setTradeType("XF");
         payController.createOrder(order);
         String s = appUser.getTotal().subtract(gift.getGiftValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
