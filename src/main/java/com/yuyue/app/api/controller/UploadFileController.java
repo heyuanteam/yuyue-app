@@ -128,9 +128,16 @@ public class UploadFileController extends  BaseController{
      */
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
-    @LoginRequired
-    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, @CurrentUser AppUser user) throws Exception {
-        return uploadFileService.UploadFilesToServer(files,user);
+    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
+//        Map<String, String> mapValue = getParameterMap(request);
+//        String token = request.getHeader("token");
+//        String userId = "";
+//        if(StringUtils.isNotEmpty(token)){
+//            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+//        }
+        return uploadFileService.UploadFilesToServer(files);
     }
 
     /**

@@ -85,13 +85,13 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject UploadFilesToServer(MultipartFile[] files, AppUser user) throws Exception{
+    public JSONObject UploadFilesToServer(MultipartFile[] files) throws Exception{
         ReturnResult returnResult=new ReturnResult();
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        List<String> listMDs = new ArrayList();
+//        List<String> listMDs = new ArrayList();
         List<UploadFile> lists = new ArrayList();
         HashMap<String,Object> hashMap = Maps.newHashMap();
         if(157286400 < files[0].getSize()){
