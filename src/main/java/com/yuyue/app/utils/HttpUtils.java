@@ -86,15 +86,17 @@ public class HttpUtils {
      * 加载证书
      */
     public static SSLConnectionSocketFactory initCert() throws Exception {
-    FileInputStream instream = null;
-    KeyStore keyStore = KeyStore.getInstance("PKCS12");
-    instream = new FileInputStream(new File("/resources/apiclient_cert.p12"));
-    keyStore.load(instream, wxMchID.toCharArray());
-    if (null != instream) {
-        instream.close();
-    }
-    SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore,wxMchID.toCharArray()).build();
-    SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-    return sslsf;
+        FileInputStream instream = null;
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        instream = new FileInputStream(new File("/resources/apiclient_cert.p12"));
+        keyStore.load(instream, wxMchID.toCharArray());
+        if (null != instream) {
+            instream.close();
+        }
+        SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore,wxMchID.toCharArray()).build();
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                sslcontext, new String[]{"TLSv1"}, null,
+                SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+        return sslsf;
     }
 }
