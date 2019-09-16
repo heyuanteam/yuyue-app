@@ -369,7 +369,6 @@ public class PayController {
                     order.setTradeType("CZIOS");
 //        order.setMoney("100");
                     createOrder(order);
-
                     returnResult.setStatus(Boolean.TRUE);
                     returnResult.setMessage("充值成功！");
                     returnResult.setResult(moneys[3]);
