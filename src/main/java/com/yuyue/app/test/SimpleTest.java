@@ -15,7 +15,7 @@ public class SimpleTest {
         String b="0.1";
         BigDecimal bigDecimal = new BigDecimal(a).multiply(new BigDecimal(b)).setScale(2,BigDecimal.ROUND_HALF_UP);
         System.out.println(bigDecimal);
-
+        System.out.println((int)5/3);
 
     }
 

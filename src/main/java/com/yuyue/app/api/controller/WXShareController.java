@@ -32,6 +32,8 @@ public class WXShareController extends BaseController{
     private UserCommentService userCommentService;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private HttpAccessUtil httpAccessUtil;
 
 
     /**
@@ -175,26 +177,28 @@ public class WXShareController extends BaseController{
     }
 
     @RequestMapping("/wxAppShare")
-    public String wxAppShare(HttpServletResponse response, Model model,String authorId,String videoId){
+    public String wxAppShare(HttpServletResponse response, Model model,String authorId,String videoId,String pageSize){
         response.setHeader("Access-Control-Allow-Origin","*");
-        ReturnResult returnResult =new ReturnResult();
-       /* UploadFile uploadFile = uploadFileService.fileDetail("B044C53B38BA4E84B507E62402683E26", "469C24BEA5344C1E9DBDE063B37265EA");
-        */
+         int newPageSize = (Integer.parseInt(pageSize) - 1) * 5;
         UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
-        List<UserCommentVo> allComment = userCommentService.getAllComment(videoId, "");
-        for (UserComment userComment:allComment
-             ) {
-            AppUser appUserMsg = loginService.getAppUserMsg("", "", userComment.getUserId());
+        AppUser appUserMsg = loginService.getAppUserMsg("", "", authorId);
+        List<UserCommentVo> allComment = userCommentService.getCommentByPage(videoId, newPageSize);
 
+        int commentTotal = userCommentService.getCommentTotal(videoId);
+        int totalPage = commentTotal / 5;
+        if (commentTotal % 5 != 0 ){
+            totalPage+=1;
         }
-        model.addAttribute("comment",allComment);
+
+        model.addAttribute("comments",allComment);
+        model.addAttribute("pageSize",pageSize);
+        model.addAttribute("total",commentTotal);
+        model.addAttribute("totalPage",totalPage);
+        model.addAttribute("authorId",authorId);
+        model.addAttribute("videoId",videoId);
+        model.addAttribute("appUserMsg",appUserMsg);
         model.addAttribute("uploadFile",uploadFile);
         return  "forward:/share/share.jsp";
-
-
-
-
-
 
     }
 

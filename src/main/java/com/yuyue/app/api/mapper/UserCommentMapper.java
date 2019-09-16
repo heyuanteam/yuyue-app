@@ -2,7 +2,10 @@ package com.yuyue.app.api.mapper;
 
 import com.yuyue.app.api.domain.UserComment;
 import com.yuyue.app.api.domain.UserCommentVo;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +33,22 @@ public interface UserCommentMapper extends MyBaseMapper<UserComment> {
             "FROM yuyue_user_comment as comment left join yuyue_merchant as user on comment.user_id = user.id " +
             "where VIDEO_ID = #{videoId} or USER_ID = #{userId} ORDER BY comment.CREATE_TIME desc ")
     List<UserCommentVo> getAllComment(@Param(value = "videoId") String videoId,@Param(value = "userId") String userId);
+    /**
+     * 评论分页通过视频id 获取所有评论
+     * @param videoId
+     * @param pageSize
+     * @return
+     */
+    @Select("SELECT comment.ID as id,comment.TEXT as text,comment.VIDEO_ID as videoId,comment.USER_ID as userId," +
+            "DATE_FORMAT(comment.CREATE_TIME,'%Y-%m-%d %H:%i:%s') as createTime ,user.USER_NICK_NAME as userName,user.HEADP_URL as  headUrl " +
+            "FROM yuyue_user_comment as comment left join yuyue_merchant as user on comment.user_id = user.id " +
+            "where VIDEO_ID = #{videoId}  ORDER BY comment.CREATE_TIME desc limit #{pageSize},5")
+    List<UserCommentVo> getCommentByPage(@Param(value = "videoId") String videoId,@Param(value = "pageSize") int pageSize);
+
+    @Select("SELECT COUNT(*)\n" +
+            "FROM yuyue_user_comment  \n" +
+            "where VIDEO_ID = #{videoId}  ")
+    int getCommentTotal(@Param(value = "videoId") String videoId);
     @Transactional
     @Insert("INSERT into yuyue_user_comment (ID,VIDEO_ID,USER_ID,TEXT) " +
             "VALUES (#{id}, #{videoId}, #{userId}, #{text})")

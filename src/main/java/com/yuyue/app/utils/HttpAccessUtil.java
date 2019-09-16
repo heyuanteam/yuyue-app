@@ -3,15 +3,20 @@ package com.yuyue.app.utils;
 import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+@Component
 public class HttpAccessUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(FastdfsUtils.class);
 
-
+    /**
+     * 通过url访问并获取返回结果
+     * @param requestTokenUrl
+     * @return
+     */
     public static JSONObject getReturnResult(String requestTokenUrl){
         JSONObject jsonObject =null;
         try {

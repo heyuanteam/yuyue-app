@@ -24,7 +24,20 @@ public interface UserCommentService {
      * @return
      */
      List<Attention> getUserAttention(String userId);
+    /**
+     * 获取分页所有评论
+     * @param videoId
+     * @param pageSize
+     * @return
+     */
+     List<UserCommentVo> getCommentByPage(String videoId,int pageSize);
 
+    /**
+     *获取视频评论总数
+     * @param videoId
+     * @return
+     */
+    int getCommentTotal(String videoId);
     /**
      * 添加关注
      * @param authorId

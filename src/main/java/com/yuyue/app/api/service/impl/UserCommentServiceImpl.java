@@ -2,15 +2,14 @@ package com.yuyue.app.api.service.impl;
 
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.mapper.LikeMapper;
-import com.yuyue.app.api.mapper.UploadFileMapper;
 import com.yuyue.app.api.mapper.UserAttentionMapper;
 import com.yuyue.app.api.mapper.UserCommentMapper;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
-import com.yuyue.app.utils.ResultJSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -28,14 +27,35 @@ public class UserCommentServiceImpl implements UserCommentService{
     @Autowired
     private LikeMapper likeMapper;
 
-
-
+    /**
+     * 获取所有评论
+     * @param videoId
+     * @param userId
+     * @return
+     */
     @Override
     public List<UserCommentVo> getAllComment(String videoId,String userId) {
         return userCommentMapper.getAllComment(videoId,userId);
     }
+    /**
+     * 获取分页所有评论
+     * @param videoId
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public List<UserCommentVo> getCommentByPage(String videoId,int pageSize) {
+        return userCommentMapper.getCommentByPage(videoId,pageSize);
+    }
 
-
+    /**
+     *获取视频评论总数
+     * @param videoId
+     * @return
+     */
+    public int getCommentTotal(String videoId){
+        return userCommentMapper.getCommentTotal(videoId);
+    }
     @Override
     public void addComment(UserComment comment) {
         userCommentMapper.addComment(comment);
