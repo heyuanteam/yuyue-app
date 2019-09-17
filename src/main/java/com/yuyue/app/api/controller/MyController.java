@@ -520,7 +520,8 @@ public class MyController extends BaseController{
         order.setMerchantId(appUser.getId());
         order.setSourceId(user.getId());
         order.setMoney(gift.getGiftValue());
-        order.setResponseMessage("送礼物");
+        order.setResponseCode("送礼物");
+        order.setResponseMessage(user.getNickName());
         order.setNote("SY");
         order.setTradeType("XF");
         payController.createOrder(order);
