@@ -17,13 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value="/send", produces = "application/json; charset=UTF-8")
@@ -59,6 +60,7 @@ public class SendSmsController extends BaseController{
     @RequestMapping("/sendSms")
     @ResponseBody
     public JSONObject sendSms(HttpServletRequest request){
+        log.info("发送消息验证码，通用接口-------------->>/send/sendSms");
         Map<String, String> map = getParameterMap(request);
         HashMap<String,String> hashMap = Maps.newHashMap();
         ReturnResult result =new ReturnResult();
@@ -106,7 +108,9 @@ public class SendSmsController extends BaseController{
     @RequestMapping("/sendJPush")
     @ResponseBody
 //    @Async // 异步方法
-    public JSONObject sendJPush() {
+    public JSONObject sendJPush(HttpServletRequest request) {
+        log.info("极光推送-------------->>/sendJPush/sendJPush");
+        getParameterMap(request);
 //        用户ID,别名
 //        List<String> aliasList = Arrays.asList("239");
 //        String notificationTitle = "通知内容标题";

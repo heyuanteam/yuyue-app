@@ -57,10 +57,11 @@ public class MyController extends BaseController{
     @RequestMapping("/feedback")
     @ResponseBody
     public JSONObject addBarrages(HttpServletRequest request, HttpServletResponse response){
+        log.info("意见反馈提交-------------->>/myController/feedback");
+        Map<String, String> mapValue = getParameterMap(request);
         //允许跨域
         response.setHeader("Access-Control-Allow-Origin","*");
         ReturnResult returnResult=new ReturnResult();
-        Map<String, String> mapValue = getParameterMap(request);
         String token = request.getHeader("token");
         String userId = "";
         if(StringUtils.isNotEmpty(token)){
@@ -95,7 +96,9 @@ public class MyController extends BaseController{
     @RequestMapping("/getMoneyList")
     @ResponseBody
     @LoginRequired
-    public JSONObject getMoneyList(@CurrentUser AppUser user){
+    public JSONObject getMoneyList(@CurrentUser AppUser user,HttpServletRequest request){
+        log.info("充值记录和送礼记录-------------->>/myController/getMoneyList");
+        Map<String, String> mapValue = getParameterMap(request);
         List<Order> list = myService.getMoneyList(user.getId());
         ReturnResult returnResult=new ReturnResult();
         if(CollectionUtils.isEmpty(list)){
@@ -116,6 +119,8 @@ public class MyController extends BaseController{
     @RequestMapping("/addAdvertisementInfo")
     @ResponseBody
     public JSONObject addAdvertisementInfo(HttpServletRequest request, HttpServletResponse response){
+        log.info("广告推广申请-------------->>/myController/addAdvertisementInfo");
+        getParameterMap(request);
         //允许跨域
         response.setHeader("Access-Control-Allow-Origin","*");
         ReturnResult returnResult=new ReturnResult();
@@ -183,7 +188,9 @@ public class MyController extends BaseController{
     @RequestMapping("/getAdvertisementInfo")
     @ResponseBody
     @LoginRequired
-    public JSONObject getAdvertisementInfo(@CurrentUser AppUser appUser){
+    public JSONObject getAdvertisementInfo(@CurrentUser AppUser appUser,HttpServletRequest request){
+        log.info("查看广告推广申请信息-------------->>/myController/getAdvertisementInfo");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         Advertisement advertisementInfo = myService.getAdvertisementInfo(appUser.getId());
         if (StringUtils.isNull(advertisementInfo)){
@@ -204,7 +211,9 @@ public class MyController extends BaseController{
     @RequestMapping("/myComments")
     @ResponseBody
     @LoginRequired
-    public JSONObject getAllCommentByUserId(@CurrentUser AppUser appUser,String videoId){
+    public JSONObject getAllCommentByUserId(@CurrentUser AppUser appUser,String videoId,HttpServletRequest request){
+        log.info("我的评论-------------->>/myController/myComments");
+        getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
         List<UserCommentVo> allComment = userCommentService.getAllComment("", appUser.getId());
         if (StringUtils.isEmpty(allComment)){
@@ -227,6 +236,7 @@ public class MyController extends BaseController{
     @ResponseBody
     @LoginRequired
     public JSONObject insertShowName(@CurrentUser AppUser user, HttpServletRequest request){
+        log.info("演出申请-------------->>/myController/insertShowName");
         Map<String, String> mapValue = getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
         ShowName showInfo = myService.getShowInfo(user.getId());
@@ -276,7 +286,9 @@ public class MyController extends BaseController{
     @RequestMapping("/getShowInfo")
     @ResponseBody
     @LoginRequired
-    public JSONObject getShowInfo(@CurrentUser AppUser appUser){
+    public JSONObject getShowInfo(@CurrentUser AppUser appUser,HttpServletRequest request){
+        log.info("查看演出申请信息-------------->>/myController/getShowInfo");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         ShowName showInfo = myService.getShowInfo(appUser.getId());
         if (StringUtils.isNull(showInfo)){
@@ -296,7 +308,9 @@ public class MyController extends BaseController{
     @RequestMapping("/myRelease")
     @ResponseBody
     @LoginRequired
-    public JSONObject myRelease(@CurrentUser AppUser appUser){
+    public JSONObject myRelease(@CurrentUser AppUser appUser,HttpServletRequest request){
+        log.info("我的发布-------------->>/myController/myRelease");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         Map<String,Object> map = Maps.newHashMap();
         List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(appUser.getId());
@@ -317,7 +331,9 @@ public class MyController extends BaseController{
     @RequestMapping("/commodityToSpread")
     @ResponseBody
     @LoginRequired
-    public JSONObject commodityToSpread (Commodity commodity,String tradeType,@CurrentUser AppUser user){
+    public JSONObject commodityToSpread (Commodity commodity,String tradeType,@CurrentUser AppUser user,HttpServletRequest request){
+        log.info("商家上传广告申请-------------->>/myController/commodityToSpread");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         JSONObject jsonObject = null;
         if ( StringUtils.isEmpty(commodity.getCategory())
@@ -374,7 +390,9 @@ public class MyController extends BaseController{
     @RequestMapping("/getCommodityInfo")
     @ResponseBody
     @LoginRequired
-    public JSONObject getCommodityInfo(@CurrentUser AppUser appUser) {
+    public JSONObject getCommodityInfo(@CurrentUser AppUser appUser,HttpServletRequest request){
+        log.info("商家id 获取 广告列表-------------->>/myController/getCommodityInfo");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         List<Advertisement> commodityInfoList = myService.getCommodityInfo(appUser.getId(), "");
         if (StringUtils.isEmpty(commodityInfoList)){
@@ -392,7 +410,9 @@ public class MyController extends BaseController{
      */
     @RequestMapping(value = "/getHotSaleCommodity")
     @ResponseBody
-    public JSONObject getHotSaleCommodity(String authorId){
+    public JSONObject getHotSaleCommodity(String authorId,HttpServletRequest request){
+        log.info("获取爆款信息-------------->>/myController/getHotSaleCommodity");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         List<Advertisement> commodityInfoList = myService.getCommodityInfo("", authorId);
         if (StringUtils.isEmpty(commodityInfoList)){
@@ -410,7 +430,9 @@ public class MyController extends BaseController{
      */
     @RequestMapping(value = "/getAdvertisementFeeInfo")
     @ResponseBody
-    public JSONObject getAdvertisementFeeInfo(String priceId){
+    public JSONObject getAdvertisementFeeInfo(String priceId,HttpServletRequest request){
+        log.info("获取广告费用信息-------------->>/myController/getAdvertisementFeeInfo");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(priceId);
         System.out.println(advertisementFeeInfo);
@@ -428,7 +450,9 @@ public class MyController extends BaseController{
     @RequestMapping(value = "/getOutMoneyList")
     @ResponseBody
     @LoginRequired
-    public JSONObject getOutMoneyList(@CurrentUser AppUser appUser){
+    public JSONObject getOutMoneyList(@CurrentUser AppUser appUser,HttpServletRequest request){
+        log.info("提现记录-------------->>/myController/getOutMoneyList");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         List<OutMoney> list = payService.getOutMoneyList(appUser.getId());
         if (CollectionUtils.isEmpty(list)){

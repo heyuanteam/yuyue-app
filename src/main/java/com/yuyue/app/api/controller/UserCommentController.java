@@ -50,7 +50,9 @@ public class UserCommentController extends BaseController{
      */
     @RequestMapping("/getAllComment")
     @ResponseBody
-    public JSONObject getAllComment(String videoId) {
+    public JSONObject getAllComment(String videoId, HttpServletRequest request) {
+        log.info("获取视频中所有的评论-------------->>/userComment/getAllComment");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         if(videoId.isEmpty()){
             returnResult.setMessage("视频id不能为空!!");
@@ -94,7 +96,8 @@ public class UserCommentController extends BaseController{
     @ResponseBody
     @LoginRequired
     public JSONObject addComment(HttpServletRequest request,@CurrentUser AppUser user) {
-
+        log.info("用户添加评论-------------->>/userComment/addComment");
+        getParameterMap(request);
         Map<String, String> mapValue = getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         String videoId=mapValue.get("videoId");
@@ -127,6 +130,7 @@ public class UserCommentController extends BaseController{
     @ResponseBody
     @LoginRequired
     public JSONObject deleteComment(HttpServletRequest request,@CurrentUser AppUser user) {
+        log.info("用户删除评论-------------->>/userComment/deleteComment");
         ReturnResult returnResult =new ReturnResult();
         Map<String, String> mapValue = getParameterMap(request);
         String commentId=mapValue.get("id");
@@ -153,8 +157,9 @@ public class UserCommentController extends BaseController{
     @RequestMapping("/getUserAttention")
     @ResponseBody
     @LoginRequired
-    public JSONObject getUserAttention(@CurrentUser AppUser user,String content){
-
+    public JSONObject getUserAttention(@CurrentUser AppUser user,String content, HttpServletRequest request){
+        log.info("查询用户所有的关注-------------->>/userComment/getUserAttention");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         List<AppUser> appUserList= Lists.newArrayList();
         System.out.println("---------"+user.getId());
@@ -184,10 +189,20 @@ public class UserCommentController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+
+    /**
+     * 通过艺人id获取视频
+     * @param user
+     * @param authorId
+     * @param request
+     * @return
+     */
     @RequestMapping("/getVideoByAuthorId")
     @ResponseBody
     @LoginRequired
-    public JSONObject getVideoByAuthorId(@CurrentUser AppUser user,String authorId){
+    public JSONObject getVideoByAuthorId(@CurrentUser AppUser user,String authorId, HttpServletRequest request){
+        log.info("通过艺人id获取视频-------------->>/userComment/getVideoByAuthorId");
+        getParameterMap(request);
         Map<String,Object> map= Maps.newTreeMap();
         ReturnResult returnResult =new ReturnResult();
         if(authorId.isEmpty()  || user.getId().isEmpty()){
@@ -215,7 +230,9 @@ public class UserCommentController extends BaseController{
     @RequestMapping("/addAttention")
     @ResponseBody
     @LoginRequired
-    public JSONObject addAttention(@CurrentUser AppUser user,String authorId){
+    public JSONObject addAttention(@CurrentUser AppUser user,String authorId, HttpServletRequest request){
+        log.info("添加关注-------------->>/userComment/addAttention");
+        getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
         List<Attention> userAttention = userCommentService.getUserAttention(user.getId());
         if(authorId.isEmpty()  || user.getId().isEmpty()){
@@ -248,7 +265,9 @@ public class UserCommentController extends BaseController{
     @RequestMapping("/cancelAttention")
     @ResponseBody
     @LoginRequired
-    public JSONObject cancelAttention(@CurrentUser AppUser user,String authorId){
+    public JSONObject cancelAttention(@CurrentUser AppUser user,String authorId, HttpServletRequest request){
+        log.info("取消用户关注-------------->>/userComment/cancelAttention");
+        getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
         if(authorId.isEmpty()  || user.getId().isEmpty()){
             returnResult.setMessage("作者id不能为空!!");
@@ -284,7 +303,9 @@ public class UserCommentController extends BaseController{
     @RequestMapping("/getFansSum")
     @ResponseBody
     @LoginRequired
-    public JSONObject getFansSum(@CurrentUser AppUser user){
+    public JSONObject getFansSum(@CurrentUser AppUser user, HttpServletRequest request){
+        log.info("获取用户粉丝量-------------->>/userComment/getFansSum");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         userCommentService.getFansSum(user.getId());
         returnResult.setMessage("返回成功！！");
@@ -302,7 +323,9 @@ public class UserCommentController extends BaseController{
     @RequestMapping("/insertToLikeList")
     @ResponseBody
     @LoginRequired
-    public JSONObject insertToLikeList(@CurrentUser AppUser user,String authorId,String videoId){
+    public JSONObject insertToLikeList(@CurrentUser AppUser user,String authorId,String videoId, HttpServletRequest request){
+        log.info("用户添加视频点赞-------------->>/userComment/insertToLikeList");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         if(authorId.isEmpty() || videoId.isEmpty() ){
             returnResult.setMessage("作者id或视频id不能为空!!");
@@ -362,7 +385,9 @@ public class UserCommentController extends BaseController{
     @RequestMapping("/getLikeList")
     @ResponseBody
     @LoginRequired
-    public JSONObject getLikeList(@CurrentUser AppUser user){
+    public JSONObject getLikeList(@CurrentUser AppUser user, HttpServletRequest request){
+        log.info("作者查看点赞列表信息-------------->>/userComment/getLikeList");
+        getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         List<Like> likeList = userCommentService.getLikeList(user.getId());
         if(likeList.isEmpty()){

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/share" ,method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
@@ -84,6 +85,7 @@ public class WXShareController extends BaseController{
     @RequestMapping("/WX_WEB_Share")
     @ResponseBody
     public JSONObject wxShare(HttpServletRequest request){
+
         ReturnResult returnResult =new ReturnResult();
         WXShare wxShare= new WXShare();
         // 微信 appId
@@ -185,13 +187,18 @@ public class WXShareController extends BaseController{
      * APP网页分享
      * @param response
      * @param model
-     * @param authorId
-     * @param videoId
-     * @param pageSize
+     * @param  request(authorId;videoId;pageSize)
+     * @param
+     * @param
      * @return
      */
     @RequestMapping("/wxAppShare")
-    public String wxAppShare(HttpServletResponse response, Model model,String authorId,String videoId,String pageSize){
+    public String wxAppShare(HttpServletResponse response, Model model,HttpServletRequest request){
+        log.info("APP网页分享-------------->>/share/wxAppShare");
+        Map<String, String> mapValue = getParameterMap(request);
+        String pageSize = mapValue.get("pageSize");
+        String authorId = mapValue.get("authorId");
+        String videoId  =  mapValue.get("videoId");
         response.setHeader("Access-Control-Allow-Origin","*");
          int newPageSize = (Integer.parseInt(pageSize) - 1) * 5;
         UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);

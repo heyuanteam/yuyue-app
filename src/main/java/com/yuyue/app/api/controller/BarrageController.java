@@ -47,8 +47,9 @@ public class BarrageController extends BaseController{
     @RequestMapping("/getBarrages")
     @ResponseBody
     public JSONObject getBarrages(HttpServletRequest request){
-        ReturnResult returnResult=new ReturnResult();
+        log.info("获取弹幕信息-------------->>/barrage/getBarrages");
         Map<String,String> mapValue = getParameterMap(request);
+        ReturnResult returnResult=new ReturnResult();
         final String videoId = mapValue.get("videoId");
         final int startTime = Integer.parseInt(mapValue.get("startTime"));
         final int endTime = Integer.parseInt(mapValue.get("endTime"));
@@ -119,6 +120,7 @@ public class BarrageController extends BaseController{
     @LoginRequired
     public JSONObject addBarrages(@CurrentUser AppUser user, HttpServletRequest request){
         ReturnResult returnResult=new ReturnResult();
+        log.info("发送弹幕-------------->>/barrage/addBarrages");
         Map<String, String> mapValue = getParameterMap(request);
         Barrage barrage = new Barrage();
         String videoId=mapValue.get("videoId");

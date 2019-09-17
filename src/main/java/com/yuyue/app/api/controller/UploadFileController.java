@@ -53,6 +53,8 @@ public class UploadFileController extends  BaseController{
     @RequestMapping(value = "/fileDetail")
     @ResponseBody
     public JSONObject  fileDetail(String authorId,String videoId, HttpServletRequest request){
+        log.info("视频详情-------------->>/uploadFile/fileDetail");
+        getParameterMap(request);
         String token = request.getHeader("token");
         String userId = "";
         if(StringUtils.isNotEmpty(token)){
@@ -110,7 +112,9 @@ public class UploadFileController extends  BaseController{
      */
     @RequestMapping(value = "/delfile")
     @ResponseBody
-    public JSONObject delfile(@RequestParam("id")String id,String authorId) throws Exception {
+    public JSONObject delfile(@RequestParam("id")String id,String authorId, HttpServletRequest request) throws Exception {
+        log.info("删除单个文件-------------->>/uploadFile/delfile");
+        getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
         if(authorId.isEmpty() || id.isEmpty()){
             returnResult.setMessage("作者id或视频id不能为空!!");
@@ -129,6 +133,8 @@ public class UploadFileController extends  BaseController{
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
     public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        log.info("批量上传文件到fastdfs服务器-------------->>/uploadFile/uploadServer");
+        getParameterMap(request);
         //允许跨域
         response.setHeader("Access-Control-Allow-Origin","*");
 //        Map<String, String> mapValue = getParameterMap(request);
@@ -149,7 +155,9 @@ public class UploadFileController extends  BaseController{
     @RequestMapping(value = "/addRelease")
     @ResponseBody
     @LoginRequired
-    public JSONObject addRelease(@CurrentUser AppUser user,String categoryId,String title,String description, String fileType, String videoAddress,String fileName,String filesPath) throws Exception {
+    public JSONObject addRelease(@CurrentUser AppUser user,String categoryId,String title,String description, String fileType, String videoAddress,String fileName,String filesPath, HttpServletRequest request) throws Exception {
+        log.info("视频发布-------------->>/uploadFile/addRelease");
+        getParameterMap(request);
         return uploadFileService.addRelease(user.getId(),categoryId,title,description,fileType,videoAddress,fileName,filesPath);
     }
 
@@ -160,7 +168,9 @@ public class UploadFileController extends  BaseController{
      * @param filesPath
      */
     @RequestMapping(value = "/downloadFile")
-    public void downloadFile(@RequestParam("filesName") String filesName,@RequestParam("filesPath") String filesPath, HttpServletResponse response) throws IOException {
+    public void downloadFile(@RequestParam("filesName") String filesName,@RequestParam("filesPath") String filesPath, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        log.info("单个文件下载-------------->>/uploadFile/downloadFile");
+        getParameterMap(request);
         uploadFileService.downloadFile(filesName, filesPath, response);
     }
 

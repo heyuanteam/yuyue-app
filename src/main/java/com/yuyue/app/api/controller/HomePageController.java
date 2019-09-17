@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 
@@ -27,7 +28,7 @@ import java.util.*;
  */
 @RestController
 @RequestMapping(value = "/homePage", produces = "application/json; charset=UTF-8")
-public class HomePageController {
+public class HomePageController extends BaseController {
     private static Logger log = LoggerFactory.getLogger(HomePageController.class);
 
     @Autowired
@@ -46,22 +47,24 @@ public class HomePageController {
      */
     @ResponseBody
     @RequestMapping("/result")
-    public JSONObject homePage(){
+    public JSONObject homePage(HttpServletRequest request){
+        log.info("首页展示轮播图及视频种类-------------->>/homePage/result");
+        getParameterMap(request);
         Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
         List<Banner> banners=null;
         List<VideoCategory> categories=null;
-        if (redisUtil.existsKey("newbanners") && redisUtil.existsKey("newcategories")){
-            banners=JSON.parseObject((String)redisUtil.getString("newbanners" ),
+        if (redisUtil.existsKey("newBanners") && redisUtil.existsKey("newCategories")){
+            banners=JSON.parseObject((String)redisUtil.getString("newBanners" ),
                     new TypeReference<List<Banner>>() {});
-            categories =JSON.parseObject((String)redisUtil.getString("newcategories" ),
+            categories =JSON.parseObject((String)redisUtil.getString("newCategories" ),
                     new TypeReference<List<VideoCategory>>() {});
             System.out.println("------redis缓存中取出数据-------");
         } else {
             banners = homePageService.getBanner();
-            redisUtil.setString("newbanners", JSON.toJSONString(banners),6000);
+            redisUtil.setString("newBanners", JSON.toJSONString(banners),6000);
             categories=homePageService.getVideoCategory();
-            redisUtil.setString("newcategories",JSON.toJSONString(categories));
+            redisUtil.setString("newCategories",JSON.toJSONString(categories));
         }
         map.put("banners",banners);
         map.put("categories",categories);
@@ -79,7 +82,9 @@ public class HomePageController {
      */
     @ResponseBody
     @RequestMapping("/getVideo")
-    public JSONObject getVideo(String page,String categoryId,String content){
+    public JSONObject getVideo(String page,String categoryId,String content,HttpServletRequest request){
+        log.info("获取首页视频列表-------------->>/homePage/getVideo");
+        getParameterMap(request);
         Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
         List<UploadFile> list = Lists.newArrayList();
@@ -138,7 +143,9 @@ public class HomePageController {
      */
     @RequestMapping("/getCity")
     @ResponseBody
-    public JSONObject getCity() {
+    public JSONObject getCity(HttpServletRequest request) {
+        log.info("获取定位，省市区-------------->>/homePage/getCity");
+        getParameterMap(request);
         Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
         List<Address> list = new ArrayList<>();
@@ -163,7 +170,9 @@ public class HomePageController {
      */
     @RequestMapping("/getSite")
     @ResponseBody
-    public JSONObject getSite(String id){
+    public JSONObject getSite(String id,HttpServletRequest request){
+        log.info("获取现场节目-------------->>/homePage/getSite");
+        getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
         if (StringUtils.isEmpty(id)){
             List<YuyueSite> siteList = homePageService.getSiteList();

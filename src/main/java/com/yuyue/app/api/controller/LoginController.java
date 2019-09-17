@@ -7,13 +7,20 @@ import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.AppVersion;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.service.LoginService;
-import com.yuyue.app.utils.*;
+import com.yuyue.app.utils.MD5Utils;
+import com.yuyue.app.utils.RandomSaltUtil;
+import com.yuyue.app.utils.ResultJSONUtils;
+import com.yuyue.app.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -22,7 +29,7 @@ import java.util.regex.Pattern;
  */
 @RestController
 @RequestMapping(value="/login", produces = "application/json; charset=UTF-8")
-public class LoginController {
+public class LoginController extends BaseController{
     private static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     @Autowired
@@ -38,7 +45,9 @@ public class LoginController {
      */
     @ResponseBody
     @RequestMapping("/version")
-    public JSONObject getVersion(@RequestParam(value = "appVersion") String appVersion) {
+    public JSONObject getVersion(@RequestParam(value = "appVersion") String appVersion, HttpServletRequest request) {
+        LOGGER.info("获取版本号-------------->>/login/version");
+        getParameterMap(request);
         ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(appVersion)) {
@@ -72,7 +81,9 @@ public class LoginController {
     @RequestMapping("/loginByPassword")
     @ResponseBody
     public JSONObject loginByPassword(@RequestParam(value = "password") String password,
-                                      @RequestParam(value = "phone") String phone) throws Exception {
+                                      @RequestParam(value = "phone") String phone,HttpServletRequest request) throws Exception {
+        LOGGER.info("用户使用账号密码登录功能-------------->>/login/loginByPassword");
+        getParameterMap(request);
         ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)) {
@@ -112,7 +123,9 @@ public class LoginController {
     @RequestMapping("/editPassword")
     @ResponseBody
     public JSONObject editPassword(@RequestParam(value = "password") String password, @RequestParam(value = "code") String code,
-                                   @RequestParam(value = "phone") String phone) throws Exception {
+                                   @RequestParam(value = "phone") String phone,HttpServletRequest request) throws Exception {
+        LOGGER.info("用户修改账号密码功能-------------->>/login/editPassword");
+        getParameterMap(request);
         ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)) {
@@ -147,7 +160,9 @@ public class LoginController {
      */
     @RequestMapping("/loginByPhone")
     @ResponseBody
-    public JSONObject loginByPhone(@RequestParam(value = "phone") String phone, @RequestParam("code") String code) {
+    public JSONObject loginByPhone(@RequestParam(value = "phone") String phone, @RequestParam("code") String code,HttpServletRequest request) {
+        LOGGER.info("用户通过手机号及验证码登录-------------->>/login/loginByPhone");
+        getParameterMap(request);
         ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(code)) {
@@ -182,10 +197,12 @@ public class LoginController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/regist")
+    @RequestMapping("/registration")
     @ResponseBody
-    public JSONObject regist(@RequestParam(value = "phone") String phone, @RequestParam("code") String code, @RequestParam(value = "password") String password) throws Exception {
+    public JSONObject registration(@RequestParam(value = "phone") String phone,HttpServletRequest request,@RequestParam("code") String code, @RequestParam(value = "password") String password) throws Exception {
         ReturnResult result = new ReturnResult();
+        LOGGER.info("用户注册-------------->>/login/registration");
+        getParameterMap(request);
         Pattern pattern = Pattern.compile("^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$");
         try {
             if(StringUtils.isEmpty(code) || StringUtils.isEmpty(phone) || StringUtils.isEmpty(password)){
@@ -231,7 +248,9 @@ public class LoginController {
     @RequestMapping("/getMessage")
     @ResponseBody
     @LoginRequired
-    public JSONObject getMessage(@CurrentUser AppUser user) {
+    public JSONObject getMessage(@CurrentUser AppUser user,HttpServletRequest request) {
+        LOGGER.info("获取实时信息-------------->>/login/getMessage");
+        getParameterMap(request);
         ReturnResult result = new ReturnResult();
         if(StringUtils.isEmpty(user.getId())){
             result.setMessage("缺少用户id!!!");
@@ -261,7 +280,9 @@ public class LoginController {
     public JSONObject updateAppUser(@CurrentUser AppUser user, String nickName, String realName, String idCard, String phone,
                                     String sex, String headpUrl, String userStatus, String addrDetail, String education, String wechat,
                                     String signature, String password, String oldPassword,String code,
-                                    String userUrl, String cardZUrl, String cardFUrl) throws Exception {
+                                    String userUrl, String cardZUrl, String cardFUrl,HttpServletRequest request) throws Exception {
+        LOGGER.info("修改信息-------------->>/login/updateAppUser");
+        getParameterMap(request);
         String ciphertextPwd = "";
         ReturnResult result = new ReturnResult();
         if (StringUtils.isNotEmpty(password) && StringUtils.isNotEmpty(oldPassword)) {
@@ -309,7 +330,9 @@ public class LoginController {
      */
     @RequestMapping("/getJPush")
     @ResponseBody
-    public JSONObject getJPush(String id,String city,String jpushName) {
+    public JSONObject getJPush(String id,String city,String jpushName,HttpServletRequest request) {
+        LOGGER.info("获取定位和极光别名-------------->>/login/getJPush");
+        getParameterMap(request);
         ReturnResult result = new ReturnResult();
         AppUser appUserById = loginService.getAppUserMsg("","",id);
         if (appUserById != null) {
