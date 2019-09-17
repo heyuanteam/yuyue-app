@@ -4,16 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.domain.AlipayFundTransOrderQueryModel;
 import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
-import com.alipay.api.domain.AlipayTradeWapPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
 import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
-import com.alipay.api.request.AlipayTradeWapPayRequest;
-import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.yuyue.app.annotation.CurrentUser;
@@ -24,6 +19,8 @@ import com.yuyue.app.api.domain.OutMoney;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.utils.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +33,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -52,11 +46,17 @@ public class PayController {
 
     //微信APPID
     private static final String wxAppId = "wx82e0374be0e044a4";
+    private static final String ip = "101.37.252.177";
+    //微信AppSecret
+    private static final String APP_SECRET = "c08075181dce2ffe3f036734f168318f";
     //微信商户号
     private static final String wxMchID = "1529278811";
     //微信秘钥
     private static final String KEY = "FE79E95059CDCA91646CDDA6A7F60A93";
     private static final String wxNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/wxpayNotify";
+    // 构造签名的map
+    private SortedMap<Object, Object> parameters = new TreeMap<>();
+    private static final String wxUrl = "http://101.37.252.177:8082/yuyue-app/pay/getCodeValue";
 
     //支付宝
     private static final String AliAPPID = "2019082166401163";
@@ -322,15 +322,18 @@ public class PayController {
      * @Title: doIosRequest
      * @Description:Ios客户端内购支付
      */
-    public Map<String, Object> doIosRequest(String TransactionID, String Payload, int userId) throws Exception {
+    @ResponseBody
+    @RequestMapping(value = "/doIosRequest")
+    @LoginRequired
+    public JSONObject doIosRequest(String TransactionID, String Payload, @CurrentUser AppUser user) throws Exception {
         ReturnResult returnResult = new ReturnResult();
         Map<String, Object> map = new HashMap<>();
-        Map<String, Object> mapChange = new HashMap<>();
         System.out.println("客户端传过来的值1：" + TransactionID + "客户端传过来的值2：" + Payload);
 
         String verifyResult = IosVerifyUtils.buyAppVerify(Payload, 1); //1.先线上测试 发送平台验证
         if (verifyResult == null) { // 苹果服务器没有返回验证结果
-            System.out.println("无订单信息!");
+            returnResult.setMessage("无订单信息!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else { // 苹果验证有返回结果
             System.out.println("线上，苹果平台返回JSON:" + verifyResult);
             JSONObject job = JSONObject.parseObject(verifyResult);
@@ -356,25 +359,28 @@ public class PayController {
                 //如果单号一致 则保存到数据库
                 if (TransactionID.equals(transaction_id)) {
                     String[] moneys = product_id.split("\\.");
-//                    System.out.println("用户ID："+userId+",要充值的钻石数："+moneys[moneys.length-1]);
-//                    mapChange = charge(Integer.parseInt(moneys[moneys.length-1]), 5, userId);
-                    map.put("money", moneys[moneys.length - 1]);
+                    Order order = new Order();
+                    order.setOrderNo("YYCZ" + RandomSaltUtil.randomNumber(14));
+                    order.setStatus("10B");
+                    order.setStatusCode("100001");
+                    order.setMobile(user.getPhone());
+                    order.setMerchantId(user.getId());
+                    order.setMoney(new BigDecimal(moneys[3]));
+                    order.setTradeType("CZIOS");
+//        order.setMoney("100");
+                    createOrder(order);
+
+                    returnResult.setStatus(Boolean.TRUE);
+                    returnResult.setMessage("充值成功！");
+                    returnResult.setResult(moneys[3]);
                 }
 /************************************************+自己的业务逻辑end**********************************************************/
-                if ((boolean) mapChange.get("success")) {//用户钻石数量新增成功
-                    map.put("success", true);
-                    map.put("message", "充值钻石成功！");
-                } else {
-                    map.put("success", false);
-                    map.put("message", "充值钻石失败！");
-                }
             } else {
-                map.put("success", false);
-                map.put("message", "receipt数据有问题");
-                map.put("status", states);
+                returnResult.setMessage("receipt数据有问题");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
         }
-        return map;
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     //创建充值订单
@@ -433,7 +439,7 @@ public class PayController {
         if ("TXZFB".equals(outMoney.getTradeType())) {
 //            return outZFB(outMoney);
         } else if ("TXWX".equals(outMoney.getTradeType())) {
-//            return outWX(outMoney);
+            return outWX(outMoney);
         }
         returnResult.setMessage("提现正在进行中！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -442,60 +448,92 @@ public class PayController {
     //单笔提现到微信
     private JSONObject outWX(OutMoney outMoney) {
         ReturnResult returnResult = new ReturnResult();
-//        String openId = request.getParameter("openid");
-//        String ip = request.getParameter("ip");
-//        String money = request.getParameter("money");
-//        String doctorId = request.getParameter("doctorId");
-//            // 参数组
-//            String appid = config.appid;
-//            String mch_id = config.mch_id;
-//            String nonce_str = RandCharsUtils.getRandomString(16);
-//            //是否校验用户姓名 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
-//            String checkName ="NO_CHECK";
-//            //等待确认转账金额,ip,openid的来源
-//            Integer amount = Integer.valueOf(money);
-//            String spbill_create_ip = ip;
-//            String partner_trade_no = UuIdUtils.getUUID();
-//            //描述
-//            String desc = "健康由我医师助手提现"+amount/100+"元";
-//            // 参数：开始生成第一次签名
-//            parameters.put("appid", appid);
-//            parameters.put("mch_id", mch_id);
-//            parameters.put("partner_trade_no", partner_trade_no);
-//            parameters.put("nonce_str", nonce_str);
-//            parameters.put("openId", openId);
-//            parameters.put("checkName", checkName);
-//            parameters.put("amount", amount);
-//            parameters.put("spbill_create_ip", spbill_create_ip);
-//            parameters.put("desc", desc);
-//            String sign = WXSignUtils.createSign("UTF-8", parameters);
-//            transfers.setAmount(amount);
-//            transfers.setCheck_name(checkName);
-//            transfers.setDesc(desc);
-//            transfers.setMch_appid(appid);
-//            transfers.setMchid(mch_id);
-//            transfers.setNonce_str(nonce_str);
-//            transfers.setOpenid(openId);
-//            transfers.setPartner_trade_no(partner_trade_no);
-//            transfers.setSign(sign);
-//            transfers.setSpbill_create_ip(spbill_create_ip);
-//            String xmlInfo = HttpXmlUtils.transferXml(transfers);
-//            try {
-//                CloseableHttpResponse response = HttpUtil.Post(weixinConstant.WITHDRAW_URL, xmlInfo, true);
-//                String transfersXml = EntityUtils.toString(response.getEntity(), "utf-8");
-//                Map<String, String> transferMap = HttpXmlUtils.parseRefundXml(transfersXml);
-//                if (transferMap.size()>0) {
-//                    if (transferMap.get("result_code").equals("SUCCESS") && transferMap.get("return_code").equals("SUCCESS")) {
-//                        //成功需要进行的逻辑操作，
-//
-//                    }
-//                }
-//                System.out.println("成功");
-//            } catch (Exception e) {
-//                log.error(e.getMessage());
-//                throw new BasicRuntimeException(this, "企业付款异常" + e.getMessage());
-//            }
+        String code = getCode();
+        log.info("code=========="+code);
+        String openId = getOpenId(code);
+        String nonce_str = RandomSaltUtil.getRandomString(16);
+        //是否校验用户姓名 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
+        String checkName ="NO_CHECK";
+        String partner_trade_no = RandomSaltUtil.generetRandomSaltCode(32);
+        //描述
+        log.info("金额==========>>>"+outMoney.getMoney());
+        String moneyD = outMoney.getMoney()
+                .setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
+                .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
+        log.info("金额==========>>>"+moneyD);
+        String desc = "娱悦APP提现"+outMoney.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"元";
+        // 参数：开始生成第一次签名
+        parameters.put("appid", wxAppId);
+        parameters.put("mch_id", wxMchID);
+        parameters.put("partner_trade_no", partner_trade_no);
+        parameters.put("nonce_str", nonce_str);
+        parameters.put("openId", openId);
+        parameters.put("checkName", checkName);
+        parameters.put("amount", moneyD);
+        parameters.put("spbill_create_ip", ip);
+        parameters.put("desc", desc);
+        String sign = XMLUtils.createSign("UTF-8", parameters);
+        Map map = new HashMap();
+        map.put("amount",moneyD);
+        map.put("check_name",checkName);
+        map.put("desc",desc);
+        map.put("mch_appid",wxAppId);
+        map.put("nonce_str",nonce_str);
+        map.put("openId",openId);
+        map.put("partner_trade_no",partner_trade_no);
+        map.put("sign",sign);
+        map.put("spbill_create_ip",ip);
+        StringBuffer sb = new StringBuffer();
+        sb.append("<xml>");
+        XMLUtils.mapToXMLTest2(map, sb);
+        sb.append("</xml>");
+        log.info((new StringBuilder()).append("上送的数据为+++++++").append(sb.toString()).toString());
+        try {
+            CloseableHttpResponse response = HttpUtils.Post(
+                    "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers", sb.toString(), true);
+            String transfersXml = EntityUtils.toString(response.getEntity(), "utf-8");
+            Map<String, String> transferMap = XMLUtils.xmlString2Map(transfersXml);
+            if (transferMap.size()>0) {
+                if (transferMap.get("result_code").equals("SUCCESS") && transferMap.get("return_code").equals("SUCCESS")) {
+                    //成功需要进行的逻辑操作，
+
+                }
+            }
+            System.out.println("成功");
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw MyExceptionUtils.mxe("企业付款异常" + e.getMessage());
+        }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 获取code
+     * @return  String
+     * @Date	2018年9月3日
+     */
+    @ResponseBody
+    @RequestMapping("/getCodeValue")
+    public String getCodeValue(String code){
+        log.info("getCodeValue=======>>>>>"+code);
+        String split = code.split("\\?")[1].split("&")[0].split("=")[1];
+        log.info("splitValue=======>>>>>"+split);
+        return split;
+    }
+
+    /**
+     * 获取code
+     * @return  String
+     * @Date	2018年9月3日
+     */
+    public String getCode(){
+        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?"
+                + "appid="+ wxAppId
+                + "&redirect_uri="+ wxUrl
+                + "&response_type=code&scope=SCOPE&state=STATE&connect_redirect=1#wechat_redirect";
+        String returnData = getReturnData(url,"ISO-8859-1");
+        log.info("获取code=======>>>>>"+returnData);
+        return returnData;
     }
 
     /**
@@ -506,38 +544,37 @@ public class PayController {
      * @Date	2018年9月3日
      */
     public String getOpenId(String code){
-        System.out.println("code: " + code);
+        log.info("code: ===>>>"+code);
         if (code != null) {
             String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
                     + "appid="+ wxAppId
-//                    + "&secret="+ APP_SECRET
+                    + "&secret="+ APP_SECRET
                     + "&code=" + code + "&grant_type=authorization_code";
-            String returnData = getReturnData(url);
+            String returnData = getReturnData(url,"UTF-8");
             JSONObject jsonObject;
             try {
                 jsonObject = JSONObject.parseObject(returnData);
                 String openid = jsonObject.getString("openid");
                 //String access_token = jsonObject.getString("access_token");
-                System.out.println("openid:" + openid);
+                log.info("openid: ===>>>"+openid);
                 return openid;
             } catch (Exception e) {
                 jsonObject = JSONObject.parseObject(returnData);
                 String errcode = jsonObject.getString("errcode");
-                System.out.println("errcode:" + errcode);
+                log.info("获取openid失败: ===>>>"+errcode);
             }
         }
-        System.out.println("code为空");
         return "";
     }
 
-    public String getReturnData(String urlString) {
+    public String getReturnData(String urlString,String enCode) {
         String res = "";
         try {
             URL url = new URL(urlString);
             java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
             conn.connect();
             java.io.BufferedReader in = new java.io.BufferedReader(
-                    new java.io.InputStreamReader(conn.getInputStream(), "UTF-8"));
+                    new java.io.InputStreamReader(conn.getInputStream(), enCode));
             String line;
             while ((line = in.readLine()) != null) {
                 res += line;

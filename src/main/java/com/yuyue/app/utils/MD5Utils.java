@@ -150,4 +150,18 @@ public class MD5Utils {
         return hex[d1] + hex[d2];
     }
 
+    public static String MD5Encode(String origin, String charsetname) {
+        String resultString = null;
+        try {
+            resultString = new String(origin);
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            if (charsetname == null || "".equals(charsetname))
+                resultString = byteArrayToHexString(md.digest(resultString.getBytes()));
+            else
+                resultString = byteArrayToHexString(md.digest(resultString.getBytes(charsetname)));
+        } catch (Exception exception) {
+        }
+        return resultString;
+    }
+
 }

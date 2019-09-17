@@ -19,6 +19,9 @@ import java.util.*;
 
 public class XMLUtils {
 
+    //微信秘钥
+    private static final String KEY = "FE79E95059CDCA91646CDDA6A7F60A93";
+
     public static  String doPost(String url,String str,String charset,String contentType){
 //		SSLClient httpClient = null;
         HttpPost httpPost = null;
@@ -83,10 +86,9 @@ public class XMLUtils {
      * @param xmlStr
      * @return
      */
-
     public static Map<String,String> xmlString2Map(String xmlStr) throws Exception{
         String FEATURE = null;
-        Map<String, String> data = new HashMap<String, String>();
+        Map<String, String> data = new HashMap<>();
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             //XXE漏洞处理
@@ -127,4 +129,30 @@ public class XMLUtils {
         }
         return data;
     }
+
+    /**
+     * 微信支付签名算法sign
+     * @param characterEncoding
+     * @param parameters
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public static String createSign(String characterEncoding,SortedMap<Object,Object> parameters){
+        StringBuffer sb = new StringBuffer();
+        Set es = parameters.entrySet();//所有参与传参的参数按照accsii排序（升序）
+        Iterator it = es.iterator();
+        while(it.hasNext()) {
+            Map.Entry entry = (Map.Entry)it.next();
+            String k = (String)entry.getKey();
+            Object v = entry.getValue();
+            if(null != v && !"".equals(v)
+                    && !"sign".equals(k) && !"key".equals(k)) {
+                sb.append(k + "=" + v + "&");
+            }
+        }
+        sb.append("key=" + KEY);
+        String sign = MD5Utils.MD5Encode(sb.toString(), characterEncoding).toUpperCase();
+        return sign;
+    }
+
 }

@@ -115,22 +115,27 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/addAdvertisementInfo")
     @ResponseBody
-    @LoginRequired
-    public JSONObject addAdvertisementInfo(@CurrentUser AppUser appUser, HttpServletRequest request){
-        Map<String, String> parameterMap = getParameterMap(request);
-        ReturnResult returnResult =new ReturnResult();
-        Advertisement advertisementInfo = myService.getAdvertisementInfo(appUser.getId());
-        if( StringUtils.isNotNull(advertisementInfo) ){
-            if("10B".equals(advertisementInfo.getStatus())){
-                returnResult.setMessage("审核通过！！");
-                returnResult.setStatus(Boolean.TRUE);
-            }else {
-                returnResult.setMessage("已提交，待审核");
+    public JSONObject addAdvertisementInfo(HttpServletRequest request, HttpServletResponse response){
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
+        ReturnResult returnResult=new ReturnResult();
+        String token = request.getHeader("token");
+        String userId = "";
+        if(StringUtils.isNotEmpty(token)){
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+            Advertisement advertisementInfo = myService.getAdvertisementInfo(userId);
+            if(StringUtils.isNotNull(advertisementInfo)){
+                if("10B".equals(advertisementInfo.getStatus())){
+                    returnResult.setMessage("审核通过！！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }else {
+                    returnResult.setMessage("已提交，待审核");
+                }
+                returnResult.setResult(advertisementInfo);
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-            returnResult.setResult(advertisementInfo);
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        String userId=appUser.getId();
+        Map<String, String> parameterMap = getParameterMap(request);
         String merchantAddr=parameterMap.get("merchantAddr");
         String businessLicense=parameterMap.get("businessLicense");
         String idCardZM=parameterMap.get("idCardZM");
@@ -138,7 +143,7 @@ public class MyController extends BaseController{
         String agencyCode=parameterMap.get("agencyCode");
         String merchantName=parameterMap.get("merchantName");
         String phone=parameterMap.get("phone");
-        if(StringUtils.isEmpty(userId) || StringUtils.isEmpty(merchantAddr) || StringUtils.isEmpty(businessLicense)  || StringUtils.isEmpty(idCardZM)
+        if(StringUtils.isEmpty(merchantAddr) || StringUtils.isEmpty(businessLicense)  || StringUtils.isEmpty(idCardZM)
                ||StringUtils.isEmpty(idCardFM) || StringUtils.isEmpty(agencyCode) || StringUtils.isEmpty(merchantName) || StringUtils.isEmpty(phone) ){
             returnResult.setMessage("必填项存在空值");
             return ResultJSONUtils.getJSONObjectBean(returnResult);

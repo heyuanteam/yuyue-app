@@ -107,7 +107,7 @@ public class WXShareController extends BaseController{
                     .replace("APPID", appId)
                     .replace("SECRET", secret);
             //获取token的链接,通过该外部链接可以得到token
-            JSONObject returnResultToken = HttpAccessUtil.getReturnResult(requestTokenUrl);
+            JSONObject returnResultToken = HttpUtils.getReturnResult(requestTokenUrl);
             if (StringUtils.isNotNull(returnResultToken)){
                 // 获取Token值
                 access_token = returnResultToken.getString("access_token");
@@ -129,7 +129,7 @@ public class WXShareController extends BaseController{
         String requestUrl = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi"
                 .replace("ACCESS_TOKEN", access_token);
 
-        JSONObject returnResultTicket = HttpAccessUtil.getReturnResult(requestUrl);
+        JSONObject returnResultTicket = HttpUtils.getReturnResult(requestUrl);
         //获取凭证
         String ticket = returnResultTicket.getString("ticket");
         System.out.println("-------------------------------");
