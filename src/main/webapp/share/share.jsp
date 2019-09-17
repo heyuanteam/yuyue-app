@@ -22,7 +22,7 @@
 
 
     <div class="row">
-        <div class="col-md-12" style="text-align:left;background-color:black ; color:#FFF"  >
+        <div class="col-md-12" style="text-align:left;background-color:black ; color:#FFF">
 
             <img src='http://101.37.252.177:8888/group1/M00/00/00/rBDoeV1c78uADfE0AABrp7l7dwU286.png'
                  style="vertical-align:middle ;border-radius:99%" width="60" height="60" >&emsp;<font color="#87cefa" size="2">娱悦</font>

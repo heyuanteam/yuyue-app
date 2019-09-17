@@ -6,14 +6,13 @@
     <select id="getCommodityInfo" parameterType="String" resultType="com.yuyue.app.api.domain.Commodity">
         SELECT
         COMMODITY_ID commodityId,
+        PRICE_ID priceId,
         CATEGORY category,
         COMMODITY_NAME commodityName,
         AD_WORD adWord,
-        AD_URL adUrl,
+        AD_IMAGE_URL adImageUrl,
         COMMODITY_PRICE commodityPrice,
         PAY_URL payUrl,
-        AD_DURATION adDuration,
-        AD_PRICE adPrice,
         ADDR addr,
         SPOKESPERSON_ID spokesPersonId,
         MERCHANT_ID merchantId,
@@ -27,10 +26,10 @@
             MERCHANT_ID = #{merchantId}
         </if>
         <if test="spokesPersonId != null and spokesPersonId != ''">
-            SPOKESPERSON_ID = #{spokesPersonId} and status ='10B'
+            SPOKESPERSON_ID = #{spokesPersonId} and status ='10B'  and to_days(NOW()) &lt; to_days(END_DATE);
         </if>
         <if test="spokesPersonId != null and spokesPersonId != '' and merchantId != null and merchantId != ''">
-            SPOKESPERSON_ID = #{spokesPersonId} and MERCHANT_ID = #{merchantId}
+            SPOKESPERSON_ID = #{spokesPersonId} and MERCHANT_ID = #{merchantId}  and status ='10B'
         </if>
 
     </select>

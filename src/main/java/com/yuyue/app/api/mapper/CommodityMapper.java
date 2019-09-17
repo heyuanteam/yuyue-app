@@ -13,19 +13,19 @@ public interface CommodityMapper extends MyBaseMapper<Advertisement> {
 
     @Insert("INSERT INTO yuyue_commodity (\n" +
             "\tCOMMODITY_ID,\n" +
+            "\tPRICE_ID," +
             "\tCATEGORY,\n" +
             "\tCOMMODITY_NAME,\n" +
             "\tAD_WORD,\n" +
-            "\tAD_URL,\n" +
+            "\tAD_IMAGE_URL,\n" +
             "\tCOMMODITY_PRICE,\n" +
-           "\tPRICE_ID," +
             "\tPAY_URL,\n" +
             "\tADDR,\n" +
             "\tSPOKESPERSON_ID,\n" +
             "\tMERCHANT_ID\n" +
             ")  VALUES \n" +
-            "(#{commodityId},#{category},#{commodityName},#{adWord},#{adUrl},#{commodityPrice}," +
-            "#{priceId},#{payUrl},#{addr},#{spokesPersonId},#{merchantId})")
+            "(#{commodityId},#{priceId},#{category},#{commodityName},#{adWord},#{adImageUrl},#{commodityPrice}," +
+            "#{payUrl},#{addr},#{spokesPersonId},#{merchantId})")
     void commodityToSpread(Commodity commodity);
 
 

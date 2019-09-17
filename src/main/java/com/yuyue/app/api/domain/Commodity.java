@@ -23,12 +23,11 @@ public class Commodity implements Serializable {
     //广告词
     private String adWord;
     //广告音频图片
-    private String adUrl;
+    private String adImageUrl;
     //商品价格
     private BigDecimal commodityPrice;
     //购买链接
     private String payUrl;
-
     //地址
     private String addr;
     //代言人id

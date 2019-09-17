@@ -113,7 +113,6 @@ public class MyController extends BaseController{
      * @param request
      * @return
      */
-
     @RequestMapping("/addAdvertisementInfo")
     @ResponseBody
     @LoginRequired
@@ -319,13 +318,16 @@ public class MyController extends BaseController{
         if ( StringUtils.isEmpty(commodity.getCategory())
                 ||StringUtils.isEmpty(commodity.getCommodityName())
                 ||StringUtils.isEmpty(commodity.getAdWord())
-                ||StringUtils.isEmpty(commodity.getAdUrl())
+                ||StringUtils.isEmpty(commodity.getAdImageUrl())
                 ||StringUtils.isEmpty(commodity.getPayUrl())
                 ||StringUtils.isEmpty(commodity.getPriceId())
                 ||StringUtils.isEmpty(commodity.getAddr())
                 ||StringUtils.isEmpty(tradeType)
-                ||StringUtils.isEmpty(user.getId())){
-            returnResult.setMessage("上传的9个参数均不可为空！！");
+                ){
+            returnResult.setMessage("上传的8个参数均不可为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }if (commodity.getCommodityPrice().signum() == -1){
+            returnResult.setMessage("金额输入错误！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else {
             commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
