@@ -371,7 +371,7 @@ public class PayController {
                 if (TransactionID.equals(transaction_id)) {
                     String[] moneys = product_id.split("\\.");
                     Order order = new Order();
-                    order.setOrderNo("YYCZ" + RandomSaltUtil.randomNumber(14));
+                    order.setOrderNo(TransactionID);
                     order.setStatus("10B");
                     order.setStatusCode("100001");
                     order.setMobile(user.getPhone());
@@ -381,6 +381,7 @@ public class PayController {
                     order.setNote(moneys[3]);
 //        order.setMoney("100");
                     createOrder(order);
+                    payService.updateTotal(user.getId(), new BigDecimal(iosMap.get(moneys[3]).toString()));
                     returnResult.setStatus(Boolean.TRUE);
                     returnResult.setMessage("充值成功！");
                     returnResult.setResult(moneys[3]);
