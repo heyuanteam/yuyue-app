@@ -52,7 +52,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
     List<Order> getMoneyList(@Param("id") String id);
 
     @Transactional
-    @Insert("replace insert into yuyue_out_money (id,outNo,tradeType,money,merchantId,responseCode,responseMessage,moneyNumber,realName)  values  " +
+    @Insert("replace into yuyue_out_money (id,outNo,tradeType,money,merchantId,responseCode,responseMessage,moneyNumber,realName)  values  " +
             " (#{id},#{outNo},#{tradeType},#{money},#{merchantId},#{responseCode},#{responseMessage},#{moneyNumber},#{realName})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createOut(OutMoney outMoney);

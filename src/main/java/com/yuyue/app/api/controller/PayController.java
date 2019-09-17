@@ -87,6 +87,17 @@ public class PayController {
     private static AlipayClient alipayClient = new DefaultAlipayClient
             (gateway, AliAPPID, AliAppPrivateKey, "json", "utf-8", AliPayPublicKey,"RSA2");
 
+    //苹果内购
+    private final static Map<String, Object> iosMap = new HashMap<String, Object>(){{
+        iosMap.put("12",new BigDecimal(8.4));
+        iosMap.put("30",new BigDecimal(21));
+        iosMap.put("50",new BigDecimal(35));
+        iosMap.put("128",new BigDecimal(89.6));
+        iosMap.put("618",new BigDecimal(432.6));
+        iosMap.put("6,498",new BigDecimal(4548.6));
+    }};
+
+
     @ResponseBody
     @RequestMapping("/payYuYue")
     @LoginRequired
@@ -360,15 +371,17 @@ public class PayController {
                 if (TransactionID.equals(transaction_id)) {
                     String[] moneys = product_id.split("\\.");
                     Order order = new Order();
-                    order.setOrderNo("YYCZ" + RandomSaltUtil.randomNumber(14));
+                    order.setOrderNo(TransactionID);
                     order.setStatus("10B");
                     order.setStatusCode("100001");
                     order.setMobile(user.getPhone());
                     order.setMerchantId(user.getId());
-                    order.setMoney(new BigDecimal(moneys[3]));
+                    order.setMoney(new BigDecimal(iosMap.get(moneys[3]).toString()));
                     order.setTradeType("CZIOS");
+                    order.setNote(moneys[3]);
 //        order.setMoney("100");
                     createOrder(order);
+                    payService.updateTotal(user.getId(), new BigDecimal(iosMap.get(moneys[3]).toString()));
                     returnResult.setStatus(Boolean.TRUE);
                     returnResult.setMessage("充值成功！");
                     returnResult.setResult(moneys[3]);
@@ -438,7 +451,7 @@ public class PayController {
         if ("TXZFB".equals(outMoney.getTradeType())) {
 //            return outZFB(outMoney);
         } else if ("TXWX".equals(outMoney.getTradeType())) {
-            return outWX(outMoney);
+//            return outWX(outMoney);
         }
         returnResult.setMessage("提现正在进行中！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
