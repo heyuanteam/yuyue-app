@@ -316,12 +316,13 @@ public class MyController extends BaseController{
         List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(appUser.getId());
         if (StringUtils.isEmpty(videoByAuthorId)){
             returnResult.setMessage("暂无发布视频");
-        }else
-            map.put("Author",appUser);
-            map.put("videoList",videoByAuthorId);
+        } else {
+            map.put("Author", appUser);
+            map.put("videoList", videoByAuthorId);
             returnResult.setMessage("返回成功！！");
-        returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(map);
+            returnResult.setStatus(Boolean.TRUE);
+            returnResult.setResult(map);
+        }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
     /**
