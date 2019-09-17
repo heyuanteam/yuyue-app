@@ -88,15 +88,15 @@ public class PayController {
             (gateway, AliAPPID, AliAppPrivateKey, "json", "utf-8", AliPayPublicKey,"RSA2");
 
     //苹果内购
-    private final static Map<String, Object> iosMap = new HashMap<String, Object>(){{
+    private static final Map<String, Object> iosMap = new HashMap<String, Object>();
+    static {
         iosMap.put("12",new BigDecimal(8.4));
         iosMap.put("30",new BigDecimal(21));
         iosMap.put("50",new BigDecimal(35));
         iosMap.put("128",new BigDecimal(89.6));
         iosMap.put("618",new BigDecimal(432.6));
         iosMap.put("6,498",new BigDecimal(4548.6));
-    }};
-
+    }
 
     @ResponseBody
     @RequestMapping("/payYuYue")
