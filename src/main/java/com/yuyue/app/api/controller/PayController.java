@@ -88,7 +88,7 @@ public class PayController {
             (gateway, AliAPPID, AliAppPrivateKey, "json", "utf-8", AliPayPublicKey,"RSA2");
 
     //苹果内购
-    private static final Map<String, Object> iosMap = new HashMap<String, Object>();
+    private static final Map<String, Object> iosMap = new HashMap<>();
     static {
         iosMap.put("12",new BigDecimal(8.4));
         iosMap.put("30",new BigDecimal(21));
@@ -543,7 +543,7 @@ public class PayController {
                 + "appid="+ wxAppId
                 + "&redirect_uri="+ wxUrl
                 + "&response_type=code&scope=SCOPE&state=STATE&connect_redirect=1#wechat_redirect";
-        String returnData = getReturnData(url,"ISO-8859-1");
+        String returnData = getReturnData(url,"ISO8859-1");
         log.info("获取code=======>>>>>"+returnData);
         return returnData;
     }
