@@ -36,7 +36,7 @@ public class WXShareController extends BaseController{
 
 
     /**
-     * 获取微信分享 signature，nonceStr，timestamp 和appId
+     *测试
      * @param request
      * @return
      */
@@ -75,6 +75,12 @@ public class WXShareController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+
+    /**
+     * web网页分享；获取微信分享 signature，nonceStr，timestamp 和appId
+     * @param request
+     * @return
+     */
     @RequestMapping("/WX_WEB_Share")
     @ResponseBody
     public JSONObject wxShare(HttpServletRequest request){
@@ -175,6 +181,15 @@ public class WXShareController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * APP网页分享
+     * @param response
+     * @param model
+     * @param authorId
+     * @param videoId
+     * @param pageSize
+     * @return
+     */
     @RequestMapping("/wxAppShare")
     public String wxAppShare(HttpServletResponse response, Model model,String authorId,String videoId,String pageSize){
         response.setHeader("Access-Control-Allow-Origin","*");
