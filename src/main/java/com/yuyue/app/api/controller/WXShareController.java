@@ -32,8 +32,6 @@ public class WXShareController extends BaseController{
     private UserCommentService userCommentService;
     @Autowired
     private LoginService loginService;
-    @Autowired
-    private HttpAccessUtil httpAccessUtil;
 
 
     /**
