@@ -32,12 +32,11 @@ public class WXShareController extends BaseController{
     private UserCommentService userCommentService;
     @Autowired
     private LoginService loginService;
-    @Autowired
-    private HttpAccessUtil httpAccessUtil;
+
 
 
     /**
-     * 获取微信分享 signature，nonceStr，timestamp 和appId
+     * 获取微信分享 sigature，nonceStr，timestamp 和appId
      * @param request
      * @return
      */
