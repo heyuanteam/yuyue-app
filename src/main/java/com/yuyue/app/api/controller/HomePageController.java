@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 
@@ -47,8 +48,10 @@ public class HomePageController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/result")
-    public JSONObject homePage(HttpServletRequest request){
+    public JSONObject homePage(HttpServletRequest request, HttpServletResponse response){
         log.info("首页展示轮播图及视频种类-------------->>/homePage/result");
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
         getParameterMap(request);
         Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
@@ -96,15 +99,13 @@ public class HomePageController extends BaseController {
         List<UploadFile> uploadFilList0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId,content);
         List<UploadFile> uploadFileList1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId,content);
 
-        for (UploadFile uploadFile:uploadFilList0
-             ) {
+        for (UploadFile uploadFile:uploadFilList0) {
             //视频中插入作者信息
             AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
             uploadFile.setAppUser(appUserMsg);
             list.add(uploadFile);
         }
-        for (UploadFile uploadFile:uploadFileList1
-        ) {
+        for (UploadFile uploadFile:uploadFileList1) {
             //视频中插入作者信息
             AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
             uploadFile.setAppUser(appUserMsg);
@@ -179,8 +180,7 @@ public class HomePageController extends BaseController {
                 returnResult.setMessage("暂无信息！！");
             }else
                 returnResult.setMessage("返回成功！！");
-            for (YuyueSite yuyueSite:siteList
-                 ) {
+            for (YuyueSite yuyueSite:siteList) {
                 System.out.println(yuyueSite);
             }
             returnResult.setStatus(Boolean.TRUE);

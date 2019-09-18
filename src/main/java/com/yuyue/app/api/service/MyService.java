@@ -17,8 +17,6 @@ public interface MyService {
 
     Advertisement getAdvertisementInfo(String userId);
 
-    void insertShowName(ShowName showName);
-
     ShowName getShowInfo(String id);
 
     /**
@@ -43,4 +41,12 @@ public interface MyService {
     List<AdPrice> getAdvertisementFeeInfo(String priceId);
 
     Feedback getFeedback(String details);
+
+    Advertisement findAdvertisement(String agencyCode);
+
+    ShowName findShowName(String description, String phone);
+
+    void insertShowName(String id, String userId, String teamName, String description, String size,
+                        String categoryId, String address, String phone, String cardZUrl, String cardFUrl,
+                        String videoAddress, String mail, String weChat);
 }

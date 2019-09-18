@@ -21,4 +21,6 @@ public interface AdvertisementMapper extends MyBaseMapper<Advertisement> {
             " FROM yuyue_advertisement_info WHERE userId = #{userId} ")
     Advertisement getAdvertisementInfo(String userId);
 
+    @Select("SELECT * FROM yuyue_advertisement_info WHERE agencyCode = #{agencyCode}  and status = '10A' ")
+    Advertisement findAdvertisement(String agencyCode);
 }
