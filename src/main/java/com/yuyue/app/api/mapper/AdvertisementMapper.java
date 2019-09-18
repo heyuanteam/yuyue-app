@@ -4,11 +4,13 @@ import com.yuyue.app.api.domain.Advertisement;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface AdvertisementMapper extends MyBaseMapper<Advertisement> {
 
-    @Insert("INSERT INTO yuyue_advertisement_info  (id,userId,merchantAddr,businessLicense,idCardZM,idCardFM,agencyCode," +
+    @Transactional
+    @Insert("replace INTO yuyue_advertisement_info  (id,userId,merchantAddr,businessLicense,idCardZM,idCardFM,agencyCode," +
             "merchantName,phone,produceAddr,fixedPhone,email,wx,qqNum,merchandiseUrl,telephone) \n" +
             " VALUES (#{id},#{userId},#{merchantAddr},#{businessLicense},#{idCardZM},#{idCardFM},#{agencyCode},#{merchantName},#{phone}," +
             "#{produceAddr},#{fixedPhone},#{email},#{wx},#{qqNum},#{merchandiseUrl},#{telephone})")

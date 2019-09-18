@@ -5,13 +5,14 @@ import com.yuyue.app.api.domain.Commodity;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public interface CommodityMapper extends MyBaseMapper<Advertisement> {
-
-    @Insert("INSERT INTO yuyue_commodity (\n" +
+    @Transactional
+    @Insert("replace INTO yuyue_commodity (\n" +
             "\tCOMMODITY_ID,\n" +
             "\tPRICE_ID," +
             "\tCATEGORY,\n" +

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,7 +16,8 @@ public interface LikeMapper extends MyBaseMapper<Like> {
     @Select("SELECT STATUS FROM yuyue_like_list WHERE USER_ID = #{userId} and VIDEO_ID = #{videoId}")
     String getLikeStatus(@Param("userId")String userId,@Param("videoId")String videoId);
 
-    @Insert("INSERT INTO yuyue_like_list   (ID,VIDEO_ID,USER_ID,AUTHOR_ID,USER_NAME,VIDEO_NAME,HEADP_URL,STATUS)  " +
+    @Transactional
+    @Insert("replace INTO yuyue_like_list   (ID,VIDEO_ID,USER_ID,AUTHOR_ID,USER_NAME,VIDEO_NAME,HEADP_URL,STATUS)  " +
             "VALUES  (#{id},#{videoId},#{userId},#{authorId},#{userName},#{videoTittle},#{headUrl},#{status})")
     void insertToLikeList(Like like);
 

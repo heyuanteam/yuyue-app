@@ -20,7 +20,7 @@ public class ScheduledTasks {
     /**
      * 自动提现
      */
-    @Scheduled(cron = "0 0/50 * * * *")
+//    @Scheduled(cron = "0 0/50 * * * *")
     public void outMoney() {
         log.info("提现开始==================================>>>>>>>>>>>");
 

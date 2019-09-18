@@ -141,12 +141,19 @@ public class MyController extends BaseController{
             }
         }
         Map<String, String> parameterMap = getParameterMap(request);
+        //商家地址
         String merchantAddr=parameterMap.get("merchantAddr");
+        //营业执照
         String businessLicense=parameterMap.get("businessLicense");
+        //法人身份证正面
         String idCardZM=parameterMap.get("idCardZM");
+        //法人身份证反面
         String idCardFM=parameterMap.get("idCardFM");
+        //机构代码
         String agencyCode=parameterMap.get("agencyCode");
+        //商家名称
         String merchantName=parameterMap.get("merchantName");
+        //手机号码
         String phone=parameterMap.get("phone");
         if(StringUtils.isEmpty(merchantAddr) || StringUtils.isEmpty(businessLicense)  || StringUtils.isEmpty(idCardZM)
                ||StringUtils.isEmpty(idCardFM) || StringUtils.isEmpty(agencyCode) || StringUtils.isEmpty(merchantName) || StringUtils.isEmpty(phone) ){
@@ -234,21 +241,27 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/insertShowName")
     @ResponseBody
-    @LoginRequired
-    public JSONObject insertShowName(@CurrentUser AppUser user, HttpServletRequest request){
+    public JSONObject insertShowName(HttpServletRequest request, HttpServletResponse response){
         log.info("演出申请-------------->>/myController/insertShowName");
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
+        String token = request.getHeader("token");
         Map<String, String> mapValue = getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
-        ShowName showInfo = myService.getShowInfo(user.getId());
-        if (StringUtils.isNotNull(showInfo)){
-            if("10B".equals(showInfo.getStatus())){
-                returnResult.setMessage("审核通过！！");
-                returnResult.setStatus(Boolean.TRUE);
-            }else {
-                returnResult.setMessage("已提交，待审核");
+        String userId = "";
+        if(StringUtils.isNotEmpty(token)) {
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+            ShowName showInfo = myService.getShowInfo(userId);
+            if (StringUtils.isNotNull(showInfo)){
+                if("10B".equals(showInfo.getStatus())){
+                    returnResult.setMessage("审核通过！！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }else {
+                    returnResult.setMessage("已提交，待审核");
+                }
+                returnResult.setResult(showInfo);
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-            returnResult.setResult(showInfo);
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         if(StringUtils.isEmpty(mapValue.get("teamName")) || StringUtils.isEmpty(mapValue.get("size"))
                 || StringUtils.isEmpty(mapValue.get("address")) || StringUtils.isEmpty(mapValue.get("cardZUrl"))
@@ -259,17 +272,28 @@ public class MyController extends BaseController{
         } else {
             ShowName showName = new ShowName();
             showName.setId(UUID.randomUUID().toString().replace("-", "").toUpperCase());
-            showName.setUserId(user.getId());
+            showName.setUserId(userId);
+            //    姓名或团队名称
             showName.setTeamName(mapValue.get("teamName"));
-            showName.setSize(mapValue.get("size"));
-            showName.setAddress(mapValue.get("address"));
-            showName.setCardZUrl(mapValue.get("cardZUrl"));
-            showName.setCardFUrl(mapValue.get("cardFUrl"));
-            showName.setCategoryId(mapValue.get("categoryId"));
+            //    节目名称
             showName.setDescription(mapValue.get("description"));
+            //    人数
+            showName.setSize(mapValue.get("size"));
+            //    分类ID
+            showName.setCategoryId(mapValue.get("categoryId"));
+            //    现住地
+            showName.setAddress(mapValue.get("address"));
+            //    手机
             showName.setPhone(mapValue.get("phone"));
+            //    身份证正面
+            showName.setCardZUrl(mapValue.get("cardZUrl"));
+            //    身份证反面
+            showName.setCardFUrl(mapValue.get("cardFUrl"));
+            //    视频地址
             showName.setVideoAddress(mapValue.get("videoAddress"));
+            //    邮箱
             showName.setMail(mapValue.get("mail"));
+            //    微信
             showName.setWeChat(mapValue.get("weChat"));
             myService.insertShowName(showName);
             returnResult.setMessage("添加成功！");

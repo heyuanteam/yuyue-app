@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ShowNameMapper extends MyBaseMapper<ShowName> {
 
     @Transactional
-    @Insert("INSERT INTO yuyue_show_name (id,userId,teamName,size,address,cardZUrl,cardFUrl,categoryId,description,phone,videoAddress,mail,weChat)" +
+    @Insert("replace INTO yuyue_show_name (id,userId,teamName,size,address,cardZUrl,cardFUrl,categoryId,description,phone,videoAddress,mail,weChat)" +
             " VALUES (#{id},#{userId},#{teamName},#{size},#{address},#{cardZUrl},#{cardFUrl},#{categoryId},#{description},#{phone},#{videoAddress},#{mail},#{weChat})")
     void insertShowName(ShowName showName);
     @Select("select *,DATE_FORMAT(CREATE_TIME ,'%Y-%m-%d %H:%i:%s') createTime from yuyue_show_name where userId =#{id}")

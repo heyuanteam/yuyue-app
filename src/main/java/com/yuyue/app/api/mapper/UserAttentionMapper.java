@@ -23,7 +23,8 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      * @param ,userId,authorId
      * @return
      */
-    @Insert("INSERT into yuyue_attention (id,userId,authorId) " +
+    @Transactional
+    @Insert("replace into yuyue_attention (id,userId,authorId) " +
             "VALUES (#{id}, #{userId}, #{authorId})")
     void addAttention(@Param("id") String id, @Param("userId")String userId,@Param("authorId") String authorId);
 
@@ -39,6 +40,7 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      * @param userId  authorId
      * @return
      */
+    @Transactional
     @Delete("DELETE FROM yuyue_attention WHERE userId = #{userId} and authorId = #{authorId}")
     void cancelAttention(@Param("userId")String userId,@Param("authorId") String authorId);
 
