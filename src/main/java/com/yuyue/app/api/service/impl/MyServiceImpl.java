@@ -41,9 +41,6 @@ public class MyServiceImpl implements MyService {
     }
 
     @Override
-    public void insertShowName(ShowName showName) { showNameMapper.insertShowName(showName); }
-
-    @Override
     public ShowName getShowInfo(String id){
         return showNameMapper.getShowInfo(id);
     }
@@ -73,6 +70,20 @@ public class MyServiceImpl implements MyService {
 
     @Override
     public Feedback getFeedback(String details) { return feedbackMapper.getFeedback(details); }
+
+    @Override
+    public Advertisement findAdvertisement(String agencyCode) { return advertisementMapper.findAdvertisement(agencyCode);}
+
+    @Override
+    public ShowName findShowName(String description, String phone) { return showNameMapper.findShowName(description,phone); }
+
+    @Override
+    public void insertShowName(String id, String userId, String teamName, String description, String size,
+                               String categoryId, String address, String phone, String cardZUrl, String cardFUrl,
+                               String videoAddress, String mail, String weChat) {
+        showNameMapper.insertShowName(id,userId,teamName,description,size,categoryId,address,phone,cardZUrl,
+                cardFUrl,videoAddress,mail,weChat);
+    }
 
 
 }

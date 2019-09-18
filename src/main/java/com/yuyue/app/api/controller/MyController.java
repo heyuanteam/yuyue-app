@@ -180,10 +180,15 @@ public class MyController extends BaseController{
         advertisement.setQqNum(parameterMap.get("qqNum"));
         advertisement.setMerchandiseUrl(parameterMap.get("merchandiseUrl"));
         advertisement.setTelephone(parameterMap.get("telephone"));
-        System.out.println(advertisement);
-        myService.addAdvertisemenInfo(advertisement);
-        returnResult.setMessage("信息插入成功");
-        returnResult.setStatus(Boolean.TRUE);
+
+        Advertisement adver = myService.findAdvertisement(advertisement.getAgencyCode());
+        if(StringUtils.isNotNull(adver)){
+            returnResult.setMessage("请勿重复添加！");
+        } else {
+            myService.addAdvertisemenInfo(advertisement);
+            returnResult.setMessage("信息插入成功");
+            returnResult.setStatus(Boolean.TRUE);
+        }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -295,9 +300,17 @@ public class MyController extends BaseController{
             showName.setMail(mapValue.get("mail"));
             //    微信
             showName.setWeChat(mapValue.get("weChat"));
-            myService.insertShowName(showName);
-            returnResult.setMessage("添加成功！");
-            returnResult.setStatus(Boolean.TRUE);
+            ShowName show = myService.findShowName(showName.getDescription(),showName.getPhone());
+            if(StringUtils.isNotNull(show)){
+                returnResult.setMessage("请勿重复添加！");
+            } else {
+                myService.insertShowName(showName.getId(),showName.getUserId(),showName.getTeamName(), showName.getSize(),
+                        showName.getAddress(),showName.getCardZUrl(),showName.getCardFUrl(),showName.getCategoryId(),
+                        showName.getDescription(),showName.getPhone(),
+                        showName.getVideoAddress(),showName.getMail(),showName.getWeChat());
+                returnResult.setMessage("添加成功！");
+                returnResult.setStatus(Boolean.TRUE);
+            }
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
