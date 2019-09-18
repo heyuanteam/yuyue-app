@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -48,6 +50,8 @@ public class MyController extends BaseController{
     private PayService payService;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private HomePageService homePageService;
 
     /**
      * 意见反馈提交
@@ -554,5 +558,72 @@ public class MyController extends BaseController{
         returnResult.setMessage(s);
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 扫一扫,二维码解析
+     * @param appUser
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/analysisCode")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject analysisCode(@CurrentUser AppUser appUser, HttpServletRequest request) {
+        log.info("扫一扫,二维码解析 --------------->>/myController/analysisCode");
+        ReturnResult returnResult = new ReturnResult();
+        Map<String, String> parameterMap = getParameterMap(request);
+        String siteId = parameterMap.get("siteId");
+
+
+        if ("10A".equals(appUser.getUserStatus())){
+            returnResult.setMessage("未实名,请前往实名验证！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if ("10B".equals(appUser.getUserStatus())){
+            if (StringUtils.isEmpty(siteId)){
+                returnResult.setMessage("扫描二维码，获取信息存在空值！！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            YuyueSite site = homePageService.getSite(siteId);
+            YuyueSitePerson sitePerson = homePageService.getSitePerson(appUser.getId(), siteId);
+            String startTime = site.getStartTime().split(" ")[1];
+            String startHour=startTime.split(":")[0];
+            String format = new SimpleDateFormat("HH").format(new Date());
+            int personSum = Integer.parseInt(site.getPersonSum());
+            int personTotal = Integer.parseInt(site.getPersonTotal());
+            if (StringUtils.isNull(site)){
+                returnResult.setMessage("查无本场次演出！！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }else if (format.compareTo(startHour)>2){
+                returnResult.setMessage("本场次结束进场！！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }else if("10B".equals(sitePerson.getStatus())){
+                returnResult.setMessage("已扫码进场！！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            } else if(personSum >= personTotal ){
+                returnResult.setMessage("本场次已经满员！！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }else {
+                homePageService.updateSite(siteId);
+                YuyueSitePerson yuyueSitePerson=new YuyueSitePerson();
+                String id=UUID.randomUUID().toString().replace("-","").toUpperCase();
+                yuyueSitePerson.setId(id);
+                yuyueSitePerson.setSiteId(siteId);
+                yuyueSitePerson.setUserRealName(appUser.getRealName());
+                yuyueSitePerson.setUserId(appUser.getId());
+                homePageService.addSitePerson(yuyueSitePerson);
+                returnResult.setMessage("验证成功，允许进场！！");
+                returnResult.setStatus(Boolean.TRUE);
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+
+        }else if ("10C".equals(appUser.getUserStatus())){
+            returnResult.setMessage("实名中，敬请等候！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else {
+            returnResult.setMessage("实名失败,重新实名！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
     }
 }

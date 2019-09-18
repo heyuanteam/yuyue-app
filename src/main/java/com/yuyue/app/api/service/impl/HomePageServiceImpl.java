@@ -19,6 +19,8 @@ public class HomePageServiceImpl implements HomePageService {
     private YuyueSiteMapper yuyueSiteMapper;
     @Autowired
     private YuyueSiteShowMapper yuyueSiteShowMapper;
+    @Autowired
+    private YuyueSitePersonMapper yuyueSitePersonMapper;
 
     @Override
     public List<Banner> getBanner() {
@@ -38,6 +40,15 @@ public class HomePageServiceImpl implements HomePageService {
         return yuyueSiteMapper.getSite(id);
     }
 
+    /**
+     * 扫码修改 入场数目，+1
+     * @param id
+     */
+    @Override
+    public void updateSite(String id) {
+        yuyueSiteMapper.updateSite(id);
+    }
+
     @Override
     public List<YuyueSite> getSiteList() {
         return yuyueSiteMapper.getSiteList();
@@ -48,6 +59,15 @@ public class HomePageServiceImpl implements HomePageService {
         return yuyueSiteShowMapper.getShow(siteId);
     }
 
+    @Override
+    public void addSitePerson(YuyueSitePerson yuyueSitePerson) {
+        yuyueSitePersonMapper.addSitePerson(yuyueSitePerson);
+    }
+
+    @Override
+    public YuyueSitePerson getSitePerson(String userId, String siteId) {
+        return yuyueSitePersonMapper.getSitePerson(userId,siteId);
+    }
 
 
 }

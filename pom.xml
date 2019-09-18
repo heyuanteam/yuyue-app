@@ -86,6 +86,7 @@
 
 
 
+
         <!-- alibaba的druid数据库连接池 -->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -314,7 +315,18 @@
             <version>1.1.4</version>
         </dependency>
         <!-- 极光推送 end -->
-
+        <!-- 二维码 start -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.glxn</groupId>
+            <artifactId>qrgen</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <!-- 二维码 end -->
     </dependencies>
 
     <build>

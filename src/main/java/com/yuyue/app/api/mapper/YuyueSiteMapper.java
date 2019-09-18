@@ -2,6 +2,7 @@ package com.yuyue.app.api.mapper;
 
 import com.yuyue.app.api.domain.YuyueSite;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface YuyueSiteMapper extends MyBaseMapper<YuyueSite> {
             "DATE_FORMAT(START_TIME,'%Y-%m-%d %H:%i:%s') startTime " +
             " FROM yuyue_site ")
     List<YuyueSite> getSiteList();
+    @Update("UPDATE yuyue_site set personSum=personSum+1 WHERE id = #{id}")
+    void updateSite(String id);
 }
