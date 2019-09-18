@@ -17,21 +17,21 @@
     <script type="text/javascript" src="../share/jquery.min.js"></script>
     <script type="text/javascript" src="../share/jquery.pagination.js"></script>
     <script type="text/javascript">
-        $(function() {
+        <%--$(function() {--%>
 
-            $("#previousPage").click(function() {
-                $.ajax({
-                    url: "../share/wxAppShare?authorId="+"${authorId}"+"&videoId="+"${videoId}"+"&pageSize="+"${pageSize-1}",
-                    type: 'GET',
+        <%--    $("#previousPage").click(function() {--%>
+        <%--        $.ajax({--%>
+        <%--            url: "../share/wxAppShare?authorId="+"${authorId}"+"&videoId="+"${videoId}"+"&pageSize="+"${pageSize-1}",--%>
+        <%--            type: 'GET',--%>
 
-                    success: function (comments) {
+        <%--            success: function (comments) {--%>
 
-                    },
-                    error: function (xhr) { alert('服务器出错，返回内容：'+xhr.responseText)}
-                });
-                return true;
-            });
-        });
+        <%--            },--%>
+        <%--            error: function (xhr) { alert('服务器出错，返回内容：'+xhr.responseText)}--%>
+        <%--        });--%>
+        <%--        return true;--%>
+        <%--    });--%>
+        <%--});--%>
 
 
     </script>
@@ -110,7 +110,7 @@
         <!--分页  -->
         <c:choose>
             <c:when test="${pageSize > 1}" >
-                <a href="javascript:void(0)" id="previousPage" >上一页</a>
+                <a href="../share/wxAppShare?authorId=${authorId}&videoId=${videoId}&pageSize=${pageSize-1}" id="previousPage" >上一页</a>
             </c:when>
             <c:otherwise>
                 上一页
@@ -119,7 +119,7 @@
 
         <c:choose>
             <c:when test="${pageSize  < totalPage}">
-                <a href="javascript:void(0)" id="nextPage">下一页</a>
+                <a href="../share/wxAppShare?authorId=${authorId}&videoId=${videoId}&pageSize=${pageSize+1}" id="nextPage">下一页</a>
             </c:when>
             <c:otherwise>
                 下一页
