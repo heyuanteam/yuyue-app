@@ -196,9 +196,11 @@ public class WXShareController extends BaseController{
     public String wxAppShare(HttpServletResponse response, Model model,HttpServletRequest request){
         log.info("APP网页分享-------------->>/share/wxAppShare");
         Map<String, String> mapValue = getParameterMap(request);
+        response.setHeader("Access-Control-Allow-Origin","*");
         String pageSize = mapValue.get("pageSize");
         String authorId = mapValue.get("authorId");
         String videoId  =  mapValue.get("videoId");
+        System.out.println(pageSize+authorId+videoId);
         response.setHeader("Access-Control-Allow-Origin","*");
          int newPageSize = (Integer.parseInt(pageSize) - 1) * 5;
         UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);

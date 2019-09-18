@@ -124,15 +124,14 @@ public class HomePageController extends BaseController {
             iterator_1.next().setAppUser(appUserMsg);
             list.add(iterator_1.next());
         }*/
+        map.put("uploadFile", list);
+        returnResult.setResult(map);
         if(CollectionUtils.isEmpty(list)){
-            returnResult.setStatus(Boolean.TRUE);
             returnResult.setMessage("暂无视频！");
         } else {
-            map.put("uploadFile", list);
             returnResult.setMessage("视频请求成功！");
-            returnResult.setStatus(Boolean.TRUE);
-            returnResult.setResult(JSONObject.toJSON(map));
         }
+        returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 

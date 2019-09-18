@@ -11,10 +11,30 @@
 <head>
     <title>娱悦视频分享网页</title>
     <style type="text/css">
-        #newImg{border-radius: 50%; }
-        #newImg1{border-radius: 50%; }
-
+        .newImg{border-radius: 50%; }
     </style>
+    <link rel="stylesheet" type="text/css" href="../share/pagination.css">
+    <script type="text/javascript" src="../share/jquery.min.js"></script>
+    <script type="text/javascript" src="../share/jquery.pagination.js"></script>
+    <script type="text/javascript">
+        $(function() {
+
+            $("#previousPage").click(function() {
+                $.ajax({
+                    url: "../share/wxAppShare?authorId="+"${authorId}"+"&videoId="+"${videoId}"+"&pageSize="+"${pageSize-1}",
+                    type: 'GET',
+
+                    success: function (comments) {
+
+                    },
+                    error: function (xhr) { alert('服务器出错，返回内容：'+xhr.responseText)}
+                });
+                return true;
+            });
+        });
+
+
+    </script>
 </head>
 <body >
 
@@ -40,12 +60,11 @@
             <font color="f5f5dc" size="2">视频标题：${uploadFile.title}</font><br>
             <font color="#9932cc" size="2">${uploadFile.likeAmount}<font color="f5f5dc">&nbsp; 次点赞</font></font>
             <br>
-
         </div>
 
         <div style="text-align:left" >
 
-            &emsp;&emsp;<img src='${appUserMsg.headpUrl}' style="vertical-align:middle" id = "newImg" border-radius= "50%" width="40" height="40">&emsp;
+            &emsp;&emsp;<img src='${appUserMsg.headpUrl}' style="vertical-align:middle" class = "newImg" border-radius= "50%" width="40" height="40">&emsp;
             <font color="black" size="2">${appUserMsg.nickName}</font>
             <br>
             &emsp;&emsp;<font color="black" size="3">${uploadFile.description}</font>
@@ -80,19 +99,18 @@
     <h2>用户评论</h2>
 
     <c:forEach items="${comments}" var="comment" varStatus="s" >
-        &emsp;<img src='${comment.headUrl}' style="vertical-align:middle" id = "newImg1" border-radius= "50%" width="45" height="45">&emsp;
+        &emsp;<img src='${comment.headUrl}' style="vertical-align:middle" class="newImg"  border-radius= "50%" width="45" height="45">&emsp;
         <font color="black" size="1">${comment.userName}</font>
         <br>
         &emsp;&emsp;<font color="black" size="2">${comment.text}</font>
         <HR style="border:3px;double:#987cb9" align="left" width="80%" color=#987cb9 SIZE=3>
         <br>
-
     </c:forEach>
-    <div>
+    <div class="OpenAjax">
         <!--分页  -->
         <c:choose>
             <c:when test="${pageSize > 1}" >
-                <a href="../share/wxAppShare?authorId=${authorId}&videoId=${videoId}&pageSize=${pageSize-1}">上一页</a>
+                <a href="javascript:void(0)" id="previousPage" >上一页</a>
             </c:when>
             <c:otherwise>
                 上一页
@@ -101,7 +119,7 @@
 
         <c:choose>
             <c:when test="${pageSize  < totalPage}">
-                <a href="../share/wxAppShare?authorId=${authorId}&videoId=${videoId}&pageSize=${pageSize+1}">下一页</a>
+                <a href="javascript:void(0)" id="nextPage">下一页</a>
             </c:when>
             <c:otherwise>
                 下一页
@@ -113,7 +131,6 @@
 
         <!-- 显示分页数 -->
         共<font color="red">${totalPage}</font>页
-
     </div>
 
 
