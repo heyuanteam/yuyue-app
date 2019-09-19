@@ -1,5 +1,6 @@
 package com.yuyue.app.api.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
@@ -451,18 +452,19 @@ public class PayController {
         if ("TXZFB".equals(outMoney.getTradeType())) {
 //            return outZFB(outMoney);
         } else if ("TXWX".equals(outMoney.getTradeType())) {
-//            return outWX(outMoney);
+            return outWX(outMoney,user);
         }
         returnResult.setMessage("提现正在进行中！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     //单笔提现到微信
-    private JSONObject outWX(OutMoney outMoney) {
+    private JSONObject outWX(OutMoney outMoney,AppUser user) {
         ReturnResult returnResult = new ReturnResult();
-        String code = getCode();
-        log.info("code=========="+code);
-        String openId = getOpenId(code);
+        String openId = getOpenId(user.getWechat());
+//        获取个人信息
+//        getUserInfo(user.getWechat());
+        log.info("openId======>>>>>"+openId);
         String nonce_str = RandomSaltUtil.getRandomString(16);
         //是否校验用户姓名 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
         String checkName ="NO_CHECK";
@@ -505,13 +507,14 @@ public class PayController {
                     "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers", sb.toString(), true);
             String transfersXml = EntityUtils.toString(response.getEntity(), "utf-8");
             Map<String, String> transferMap = XMLUtils.xmlString2Map(transfersXml);
+            log.info("微信转账回返信息=============>>>>>>"+transferMap.toString());
             if (transferMap.size()>0) {
                 if (transferMap.get("result_code").equals("SUCCESS") && transferMap.get("return_code").equals("SUCCESS")) {
                     //成功需要进行的逻辑操作，
-
+                    payService.updateOutStatus(transferMap.get("result_code"), "微信转账成功", "10B", outMoney.getId());
+                    payService.updateOutIncome(user.getId(),outMoney.getMoney());
                 }
             }
-            System.out.println("成功");
         } catch (Exception e) {
             log.error(e.getMessage());
             throw MyExceptionUtils.mxe("企业付款异常" + e.getMessage());
@@ -520,32 +523,34 @@ public class PayController {
     }
 
     /**
-     * 获取code
-     * @return  String
-     * @Date	2018年9月3日
+     * 获取access_token
+     * @return
      */
-    @ResponseBody
-    @RequestMapping("/getCodeValue")
-    public String getCodeValue(String code){
-        log.info("getCodeValue=======>>>>>"+code);
-        String split = code.split("\\?")[1].split("&")[0].split("=")[1];
-        log.info("splitValue=======>>>>>"+split);
-        return split;
+    private JSONObject getAccessToken(){
+        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&"
+                + "appid="+ wxAppId
+                + "&secret="+ APP_SECRET;
+        String result = getReturnData(url,"GBK");
+        JSONObject json = JSON.parseObject(result);
+        log.info("获取access_token======>>>>>"+json);
+        return json;
     }
 
     /**
-     * 获取code
-     * @return  String
-     * @Date	2018年9月3日
+     * 获取用户基本信息
+     * @return
      */
-    public String getCode(){
-        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?"
-                + "appid="+ wxAppId
-                + "&redirect_uri="+ wxUrl
-                + "&response_type=code&scope=SCOPE&state=STATE&connect_redirect=1#wechat_redirect";
-        String returnData = getReturnData(url,"ISO8859-1");
-        log.info("获取code=======>>>>>"+returnData);
-        return returnData;
+    private JSONObject getUserInfo(String openid){
+        String accessToken = getAccessToken().getString("access_token");
+        log.info("accessToken======>>>>>"+accessToken);
+        String url = "https://api.weixin.qq.com/cgi-bin/user/info?"
+                + "openid="+ openid
+                + "&access_token="+ accessToken
+                + "&lang=zh_CN";
+        String result = getReturnData(url,"GBK");
+        JSONObject json = JSON.parseObject(result);
+        log.info("获取用户基本信息======>>>>>"+json);
+        return json;
     }
 
     /**

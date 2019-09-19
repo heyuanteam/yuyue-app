@@ -1,7 +1,7 @@
 package com.yuyue.app.config;
 
-
-import com.alibaba.fastjson.JSONObject;
+import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.utils.ResultJSONUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +16,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception e) {
+        ReturnResult returnResult = new ReturnResult();
         logger.error(ExceptionUtils.getFullStackTrace(e));  // 记录错误信息
         String msg = e.getMessage();
         if (msg == null || msg.equals("")) {
             msg = "服务器出错";
         }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("error", msg);
-        return jsonObject;
+        returnResult.setMessage(msg);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }
