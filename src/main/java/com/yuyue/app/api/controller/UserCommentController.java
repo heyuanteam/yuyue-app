@@ -239,18 +239,19 @@ public class UserCommentController extends BaseController{
             returnResult.setMessage("作者id不能为空!!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        for (Attention attertion:userAttention
-             ) {
+        for (Attention attertion:userAttention) {
             if (attertion.getAuthorId().equals(authorId)){
                 returnResult.setMessage("用户已关注！！");
                 returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
         }
-        String id =UUID.randomUUID().toString().replace("-","").toUpperCase();
+
+
         //用户表中的关注数据+1
         uploadFileService.attentionAmount(authorId);
         //数据添加至Attention表中
+        String id =UUID.randomUUID().toString().replace("-","").toUpperCase();
         userCommentService.addAttention(id,user.getId(),authorId);
         returnResult.setMessage("关注成功！！");
         returnResult.setStatus(Boolean.TRUE);

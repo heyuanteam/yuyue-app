@@ -591,6 +591,7 @@ public class MyController extends BaseController{
 
         if ("10A".equals(appUser.getUserStatus())){
             returnResult.setMessage("未实名,请前往实名验证！！");
+            returnResult.setCode("01");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else if ("10B".equals(appUser.getUserStatus())){
             if (StringUtils.isEmpty(siteId)){

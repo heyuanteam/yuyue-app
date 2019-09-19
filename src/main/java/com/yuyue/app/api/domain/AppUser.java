@@ -73,6 +73,9 @@ public class AppUser implements Serializable {
     private String cardZUrl;
 //    反面身份证
     private String cardFUrl;
+
+    //艺人封面
+    private String frontCover;
 //    用户上传的视频   一对多
     private List<UploadFile> authorVideo;
 

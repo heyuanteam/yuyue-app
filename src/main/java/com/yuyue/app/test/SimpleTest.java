@@ -2,7 +2,10 @@ package com.yuyue.app.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,6 +39,14 @@ public class SimpleTest {
         String format = new SimpleDateFormat("HH").format(new Date());
         System.out.println(format);
         System.out.println("_______"+split2[1]+"_______"+split1[1]);
+
+        try {
+            File path = new File(ResourceUtils.getURL("classpath:").getPath());
+            System.out.println(path+"------"+path.getAbsolutePath());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
     }
 

@@ -32,6 +32,7 @@
         <result column="cardFUrl" property="cardFUrl" jdbcType="VARCHAR"/>
         <result column="cardZUrl" property="cardZUrl" jdbcType="VARCHAR"/>
         <result column="userUrl" property="userUrl" jdbcType="VARCHAR"/>
+        <result column="frontCover" property="frontCover" jdbcType="VARCHAR"/>
     </resultMap>
 
     <update id="updateAppUser" parameterType="com.yuyue.app.api.domain.AppUser">
@@ -88,6 +89,9 @@
             <if test="jpushName!=null and jpushName!=''">
                 b.`jpushName` = #{jpushName},
             </if>
+            <if test="frontCover!=null and frontCover!=''">
+                b.`frontCover` = #{frontCover}
+            </if>
         </set>
         WHERE 1=1
         <if test="id!=null and id!=''">
@@ -100,7 +104,7 @@
         SELECT id,user_no userNo,user_nick_name nickName,user_real_name realName,id_type idType,id_card idCard,phone,sex,city,jpushName,password,salt,
             user_status userStatus,total ,income,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,
         ATTENTION_TOTAL attentionTotal,LIKE_TOTAL likeTotal,COMMENT_TOTAL commentTotal,education ,wechat ,signature ,
-            DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime
+            DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover
             FROM yuyue_merchant
             where 1=1
             <choose>
@@ -142,6 +146,7 @@
         education,
         wechat,
         signature,
+        frontCover,
         DATE_FORMAT(
         create_time,
         '%Y-%m-%d %H:%i:%s'
