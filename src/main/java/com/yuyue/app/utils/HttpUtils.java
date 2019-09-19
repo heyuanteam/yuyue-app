@@ -9,6 +9,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.net.ssl.SSLContext;
 import java.io.File;
@@ -86,12 +87,13 @@ public class HttpUtils {
      * 加载证书
      */
     public static SSLConnectionSocketFactory initCert() throws Exception {
-        FileInputStream instream = null;
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        instream = new FileInputStream(new File("/resources/apiclient_cert.p12"));
-        keyStore.load(instream, wxMchID.toCharArray());
-        if (null != instream) {
-            instream.close();
+//        FileInputStream inputStream = new FileInputStream(new File("/apiclient_cert.p12"));
+//        InputStream inputStream  = this.getClass().getClassLoader().getResourceAsStream("/apiclient_cert.p12");
+        InputStream inputStream = new ClassPathResource("apiclient_cert.p12").getInputStream();
+        keyStore.load(inputStream, wxMchID.toCharArray());
+        if (null != inputStream) {
+            inputStream.close();
         }
         SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore,wxMchID.toCharArray()).build();
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
