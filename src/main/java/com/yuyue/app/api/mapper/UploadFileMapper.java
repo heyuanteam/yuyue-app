@@ -81,7 +81,14 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     void likeAmount(@Param("tableName")String tableName,@Param("id")String id);
 
 
-
+    /**
+     * 视频表 通过视频id  播放量+1
+     * @param tableName
+     * @param id
+     */
+    @Transactional
+    @Update("UPDATE ${tableName} SET playAmount = playAmount  +  1  WHERE id = #{id}")
+    void playAmount(@Param("tableName")String tableName,@Param("id")String id);
 
 
     /**

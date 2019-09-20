@@ -306,7 +306,15 @@ public class UploadFileServiceImpl implements UploadFileService {
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
-
+    /**
+     *视频表 播放量+1
+     * @param videoId
+     * @return
+     */
+    @Override
+    public void playAmount(String authorId,String videoId) {
+        uploadFileMapper.playAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
+    }
 
     /**
      *视频表、用户表评论量+1
@@ -324,18 +332,13 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     /**
-     *用户表关注量+1
+     *用户表字段   关注量+1
      * @param
      * @return
      */
     @Override
-    public JSONObject attentionAmount(String authorId) {
-        ReturnResult returnResult=new ReturnResult();
-        /*uploadFileMapper.attentionAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",userId),videoId);*/
+    public void attentionAmount(String authorId) {
         uploadFileMapper.userAttentionAmount(authorId);
-        returnResult.setMessage("关注成功!");
-        returnResult.setStatus(Boolean.TRUE);
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**

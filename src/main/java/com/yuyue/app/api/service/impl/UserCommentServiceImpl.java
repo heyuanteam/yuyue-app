@@ -77,7 +77,6 @@ public class UserCommentServiceImpl implements UserCommentService{
 
     @Override
     public List<Attention> getUserAttention(String userId) {
-
         return userAttentionMapper.getUserAttention(userId);
     }
 
@@ -85,7 +84,6 @@ public class UserCommentServiceImpl implements UserCommentService{
     public void addAttention(String id,String userId,String authorId) {
         System.out.println(id+"---------"+userId+"-----------"+authorId);
          userAttentionMapper.addAttention(id,userId,authorId);
-         userAttentionMapper.userAttentionAmount(authorId);
     }
 
     @Override

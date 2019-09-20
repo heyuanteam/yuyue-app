@@ -39,6 +39,8 @@ public class UploadFile implements Serializable {
     private String description;
 //    用户关注数量(粉丝量)
     private String attentionAmount;
+//  播放量
+    private String playAmount;
 //    点赞量
     private String likeAmount;
 //    评论数量

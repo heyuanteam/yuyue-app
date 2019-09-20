@@ -234,11 +234,11 @@ public class UserCommentController extends BaseController{
         log.info("添加关注-------------->>/userComment/addAttention");
         getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
-        List<Attention> userAttention = userCommentService.getUserAttention(user.getId());
         if(authorId.isEmpty()  || user.getId().isEmpty()){
             returnResult.setMessage("作者id不能为空!!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
+        List<Attention> userAttention = userCommentService.getUserAttention(user.getId());
         for (Attention attertion:userAttention) {
             if (attertion.getAuthorId().equals(authorId)){
                 returnResult.setMessage("用户已关注！！");

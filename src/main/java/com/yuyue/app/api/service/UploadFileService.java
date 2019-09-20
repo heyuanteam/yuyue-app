@@ -1,13 +1,11 @@
 package com.yuyue.app.api.service;
 import com.alibaba.fastjson.JSONObject;
-import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.UploadFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 public interface UploadFileService {
     /**
@@ -40,6 +38,11 @@ public interface UploadFileService {
     void downloadFile(String filesName, String filesPath, HttpServletResponse response) throws IOException;
 
     /**
+     * 视频播放量
+     * @param
+     */
+    void playAmount(String authorId,String videoId);
+    /**
      * 视频点赞量
      * @param
      */
@@ -56,7 +59,7 @@ public interface UploadFileService {
      * 视频关注量
      * @param
      */
-    JSONObject attentionAmount(String authorId);
+    void attentionAmount(String authorId);
 
     /**
      * 取消关注，关注量-1

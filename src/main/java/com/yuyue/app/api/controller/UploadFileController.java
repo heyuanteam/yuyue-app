@@ -102,6 +102,7 @@ public class UploadFileController extends  BaseController{
         log.info("====authorId===="+authorId);
         returnResult.setResult(uploadFileService.fileDetail(authorId,videoId));
         returnResult.setResult(map);
+        uploadFileService.playAmount(authorId,videoId);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
