@@ -35,14 +35,24 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
     @Transactional
     @Update("UPDATE yuyue_merchant  SET ATTENTION_TOTAL =ATTENTION_TOTAL +1  WHERE id =  #{authorId}")
     void userAttentionAmount(String authorId);
+
+
     /**
-     * 用户删除关注
+     * 取消关注   -->用户删除关注表数据
      * @param userId  authorId
      * @return
      */
     @Transactional
     @Delete("DELETE FROM yuyue_attention WHERE userId = #{userId} and authorId = #{authorId}")
     void cancelAttention(@Param("userId")String userId,@Param("authorId") String authorId);
+
+    /**
+     * 取消关注  --> 作者的关注量-1
+     * @param authorId
+     */
+    @Transactional
+    @Update("UPDATE yuyue_merchant  SET ATTENTION_TOTAL =ATTENTION_TOTAL -1  WHERE id =  #{authorId}")
+    void reduceAttentionAmount(String authorId);
 
     @Select("SELECT COUNT(userId) from yuyue_attention where authorId = #{ authorId }")
     int getFansSum(String authorId);

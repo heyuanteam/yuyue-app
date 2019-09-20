@@ -84,11 +84,15 @@ public class UserCommentServiceImpl implements UserCommentService{
     public void addAttention(String id,String userId,String authorId) {
         System.out.println(id+"---------"+userId+"-----------"+authorId);
          userAttentionMapper.addAttention(id,userId,authorId);
+         userAttentionMapper.userAttentionAmount(authorId);
     }
 
     @Override
     public void cancelAttention(String userId,String authorId) {
-         userAttentionMapper.cancelAttention(userId,authorId);
+        //删除关注
+        userAttentionMapper.cancelAttention(userId,authorId);
+        //关注量  -1
+        userAttentionMapper.reduceAttentionAmount(authorId);
     }
 
     @Override

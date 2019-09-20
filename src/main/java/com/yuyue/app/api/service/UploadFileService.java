@@ -55,17 +55,9 @@ public interface UploadFileService {
     JSONObject commentAmount(String authorId,String videoId);
 
 
-    /**
-     * 视频关注量
-     * @param
-     */
-    void attentionAmount(String authorId);
 
-    /**
-     * 取消关注，关注量-1
-     * @param authorId
-     */
-    void reduceAttentionAmount(String authorId);
+
+
 
     /**
      * 删除评论， 评论量 -1

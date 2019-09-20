@@ -119,13 +119,7 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     void userCommentAmount(String authorId);
 
 
-    /**
-     * 用户表 通过id 关注量+1
-     * @param authorId
-     */
-    @Transactional
-    @Update("UPDATE yuyue_merchant  SET ATTENTION_TOTAL =ATTENTION_TOTAL +1  WHERE id =  #{authorId}")
-    void userAttentionAmount(String authorId);
+
 
 
 
@@ -150,15 +144,6 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     @Transactional
     @Update("UPDATE yuyue_merchant  SET COMMENT_TOTAL =COMMENT_TOTAL -1  WHERE id = #{authorId} ")
     void delUserCommentAmount(String authorId);
-
-
-    /**
-     * 取消关注 用户表  通过用户id  关注量-1
-     * @param authorId
-     */
-    @Transactional
-    @Update("UPDATE yuyue_merchant  SET ATTENTION_TOTAL =ATTENTION_TOTAL -1  WHERE id =  #{authorId}")
-    void reduceAttentionAmount(String authorId);
 
 
 

@@ -247,10 +247,7 @@ public class UserCommentController extends BaseController{
             }
         }
 
-
-        //用户表中的关注数据+1
-        uploadFileService.attentionAmount(authorId);
-        //数据添加至Attention表中
+        //用户表中的关注数据+1  ;  数据添加至Attention表中
         String id =UUID.randomUUID().toString().replace("-","").toUpperCase();
         userCommentService.addAttention(id,user.getId(),authorId);
         returnResult.setMessage("关注成功！！");
@@ -282,10 +279,8 @@ public class UserCommentController extends BaseController{
         for (Attention attention:userAttentions
              ) {
             if (authorId.equals(attention.getAuthorId())){
-                //关注表删除数据
+                //关注表删除数据  ; 用户表 关注量-1
                 userCommentService.cancelAttention(user.getId(),authorId);
-                //用户表 关注量-1
-                uploadFileService.reduceAttentionAmount(authorId);
                 returnResult.setMessage("取消关注成功！！");
                 returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);

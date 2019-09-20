@@ -331,24 +331,6 @@ public class UploadFileServiceImpl implements UploadFileService {
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-    /**
-     *用户表字段   关注量+1
-     * @param
-     * @return
-     */
-    @Override
-    public void attentionAmount(String authorId) {
-        uploadFileMapper.userAttentionAmount(authorId);
-    }
-
-    /**
-     * 取消关注，关注量-1
-     * @param authorId
-     */
-    @Override
-    public void reduceAttentionAmount(String authorId){
-        uploadFileMapper.reduceAttentionAmount(authorId);
-    }
 
     /**
      * 删除评论， 评论量 -1
