@@ -42,4 +42,8 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
      * @return
      */
     List<AppUser> getAppUserMsgToLike(@Param("userId")String userId,@Param("content")String content);
+
+    @Transactional
+    @Update("UPDATE yuyue_merchant b SET b.`opendId` = #{opendId},b.wechatName=#{wechatName} WHERE b.id = #{id}")
+    void updateOpendId(@Param("id") String id,@Param("opendId") String opendId,@Param("wechatName") String wechatName);
 }
