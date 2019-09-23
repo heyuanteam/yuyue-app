@@ -102,6 +102,7 @@ public class UserCommentController extends BaseController{
         ReturnResult returnResult =new ReturnResult();
         String videoId=mapValue.get("videoId");
         String authorId=mapValue.get("authorId");
+        Map<String,Object> map= Maps.newTreeMap();
         if(authorId.isEmpty() || videoId.isEmpty() || user.getId().isEmpty()){
             returnResult.setMessage("作者id或视频id不能为空!!");
         } else {
@@ -115,7 +116,12 @@ public class UserCommentController extends BaseController{
             uploadFileService.commentAmount(authorId,videoId);
             //数据插入到Comment表中
             userCommentService.addComment(comment);
+            //获取所有评论
+            List<UserCommentVo> allComment = userCommentService.getAllComment(videoId, "");
             returnResult.setMessage("评论成功！");
+            map.put("comment", allComment);
+            map.put("commentNum", allComment.size());
+            returnResult.setResult(map);
             returnResult.setStatus(Boolean.TRUE);
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
