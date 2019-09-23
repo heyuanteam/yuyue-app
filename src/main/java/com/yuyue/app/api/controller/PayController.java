@@ -458,14 +458,14 @@ public class PayController {
         if ("TXZFB".equals(outMoney.getTradeType())) {
 //            return outZFB(outMoney);
         } else if ("TXWX".equals(outMoney.getTradeType())) {
-            return outWX(outMoney,user,user.getOpendId());
+            return outWX(outMoney,user);
         }
         returnResult.setMessage("提现正在进行中！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     //单笔提现到微信
-    private JSONObject outWX(OutMoney outMoney,AppUser user,String openid) {
+    private JSONObject outWX(OutMoney outMoney,AppUser user) {
         ReturnResult returnResult = new ReturnResult();
         String nonce_str = RandomSaltUtil.getRandomString(16);
         //是否校验用户姓名 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
@@ -483,7 +483,7 @@ public class PayController {
         parameters.put("mchid", wxMchID);
         parameters.put("partner_trade_no", partner_trade_no);
         parameters.put("nonce_str", nonce_str);
-        parameters.put("openid", openid);
+        parameters.put("openid", user.getOpendId());
         parameters.put("check_name", checkName);
         parameters.put("amount", moneyD);
         parameters.put("spbill_create_ip", ip);
@@ -497,7 +497,7 @@ public class PayController {
         map.put("mch_appid",wxAppId);
         map.put("mchid",wxMchID);
         map.put("nonce_str",nonce_str);
-        map.put("openid",openid);
+        map.put("openid",user.getOpendId());
         map.put("partner_trade_no",partner_trade_no);
         map.put("sign",sign);
         map.put("spbill_create_ip",ip);
