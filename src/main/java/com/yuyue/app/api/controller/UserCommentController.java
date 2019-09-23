@@ -243,7 +243,10 @@ public class UserCommentController extends BaseController{
         getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
         if(authorId.isEmpty()  || user.getId().isEmpty()){
-            returnResult.setMessage("作者id不能为空!!");
+            returnResult.setMessage("作者id不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if(authorId.equals(user.getId())){
+            returnResult.setMessage("不能关注自己！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         List<Attention> userAttention = userCommentService.getUserAttention(user.getId());

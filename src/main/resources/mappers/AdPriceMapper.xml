@@ -10,7 +10,7 @@
         AD_DURATION adDuration,
         AD_TOTAL_PRICE adTotalPrice,
         AD_DISCOUNT adDiscount,
-        DATE_FORMAT(CRETA_TIME,'%Y-%m-%d %H:%i:%s') createTime
+        DATE_FORMAT(CREATE_TIME,'%Y-%m-%d %H:%i:%s') createTime
         FROM yuyue_commodity_price where 1=1
         <if test="priceId != null and priceId != ''">
             and ID = #{priceId}
