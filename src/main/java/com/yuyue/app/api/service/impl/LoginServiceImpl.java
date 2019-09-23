@@ -73,9 +73,9 @@ public class LoginServiceImpl implements LoginService {
     public void updateAppUser(String id, String nickName, String realName, String idCard, String phone, String sex,
                               String headpUrl, String userStatus, String addrDetail, String education, String wechat,
                               String signature, String userUrl, String cardZUrl, String cardFUrl, String ciphertextPwd,
-                              String city,String jpushName) {
-        loginMapper.updateAppUser(id,nickName,realName,idCard,phone,sex,headpUrl, userStatus,
-                addrDetail, education,wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,city,jpushName);
+                              String city, String jpushName, String openId, String wechatName,String frontCover) {
+        loginMapper.updateAppUser(id,nickName,realName,idCard,phone,sex,headpUrl, userStatus, addrDetail, education,
+                wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,city,jpushName,openId,wechatName,frontCover);
     }
 
 }

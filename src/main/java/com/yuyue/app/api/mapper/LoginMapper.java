@@ -32,7 +32,8 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
                        @Param("headpUrl") String headpUrl,@Param("userStatus") String userStatus, @Param("addrDetail") String addrDetail,
                        @Param("education") String education,@Param("wechat") String wechat,@Param("signature") String signature,
                        @Param("userUrl") String userUrl,@Param("cardZUrl") String cardZUrl,@Param("cardFUrl") String cardFUrl,
-                       @Param("password") String password,@Param("city") String city,@Param("jpushName") String jpushName);
+                       @Param("password") String password,@Param("city") String city,@Param("jpushName") String jpushName,
+                       @Param("openId") String openId,@Param("wechatName") String wechatName,@Param("frontCover") String frontCover);
 
     /**
      * 模糊查询   用户关注搜索

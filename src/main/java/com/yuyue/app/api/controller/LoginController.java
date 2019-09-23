@@ -313,8 +313,8 @@ public class LoginController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(result);
         }
         LOGGER.info("============" + user.toString());
-        loginService.updateAppUser(user.getId(),nickName,realName,idCard,phone,sex,headpUrl, userStatus,
-                            addrDetail, education,wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,"","");
+        loginService.updateAppUser(user.getId(),nickName,realName,idCard,phone,sex,headpUrl, userStatus, addrDetail, education,
+                wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,"","","","","");
         result.setMessage("修改成功！");
         result.setStatus(Boolean.TRUE);
         AppUser appUser = loginService.getAppUserMsg("","",user.getId());
@@ -338,7 +338,7 @@ public class LoginController extends BaseController{
         if (appUserById != null) {
             loginService.updateAppUser(appUserById.getId(),"","","","","","",
                     "","","","","","","","",
-                    "",city,jpushName);
+                    "",city,jpushName,"","","");
             result.setMessage("获取成功！");
             result.setStatus(Boolean.TRUE);
             result.setToken(loginService.getToken(appUserById));

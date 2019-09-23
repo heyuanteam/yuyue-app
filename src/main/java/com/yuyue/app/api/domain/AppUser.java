@@ -73,6 +73,10 @@ public class AppUser implements Serializable {
     private String cardZUrl;
 //    反面身份证
     private String cardFUrl;
+//    微信转账标识
+    private String opendId;
+//    微信转账名称
+    private String wechatName;
 
     //艺人封面
     private String frontCover;
