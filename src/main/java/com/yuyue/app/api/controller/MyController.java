@@ -459,7 +459,7 @@ public class MyController extends BaseController{
         return jsonObject;
     }
     /**
-     * 商家id 获取 广告列表
+     * (我的广告)商家id 获取 广告列表
      * @param appUser
      * @param
      * @return
@@ -473,7 +473,9 @@ public class MyController extends BaseController{
         ReturnResult returnResult =new ReturnResult();
         List<Advertisement> commodityInfoList = myService.getCommodityInfo(appUser.getId(), "");
         if (StringUtils.isEmpty(commodityInfoList)){
-            returnResult.setMessage("暂无广告申请");
+            returnResult.setMessage("暂无广告申请！！");
+        }else {
+            returnResult.setMessage("返回成功！！");
         }
         returnResult.setResult(commodityInfoList);
         returnResult.setStatus(Boolean.TRUE);

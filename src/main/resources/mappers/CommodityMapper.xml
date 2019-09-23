@@ -3,24 +3,59 @@
 <mapper namespace="com.yuyue.app.api.mapper.CommodityMapper">
 
 
-    <select id="getCommodityInfo" parameterType="String" resultType="com.yuyue.app.api.domain.Commodity">
+
+        <!-- 定义结果集，column表示sql查询列,property表示映射到实体的属性 -->
+        <resultMap type="com.yuyue.app.api.domain.Commodity" id="myCommodity">
+            <id column="COMMODITY_ID" property="commodityId"/>
+            <result column="CATEGORY" property="category"/>
+            <result column="COMMODITY_NAME" property="commodityName"/>
+            <result column="AD_WORD" property="adWord"/>
+            <result column="AD_IMAGE_URL" property="adImageUrl"/>
+            <result column="COMMODITY_PRICE" property="commodityPrice"/>
+            <result column="PAY_URL" property="payUrl"/>
+            <result column="ADDR" property="addr"/>
+            <result column="SPOKESPERSON_ID" property="spokesPersonId"/>
+            <result column="MERCHANT_ID" property="merchantId"/>
+            <result column="APPLICATION_DATE" property="applicationTime"/>
+            <result column="START_DATE" property="startDate"/>
+            <result column="END_DATE" property="endDate"/>
+            <result column="STATUS" property="status"/>
+          <association property="adPrice" javaType="com.yuyue.app.api.domain.AdPrice">
+                <!-- 关联条件Employee的dept_id对应着Department的id -->
+                <id column="ID" property="priceId"/>
+                <result column="AD_DURATION" property="adDuration"/>
+                <result column="AD_TOTAL_PRICE" property="adTotalPrice"/>
+                <result column="AD_DISCOUNT" property="adDiscount"/>
+                <result column="CREATE_TIME" property="createTime"/>
+            </association>
+        </resultMap>
+    <select id="getCommodityInfo" parameterType="String" resultMap="myCommodity">
         SELECT
-        COMMODITY_ID commodityId,
-        PRICE_ID priceId,
-        CATEGORY category,
-        COMMODITY_NAME commodityName,
-        AD_WORD adWord,
-        AD_IMAGE_URL adImageUrl,
-        COMMODITY_PRICE commodityPrice,
-        PAY_URL payUrl,
-        ADDR addr,
-        SPOKESPERSON_ID spokesPersonId,
-        MERCHANT_ID merchantId,
-        DATE_FORMAT(APPLICATION_DATE ,'%Y-%m-%d %H:%i:%s') applicationTime,
-        DATE_FORMAT(START_DATE ,'%Y-%m-%d %H:%i:%s') startDate,
-        DATE_FORMAT(END_DATE ,'%Y-%m-%d %H:%i:%s') endDate,
-        STATUS status
-        FROM yuyue_commodity
+        c.COMMODITY_ID ,
+        c.PRICE_ID ,
+        c.CATEGORY ,
+        c.COMMODITY_NAME ,
+        c.AD_WORD ,
+        c.AD_IMAGE_URL ,
+        c.COMMODITY_PRICE ,
+        c.PAY_URL ,
+        c.ADDR ,
+        c.SPOKESPERSON_ID ,
+        c.MERCHANT_ID ,
+        /*DATE_FORMAT(c.APPLICATION_DATE ,'%Y-%m-%d %H:%i:%s'),
+        DATE_FORMAT(c.START_DATE ,'%Y-%m-%d %H:%i:%s'),
+        DATE_FORMAT(c.END_DATE ,'%Y-%m-%d %H:%i:%s'),*/
+        DATE_FORMAT(c.APPLICATION_DATE ,'%Y-%m-%d %H:%i:%s') APPLICATION_DATE,
+        DATE_FORMAT(c.START_DATE ,'%Y-%m-%d %H:%i:%s') START_DATE ,
+        DATE_FORMAT(c.END_DATE ,'%Y-%m-%d %H:%i:%s') END_DATE ,
+        c.STATUS ,
+        p.ID ,
+        p.AD_DURATION ,
+        p.AD_TOTAL_PRICE ,
+        p.AD_DISCOUNT ,
+        DATE_FORMAT(p.CREATE_TIME ,'%Y-%m-%d %H:%i:%s') CREATE_TIME
+        FROM yuyue_commodity   c
+        LEFT join yuyue_commodity_price p on c.PRICE_ID = p.ID
         where 1=1 and
         <if test="merchantId != null and merchantId != ''">
             MERCHANT_ID = #{merchantId}

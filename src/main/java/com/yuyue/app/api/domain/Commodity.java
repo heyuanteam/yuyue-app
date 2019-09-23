@@ -42,4 +42,6 @@ public class Commodity implements Serializable {
     private String endDate;
     //广告状态
     private String status;
+    //价格
+    private AdPrice adPrice;
 }
