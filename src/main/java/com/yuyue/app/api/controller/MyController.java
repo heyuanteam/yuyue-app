@@ -139,6 +139,7 @@ public class MyController extends BaseController{
                     returnResult.setStatus(Boolean.TRUE);
                 }else {
                     returnResult.setMessage("已提交，待审核");
+                    returnResult.setStatus(Boolean.TRUE);
                 }
                 returnResult.setResult(advertisementInfo);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -159,9 +160,26 @@ public class MyController extends BaseController{
         String merchantName=parameterMap.get("merchantName");
         //手机号码
         String phone=parameterMap.get("phone");
-        if(StringUtils.isEmpty(merchantAddr) || StringUtils.isEmpty(businessLicense)  || StringUtils.isEmpty(idCardZM)
-               ||StringUtils.isEmpty(idCardFM) || StringUtils.isEmpty(agencyCode) || StringUtils.isEmpty(merchantName) || StringUtils.isEmpty(phone) ){
-            returnResult.setMessage("必填项存在空值");
+        if(StringUtils.isEmpty(merchantAddr) ){
+            returnResult.setMessage("商家地址未空值!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (StringUtils.isEmpty(businessLicense)){
+            returnResult.setMessage("营业执照未空值!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (StringUtils.isEmpty(idCardZM)){
+            returnResult.setMessage("法人身份证正面未空值!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (StringUtils.isEmpty(idCardFM) ){
+            returnResult.setMessage("法人身份证反面未空值!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (StringUtils.isEmpty(agencyCode)){
+            returnResult.setMessage("机构代码未空值!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if ( StringUtils.isEmpty(merchantName)){
+            returnResult.setMessage("商家名称未空值!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if ( StringUtils.isEmpty(phone)){
+            returnResult.setMessage("手机号码未空值!!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         Advertisement advertisement=new Advertisement();
@@ -269,17 +287,29 @@ public class MyController extends BaseController{
                     returnResult.setStatus(Boolean.TRUE);
                 }else {
                     returnResult.setMessage("已提交，待审核");
+                    returnResult.setStatus(Boolean.TRUE);
                 }
                 returnResult.setResult(showInfo);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-        }
-        if(StringUtils.isEmpty(mapValue.get("teamName")) || StringUtils.isEmpty(mapValue.get("size"))
-                || StringUtils.isEmpty(mapValue.get("address")) || StringUtils.isEmpty(mapValue.get("cardZUrl"))
-                || StringUtils.isEmpty(mapValue.get("cardFUrl")) || StringUtils.isEmpty(mapValue.get("categoryId"))
-                || StringUtils.isEmpty(mapValue.get("description")) || StringUtils.isEmpty(mapValue.get("phone"))
-                || StringUtils.isEmpty(mapValue.get("videoAddress"))){
-            returnResult.setMessage("参数不可以为空！");
+        }if (StringUtils.isEmpty(mapValue.get("teamName")) ){
+            returnResult.setMessage("姓名或团队名称参数为空！！");
+        }else if (StringUtils.isEmpty(mapValue.get("size"))){
+            returnResult.setMessage("人数参数为空！！");
+        }else if (StringUtils.isEmpty(mapValue.get("address"))){
+            returnResult.setMessage("现住地址参数为空！！");
+        }else if (StringUtils.isEmpty(mapValue.get("cardZUrl"))){
+            returnResult.setMessage("身份证正面参数为空！！");
+        }else if (StringUtils.isEmpty(mapValue.get("cardFUrl"))){
+            returnResult.setMessage("身份证反面参数为空！！");
+        }else if (StringUtils.isEmpty(mapValue.get("categoryId"))){
+            returnResult.setMessage("分类ID参数为空！！");
+        }else if (StringUtils.isEmpty(mapValue.get("description"))){
+            returnResult.setMessage("节目名称参数为空！！");
+        }else if (StringUtils.isEmpty(mapValue.get("phone"))){
+            returnResult.setMessage("手机参数为空！！");
+        }else if(StringUtils.isEmpty(mapValue.get("videoAddress"))){
+            returnResult.setMessage("视频地址参数为空！！");
         } else {
             ShowName showName = new ShowName();
             showName.setId(UUID.randomUUID().toString().replace("-", "").toUpperCase());
