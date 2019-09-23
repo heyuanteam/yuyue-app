@@ -32,6 +32,8 @@ public class Commodity implements Serializable {
     private String addr;
     //代言人id
     private String spokesPersonId;
+    //视频id
+    private String videoId;
     //商家id
     private String merchantId;
     //申请时间

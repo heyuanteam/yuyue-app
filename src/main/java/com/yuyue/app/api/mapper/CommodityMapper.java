@@ -30,6 +30,6 @@ public interface CommodityMapper extends MyBaseMapper<Advertisement> {
     void commodityToSpread(Commodity commodity);
 
 
-    List<Advertisement> getCommodityInfo(@Param("merchantId")String merchantId,@Param("spokesPersonId")String spokesPersonId);
+    List<Advertisement> getCommodityInfo(@Param("merchantId")String merchantId,@Param("videoId")String videoId);
 
 }

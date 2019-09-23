@@ -26,12 +26,12 @@ public interface MyService {
     void commodityToSpread(Commodity commodity);
 
     /**
-     * 公告代言人或者商家id 查询 广告
+     * 视频Id或者商家id 查询 广告
      * @param merchantId
-     * @param spokesPersonId
+     * @param videoId
      * @return
      */
-    List<Advertisement> getCommodityInfo(String merchantId, String spokesPersonId);
+    List<Advertisement> getCommodityInfo(String merchantId, String videoId);
 
     /**
      * 获取广告费用信息

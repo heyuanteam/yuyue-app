@@ -503,16 +503,16 @@ public class MyController extends BaseController{
 
     /**
      * 获取爆款信息
-     * @param authorId
+     * @param videoId
      * @return
      */
     @RequestMapping(value = "/getHotSaleCommodity")
     @ResponseBody
-    public JSONObject getHotSaleCommodity(String authorId,HttpServletRequest request){
+    public JSONObject getHotSaleCommodity(String videoId,HttpServletRequest request){
         log.info("获取爆款信息-------------->>/myController/getHotSaleCommodity");
         getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
-        List<Advertisement> commodityInfoList = myService.getCommodityInfo("", authorId);
+        List<Advertisement> commodityInfoList = myService.getCommodityInfo("", videoId);
         if (StringUtils.isEmpty(commodityInfoList)){
             returnResult.setMessage("暂无代言商品！！");
         }

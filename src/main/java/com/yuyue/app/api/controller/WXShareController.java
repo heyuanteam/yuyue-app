@@ -199,12 +199,23 @@ public class WXShareController extends BaseController{
         log.info("APP网页分享-------------->>/share/wxAppShare");
         Map<String, String> mapValue = getParameterMap(request);
         response.setHeader("Access-Control-Allow-Origin","*");
+
         ReturnResult returnResult = new ReturnResult();
         String pageSize = mapValue.get("pageSize");
         String authorId = mapValue.get("authorId");
         String videoId  =  mapValue.get("videoId");
-        System.out.println(pageSize+authorId+videoId);
-         int newPageSize = (Integer.parseInt(pageSize) - 1) * 5;
+        if (StringUtils.isEmpty(pageSize)){
+            returnResult.setMessage("pageSize不可为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (StringUtils.isEmpty(authorId)){
+            returnResult.setMessage("authorId不可为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if(StringUtils.isEmpty(videoId)){
+            returnResult.setMessage("videoId不可为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
+        int newPageSize = (Integer.parseInt(pageSize) - 1) * 5;
         UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
         AppUser appUserMsg = loginService.getAppUserMsg("", "", authorId);
         List<UserCommentVo> allComment = userCommentService.getCommentByPage(videoId, newPageSize);

@@ -55,12 +55,12 @@ public class MyServiceImpl implements MyService {
     /**
      * 公告代言人或者商家id 查询 广告
      * @param merchantId
-     * @param spokesPersonId
+     * @param videoId
      * @return
      */
     @Override
-    public List<Advertisement> getCommodityInfo(String merchantId, String spokesPersonId) {
-        return commodityMapper.getCommodityInfo(merchantId,spokesPersonId);
+    public List<Advertisement> getCommodityInfo(String merchantId, String videoId) {
+        return commodityMapper.getCommodityInfo(merchantId,videoId);
     }
 
     @Override

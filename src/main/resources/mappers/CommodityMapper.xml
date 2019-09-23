@@ -42,6 +42,7 @@
         c.ADDR ,
         c.SPOKESPERSON_ID ,
         c.MERCHANT_ID ,
+        c.VIDEO_ID,
         /*DATE_FORMAT(c.APPLICATION_DATE ,'%Y-%m-%d %H:%i:%s'),
         DATE_FORMAT(c.START_DATE ,'%Y-%m-%d %H:%i:%s'),
         DATE_FORMAT(c.END_DATE ,'%Y-%m-%d %H:%i:%s'),*/
@@ -60,11 +61,11 @@
         <if test="merchantId != null and merchantId != ''">
             MERCHANT_ID = #{merchantId}
         </if>
-        <if test="spokesPersonId != null and spokesPersonId != ''">
-            SPOKESPERSON_ID = #{spokesPersonId} and status ='10B'  and to_days(NOW()) &lt; to_days(END_DATE);
+        <if test="videoId != null and videoId != ''">
+            VIDEO_ID = #{videoId} and status ='10B'  and to_days(NOW()) &lt; to_days(END_DATE);
         </if>
-        <if test="spokesPersonId != null and spokesPersonId != '' and merchantId != null and merchantId != ''">
-            SPOKESPERSON_ID = #{spokesPersonId} and MERCHANT_ID = #{merchantId}  and status ='10B'
+        <if test="videoId != null and videoId != '' and merchantId != null and merchantId != ''">
+            VIDEO_ID = #{videoId} and MERCHANT_ID = #{merchantId}  and status ='10B'
         </if>
 
     </select>
