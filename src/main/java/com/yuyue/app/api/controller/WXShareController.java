@@ -1,6 +1,7 @@
 package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
@@ -193,10 +194,12 @@ public class WXShareController extends BaseController{
      * @return
      */
     @RequestMapping("/wxAppShare")
-    public String wxAppShare(HttpServletResponse response, Model model,HttpServletRequest request){
+    @ResponseBody
+    public JSONObject wxAppShare(HttpServletResponse response, Model model,HttpServletRequest request){
         log.info("APP网页分享-------------->>/share/wxAppShare");
         Map<String, String> mapValue = getParameterMap(request);
         response.setHeader("Access-Control-Allow-Origin","*");
+        ReturnResult returnResult = new ReturnResult();
         String pageSize = mapValue.get("pageSize");
         String authorId = mapValue.get("authorId");
         String videoId  =  mapValue.get("videoId");
@@ -212,8 +215,15 @@ public class WXShareController extends BaseController{
         if (commentTotal % 5 != 0 ){
             totalPage+=1;
         }
+        Map<String,Object> map = Maps.newHashMap();
+        map.put("pageSize",pageSize);
+        map.put("total",commentTotal);
+        map.put("totalPage",totalPage);
+        map.put("comments",allComment);
+        map.put("appUserMsg",appUserMsg);
+        map.put("uploadFile",uploadFile);
 
-        model.addAttribute("comments",allComment);
+       /* model.addAttribute("comments",allComment);
         model.addAttribute("pageSize",pageSize);
         model.addAttribute("total",commentTotal);
         model.addAttribute("totalPage",totalPage);
@@ -221,7 +231,11 @@ public class WXShareController extends BaseController{
         model.addAttribute("videoId",videoId);
         model.addAttribute("appUserMsg",appUserMsg);
         model.addAttribute("uploadFile",uploadFile);
-        return  "forward:/share/share.jsp";
+        return  "forward:/share/share.jsp";*/
+        returnResult.setResult(map);
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setMessage("返回成功！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
 
     }
 

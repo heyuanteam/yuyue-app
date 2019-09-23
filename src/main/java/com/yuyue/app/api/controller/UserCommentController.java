@@ -118,6 +118,8 @@ public class UserCommentController extends BaseController{
             userCommentService.addComment(comment);
             //获取所有评论
             List<UserCommentVo> allComment = userCommentService.getAllComment(videoId, "");
+            //获取评论数
+            //int commentTotal = userCommentService.getCommentTotal(videoId);
             returnResult.setMessage("评论成功！");
             map.put("comment", allComment);
             map.put("commentNum", allComment.size());
@@ -307,6 +309,7 @@ public class UserCommentController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
 
     }
+
 
     /**
      *用户添加视频点赞
