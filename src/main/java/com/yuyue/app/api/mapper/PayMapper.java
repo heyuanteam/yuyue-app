@@ -60,7 +60,8 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Transactional
     @Update("UPDATE yuyue_out_money b SET b.`status`=#{status},b.responseCode=#{responseCode},b.responseMessage=#{responseMessage} "
             +" WHERE b.outNo = #{outNo} ")
-    void updateOutStatus(String responseCode, String responseMessage, String status, String outNo);
+    void updateOutStatus(@Param("responseCode") String responseCode,@Param("responseMessage") String responseMessage,
+                         @Param("status") String status,@Param("outNo") String outNo);
 
     @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_out_money b WHERE b.merchantId = #{id} ")
     List<OutMoney> getOutMoneyList(@Param("id") String id);

@@ -18,6 +18,7 @@ import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.Order;
 import com.yuyue.app.api.domain.OutMoney;
 import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.utils.*;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -44,6 +45,8 @@ public class PayController {
 
     @Autowired
     private PayService payService;
+    @Autowired
+    private LoginService loginService;
 
     //微信APPID
     private static final String wxAppId = "wx82e0374be0e044a4";
@@ -57,7 +60,6 @@ public class PayController {
     private static final String wxNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/wxpayNotify";
     // 构造签名的map
     private SortedMap<Object, Object> parameters = new TreeMap<>();
-    private static final String wxUrl = "http://101.37.252.177:8082/yuyue-app/pay/getCodeValue";
 
     //支付宝
     private static final String AliAPPID = "2019082166401163";
@@ -258,7 +260,13 @@ public class PayController {
                 // 可以直接给客户端请求，无需再做处理。
                 returnResult.setMessage("返回成功！");
                 returnResult.setStatus(Boolean.TRUE);
-                returnResult.setResult(response.getBody());
+                Map map = new HashMap();
+                map.put("response",response.getBody());
+//                String[] split = response.getBody().split("&");
+//                for (int i = 0; i < split.length; i++) {
+//                    map.put(split[i].split("=")[0],split[i].split("=")[1]);
+//                }
+                returnResult.setResult(map);
             } catch (AlipayApiException e) {
                 e.printStackTrace();
             }
@@ -423,24 +431,22 @@ public class PayController {
         if (StringUtils.isEmpty(outMoney.getTradeType())) {
             returnResult.setMessage("提现类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (StringUtils.isEmpty(outMoney.getRealName())){
-            returnResult.setMessage("真实姓名不能为空！！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (StringUtils.isEmpty(outMoney.getMoneyNumber())){
-            returnResult.setMessage("收款账号不能为空！！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (outMoney.getMoney() == null|| outMoney.getMoney().compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("转账的钱不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (user.getIncome().compareTo(outMoney.getMoney()) == -1){
             returnResult.setMessage("转账的钱不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (StringUtils.isEmpty(user.getOpendId())){
+            returnResult.setCode("02");
+            returnResult.setMessage("openId为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
         outMoney.setOutNo("YYTX" + RandomSaltUtil.randomNumber(14));
         outMoney.setMerchantId(user.getId());
-//        outMoney.setRealName("真实姓名");
-//        outMoney.setMoneyNumber("支付账号");
+        outMoney.setRealName(user.getWechatName());
+        outMoney.setMoneyNumber(user.getOpendId());
 //        outMoney.setTradeType("TXZFB");
 //        outMoney.setMoney(new BigDecimal("1"));
 
@@ -452,19 +458,15 @@ public class PayController {
         if ("TXZFB".equals(outMoney.getTradeType())) {
 //            return outZFB(outMoney);
         } else if ("TXWX".equals(outMoney.getTradeType())) {
-            return outWX(outMoney,user);
+            return outWX(outMoney,user,user.getOpendId());
         }
         returnResult.setMessage("提现正在进行中！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     //单笔提现到微信
-    private JSONObject outWX(OutMoney outMoney,AppUser user) {
+    private JSONObject outWX(OutMoney outMoney,AppUser user,String openid) {
         ReturnResult returnResult = new ReturnResult();
-        String openId = getOpenId(user.getWechat());
-//        获取个人信息
-//        getUserInfo(user.getWechat());
-        log.info("openId======>>>>>"+openId);
         String nonce_str = RandomSaltUtil.getRandomString(16);
         //是否校验用户姓名 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
         String checkName ="NO_CHECK";
@@ -477,23 +479,25 @@ public class PayController {
         log.info("金额==========>>>"+moneyD);
         String desc = "娱悦APP提现"+outMoney.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"元";
         // 参数：开始生成第一次签名
-        parameters.put("appid", wxAppId);
-        parameters.put("mch_id", wxMchID);
+        parameters.put("mch_appid", wxAppId);
+        parameters.put("mchid", wxMchID);
         parameters.put("partner_trade_no", partner_trade_no);
         parameters.put("nonce_str", nonce_str);
-        parameters.put("openId", openId);
-        parameters.put("checkName", checkName);
+        parameters.put("openid", openid);
+        parameters.put("check_name", checkName);
         parameters.put("amount", moneyD);
         parameters.put("spbill_create_ip", ip);
         parameters.put("desc", desc);
         String sign = XMLUtils.createSign("UTF-8", parameters);
+        log.info("sign==========>>>>"+sign);
         Map map = new HashMap();
         map.put("amount",moneyD);
         map.put("check_name",checkName);
         map.put("desc",desc);
         map.put("mch_appid",wxAppId);
+        map.put("mchid",wxMchID);
         map.put("nonce_str",nonce_str);
-        map.put("openId",openId);
+        map.put("openid",openid);
         map.put("partner_trade_no",partner_trade_no);
         map.put("sign",sign);
         map.put("spbill_create_ip",ip);
@@ -511,8 +515,13 @@ public class PayController {
             if (transferMap.size()>0) {
                 if (transferMap.get("result_code").equals("SUCCESS") && transferMap.get("return_code").equals("SUCCESS")) {
                     //成功需要进行的逻辑操作，
-                    payService.updateOutStatus(transferMap.get("result_code"), "微信转账成功", "10B", outMoney.getId());
+                    returnResult.setMessage("企业转账成功");
+                    payService.updateOutStatus(transferMap.get("result_code"), "微信转账成功", "10B", outMoney.getOutNo());
                     payService.updateOutIncome(user.getId(),outMoney.getMoney());
+                } else {
+                    //失败原因
+                    returnResult.setMessage("企业转账失败");
+                    payService.updateOutStatus(transferMap.get("err_code_des"), transferMap.get("return_msg"), "10C", outMoney.getOutNo());
                 }
             }
         } catch (Exception e) {
@@ -522,32 +531,59 @@ public class PayController {
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-    /**
-     * 获取access_token
-     * @return
-     */
-    private JSONObject getAccessToken(){
-        String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&"
-                + "appid="+ wxAppId
-                + "&secret="+ APP_SECRET;
-        String result = getReturnData(url,"GBK");
-        JSONObject json = JSON.parseObject(result);
-        log.info("获取access_token======>>>>>"+json);
-        return json;
+    //opendId保存到个人信息里面
+    @ResponseBody
+    @RequestMapping("/saveUserInfo")
+    @LoginRequired
+    public JSONObject saveUserInfo(@CurrentUser AppUser user,String tradeType,String code) {
+        ReturnResult returnResult = new ReturnResult();
+        if (StringUtils.isEmpty(tradeType)) {
+            returnResult.setMessage("提现类型不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (StringUtils.isEmpty(code)){
+            returnResult.setMessage("code不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
+        if("TXZFB".equals(tradeType)){
+
+        } else if ("TXWX".equals(tradeType)) {
+            String openid = "";
+            String wechatName = "";
+            JSONObject userInfo = new JSONObject();
+            try {
+//          获取个人信息
+                userInfo = getUserInfo(getOpenId(code));
+                openid = userInfo.getString("openid");
+                wechatName = userInfo.getString("nickname");
+                loginService.updateAppUser(user.getId(),"","","","","","", "",
+                        "", "","","","","","","","",
+                        "",openid,wechatName,"");
+            } catch (Exception e) {
+                log.info("获取openid失败: ===>>>"+e.getMessage());
+                returnResult.setMessage("获取openid失败！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+        }
+        returnResult.setMessage("保存类型选择错误！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**
      * 获取用户基本信息
      * @return
      */
-    private JSONObject getUserInfo(String openid){
-        String accessToken = getAccessToken().getString("access_token");
-        log.info("accessToken======>>>>>"+accessToken);
-        String url = "https://api.weixin.qq.com/cgi-bin/user/info?"
-                + "openid="+ openid
-                + "&access_token="+ accessToken
+    private JSONObject getUserInfo(JSONObject jsonObject){
+        String accessToken = jsonObject.getString("access_token");
+        String openid = jsonObject.getString("openid");
+//         GET
+//        https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+//        https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+        String url = "https://api.weixin.qq.com/sns/userinfo?"
+                + "access_token="+ accessToken
+                + "&openid="+ openid
                 + "&lang=zh_CN";
-        String result = getReturnData(url,"GBK");
+        String result = getReturnData(url,"UTF-8");
         JSONObject json = JSON.parseObject(result);
         log.info("获取用户基本信息======>>>>>"+json);
         return json;
@@ -560,28 +596,26 @@ public class PayController {
      * @return  String
      * @Date	2018年9月3日
      */
-    public String getOpenId(String code){
+    public JSONObject getOpenId(String code){
         log.info("code: ===>>>"+code);
+        JSONObject jsonObject = new JSONObject();
         if (code != null) {
             String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
                     + "appid="+ wxAppId
                     + "&secret="+ APP_SECRET
                     + "&code=" + code + "&grant_type=authorization_code";
             String returnData = getReturnData(url,"UTF-8");
-            JSONObject jsonObject;
+            log.info("用户授权====>>>>"+returnData);
             try {
                 jsonObject = JSONObject.parseObject(returnData);
-                String openid = jsonObject.getString("openid");
-                //String access_token = jsonObject.getString("access_token");
-                log.info("openid: ===>>>"+openid);
-                return openid;
             } catch (Exception e) {
                 jsonObject = JSONObject.parseObject(returnData);
                 String errcode = jsonObject.getString("errcode");
                 log.info("获取openid失败: ===>>>"+errcode);
             }
+            log.info("openid======>>>>>"+jsonObject.getString("openid"));
         }
-        return "";
+        return jsonObject;
     }
 
     public String getReturnData(String urlString,String enCode) {
@@ -602,6 +636,8 @@ public class PayController {
         }
         return res;
     }
+
+
 
     /**
      * 单笔提现到支付宝账户
