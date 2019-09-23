@@ -14,10 +14,7 @@ import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
-import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.Order;
-import com.yuyue.app.api.domain.OutMoney;
-import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.utils.*;
@@ -414,6 +411,12 @@ public class PayController {
     public void createOut(OutMoney outMoney) {
         outMoney.setId(RandomSaltUtil.generetRandomSaltCode(32));
         payService.createOut(outMoney);
+    }
+
+    //创建收益订单
+    public void createShouMoney(ChangeMoney changeMoney) {
+        changeMoney.setId(RandomSaltUtil.generetRandomSaltCode(32));
+        payService.createShouMoney(changeMoney);
     }
 
     /**

@@ -85,5 +85,7 @@ public class MyServiceImpl implements MyService {
                 cardFUrl,videoAddress,mail,weChat);
     }
 
+    @Override
+    public List<ChangeMoneyVo> changeMoneyList(String id) { return payMapper.changeMoneyList(id); }
 
 }

@@ -1,8 +1,6 @@
 package com.yuyue.app.api.mapper;
 
-import com.yuyue.app.api.domain.Gift;
-import com.yuyue.app.api.domain.Order;
-import com.yuyue.app.api.domain.OutMoney;
+import com.yuyue.app.api.domain.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,4 +69,15 @@ public interface PayMapper extends MyBaseMapper<Order> {
 
     @Select("SELECT * FROM yuyue_gift where id= #{id} LIMIT 1 ")
     Gift getGift(@Param("id") String id);
+
+    @Transactional
+    @Insert("replace into yuyue_change_money (id,changeNo,tradeType,money,merchantId,mobile,note,sourceId)  values  " +
+            " (#{id},#{changeNo},#{tradeType},#{money},#{merchantId},#{mobile},#{note},#{sourceId})")
+    void createShouMoney(ChangeMoney changeMoney);
+
+    @Select("SELECT (SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.merchantId) yiName," +
+            "(SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.sourceId) sourceName," +
+            "b.changeNo,b.tradeType,b.money,b.`status`,b.note,DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime " +
+            "FROM yuyue_change_money b ")
+    List<ChangeMoneyVo> changeMoneyList(String id);
 }

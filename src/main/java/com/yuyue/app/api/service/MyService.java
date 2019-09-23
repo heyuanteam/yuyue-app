@@ -49,4 +49,6 @@ public interface MyService {
     void insertShowName(String id, String userId, String teamName, String description, String size,
                         String categoryId, String address, String phone, String cardZUrl, String cardFUrl,
                         String videoAddress, String mail, String weChat);
+
+    List<ChangeMoneyVo> changeMoneyList(String id);
 }

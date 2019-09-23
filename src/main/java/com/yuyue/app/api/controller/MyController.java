@@ -24,10 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 我的页面
@@ -94,7 +91,7 @@ public class MyController extends BaseController{
     }
 
     /**
-     * 充值记录和送礼记录 1111
+     * 充值记录和送礼记录
      * @return
      */
     @RequestMapping("/getMoneyList")
@@ -102,11 +99,33 @@ public class MyController extends BaseController{
     @LoginRequired
     public JSONObject getMoneyList(@CurrentUser AppUser user,HttpServletRequest request){
         log.info("充值记录和送礼记录-------------->>/myController/getMoneyList");
-        Map<String, String> mapValue = getParameterMap(request);
-        List<Order> list = myService.getMoneyList(user.getId());
+        getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
+        List<Order> list = myService.getMoneyList(user.getId());
         if(CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无消费记录！");
+        } else {
+            returnResult.setMessage("查询成功！");
+        }
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(JSONArray.parseArray(JSON.toJSONString(list)));
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 收益记录
+     * @return
+     */
+    @RequestMapping("/changeMoneyList")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject changeMoneyList(@CurrentUser AppUser user,HttpServletRequest request){
+        log.info("收益记录-------------->>/myController/changeMoneyList");
+        getParameterMap(request);
+        ReturnResult returnResult=new ReturnResult();
+        List<ChangeMoneyVo> list = myService.changeMoneyList(user.getId());
+        if(CollectionUtils.isEmpty(list)){
+            returnResult.setMessage("暂无收益记录！");
         } else {
             returnResult.setMessage("查询成功！");
         }
@@ -589,21 +608,31 @@ public class MyController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         payService.sendMoney(appUser.getId(),gift.getGiftValue());
-        payService.addIncome(user.getId(), gift.getGiftValue()
-                .multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP));
+        BigDecimal bigDecimal = gift.getGiftValue().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        payService.addIncome(user.getId(), bigDecimal);
+//        消费者记录
         Order order = new Order();
         order.setOrderNo("YYXF" + RandomSaltUtil.randomNumber(14));
         order.setStatus("10B");
-        order.setStatusCode("100001");
         order.setMobile(appUser.getPhone());
         order.setMerchantId(appUser.getId());
         order.setSourceId(user.getId());
         order.setMoney(gift.getGiftValue());
-        order.setResponseCode("送礼物");
-        order.setResponseMessage(user.getNickName());
-        order.setNote("SY");
+        order.setNote("送礼物");
         order.setTradeType("XF");
         payController.createOrder(order);
+//        收益记录
+        ChangeMoney shouMoney = new ChangeMoney();
+        shouMoney.setChangeNo("YYSY" + RandomSaltUtil.randomNumber(14));
+        shouMoney.setStatus("10B");
+        shouMoney.setMobile(user.getPhone());
+        shouMoney.setMerchantId(user.getId());
+        shouMoney.setSourceId(appUser.getId());
+        shouMoney.setMoney(bigDecimal);
+        shouMoney.setNote("收益");
+        shouMoney.setTradeType("SY");
+        payController.createShouMoney(shouMoney);
+
         String s = appUser.getTotal().subtract(gift.getGiftValue()).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
         returnResult.setMessage(s);
         returnResult.setStatus(Boolean.TRUE);

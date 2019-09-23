@@ -1,5 +1,6 @@
 package com.yuyue.app.api.service.impl;
 
+import com.yuyue.app.api.domain.ChangeMoney;
 import com.yuyue.app.api.domain.Gift;
 import com.yuyue.app.api.domain.Order;
 import com.yuyue.app.api.domain.OutMoney;
@@ -61,5 +62,8 @@ public class PayServiceImpl implements PayService {
 
     @Override
     public void addIncome(String id, BigDecimal setScale) { payMapper.addIncome(id,setScale);}
+
+    @Override
+    public void createShouMoney(ChangeMoney changeMoney) {  payMapper.createShouMoney(changeMoney); }
 
 }
