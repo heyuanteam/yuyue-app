@@ -618,7 +618,7 @@ public class MyController extends BaseController{
         order.setMerchantId(appUser.getId());
         order.setSourceId(user.getId());
         order.setMoney(gift.getGiftValue());
-        order.setNote("送礼物");
+        order.setNote(gift.getRemark());
         order.setTradeType("XF");
         payController.createOrder(order);
 //        收益记录
@@ -629,7 +629,7 @@ public class MyController extends BaseController{
         shouMoney.setMerchantId(user.getId());
         shouMoney.setSourceId(appUser.getId());
         shouMoney.setMoney(bigDecimal);
-        shouMoney.setNote("收益");
+        shouMoney.setNote(gift.getRemark());
         shouMoney.setTradeType("SY");
         payController.createShouMoney(shouMoney);
 

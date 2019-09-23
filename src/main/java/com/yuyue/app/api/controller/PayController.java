@@ -519,6 +519,7 @@ public class PayController {
                 if (transferMap.get("result_code").equals("SUCCESS") && transferMap.get("return_code").equals("SUCCESS")) {
                     //成功需要进行的逻辑操作，
                     returnResult.setMessage("企业转账成功");
+                    returnResult.setStatus(Boolean.TRUE);
                     payService.updateOutStatus(transferMap.get("result_code"), "微信转账成功", "10B", outMoney.getOutNo());
                     payService.updateOutIncome(user.getId(),outMoney.getMoney());
                 } else {
