@@ -15,6 +15,6 @@
         <if test="priceId != null and priceId != ''">
             and ID = #{priceId}
         </if>
-
+        ORDER BY AD_DURATION
     </select>
 </mapper>
