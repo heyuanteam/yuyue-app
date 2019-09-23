@@ -210,10 +210,12 @@ public class MyController extends BaseController{
         ReturnResult returnResult =new ReturnResult();
         Advertisement advertisementInfo = myService.getAdvertisementInfo(appUser.getId());
         if (StringUtils.isNull(advertisementInfo)){
-            returnResult.setResult(new Object());
-        }else
+            returnResult.setMessage("暂无广告申请信息");
+            returnResult.setResult(new Advertisement());
+        }else{
+            returnResult.setMessage("信息返回成功");
             returnResult.setResult(advertisementInfo);
-        returnResult.setMessage("信息返回成功");
+        }
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
@@ -333,10 +335,13 @@ public class MyController extends BaseController{
         ReturnResult returnResult =new ReturnResult();
         ShowName showInfo = myService.getShowInfo(appUser.getId());
         if (StringUtils.isNull(showInfo)){
-            returnResult.setResult(new Object());
-        }else
+            returnResult.setResult(new ShowName());
+            returnResult.setMessage("暂无演出申请！！");
+        }else {
             returnResult.setResult(showInfo);
-        returnResult.setMessage("信息返回成功");
+            returnResult.setMessage("信息返回成功");
+        }
+
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }

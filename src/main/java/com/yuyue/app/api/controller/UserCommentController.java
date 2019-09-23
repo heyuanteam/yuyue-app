@@ -271,22 +271,14 @@ public class UserCommentController extends BaseController{
             returnResult.setMessage("作者id不能为空!!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        List<Attention> userAttentions = userCommentService.getUserAttention(user.getId());
+        String attentionStatus = userCommentService.getAttentionStatus(user.getId(), authorId);
 
-        if(userAttentions.isEmpty()){
-            returnResult.setMessage("暂无关注！！");
-        }
-        for (Attention attention:userAttentions
-             ) {
-            if (authorId.equals(attention.getAuthorId())){
-                //关注表删除数据  ; 用户表 关注量-1
-                userCommentService.cancelAttention(user.getId(),authorId);
-                returnResult.setMessage("取消关注成功！！");
-                returnResult.setStatus(Boolean.TRUE);
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
-        }
-        returnResult.setMessage("未关注！！");
+        if(StringUtils.isEmpty(attentionStatus)){
+            returnResult.setMessage("未关注！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }//关注表删除数据  ; 用户表 关注量-1
+        userCommentService.cancelAttention(user.getId(),authorId);
+        returnResult.setMessage("取消关注成功！！");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
