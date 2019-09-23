@@ -33,6 +33,8 @@
         <result column="cardZUrl" property="cardZUrl" jdbcType="VARCHAR"/>
         <result column="userUrl" property="userUrl" jdbcType="VARCHAR"/>
         <result column="frontCover" property="frontCover" jdbcType="VARCHAR"/>
+        <result column="opendId" property="opendId" jdbcType="VARCHAR"/>
+        <result column="wechatName" property="wechatName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <update id="updateAppUser" parameterType="com.yuyue.app.api.domain.AppUser">
@@ -90,10 +92,10 @@
                 b.`jpushName` = #{jpushName},
             </if>
             <if test="frontCover!=null and frontCover!=''">
-                b.`frontCover` = #{frontCover}
+                b.`frontCover` = #{frontCover},
             </if>
             <if test="opendId!=null and opendId!=''">
-                b.`opendId` = #{opendId}
+                b.`opendId` = #{opendId},
             </if>
             <if test="wechatName!=null and wechatName!=''">
                 b.`wechatName` = #{wechatName}
@@ -164,7 +166,7 @@
         FROM
         yuyue_merchant
         WHERE
-        user_nick_name LIKE "%"#{content}"%"
+        user_nick_name LIKE '%'#{content}'%'
         AND ID IN (
         SELECT
         authorId

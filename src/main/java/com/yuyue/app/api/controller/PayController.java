@@ -548,17 +548,19 @@ public class PayController {
         if("TXZFB".equals(tradeType)){
 
         } else if ("TXWX".equals(tradeType)) {
-            String openid = "";
+            String opendId = "";
             String wechatName = "";
             JSONObject userInfo = new JSONObject();
             try {
 //          获取个人信息
                 userInfo = getUserInfo(getOpenId(code));
-                openid = userInfo.getString("openid");
+                opendId = userInfo.getString("openid");
                 wechatName = userInfo.getString("nickname");
                 loginService.updateAppUser(user.getId(),"","","","","","", "",
                         "", "","","","","","","","",
-                        "",openid,wechatName,"");
+                        "",opendId,wechatName,"");
+                returnResult.setMessage("获取openid成功！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
             } catch (Exception e) {
                 log.info("获取openid失败: ===>>>"+e.getMessage());
                 returnResult.setMessage("获取openid失败！");
