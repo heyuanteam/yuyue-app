@@ -59,7 +59,7 @@
         LEFT join yuyue_commodity_price p on c.PRICE_ID = p.ID
         where 1=1 and
         <if test="merchantId != null and merchantId != ''">
-            MERCHANT_ID = #{merchantId}
+            MERCHANT_ID = #{merchantId}  ORDER BY   c.APPLICATION_DATE DESC
         </if>
         <if test="videoId != null and videoId != ''">
             VIDEO_ID = #{videoId} and status ='10B'  and to_days(NOW()) &lt; to_days(END_DATE);
