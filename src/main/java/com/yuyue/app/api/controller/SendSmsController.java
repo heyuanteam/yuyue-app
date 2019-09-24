@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,9 @@ public class SendSmsController extends BaseController{
      */
     @RequestMapping("/sendSms")
     @ResponseBody
-    public JSONObject sendSms(HttpServletRequest request){
+    public JSONObject sendSms(HttpServletRequest request, HttpServletResponse response){
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
         log.info("发送消息验证码，通用接口-------------->>/send/sendSms");
         Map<String, String> map = getParameterMap(request);
         HashMap<String,String> hashMap = Maps.newHashMap();

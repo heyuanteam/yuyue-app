@@ -12,6 +12,7 @@ import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.auth0.jwt.JWT;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
@@ -38,7 +39,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping(value = "/pay", produces = "application/json; charset=UTF-8")
-public class PayController {
+public class PayController extends BaseController{
     private static Logger log = LoggerFactory.getLogger(PayController.class);
 
     @Autowired
@@ -723,15 +724,25 @@ public class PayController {
     /**
      * 扫码支付
      * @param order
-     * @param user
      * @return
      * @throws Exception
      */
     @ResponseBody
     @RequestMapping("/payNative")
     @LoginRequired
-    public JSONObject payNative(Order order, @CurrentUser AppUser user) throws Exception {
+    public JSONObject payNative(Order order,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
+        getParameterMap(request);
         ReturnResult returnResult = new ReturnResult();
+        String token = request.getHeader("token");
+        if(StringUtils.isEmpty(token)) {
+            returnResult.setMessage("缺少token！请去登录");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        String userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+        AppUser user = loginService.getAppUserMsg("","",userId);
+
         log.info("-------创建扫码订单-----------");
         if (StringUtils.isEmpty(order.getTradeType())) {
             returnResult.setMessage("充值类型不能为空！！");
@@ -766,25 +777,110 @@ public class PayController {
     private JSONObject payNativeWX(Order order) {
         ReturnResult returnResult = new ReturnResult();
         HashMap<String, String> paramMap = Maps.newHashMap();
-        paramMap.put("trade_type", "NATIVE"); //交易类型
-        paramMap.put("spbill_create_ip",ResultJSONUtils.localIp()); //本机的Ip
-//        paramMap.put("product_id", payOrderIdsStr); // 商户根据自己业务传递的参数 必填
-//        paramMap.put("body", "扫码充值");         //描述
-//        paramMap.put("out_trade_no", payOrderIdsStr); //商户 后台的贸易单号
-        paramMap.put("total_fee", ""); //金额必须为整数  单位为分
-        paramMap.put("notify_url", wxNativeNotify); //支付成功后，回调地址
-        paramMap.put("appid", wxAppId); //appid
-        paramMap.put("mch_id", wxMchID); //商户号
-        paramMap.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));  //随机数
-        String sign = MD5Utils.signDatashwx(paramMap, KEY);
-        paramMap.put("sign",sign);//根据微信签名规则，生成签名
-        StringBuffer sb = new StringBuffer();
-        sb.append("<xml>");
-        XMLUtils.mapToXMLTest2(paramMap, sb);
-        sb.append("</xml>");
-        String xmlData = sb.toString();
-
+        try {
+            paramMap.put("trade_type", "NATIVE"); //交易类型
+            paramMap.put("spbill_create_ip",QRCodeUtil.localIp()); //本机的Ip
+            paramMap.put("product_id", "WX"+RandomSaltUtil.generetRandomSaltCode(30));  // 商户根据自己业务传递的参数 必填
+            paramMap.put("body", "扫码充值");         //描述
+            paramMap.put("out_trade_no", order.getId()); //商户 后台的贸易单号
+            String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
+                    .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
+            paramMap.put("total_fee", moneyD); //金额必须为整数  单位为分
+            paramMap.put("notify_url", wxNativeNotify); //支付成功后，回调地址
+            paramMap.put("appid", wxAppId); //appid
+            paramMap.put("mch_id", wxMchID); //商户号
+            paramMap.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));  //随机数
+            String sign = MD5Utils.signDatashwx(paramMap, KEY);
+            paramMap.put("sign",sign);//根据微信签名规则，生成签名
+            StringBuffer sb = new StringBuffer();
+            sb.append("<xml>");
+            XMLUtils.mapToXMLTest2(paramMap, sb);
+            sb.append("</xml>");
+            log.info((new StringBuilder()).append("上送的数据为+++++++").append(sb.toString()).toString());
+            String resXml = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), "UTF-8", "application/json");
+            log.info("返回的数据为--------------------------+++++++" + resXml);
+            Map ValidCard = XMLUtils.xmlString2Map(resXml);
+            Map maps = new HashMap();
+            String timestamp = String.valueOf((new Date()).getTime() / 1000L);
+            maps.put("appid", ValidCard.get("appid").toString());
+            maps.put("mch_id", wxMchID);
+            maps.put("prepayid", ValidCard.get("prepay_id"));
+            maps.put("package", "Sign=WXPay");
+            maps.put("noncestr", ValidCard.get("nonce_str"));
+            maps.put("timestamp", timestamp);
+            //maps.put("signType", "MD5");
+            String signs = MD5Utils.signDatashwx(maps, KEY);
+            maps.put("sign", signs);
+            //        return JSONObject.toJSONString(maps);
+            returnResult.setMessage("返回成功！");
+            returnResult.setStatus(Boolean.TRUE);
+            returnResult.setResult(JSONObject.toJSON(maps));
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("支付失败！参数不对！");
+            returnResult.setMessage("支付失败！参数不对！");
+            payService.updateStatus(order.getId(), "10C");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         returnResult.setMessage("充值类型选择错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * @throws Exception
+     * @Title:wxpayNotify
+     * @Description:微信扫码回调
+     * @date:2018年7月18日 下午2:32:49
+     */
+    @ResponseBody
+    @RequestMapping(value = "/wxNativeNotify")
+    public JSONObject wxNativeNotify(HttpServletRequest request) throws Exception {
+        ReturnResult returnResult = new ReturnResult();
+        log.info((new StringBuilder()).append("回调的内容为+++++++++++++++++++++++++++++++++").append(request).toString());
+        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+        StringBuffer buffer = new StringBuffer();
+        for (String line = " "; (line = br.readLine()) != null; )
+            buffer.append(line);
+
+        log.info((new StringBuilder()).append("内容++++++++++++").append(buffer.toString()).toString());
+        Map object = XMLUtils.xmlString2Map(buffer.toString());
+        log.info((new StringBuilder()).append("返回的数据是+++++++").append(object).toString());
+        String returnCode = object.get("return_code").toString();
+        if (returnCode.equals("SUCCESS")) {
+            String orderId = object.get("out_trade_no").toString();
+            log.info((new StringBuilder()).append("\u56DE\u8C03\uFF1A").append(orderId).toString());
+            if (StringUtils.isNotEmpty(orderId)) {
+                Order orderNo = payService.getOrderId(orderId);
+                if (orderNo != null) {
+                    orderNo.setResponseCode(returnCode);
+                    orderNo.setResponseMessage(object.get("result_code").toString());
+                    orderNo.setStatus("10B");
+                    payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
+                    payService.updateTotal(orderNo.getMerchantId(), orderNo.getMoney());
+                    returnResult.setMessage("微信扫码回调成功！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }
+            }
+        }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 生成二维码图片并直接以流的形式输出到页面
+     * @param code_url
+     * @param response
+     */
+    @RequestMapping("qr_code.img")
+    @ResponseBody
+    public JSONObject getQRCode(String code_url,HttpServletRequest request, HttpServletResponse response){
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
+        String token = request.getHeader("token");
+        ReturnResult returnResult = new ReturnResult();
+        if(StringUtils.isEmpty(token)) {
+            returnResult.setMessage("缺少token！请去登录");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        return QRCodeUtil.encodeQrcode(code_url, response);
     }
 }
