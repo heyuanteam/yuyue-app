@@ -342,8 +342,12 @@ public class LoginController extends BaseController{
         LOGGER.info("用户认证-------------->>/login/userAuthentication");
         getParameterMap(request);
         ReturnResult returnResult = new ReturnResult();
-        if (StringUtils.isEmpty(realName)){
-            returnResult.setMessage("用户真实姓名不能为空");
+
+        if ("10B".equals(user.getUserStatus())){
+            returnResult.setMessage("该用户已认证，无需重复认证！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (StringUtils.isEmpty(realName)){
+            returnResult.setMessage("用户真实姓名不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else if(StringUtils.isEmpty(idCard)){
             returnResult.setMessage("用户身份证id不能为空！！");

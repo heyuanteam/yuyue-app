@@ -516,8 +516,18 @@ public class MyController extends BaseController{
             userId = String.valueOf(JWT.decode(token).getAudience().get(0));
         }
         ReturnResult returnResult =new ReturnResult();
+        //获取商品信息
+        if(StringUtils.isNotEmpty(commodityId)){
+            List<Advertisement> commodityInfoList = myService.getCommodityInfo("", "",commodityId);
+            if (StringUtils.isEmpty(commodityInfoList)){
+                returnResult.setMessage("未查询该商品！！");
+            }
+            returnResult.setResult(commodityInfoList);
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         //我的广告
-        if (StringUtils.isNotEmpty(userId) ){
+        else if (StringUtils.isNotEmpty(userId) ){
             List<Advertisement> commodityInfoList = myService.getCommodityInfo(userId, "","");
             if (StringUtils.isEmpty(commodityInfoList)){
                 returnResult.setMessage("暂无广告申请！！");
@@ -538,16 +548,8 @@ public class MyController extends BaseController{
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        //获取商品信息
-        else {
-            List<Advertisement> commodityInfoList = myService.getCommodityInfo("", "",commodityId);
-            if (StringUtils.isEmpty(commodityInfoList)){
-                returnResult.setMessage("未查询该商品！！");
-            }
-            returnResult.setResult(commodityInfoList);
-            returnResult.setStatus(Boolean.TRUE);
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+
 
 
 

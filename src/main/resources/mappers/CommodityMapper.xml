@@ -65,7 +65,7 @@
             MERCHANT_ID = #{merchantId}  ORDER BY   c.APPLICATION_DATE DESC
         </if>
         <if test="videoId != null and videoId != ''">
-            VIDEO_ID = #{videoId} and status ='10B'  and to_days(NOW()) &lt; to_days(END_DATE);
+            VIDEO_ID = #{videoId} and status ='10B'  and to_days(NOW()) &lt; to_days(END_DATE) ORDER BY   c.APPLICATION_DATE DESC;
         </if>
         <if test="videoId != null and videoId != '' and merchantId != null and merchantId != ''">
             VIDEO_ID = #{videoId} and MERCHANT_ID = #{merchantId}  and status ='10B'
