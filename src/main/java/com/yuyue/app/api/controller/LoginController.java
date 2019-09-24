@@ -322,7 +322,47 @@ public class LoginController extends BaseController{
         result.setResult(JSONObject.toJSON(appUser));
         return ResultJSONUtils.getJSONObjectBean(result);
     }
-
+    /**
+     * 修改信息
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/userAuthentication")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject userAuthentication(@CurrentUser AppUser user, String realName, String idCard,
+                                         String userUrl, String cardZUrl, String cardFUrl,HttpServletRequest request) throws Exception {
+        LOGGER.info("用户认证-------------->>/login/userAuthentication");
+        getParameterMap(request);
+        ReturnResult returnResult = new ReturnResult();
+        if (StringUtils.isEmpty(realName)){
+            returnResult.setMessage("用户真实姓名不能为空");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if(StringUtils.isEmpty(idCard)){
+            returnResult.setMessage("用户身份证id不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if(StringUtils.isEmpty(userUrl)){
+            returnResult.setMessage("用户正面照不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if(StringUtils.isEmpty(cardZUrl)){
+            returnResult.setMessage("用户身份证正面不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if(StringUtils.isEmpty(cardFUrl)){
+            returnResult.setMessage("用户身份证反面不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        Pattern pattern = Pattern.compile("^\\d{6}(18|19|20)?\\d{2}(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])\\d{3}(\\d|[xX])$");
+       // Pattern pattern = Pattern.compile("\\\\d{15}(\\\\d{2}[0-9xX])?");
+        if (pattern.matcher(idCard).matches() == false || idCard.length() != 18) {
+            returnResult.setMessage("身份证号输入错误！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        loginService.userAuthentication(user.getId(),realName,idCard,userUrl,cardZUrl,cardFUrl);
+        returnResult.setMessage("认证成功！！");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
     /**
      * 获取定位和极光别名，ID
      *

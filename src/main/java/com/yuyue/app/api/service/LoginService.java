@@ -26,6 +26,7 @@ public interface LoginService {
                        String headpUrl, String userStatus, String addrDetail, String education, String wechat,
                        String signature, String userUrl, String cardZUrl, String cardFUrl, String ciphertextPwd,
                        String city,String jpushName,String opendId,String wechatName,String frontCover);
-
+    void userAuthentication(String userId,String realName, String idCard,
+                                   String userUrl, String cardZUrl, String cardFUrl);
     void updateOpendId(String id, String opendId, String wechatName);
 }
