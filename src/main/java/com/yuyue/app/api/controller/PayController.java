@@ -12,6 +12,7 @@ import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
@@ -57,6 +58,8 @@ public class PayController {
     private static final String wxNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/wxpayNotify";
     // 构造签名的map
     private SortedMap<Object, Object> parameters = new TreeMap<>();
+    //扫码回调
+    private static final String wxNativeNotify = "http://101.37.252.177:8082/yuyue-app/pay/wxNativeNotify";
 
     //支付宝
     private static final String AliAPPID = "2019082166401163";
@@ -676,8 +679,6 @@ public class PayController {
         return res;
     }
 
-
-
     /**
      * 单笔提现到支付宝账户
      * https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.54Ty29&treeId=193&articleId=106236&docType=1
@@ -716,6 +717,74 @@ public class PayController {
             log.info("转账失败异常=======>"+e.getMessage());
             returnResult.setMessage("支付宝转账失败！");
         }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 扫码支付
+     * @param order
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/payNative")
+    @LoginRequired
+    public JSONObject payNative(Order order, @CurrentUser AppUser user) throws Exception {
+        ReturnResult returnResult = new ReturnResult();
+        log.info("-------创建扫码订单-----------");
+        if (StringUtils.isEmpty(order.getTradeType())) {
+            returnResult.setMessage("充值类型不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        order.setOrderNo("YYSM" + RandomSaltUtil.randomNumber(14));
+        order.setStatus("10A");
+        order.setMobile(user.getPhone());
+        order.setMerchantId(user.getId());
+//        order.setTradeType("SMWX");
+//        order.setMoney("100");
+        createOrder(order);
+        if (StringUtils.isEmpty(order.getId())) {
+            returnResult.setMessage("创建订单失败！缺少参数！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        if ("SMWX".equals(order.getTradeType())) {
+            return payNativeWX(order);
+        } else if ("SMZFB".equals(order.getTradeType())) {
+            return payNativeZFB(order);
+        }
+        returnResult.setMessage("充值类型选择错误！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    private JSONObject payNativeZFB(Order order) {
+        ReturnResult returnResult = new ReturnResult();
+        returnResult.setMessage("充值类型选择错误！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    private JSONObject payNativeWX(Order order) {
+        ReturnResult returnResult = new ReturnResult();
+        HashMap<String, String> paramMap = Maps.newHashMap();
+        paramMap.put("trade_type", "NATIVE"); //交易类型
+        paramMap.put("spbill_create_ip",ResultJSONUtils.localIp()); //本机的Ip
+//        paramMap.put("product_id", payOrderIdsStr); // 商户根据自己业务传递的参数 必填
+//        paramMap.put("body", "扫码充值");         //描述
+//        paramMap.put("out_trade_no", payOrderIdsStr); //商户 后台的贸易单号
+        paramMap.put("total_fee", ""); //金额必须为整数  单位为分
+        paramMap.put("notify_url", wxNativeNotify); //支付成功后，回调地址
+        paramMap.put("appid", wxAppId); //appid
+        paramMap.put("mch_id", wxMchID); //商户号
+        paramMap.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));  //随机数
+        String sign = MD5Utils.signDatashwx(paramMap, KEY);
+        paramMap.put("sign",sign);//根据微信签名规则，生成签名
+        StringBuffer sb = new StringBuffer();
+        sb.append("<xml>");
+        XMLUtils.mapToXMLTest2(paramMap, sb);
+        sb.append("</xml>");
+        String xmlData = sb.toString();
+
+        returnResult.setMessage("充值类型选择错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }

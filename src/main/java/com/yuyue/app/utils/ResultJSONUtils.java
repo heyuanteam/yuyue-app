@@ -9,9 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.*;
 import java.text.DecimalFormat;
+import java.util.Enumeration;
+import java.util.List;
 
 public class ResultJSONUtils {
     private static Logger log = LoggerFactory.getLogger(ResultJSONUtils.class);
@@ -166,5 +167,35 @@ public class ResultJSONUtils {
             out.write(buffer,0,n);
         }
         return out.toByteArray();
+    }
+
+    /**
+     * 获取本机Ip
+     *
+     *  通过 获取系统所有的networkInterface网络接口 然后遍历 每个网络下的InterfaceAddress组。
+     *  获得符合 <code>InetAddress instanceof Inet4Address</code> 条件的一个IpV4地址
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public static String localIp(){
+        String ip = null;
+        Enumeration allNetInterfaces;
+        try {
+            allNetInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (allNetInterfaces.hasMoreElements()) {
+                NetworkInterface netInterface = (NetworkInterface) allNetInterfaces.nextElement();
+                List<InterfaceAddress> InterfaceAddress = netInterface.getInterfaceAddresses();
+                for (InterfaceAddress add : InterfaceAddress) {
+                    InetAddress Ip = add.getAddress();
+                    if (Ip != null && Ip instanceof Inet4Address) {
+                        ip = Ip.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
+            log.warn("获取本机Ip失败:异常信息:"+e.getMessage());
+        }
+        return ip;
     }
 }
