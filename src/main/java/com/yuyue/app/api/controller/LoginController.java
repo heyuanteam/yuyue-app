@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -80,8 +81,10 @@ public class LoginController extends BaseController{
      */
     @RequestMapping("/loginByPassword")
     @ResponseBody
-    public JSONObject loginByPassword(@RequestParam(value = "password") String password,
-                                      @RequestParam(value = "phone") String phone,HttpServletRequest request) throws Exception {
+    public JSONObject loginByPassword(@RequestParam(value = "password") String password, @RequestParam(value = "phone") String phone,
+                                      HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
         LOGGER.info("用户使用账号密码登录功能-------------->>/login/loginByPassword");
         getParameterMap(request);
         ReturnResult result = new ReturnResult();
@@ -160,7 +163,10 @@ public class LoginController extends BaseController{
      */
     @RequestMapping("/loginByPhone")
     @ResponseBody
-    public JSONObject loginByPhone(@RequestParam(value = "phone") String phone, @RequestParam("code") String code,HttpServletRequest request) {
+    public JSONObject loginByPhone(@RequestParam(value = "phone") String phone, @RequestParam("code") String code,
+                                   HttpServletRequest request, HttpServletResponse response) {
+        //允许跨域
+        response.setHeader("Access-Control-Allow-Origin","*");
         LOGGER.info("用户通过手机号及验证码登录-------------->>/login/loginByPhone");
         getParameterMap(request);
         ReturnResult result = new ReturnResult();
