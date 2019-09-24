@@ -478,47 +478,79 @@ public class MyController extends BaseController{
         return jsonObject;
     }
     /**
-     * (我的广告)商家id 获取 广告列表
+     * 我的广告
+     * 商家id获取广告列表;获取爆款信息;
      * @param appUser
      * @param
      * @return
      */
-    @RequestMapping("/getCommodityInfo")
+  /*  @RequestMapping("/getCommodityInfo")
     @ResponseBody
     @LoginRequired
     public JSONObject getCommodityInfo(@CurrentUser AppUser appUser,HttpServletRequest request){
         log.info("商家id 获取 广告列表-------------->>/myController/getCommodityInfo");
         getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
-        List<Advertisement> commodityInfoList = myService.getCommodityInfo(appUser.getId(), "");
-        if (StringUtils.isEmpty(commodityInfoList)){
-            returnResult.setMessage("暂无广告申请！！");
-        }else {
-            returnResult.setMessage("返回成功！！");
-        }
-        returnResult.setResult(commodityInfoList);
-        returnResult.setStatus(Boolean.TRUE);
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
-    }
+        String merchantId =request.getParameter("videoId");
+        String videoId = request.getParameter("videoId");
+        String commodityId = request.getParameter("commodityId");
+
+    }*/
 
     /**
-     * 获取爆款信息
-     * @param videoId
+     * 我的广告;爆款;获取商品信息
+     * 获取商人发布广告信息列表;获取爆款信息;获取单个商品信息
+     * @param
      * @return
      */
-    @RequestMapping(value = "/getHotSaleCommodity")
+    @RequestMapping(value = "/getHotSaleCommodityInfo")
     @ResponseBody
-    public JSONObject getHotSaleCommodity(String videoId,HttpServletRequest request){
+    public JSONObject getHotSaleCommodityInfo(HttpServletRequest request){
         log.info("获取爆款信息-------------->>/myController/getHotSaleCommodity");
         getParameterMap(request);
-        ReturnResult returnResult =new ReturnResult();
-        List<Advertisement> commodityInfoList = myService.getCommodityInfo("", videoId);
-        if (StringUtils.isEmpty(commodityInfoList)){
-            returnResult.setMessage("暂无代言商品！！");
+        String token = request.getHeader("token");
+        String videoId = request.getParameter("videoId");
+        String commodityId = request.getParameter("commodityId");
+        String userId="";
+        if(StringUtils.isNotEmpty(token)) {
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
         }
-        returnResult.setResult(commodityInfoList);
-        returnResult.setStatus(Boolean.TRUE);
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
+        ReturnResult returnResult =new ReturnResult();
+        //我的广告
+        if (StringUtils.isNotEmpty(userId) ){
+            List<Advertisement> commodityInfoList = myService.getCommodityInfo(userId, "","");
+            if (StringUtils.isEmpty(commodityInfoList)){
+                returnResult.setMessage("暂无广告申请！！");
+            }else {
+                returnResult.setMessage("返回成功！！");
+            }
+            returnResult.setResult(commodityInfoList);
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        //获取爆款
+        else if (StringUtils.isNotEmpty(videoId)){
+            List<Advertisement> commodityInfoList = myService.getCommodityInfo("", videoId,"");
+            if (StringUtils.isEmpty(commodityInfoList)){
+                returnResult.setMessage("暂无代言商品！！");
+            }
+            returnResult.setResult(commodityInfoList);
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        //获取商品信息
+        else {
+            List<Advertisement> commodityInfoList = myService.getCommodityInfo("", "",commodityId);
+            if (StringUtils.isEmpty(commodityInfoList)){
+                returnResult.setMessage("未查询该商品！！");
+            }
+            returnResult.setResult(commodityInfoList);
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
+
+
     }
 
     /**
@@ -678,7 +710,8 @@ public class MyController extends BaseController{
                 returnResult.setMessage("本场次结束进场！！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }else if("10B".equals(sitePerson.getStatus())){
-                returnResult.setMessage("已扫码进场！！");
+                returnResult.setMessage("通过！！");
+                returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             } else if(personSum >= personTotal ){
                 returnResult.setMessage("本场次已经满员！！");
@@ -692,7 +725,7 @@ public class MyController extends BaseController{
                 yuyueSitePerson.setUserRealName(appUser.getRealName());
                 yuyueSitePerson.setUserId(appUser.getId());
                 homePageService.addSitePerson(yuyueSitePerson);
-                returnResult.setMessage("验证成功，允许进场！！");
+                returnResult.setMessage("通过！！");
                 returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
