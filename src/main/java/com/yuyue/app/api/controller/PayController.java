@@ -444,6 +444,9 @@ public class PayController {
             returnResult.setCode("02");
             returnResult.setMessage("openId为空！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (outMoney.getMoney().compareTo(new BigDecimal(50))==-1){
+            returnResult.setMessage("转账的钱不能低于50元！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
         outMoney.setOutNo("YYTX" + RandomSaltUtil.randomNumber(14));
