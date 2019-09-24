@@ -78,4 +78,9 @@ public class LoginServiceImpl implements LoginService {
                 wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,city,jpushName,opendId,wechatName,frontCover);
     }
 
+    @Override
+    public void updateOpendId(String id, String opendId, String wechatName) {
+        loginMapper.updateOpendId(id,opendId,wechatName);
+    }
+
 }

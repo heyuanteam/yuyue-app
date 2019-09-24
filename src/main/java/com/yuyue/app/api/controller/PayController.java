@@ -444,6 +444,9 @@ public class PayController {
             returnResult.setCode("02");
             returnResult.setMessage("openId为空！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (outMoney.getMoney().compareTo(new BigDecimal(50))==-1){
+            returnResult.setMessage("转账的钱不能低于50元！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
         outMoney.setOutNo("YYTX" + RandomSaltUtil.randomNumber(14));
@@ -572,6 +575,36 @@ public class PayController {
             }
         }
         returnResult.setMessage("保存类型选择错误！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    //删除opendId
+    @ResponseBody
+    @RequestMapping("/deleteOpendId")
+    @LoginRequired
+    public JSONObject deleteOpendId(@CurrentUser AppUser user,String tradeType) {
+        ReturnResult returnResult = new ReturnResult();
+        if (StringUtils.isEmpty(tradeType)){
+            returnResult.setMessage("类型不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
+        if("ZFB".equals(tradeType)){
+
+        } else if ("WX".equals(tradeType)) {
+            String opendId = " ";
+            String wechatName = " ";
+            try {
+                loginService.updateOpendId(user.getId(),opendId,wechatName);
+                returnResult.setMessage("解绑成功！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            } catch (Exception e) {
+                log.info("解绑失败: ===>>>"+e.getMessage());
+                returnResult.setMessage("解绑失败！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+        }
+        returnResult.setMessage("解绑类型错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
