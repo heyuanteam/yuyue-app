@@ -226,7 +226,7 @@ public class PayController extends BaseController{
                     BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
                     payService.updateTotal(appUser.getId(), add);
                 }
-            }else if(!"SUCCESS".equals(returnCode)){
+            }else if("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)){
                 orderNo.setResponseCode(returnCode);
                 orderNo.setResponseMessage(object.get("result_code").toString());
                 orderNo.setStatus("10C");
@@ -323,6 +323,7 @@ public class PayController extends BaseController{
             if (orderNo != null) {
                 // 有可能出现多次回调，只有在该状态下的回调才是支付成功下的回调
                 if (!"10B".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
+                    log.info("加钱===================");
                     String trxNo = params.get("trade_status");
                     //加钱
                     orderNo.setResponseCode(trxNo);
@@ -332,7 +333,8 @@ public class PayController extends BaseController{
                     AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
                     BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
                     payService.updateTotal(appUser.getId(), add);
-                } else if(!"Success".equals(params.get("msg"))){
+                } else if("10A".equals(orderNo.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
+                    log.info("不加钱===================");
                     String trxNo = params.get("trade_status");
                     //加钱
                     orderNo.setResponseCode(trxNo);
