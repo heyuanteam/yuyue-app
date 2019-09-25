@@ -2,6 +2,7 @@ package com.yuyue.app.api.mapper;
 
 import com.yuyue.app.api.domain.Advertisement;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,6 @@ public interface AdvertisementMapper extends MyBaseMapper<Advertisement> {
             " FROM yuyue_advertisement_info WHERE userId = #{userId} ")
     Advertisement getAdvertisementInfo(String userId);
 
-    @Select("SELECT * FROM yuyue_advertisement_info WHERE agencyCode = #{agencyCode}  and status = '10A' ")
-    Advertisement findAdvertisement(String agencyCode);
+    @Select("SELECT * FROM yuyue_advertisement_info WHERE agencyCode = #{agencyCode} and produceAddr =#{produceAddr} and phone =#{phone} and status = '10A' LIMIT 1 ")
+    Advertisement findAdvertisement(@Param("agencyCode") String agencyCode,@Param("produceAddr") String produceAddr,@Param("phone") String phone);
 }

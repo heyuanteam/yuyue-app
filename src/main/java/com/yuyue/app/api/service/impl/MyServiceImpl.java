@@ -69,12 +69,6 @@ public class MyServiceImpl implements MyService {
     }
 
     @Override
-    public Advertisement findAdvertisement(String agencyCode) { return advertisementMapper.findAdvertisement(agencyCode);}
-
-    @Override
-    public ShowName findShowName(String description, String phone) { return showNameMapper.findShowName(description,phone); }
-
-    @Override
     public void insertShowName(String id, String userId, String teamName, String description, String size,
                                String categoryId, String address, String phone, String cardZUrl, String cardFUrl,
                                String videoAddress, String mail, String weChat) {
@@ -87,5 +81,11 @@ public class MyServiceImpl implements MyService {
 
     @Override
     public Feedback getFeedback(String details, String contact) { return feedbackMapper.getFeedback(details,contact); }
+
+    @Override
+    public ShowName findShowName(String description, String phone, String teamName) { return showNameMapper.findShowName(description,phone,teamName); }
+
+    @Override
+    public Advertisement findAdvertisement(String agencyCode, String produceAddr, String phone) { return advertisementMapper.findAdvertisement(agencyCode,produceAddr,phone);}
 
 }

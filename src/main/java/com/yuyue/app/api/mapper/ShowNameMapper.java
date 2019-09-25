@@ -13,8 +13,8 @@ public interface ShowNameMapper extends MyBaseMapper<ShowName> {
     @Select("select *,DATE_FORMAT(CREATE_TIME ,'%Y-%m-%d %H:%i:%s') createTime from yuyue_show_name where userId =#{id}")
     ShowName getShowInfo(String id);
 
-    @Select("select * from yuyue_show_name where description =#{description} and phone =#{phone}")
-    ShowName findShowName(@Param("description")String description,@Param("phone") String phone);
+    @Select("select * from yuyue_show_name where description =#{description} and phone =#{phone} and teamName =#{teamName} LIMIT 1")
+    ShowName findShowName(@Param("description")String description,@Param("phone") String phone,@Param("teamName") String teamName);
 
     @Transactional
     @Insert("replace INTO yuyue_show_name (id,userId,teamName,size,address,cardZUrl,cardFUrl,categoryId,description,phone,videoAddress,mail,weChat)" +
