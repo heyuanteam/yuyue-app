@@ -28,13 +28,9 @@ public interface PayService {
 
     List<OutMoney> getOutMoneyList(String id);
 
-    void sendMoney(String id, BigDecimal money);
-
     List<Gift> getGiftList();
 
     Gift getGift(String id);
-
-    void addIncome(String id, BigDecimal setScale);
 
     void createShouMoney(ChangeMoney changeMoney);
 }

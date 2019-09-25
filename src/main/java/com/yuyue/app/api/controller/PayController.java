@@ -223,7 +223,9 @@ public class PayController extends BaseController{
                     orderNo.setResponseMessage(object.get("result_code").toString());
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                    payService.updateTotal(orderNo.getMerchantId(), orderNo.getMoney());
+                    AppUser appUserById = loginService.getAppUserMsg("","",orderNo.getMerchantId());
+                    BigDecimal add = appUserById.getTotal().add(orderNo.getMoney());
+                    payService.updateTotal(appUserById.getId(), add);
                     returnResult.setMessage("微信回调成功！");
                     returnResult.setStatus(Boolean.TRUE);
                 }
@@ -333,7 +335,9 @@ public class PayController extends BaseController{
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                    payService.updateTotal(orderNo.getMerchantId(), orderNo.getMoney());
+                    AppUser appUserById = loginService.getAppUserMsg("","",orderNo.getMerchantId());
+                    BigDecimal add = appUserById.getTotal().add(orderNo.getMoney());
+                    payService.updateTotal(appUserById.getId(), add);
                     returnResult.setMessage("支付宝回调成功！");
                     returnResult.setStatus(Boolean.TRUE);
                 } else {
@@ -407,7 +411,8 @@ public class PayController extends BaseController{
                     order.setNote(moneys[3]);
 //        order.setMoney("100");
                     createOrder(order);
-                    payService.updateTotal(user.getId(), new BigDecimal(iosMap.get(moneys[3]).toString()));
+                    BigDecimal add = user.getTotal().add(new BigDecimal(iosMap.get(moneys[3]).toString()));
+                    payService.updateTotal(user.getId(), add);
                     returnResult.setStatus(Boolean.TRUE);
                     returnResult.setMessage("充值成功！");
                     returnResult.setResult(moneys[3]);
@@ -482,7 +487,7 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         if ("TXZFB".equals(outMoney.getTradeType())) {
-//            return outZFB(outMoney);
+//            return outZFB(outMoney,user);
         } else if ("TXWX".equals(outMoney.getTradeType())) {
             return outWX(outMoney,user);
         }
@@ -544,7 +549,8 @@ public class PayController extends BaseController{
                     returnResult.setMessage("企业转账成功");
                     returnResult.setStatus(Boolean.TRUE);
                     payService.updateOutStatus(transferMap.get("result_code"), "微信转账成功", "10B", outMoney.getOutNo());
-                    payService.updateOutIncome(user.getId(),outMoney.getMoney());
+                    BigDecimal subtract = user.getIncome().subtract(outMoney.getMoney());
+                    payService.updateOutIncome(user.getId(),subtract);
                 } else {
                     //失败原因
                     returnResult.setMessage("企业转账失败");
@@ -587,6 +593,7 @@ public class PayController extends BaseController{
                         "", "","","","","","","","",
                         "",opendId,wechatName,"");
                 returnResult.setMessage("获取openid成功！");
+                returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             } catch (Exception e) {
                 log.info("获取openid失败: ===>>>"+e.getMessage());
@@ -617,6 +624,7 @@ public class PayController extends BaseController{
             try {
                 loginService.updateOpendId(user.getId(),opendId,wechatName);
                 returnResult.setMessage("解绑成功！");
+                returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             } catch (Exception e) {
                 log.info("解绑失败: ===>>>"+e.getMessage());
@@ -700,7 +708,7 @@ public class PayController extends BaseController{
      * 单笔提现到支付宝账户
      * https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.54Ty29&treeId=193&articleId=106236&docType=1
      */
-    public JSONObject outZFB(OutMoney outMoney) {
+    public JSONObject outZFB(OutMoney outMoney,AppUser user) {
         ReturnResult returnResult = new ReturnResult();
         AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
         model.setOutBizNo(outMoney.getId());//生成订单号
@@ -720,8 +728,10 @@ public class PayController extends BaseController{
                 String msg = jsonObject.getString("msg");
                 String code = jsonObject.getString("code");
                 String outNo = jsonObject.getString("out_biz_no");
+
                 payService.updateOutStatus(code, msg, "10B", outNo);
-                payService.updateOutIncome(outMoney.getMerchantId(), outMoney.getMoney());
+                BigDecimal subtract = user.getIncome().subtract(outMoney.getMoney());
+                payService.updateOutIncome(outMoney.getMerchantId(), subtract);
                 returnResult.setMessage("支付宝转账成功！");
                 returnResult.setStatus(Boolean.TRUE);
                 returnResult.setResult(JSONObject.parseObject(response.getBody()));
