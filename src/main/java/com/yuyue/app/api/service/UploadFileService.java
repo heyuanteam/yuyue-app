@@ -66,15 +66,20 @@ public interface UploadFileService {
      */
     void reduceCommentAmount(String authorId,String videoId);
     /**
-     * 默认每张表查询五表记录
+     * 视频页 获取视频  默认每张表查询五表记录
      * @param bdgin
      * @param size
      * @return
      */
     List<UploadFile> getVideo(String tableName, int bdgin, int size,String categoryId,String content);
 
-
-
+    /**
+     * 获取首页视频   默认每张表查询五表记录
+     * @param page
+     *
+     * @return
+     */
+    List<UploadFile> getVideoToHomePage(int page,int size);
     /**
      * 我的发布
      * @param categoryId

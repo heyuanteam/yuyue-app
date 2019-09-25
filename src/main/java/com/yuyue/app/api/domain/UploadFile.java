@@ -32,7 +32,7 @@ public class UploadFile implements Serializable {
 //  文件类型
     private String filesType;
 //  文件大小
-//    private String fileSize;
+    private String fileSize;
 //    作者iD
     private String authorId;
 //    描述
@@ -46,7 +46,7 @@ public class UploadFile implements Serializable {
 //    评论数量
     private String commentAmount;
 //    时长
-//    private String duration;
+   private String duration;
     //状态
     private String status;
 //用户信息

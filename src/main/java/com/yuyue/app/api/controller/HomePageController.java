@@ -4,24 +4,27 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.HomePageService;
 import com.yuyue.app.api.service.LoginService;
-import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.api.service.UploadFileService;
+import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -77,57 +80,36 @@ public class HomePageController extends BaseController {
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-
     /**
      * 获取首页视频列表
      * @param page
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getVideo")
-    public JSONObject getVideo(String page,String categoryId,String content,HttpServletRequest request){
-        log.info("获取首页视频列表-------------->>/homePage/getVideo");
+    @RequestMapping("/getVideoToHomePage")
+    public JSONObject getVideoToHomePage(String page,HttpServletRequest request){
+        log.info("获取首页视频列表-------------->>/homePage/getVideoToHomePage");
         getParameterMap(request);
         Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
-        List<UploadFile> list = Lists.newArrayList();
+        /*List<UploadFile> list = Lists.newArrayList();*/
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 5;
         int begin = (Integer.parseInt(page) - 1) * limit;
-   /*     List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
-        List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);*/
-        List<UploadFile> uploadFilList0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId,content);
-        List<UploadFile> uploadFileList1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId,content);
+   /*   List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
+        List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);
+        for (UploadFile uploadFile:videoToHomePage) {
+            //视频中插入作者信息
+            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
+            uploadFile.setAppUser(appUserMsg);
+            list.add(uploadFile);
+        }
+*/
+        List<UploadFile> videoToHomePage = uploadFileService.getVideoToHomePage(begin,limit);
 
-        for (UploadFile uploadFile:uploadFilList0) {
-            //视频中插入作者信息
-            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
-            uploadFile.setAppUser(appUserMsg);
-            list.add(uploadFile);
-        }
-        for (UploadFile uploadFile:uploadFileList1) {
-            //视频中插入作者信息
-            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
-            uploadFile.setAppUser(appUserMsg);
-            list.add(uploadFile);
-        }
-    /*  Iterator<UploadFile> iterator_0 = vdeio_0.iterator();
-        while(iterator_0.hasNext()) {
-            //视频中插入作者信息
-            AppUser appUserMsg = loginService.getAppUserMsg("", "", iterator_0.next().getAuthorId());
-            iterator_0.next().setAppUser(appUserMsg);
-            list.add(iterator_0.next());
-        }
-        Iterator<UploadFile> iterator_1 = vdeio_1.iterator();
-        while(iterator_1.hasNext()) {
-            //视频中插入作者信息
-            AppUser appUserMsg = loginService.getAppUserMsg("", "", iterator_1.next().getAuthorId());
-            iterator_1.next().setAppUser(appUserMsg);
-            list.add(iterator_1.next());
-        }*/
-        map.put("uploadFile", list);
-        returnResult.setResult(map);
-        if(CollectionUtils.isEmpty(list)){
+
+        returnResult.setResult(videoToHomePage);
+        if(CollectionUtils.isEmpty(videoToHomePage)){
             returnResult.setMessage("暂无视频！");
         } else {
             returnResult.setMessage("视频请求成功！");
@@ -135,6 +117,7 @@ public class HomePageController extends BaseController {
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+
 
     /**
      * 获取定位，省市区
