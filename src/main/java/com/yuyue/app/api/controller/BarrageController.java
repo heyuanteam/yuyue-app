@@ -93,7 +93,7 @@ public class BarrageController extends BaseController{
                     /*textList.removeAll(textList);*/
                     textList = new TreeList();
                     String text = list.get(i).getText();
-                    System.out.println(text);
+//                    System.out.println(text);
                     textList.add(text);
                     map.put(list.get(i).getTimePoint(),textList);
 //                    for (String s:textList) {
