@@ -64,14 +64,14 @@ public class UserCommentController extends BaseController{
         if (redisUtil.existsKey("comment" + videoId)) {
             userCommentList = JSON.parseObject((String) redisUtil.getString("comment" + videoId),
                     new TypeReference<List<UserCommentVo>>() {});
-            for (UserCommentVo user : userCommentList) {
-                System.out.println("redis缓存取出的数据" + user);
-            }
+//            for (UserCommentVo user : userCommentList) {
+//                System.out.println("redis缓存取出的数据" + user);
+//            }
         } else {
             userCommentList = userCommentService.getAllComment(videoId,"");
             String str = JSON.toJSONString(userCommentList);
             redisUtil.setString("comment" + videoId, str, 60);
-            System.out.println("查询数据库并存储redis---->>>>>>>" + str);
+//            System.out.println("查询数据库并存储redis---->>>>>>>" + str);
         }
         if(userCommentList.isEmpty()) {
             returnResult.setMessage("暂无评论！");
@@ -170,7 +170,7 @@ public class UserCommentController extends BaseController{
         getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         List<AppUser> appUserList= Lists.newArrayList();
-        System.out.println("---------"+user.getId());
+//        System.out.println("---------"+user.getId());
         List<Attention> userAttentions = userCommentService.getUserAttention(user.getId());
         if(userAttentions.isEmpty()){
             returnResult.setMessage("该用户没有关注！！");
@@ -332,7 +332,7 @@ public class UserCommentController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         String likeStatus = userCommentService.getLikeStatus(user.getId(), videoId);
-        System.out.println("---------------------"+likeStatus);
+//        System.out.println("---------------------"+likeStatus);
         if(likeStatus == null || "0".equals(likeStatus)){
             //用户表及视频表中的字段LIKE_TOTAL +1;
             uploadFileService.likeAcount(authorId,videoId);

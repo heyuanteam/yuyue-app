@@ -87,7 +87,7 @@ public class UploadFileController extends  BaseController{
             //已点赞
             map.put("LikeStatus","1");
             String attentionStatus = userCommentService.getAttentionStatus(userId, authorId);
-            System.out.println(likeStatus+"-----"+attentionStatus);
+//            System.out.println(likeStatus+"-----"+attentionStatus);
             //用户关注该视频作者状态
             if (StringUtils.isEmpty(attentionStatus) || "0".equals(attentionStatus))
             map.put("AttentionStatus","0");
@@ -98,7 +98,7 @@ public class UploadFileController extends  BaseController{
         map.put("AuthorName",appUserMsg.getNickName());
         map.put("HeadUrl",appUserMsg.getHeadpUrl());
         map.put("fileDetail",uploadFile);
-        System.out.println(map);
+//        System.out.println(map);
         returnResult.setMessage("返回成功!!");
         returnResult.setStatus(Boolean.TRUE);
         log.info("====videoId===="+videoId);
@@ -138,7 +138,7 @@ public class UploadFileController extends  BaseController{
     @ResponseBody
     public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) throws Exception {
         log.info("批量上传文件到fastdfs服务器-------------->>/uploadFile/uploadServer");
-        getParameterMap(request);
+//        getParameterMap(request);
         //允许跨域
         response.setHeader("Access-Control-Allow-Origin","*");
 //        Map<String, String> mapValue = getParameterMap(request);

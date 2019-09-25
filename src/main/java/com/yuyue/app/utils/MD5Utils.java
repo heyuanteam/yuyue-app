@@ -112,11 +112,11 @@ public class MD5Utils {
         for (int i = 0; i < stringSort.size(); i++)
             signDatas.append((String) stringSort.get(i)).append("=").append((String) SortedMap.get(stringSort.get(i))).append("&");
 
-        System.out.println(signDatas.toString());
+//        System.out.println(signDatas.toString());
         String s = signDatas.toString();
         s = s.substring(0, s.length() - 1);
         s = (new StringBuilder()).append(s).append("&key=").append(md5Key).toString();
-        System.out.println("签名之前的数据为----------------------" + s);
+//        System.out.println("签名之前的数据为----------------------" + s);
         return wxEncode(s.toString()).toUpperCase();
     }
 

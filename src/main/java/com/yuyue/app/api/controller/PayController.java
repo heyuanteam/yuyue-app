@@ -10,6 +10,7 @@ import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.auth0.jwt.JWT;
@@ -28,9 +29,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -59,8 +63,6 @@ public class PayController extends BaseController{
     private static final String wxNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/wxpayNotify";
     // 构造签名的map
     private SortedMap<Object, Object> parameters = new TreeMap<>();
-    //扫码回调
-    private static final String wxNativeNotify = "http://101.37.252.177:8082/yuyue-app/pay/wxNativeNotify";
 
     //支付宝
     private static final String AliAPPID = "2019082166401163";
@@ -84,12 +86,16 @@ public class PayController extends BaseController{
             "RQqwKd1O/XTFlD9XDxEz3NiRD6sunLIxaPMMkt2+X7KPXAwYBIL5tymna3+rBnxYIAX2q5KORaYKoOWRK9ER+pMMXpcqNbMdO1ceOeUqx2XzpVZ" +
             "oMlcgRB6BTKG59S+KVso1O9Cxx52lvYqisuei8OnNwmMxK+++psZXmdDuNpUc4OJXdA7Bc0zbwDedtxRJE3zNDONOOwIDAQAB";
     private static final String AliPayNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/alipayNotify";
+    // 编码集，支持 GBK/UTF-8
+    protected static final String CHARSET = "utf-8";
+    private static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/pay";
+    private static final String subject = "杭州和元网络科技有限公司";
 
     //支付宝转账
     private static final String gateway="https://openapi.alipay.com/gateway.do";//支付宝网关
     //填写自己创建的app的对应参数
     private static AlipayClient alipayClient = new DefaultAlipayClient
-            (gateway, AliAPPID, AliAppPrivateKey, "json", "utf-8", AliPayPublicKey,"RSA2");
+            (gateway, AliAPPID, AliAppPrivateKey, "json", CHARSET, AliPayPublicKey,"RSA2");
 
     //苹果内购
     private static final Map<String, Object> iosMap = new HashMap<>();
@@ -159,7 +165,7 @@ public class PayController extends BaseController{
             XMLUtils.mapToXMLTest2(map, sb);
             sb.append("</xml>");
             log.info((new StringBuilder()).append("上送的数据为+++++++").append(sb.toString()).toString());
-            String res = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), "UTF-8", "application/json");
+            String res = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), CHARSET, "application/json");
             log.info("返回的数据为--------------------------+++++++" + res);
             Map ValidCard = XMLUtils.xmlString2Map(res);
             Map maps = new HashMap();
@@ -198,7 +204,7 @@ public class PayController extends BaseController{
     public JSONObject wxpay(HttpServletRequest request) throws Exception {
         ReturnResult returnResult = new ReturnResult();
         log.info((new StringBuilder()).append("回调的内容为+++++++++++++++++++++++++++++++++").append(request).toString());
-        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
+        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), CHARSET));
         StringBuffer buffer = new StringBuffer();
         for (String line = " "; (line = br.readLine()) != null; )
             buffer.append(line);
@@ -207,11 +213,11 @@ public class PayController extends BaseController{
         Map object = XMLUtils.xmlString2Map(buffer.toString());
         log.info((new StringBuilder()).append("返回的数据是+++++++").append(object).toString());
         String returnCode = object.get("return_code").toString();
-        if (returnCode.equals("SUCCESS")) {
-            String orderId = object.get("out_trade_no").toString();
-            log.info((new StringBuilder()).append("\u56DE\u8C03\uFF1A").append(orderId).toString());
-            if (StringUtils.isNotEmpty(orderId)) {
-                Order orderNo = payService.getOrderId(orderId);
+        String orderId = object.get("out_trade_no").toString();
+        log.info((new StringBuilder()).append("\u56DE\u8C03\uFF1A").append(orderId).toString());
+        if (StringUtils.isNotEmpty(orderId)) {
+            Order orderNo = payService.getOrderId(orderId);
+            if (returnCode.equals("SUCCESS")) {
                 if (orderNo != null) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
@@ -221,6 +227,12 @@ public class PayController extends BaseController{
                     returnResult.setMessage("微信回调成功！");
                     returnResult.setStatus(Boolean.TRUE);
                 }
+            }else {
+                orderNo.setResponseCode(returnCode);
+                orderNo.setResponseMessage(object.get("result_code").toString());
+                orderNo.setStatus("10C");
+                payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
+                returnResult.setMessage("微信回调支付失败！");
             }
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -235,9 +247,6 @@ public class PayController extends BaseController{
         ReturnResult returnResult = new ReturnResult();
         log.info("======支付宝APP支付统一下单接口==============");
         try {
-            // 实例化客户端
-            AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do",
-                    AliAPPID, AliAppPrivateKey, "json", "UTF-8", AliPayPublicKey, "RSA2");
             // 实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
             AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
             // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
@@ -255,8 +264,7 @@ public class PayController extends BaseController{
             request.setNotifyUrl(AliPayNotifyUrl);// 商户外网可以访问的异步地址
             try {
                 // 这里和普通的接口调用不同，使用的是sdkExecute
-                AlipayTradeAppPayResponse response = alipayClient
-                        .sdkExecute(request);
+                AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
                 log.info("response: " + response.getBody());// 就是orderString
                 // 可以直接给客户端请求，无需再做处理。
                 returnResult.setMessage("返回成功！");
@@ -312,7 +320,7 @@ public class PayController extends BaseController{
         // boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String
         // publicKey, String charset, String sign_type)
         String orderId = params.get("out_trade_no");
-        boolean flag = AlipaySignature.rsaCheckV1(params, AliPayPublicKey, "UTF-8", "RSA2");
+        boolean flag = AlipaySignature.rsaCheckV1(params, AliPayPublicKey, CHARSET, "RSA2");
         if (flag) {
             log.info("支付宝验签成功+++++++++++++++++++++++++++++++++");
             Order orderNo = payService.getOrderId(orderId);
@@ -328,6 +336,14 @@ public class PayController extends BaseController{
                     payService.updateTotal(orderNo.getMerchantId(), orderNo.getMoney());
                     returnResult.setMessage("支付宝回调成功！");
                     returnResult.setStatus(Boolean.TRUE);
+                } else {
+                    String trxNo = params.get("trade_status");
+                    //加钱
+                    orderNo.setResponseCode(trxNo);
+                    orderNo.setResponseMessage(trxNo);
+                    orderNo.setStatus("10C");
+                    payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
+                    returnResult.setMessage("支付宝回调支付失败！");
                 }
             }
             log.info("支付宝平台回调结束+++++++++++++++++++++++++++++++++");
@@ -498,7 +514,7 @@ public class PayController extends BaseController{
         parameters.put("amount", moneyD);
         parameters.put("spbill_create_ip", ip);
         parameters.put("desc", desc);
-        String sign = XMLUtils.createSign("UTF-8", parameters);
+        String sign = XMLUtils.createSign(CHARSET, parameters);
         log.info("sign==========>>>>"+sign);
         Map map = new HashMap();
         map.put("amount",moneyD);
@@ -519,7 +535,7 @@ public class PayController extends BaseController{
         try {
             CloseableHttpResponse response = HttpUtils.Post(
                     "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers", sb.toString(), true);
-            String transfersXml = EntityUtils.toString(response.getEntity(), "utf-8");
+            String transfersXml = EntityUtils.toString(response.getEntity(), CHARSET);
             Map<String, String> transferMap = XMLUtils.xmlString2Map(transfersXml);
             log.info("微信转账回返信息=============>>>>>>"+transferMap.toString());
             if (transferMap.size()>0) {
@@ -626,7 +642,7 @@ public class PayController extends BaseController{
                 + "access_token="+ accessToken
                 + "&openid="+ openid
                 + "&lang=zh_CN";
-        String result = getReturnData(url,"UTF-8");
+        String result = getReturnData(url,CHARSET);
         JSONObject json = JSON.parseObject(result);
         log.info("获取用户基本信息======>>>>>"+json);
         return json;
@@ -647,7 +663,7 @@ public class PayController extends BaseController{
                     + "appid="+ wxAppId
                     + "&secret="+ APP_SECRET
                     + "&code=" + code + "&grant_type=authorization_code";
-            String returnData = getReturnData(url,"UTF-8");
+            String returnData = getReturnData(url,CHARSET);
             log.info("用户授权====>>>>"+returnData);
             try {
                 jsonObject = JSONObject.parseObject(returnData);
@@ -729,7 +745,6 @@ public class PayController extends BaseController{
      */
     @ResponseBody
     @RequestMapping("/payNative")
-    @LoginRequired
     public JSONObject payNative(Order order,HttpServletRequest request, HttpServletResponse response) throws Exception {
         //允许跨域
         response.setHeader("Access-Control-Allow-Origin","*");
@@ -762,15 +777,42 @@ public class PayController extends BaseController{
         if ("SMWX".equals(order.getTradeType())) {
             return payNativeWX(order);
         } else if ("SMZFB".equals(order.getTradeType())) {
-            return payNativeZFB(order);
+            return payNativeZFB(order,response);
         }
         returnResult.setMessage("充值类型选择错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-    private JSONObject payNativeZFB(Order order) {
+    private JSONObject payNativeZFB(Order order, HttpServletResponse httpResponse) throws IOException {
         ReturnResult returnResult = new ReturnResult();
-        returnResult.setMessage("充值类型选择错误！！");
+        AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
+        alipayRequest.setReturnUrl(AliPayReturnUrl);//同步通知页面
+        alipayRequest.setNotifyUrl(AliPayNotifyUrl);//在公共参数中设置回跳和通知地址
+        alipayRequest.setBizContent("{" +
+                "    \"out_trade_no\":\""+ order.getId() +"\"," +
+                "    \"product_code\":\""+ "FAST_INSTANT_TRADE_PAY" +"\"," +
+                "    \"total_amount\":\""+ String.valueOf(order.getMoney()) +"\"," +
+                "    \"subject\":\""+ subject +"\"," +
+                "    \"body\":\""+ "扫码支付宝充值" +
+                "  }");//填充业务参数
+        String form="";
+        try {
+            form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+        httpResponse.setContentType("text/html;charset=" + CHARSET);
+        httpResponse.getWriter().write(form);//直接将完整的表单html输出到页面
+        httpResponse.getWriter().flush();
+        httpResponse.getWriter().close();
+
+        if (form == null) {
+            logger.error("订单" + order.getId() + "未成功获取支付宝付款界面！");
+            returnResult.setMessage("未成功获取支付宝付款界面！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
+        returnResult.setMessage("调用扫码支付宝成功！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -786,7 +828,7 @@ public class PayController extends BaseController{
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
                     .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
             paramMap.put("total_fee", moneyD); //金额必须为整数  单位为分
-            paramMap.put("notify_url", wxNativeNotify); //支付成功后，回调地址
+            paramMap.put("notify_url", wxNotifyUrl); //支付成功后，回调地址
             paramMap.put("appid", wxAppId); //appid
             paramMap.put("mch_id", wxMchID); //商户号
             paramMap.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));  //随机数
@@ -797,7 +839,7 @@ public class PayController extends BaseController{
             XMLUtils.mapToXMLTest2(paramMap, sb);
             sb.append("</xml>");
             log.info((new StringBuilder()).append("上送的数据为+++++++").append(sb.toString()).toString());
-            String resXml = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), "UTF-8", "application/json");
+            String resXml = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), CHARSET, "application/json");
             log.info("返回的数据为--------------------------+++++++" + resXml);
             Map ValidCard = XMLUtils.xmlString2Map(resXml);
             Map maps = new HashMap();
@@ -822,46 +864,7 @@ public class PayController extends BaseController{
             payService.updateStatus(order.getId(), "10C");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        returnResult.setMessage("充值类型选择错误！！");
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
-    }
-
-    /**
-     * @throws Exception
-     * @Title:wxpayNotify
-     * @Description:微信扫码回调
-     * @date:2018年7月18日 下午2:32:49
-     */
-    @ResponseBody
-    @RequestMapping(value = "/wxNativeNotify")
-    public JSONObject wxNativeNotify(HttpServletRequest request) throws Exception {
-        ReturnResult returnResult = new ReturnResult();
-        log.info((new StringBuilder()).append("回调的内容为+++++++++++++++++++++++++++++++++").append(request).toString());
-        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), "UTF-8"));
-        StringBuffer buffer = new StringBuffer();
-        for (String line = " "; (line = br.readLine()) != null; )
-            buffer.append(line);
-
-        log.info((new StringBuilder()).append("内容++++++++++++").append(buffer.toString()).toString());
-        Map object = XMLUtils.xmlString2Map(buffer.toString());
-        log.info((new StringBuilder()).append("返回的数据是+++++++").append(object).toString());
-        String returnCode = object.get("return_code").toString();
-        if (returnCode.equals("SUCCESS")) {
-            String orderId = object.get("out_trade_no").toString();
-            log.info((new StringBuilder()).append("\u56DE\u8C03\uFF1A").append(orderId).toString());
-            if (StringUtils.isNotEmpty(orderId)) {
-                Order orderNo = payService.getOrderId(orderId);
-                if (orderNo != null) {
-                    orderNo.setResponseCode(returnCode);
-                    orderNo.setResponseMessage(object.get("result_code").toString());
-                    orderNo.setStatus("10B");
-                    payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                    payService.updateTotal(orderNo.getMerchantId(), orderNo.getMoney());
-                    returnResult.setMessage("微信扫码回调成功！");
-                    returnResult.setStatus(Boolean.TRUE);
-                }
-            }
-        }
+        returnResult.setMessage("调用扫码微信成功！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -870,7 +873,7 @@ public class PayController extends BaseController{
      * @param code_url
      * @param response
      */
-    @RequestMapping("qr_code.img")
+    @RequestMapping("/getQRCode")
     @ResponseBody
     public JSONObject getQRCode(String code_url,HttpServletRequest request, HttpServletResponse response){
         //允许跨域

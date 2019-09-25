@@ -248,7 +248,7 @@ public class UploadFileServiceImpl implements UploadFileService {
         } else {
             uploadFile.setFilesType("picture");
         }
-        System.out.println(uploadFile);
+//        System.out.println(uploadFile);
 //        uploadFileMapper.addRelease(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),id,categoryId,title,description,
 //                uploadFile.getFilesType(),uploadFile.getVedioAddress());
         uploadFileMapper.insertUploadFile(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),
