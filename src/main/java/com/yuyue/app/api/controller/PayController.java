@@ -798,6 +798,7 @@ public class PayController extends BaseController{
         String form="";
         try {
             form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
+            log.info("支付宝扫码返回结果====>>>>>"+form);
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
@@ -807,7 +808,7 @@ public class PayController extends BaseController{
         httpResponse.getWriter().close();
 
         if (form == null) {
-            logger.error("订单" + order.getId() + "未成功获取支付宝付款界面！");
+            log.error("订单" + order.getId() + "未成功获取支付宝付款界面！");
             returnResult.setMessage("未成功获取支付宝付款界面！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
