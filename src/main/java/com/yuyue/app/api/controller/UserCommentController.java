@@ -172,7 +172,9 @@ public class UserCommentController extends BaseController{
         List<AppUser> appUserList= Lists.newArrayList();
 //        System.out.println("---------"+user.getId());
         List<Attention> userAttentions = userCommentService.getUserAttention(user.getId());
+
         if(userAttentions.isEmpty()){
+            returnResult.setResult(userAttentions);
             returnResult.setMessage("该用户没有关注！！");
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -180,6 +182,7 @@ public class UserCommentController extends BaseController{
         if (StringUtils.isNotEmpty(content)){
             appUserList = loginService.getAppUserMsgToLike(user.getId(), content);
             if (appUserList.isEmpty()){
+                returnResult.setResult(userAttentions);
                 returnResult.setMessage("查无此人！！");
                 returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -191,7 +194,6 @@ public class UserCommentController extends BaseController{
                 appUserList.add(appUserMsg);
             }
         }
-
         returnResult.setResult(appUserList);
         returnResult.setMessage("返回成功！！");
         returnResult.setStatus(Boolean.TRUE);
