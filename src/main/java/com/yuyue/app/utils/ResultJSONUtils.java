@@ -1,6 +1,7 @@
 package com.yuyue.app.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.ReturnResult;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.*;
 import java.text.DecimalFormat;
 import java.util.Enumeration;
@@ -167,4 +169,43 @@ public class ResultJSONUtils {
         return out.toByteArray();
     }
 
+    /**
+     * 加减钱，收益
+     * @param user
+     * @param money
+     * @return
+     */
+    public synchronized static BigDecimal updateOutIncome(AppUser user,BigDecimal money,String symbol){
+        if(StringUtils.isNull(user)){
+            throw MyExceptionUtils.mxe("加钱失败！用户为空！");
+        } else if (money == null){
+            throw MyExceptionUtils.mxe("钱为空！");
+        } else if (money.compareTo(BigDecimal.ZERO) == -1){
+            throw MyExceptionUtils.mxe("钱不能为负！");
+        }
+        if("+".equals(symbol)){
+            return user.getIncome().add(money);
+        }
+        return user.getIncome().subtract(money);
+    }
+
+    /**
+     * 加减钱，余额
+     * @param user
+     * @param money
+     * @return
+     */
+    public synchronized static BigDecimal updateTotalMoney(AppUser user,BigDecimal money,String symbol){
+        if(StringUtils.isNull(user)){
+            throw MyExceptionUtils.mxe("加钱失败！用户为空！");
+        } else if (money == null){
+            throw MyExceptionUtils.mxe("钱为空！");
+        } else if (money.compareTo(BigDecimal.ZERO) == -1){
+            throw MyExceptionUtils.mxe("钱不能为负！");
+        }
+        if("+".equals(symbol)){
+            return user.getTotal().add(money);
+        }
+        return user.getTotal().subtract(money);
+    }
 }
