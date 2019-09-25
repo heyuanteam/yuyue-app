@@ -78,7 +78,7 @@ public class MyController extends BaseController{
             feedback.setPictureUrl(mapValue.get("pictureUrl"));
             feedback.setDetails(mapValue.get("details"));
             feedback.setUserId(userId);
-            Feedback feed = myService.getFeedback(feedback.getDetails());
+            Feedback feed = myService.getFeedback(feedback.getDetails(),feedback.getContact());
             if(StringUtils.isNotNull(feed)){
                 returnResult.setMessage("请勿重复提交！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);

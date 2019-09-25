@@ -69,9 +69,6 @@ public class MyServiceImpl implements MyService {
     }
 
     @Override
-    public Feedback getFeedback(String details) { return feedbackMapper.getFeedback(details); }
-
-    @Override
     public Advertisement findAdvertisement(String agencyCode) { return advertisementMapper.findAdvertisement(agencyCode);}
 
     @Override
@@ -87,5 +84,8 @@ public class MyServiceImpl implements MyService {
 
     @Override
     public List<ChangeMoneyVo> changeMoneyList(String id) { return payMapper.changeMoneyList(id); }
+
+    @Override
+    public Feedback getFeedback(String details, String contact) { return feedbackMapper.getFeedback(details,contact); }
 
 }
