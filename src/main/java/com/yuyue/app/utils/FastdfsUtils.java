@@ -59,7 +59,7 @@ public class FastdfsUtils {
         StorePath storePath = this.storageClient.uploadImageAndCrtThumbImage
                 (new FileInputStream(file), file.length(), Variables.fileExtName, metaDataSet);
         String fullPath = thumbImageConfig.getThumbImagePath(storePath.getFullPath());
-        System.out.println("【图片缩略图带有组名的路径】:" + fullPath);
+//        System.out.println("【图片缩略图带有组名的路径】:" + fullPath);
         printlnPath(storePath);
     }
 

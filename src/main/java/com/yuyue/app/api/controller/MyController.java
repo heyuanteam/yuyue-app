@@ -567,7 +567,7 @@ public class MyController extends BaseController{
         getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(priceId);
-        System.out.println(advertisementFeeInfo);
+//        System.out.println(advertisementFeeInfo);
 
         returnResult.setResult(advertisementFeeInfo);
         returnResult.setStatus(Boolean.TRUE);

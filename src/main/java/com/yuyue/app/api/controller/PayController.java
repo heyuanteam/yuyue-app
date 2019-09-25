@@ -88,7 +88,7 @@ public class PayController extends BaseController{
     private static final String AliPayNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/alipayNotify";
     // 编码集，支持 GBK/UTF-8
     protected static final String CHARSET = "utf-8";
-    private static final String AliPayReturnUrl = "http://101.37.252.177:8082/yuyue-app/pay/alipayNotify";
+    private static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/pay";
     private static final String subject = "杭州和元网络科技有限公司";
 
     //支付宝转账

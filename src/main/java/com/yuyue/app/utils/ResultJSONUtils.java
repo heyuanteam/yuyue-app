@@ -40,7 +40,7 @@ public class ResultJSONUtils {
      * @return
      */
     public static String getSize(Double fileSize){
-        System.out.println("获取文件大小======="+fileSize);
+//        System.out.println("获取文件大小======="+fileSize);
         //数据转化   B-->KB-->MB
         String size = "";
         DecimalFormat df = new DecimalFormat("#.00");
@@ -59,14 +59,14 @@ public class ResultJSONUtils {
      * @return
      */
     public static String getVideoSize(String pathUrl){
-        System.out.println("获取文件路径======="+pathUrl);
+//        System.out.println("获取文件路径======="+pathUrl);
         //获取文件时长
         String videoSize = "";
         Encoder encoder=new Encoder();
         try {
             File localFile=new File(pathUrl);
             long duration = encoder.getInfo(localFile).getDuration();
-            System.out.println("视频时长"+duration);
+//            System.out.println("视频时长"+duration);
             //时分秒
             long secondTotal=duration/1000;
             if (secondTotal < 60){
@@ -83,7 +83,6 @@ public class ResultJSONUtils {
             }
         } catch (EncoderException e) {
             e.printStackTrace();
-            System.out.println("视频格式转化失败！");
             log.info("视频格式转化失败！");
         }
         return videoSize;
@@ -94,7 +93,7 @@ public class ResultJSONUtils {
      * @return
      */
     public static String getVideoUrl(String pathUrl){
-        System.out.println("获取文件路径======="+pathUrl);
+//        System.out.println("获取文件路径======="+pathUrl);
         //获取文件时长
         String videoSize = "";
         Encoder encoder=new Encoder();
@@ -120,7 +119,6 @@ public class ResultJSONUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("视频格式转化失败！");
             log.info("视频格式转化失败！");
         }
         return videoSize;

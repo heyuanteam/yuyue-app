@@ -180,9 +180,9 @@ public class HomePageController extends BaseController {
                 returnResult.setMessage("暂无信息！！");
             }else
                 returnResult.setMessage("返回成功！！");
-            for (YuyueSite yuyueSite:siteList) {
-                System.out.println(yuyueSite);
-            }
+//            for (YuyueSite yuyueSite:siteList) {
+//                System.out.println(yuyueSite);
+//            }
             returnResult.setStatus(Boolean.TRUE);
             returnResult.setResult(siteList);
             return ResultJSONUtils.getJSONObjectBean(returnResult);

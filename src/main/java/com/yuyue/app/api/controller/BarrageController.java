@@ -83,12 +83,11 @@ public class BarrageController extends BaseController{
         for (int i=0;i<list.size();i++){
                 if (map.containsKey(list.get(i).getTimePoint()) ){
                     textList.add(list.get(i).getText());
-                    for (String s:textList
-                         ) {
-                        System.out.println(s);
-                    }
+//                    for (String s:textList) {
+//                        System.out.println(s);
+//                    }
                     map.put(list.get(i).getTimePoint(),textList);
-                    System.out.println("map"+map.keySet());
+//                    System.out.println("map"+map.keySet());
                 }else {
                     /*textList.clear();*/
                     /*textList.removeAll(textList);*/
@@ -97,11 +96,10 @@ public class BarrageController extends BaseController{
                     System.out.println(text);
                     textList.add(text);
                     map.put(list.get(i).getTimePoint(),textList);
-                    for (String s:textList
-                    ) {
-                        System.out.println("---"+s);
-                    }
-                    System.out.println("map0 key:"+map.keySet()+"     map0  value:"+map.values());
+//                    for (String s:textList) {
+//                        System.out.println("---"+s);
+//                    }
+//                    System.out.println("map0 key:"+map.keySet()+"     map0  value:"+map.values());
                 }
         }
         returnResult.setResult(map);
