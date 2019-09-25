@@ -133,12 +133,12 @@ public class LoginController extends BaseController{
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)) {
                 result.setMessage("账号密码不能为空!");
-            } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
-                result.setMessage("验证码错误！");
-            } else {
+            }else {
                 AppUser appUser = loginService.getAppUserMsg("",phone,"");
                 if (appUser == null) {
                     result.setMessage("该用户未注册!");
+                } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
+                    result.setMessage("验证码错误！");
                 } else {
                     String ciphertextPwd = MD5Utils.getMD5Str(password + appUser.getSalt());
                     loginService.editPassword(phone, ciphertextPwd);
@@ -173,12 +173,12 @@ public class LoginController extends BaseController{
         try {
             if (StringUtils.isEmpty(code)) {
                 result.setMessage("验证码为空！");
-            } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
-                result.setMessage("验证码错误！");
             } else {
                 AppUser appUser = loginService.getAppUserMsg("",phone,"");
                 if (appUser == null) {
                     result.setMessage("请您先去注册！");
+                } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
+                    result.setMessage("验证码错误！");
                 } else {
                     result.setMessage("登录成功！");
                     result.setStatus(Boolean.TRUE);
@@ -213,14 +213,14 @@ public class LoginController extends BaseController{
         try {
             if(StringUtils.isEmpty(code) || StringUtils.isEmpty(phone) || StringUtils.isEmpty(password)){
                 result.setMessage("参数错误！");
-            } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
-                result.setMessage("验证码错误！");
             } else if (pattern.matcher(phone).matches() == false || phone.length() != 11) {
                 result.setMessage("手机号输入错误！");
             } else {
                 AppUser appUserMsgByPhone = loginService.getAppUserMsg("",phone,"");
                 if (appUserMsgByPhone != null) {
                     result.setMessage("该号码已注册！");
+                } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
+                    result.setMessage("验证码错误！");
                 } else {
                     //uuid
                     String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
