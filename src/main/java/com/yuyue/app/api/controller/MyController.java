@@ -641,9 +641,11 @@ public class MyController extends BaseController{
             returnResult.setMessage("您的金额不足，请去充值！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        payService.sendMoney(appUser.getId(),gift.getGiftValue());
+        BigDecimal subtract = ResultJSONUtils.updateTotalMoney(appUser,gift.getGiftValue(),"");
+        payService.updateTotal(appUser.getId(),subtract);
         BigDecimal bigDecimal = gift.getGiftValue().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        payService.addIncome(user.getId(), bigDecimal);
+        BigDecimal add = ResultJSONUtils.updateOutIncome(user, bigDecimal, "+");
+        payService.updateOutIncome(user.getId(), add);
 //        消费者记录
         Order order = new Order();
         order.setOrderNo("YYXF" + RandomSaltUtil.randomNumber(14));

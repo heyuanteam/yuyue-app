@@ -52,16 +52,10 @@ public class PayServiceImpl implements PayService {
     public List<OutMoney> getOutMoneyList(String id) { return payMapper.getOutMoneyList(id); }
 
     @Override
-    public void sendMoney(String id, BigDecimal money) { payMapper.sendMoney(id,money); }
-
-    @Override
     public List<Gift> getGiftList() { return payMapper.getGiftList();}
 
     @Override
     public Gift getGift(String id) { return payMapper.getGift(id);}
-
-    @Override
-    public void addIncome(String id, BigDecimal setScale) { payMapper.addIncome(id,setScale);}
 
     @Override
     public void createShouMoney(ChangeMoney changeMoney) {  payMapper.createShouMoney(changeMoney); }
