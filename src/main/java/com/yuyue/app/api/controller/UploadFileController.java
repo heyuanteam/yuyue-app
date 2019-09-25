@@ -2,6 +2,7 @@ package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
@@ -13,6 +14,7 @@ import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -175,6 +178,48 @@ public class UploadFileController extends  BaseController{
         uploadFileService.downloadFile(filesName, filesPath, response);
     }
 
+    /**
+     * 获取视频列表
+     * @param page
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getVideo")
+    public JSONObject getVideo(String page,String categoryId,String content,HttpServletRequest request){
+        log.info("获取视频列表-------------->>/homePage/getVideo");
+        getParameterMap(request);
+        Map<String, List> map= Maps.newHashMap();
+        ReturnResult returnResult=new ReturnResult();
+        List<UploadFile> list = Lists.newArrayList();
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 5;
+        int begin = (Integer.parseInt(page) - 1) * limit;
+   /*     List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
+        List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);*/
+        List<UploadFile> uploadFilList0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId,content);
+        List<UploadFile> uploadFileList1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId,content);
 
+        /*for (UploadFile uploadFile:uploadFilList0) {
+            //视频中插入作者信息
+            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
+            uploadFile.setAppUser(appUserMsg);
+            list.add(uploadFile);
+        }
+        for (UploadFile uploadFile:uploadFileList1) {
+            //视频中插入作者信息
+            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
+            uploadFile.setAppUser(appUserMsg);
+            list.add(uploadFile);
+        }*/
+        uploadFilList0.addAll(uploadFileList1);
+        returnResult.setResult(uploadFilList0);
+        if(CollectionUtils.isEmpty(list)){
+            returnResult.setMessage("暂无视频！");
+        } else {
+            returnResult.setMessage("视频请求成功！");
+        }
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
 
 }
