@@ -147,88 +147,93 @@ public class MyController extends BaseController{
         //允许跨域
         response.setHeader("Access-Control-Allow-Origin","*");
         ReturnResult returnResult=new ReturnResult();
-        String token = request.getHeader("token");
-        String userId = "";
-        if(StringUtils.isNotEmpty(token)){
-            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
-            Advertisement advertisementInfo = myService.getAdvertisementInfo(userId);
-            if(StringUtils.isNotNull(advertisementInfo)){
-                if("10B".equals(advertisementInfo.getStatus())){
-                    returnResult.setMessage("审核通过！！");
-                    returnResult.setStatus(Boolean.TRUE);
-                }else {
-                    returnResult.setMessage("已提交，待审核");
-                    returnResult.setStatus(Boolean.TRUE);
+        try {
+            String token = request.getHeader("token");
+            String userId = "";
+            if(StringUtils.isNotEmpty(token)){
+                userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+                Advertisement advertisementInfo = myService.getAdvertisementInfo(userId);
+                if(StringUtils.isNotNull(advertisementInfo)){
+                    if("10B".equals(advertisementInfo.getStatus())){
+                        returnResult.setMessage("审核通过！！");
+                        returnResult.setStatus(Boolean.TRUE);
+                    }else {
+                        returnResult.setMessage("已提交，待审核");
+                        returnResult.setStatus(Boolean.TRUE);
+                    }
+                    returnResult.setResult(advertisementInfo);
+                    return ResultJSONUtils.getJSONObjectBean(returnResult);
                 }
-                returnResult.setResult(advertisementInfo);
+            }
+            Map<String, String> parameterMap = getParameterMap(request);
+            //商家地址
+            String merchantAddr=parameterMap.get("merchantAddr");
+            //营业执照
+            String businessLicense=parameterMap.get("businessLicense");
+            //法人身份证正面
+            String idCardZM=parameterMap.get("idCardZM");
+            //法人身份证反面
+            String idCardFM=parameterMap.get("idCardFM");
+            //机构代码
+            String agencyCode=parameterMap.get("agencyCode");
+            //商家名称
+            String merchantName=parameterMap.get("merchantName");
+            //手机号码
+            String phone=parameterMap.get("phone");
+            if(StringUtils.isEmpty(merchantAddr) ){
+                returnResult.setMessage("商家地址未空值!!");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }else if (StringUtils.isEmpty(businessLicense)){
+                returnResult.setMessage("营业执照未空值!!");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }else if (StringUtils.isEmpty(idCardZM)){
+                returnResult.setMessage("法人身份证正面未空值!!");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }else if (StringUtils.isEmpty(idCardFM) ){
+                returnResult.setMessage("法人身份证反面未空值!!");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }else if (StringUtils.isEmpty(agencyCode)){
+                returnResult.setMessage("机构代码未空值!!");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }else if ( StringUtils.isEmpty(merchantName)){
+                returnResult.setMessage("商家名称未空值!!");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }else if ( StringUtils.isEmpty(phone)){
+                returnResult.setMessage("手机号码未空值!!");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-        }
-        Map<String, String> parameterMap = getParameterMap(request);
-        //商家地址
-        String merchantAddr=parameterMap.get("merchantAddr");
-        //营业执照
-        String businessLicense=parameterMap.get("businessLicense");
-        //法人身份证正面
-        String idCardZM=parameterMap.get("idCardZM");
-        //法人身份证反面
-        String idCardFM=parameterMap.get("idCardFM");
-        //机构代码
-        String agencyCode=parameterMap.get("agencyCode");
-        //商家名称
-        String merchantName=parameterMap.get("merchantName");
-        //手机号码
-        String phone=parameterMap.get("phone");
-        if(StringUtils.isEmpty(merchantAddr) ){
-            returnResult.setMessage("商家地址未空值!!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if (StringUtils.isEmpty(businessLicense)){
-            returnResult.setMessage("营业执照未空值!!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if (StringUtils.isEmpty(idCardZM)){
-            returnResult.setMessage("法人身份证正面未空值!!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if (StringUtils.isEmpty(idCardFM) ){
-            returnResult.setMessage("法人身份证反面未空值!!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if (StringUtils.isEmpty(agencyCode)){
-            returnResult.setMessage("机构代码未空值!!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if ( StringUtils.isEmpty(merchantName)){
-            returnResult.setMessage("商家名称未空值!!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if ( StringUtils.isEmpty(phone)){
-            returnResult.setMessage("手机号码未空值!!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        Advertisement advertisement=new Advertisement();
-        advertisement.setId(UUID.randomUUID().toString().replace("-","").toUpperCase());
-        //必填的属性
-        advertisement.setUserId(userId);
-        advertisement.setMerchantAddr(merchantAddr);
-        advertisement.setBusinessLicense(businessLicense);
-        advertisement.setIdCardZM(idCardZM);
-        advertisement.setIdCardFM(idCardFM);
-        advertisement.setAgencyCode(agencyCode);
-        advertisement.setMerchantName(merchantName);
-        advertisement.setPhone(phone);
+            Advertisement advertisement=new Advertisement();
+            advertisement.setId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+            //必填的属性
+            advertisement.setUserId(userId);
+            advertisement.setMerchantAddr(merchantAddr);
+            advertisement.setBusinessLicense(businessLicense);
+            advertisement.setIdCardZM(idCardZM);
+            advertisement.setIdCardFM(idCardFM);
+            advertisement.setAgencyCode(agencyCode);
+            advertisement.setMerchantName(merchantName);
+            advertisement.setPhone(phone);
 
-        //选填的属性
-        advertisement.setProduceAddr(parameterMap.get("produceAddr"));
-        advertisement.setFixedPhone(parameterMap.get("fixedPhone"));
-        advertisement.setEmail(parameterMap.get("email"));
-        advertisement.setWx(parameterMap.get("wx"));
-        advertisement.setQqNum(parameterMap.get("qqNum"));
-        advertisement.setMerchandiseUrl(parameterMap.get("merchandiseUrl"));
-        advertisement.setTelephone(parameterMap.get("telephone"));
+            //选填的属性
+            advertisement.setProduceAddr(parameterMap.get("produceAddr"));
+            advertisement.setFixedPhone(parameterMap.get("fixedPhone"));
+            advertisement.setEmail(parameterMap.get("email"));
+            advertisement.setWx(parameterMap.get("wx"));
+            advertisement.setQqNum(parameterMap.get("qqNum"));
+            advertisement.setMerchandiseUrl(parameterMap.get("merchandiseUrl"));
+            advertisement.setTelephone(parameterMap.get("telephone"));
 
-        Advertisement adver = myService.findAdvertisement(advertisement.getAgencyCode(),advertisement.getProduceAddr(),advertisement.getPhone());
-        if(StringUtils.isNotNull(adver)){
-            returnResult.setMessage("请勿重复添加！");
-        } else {
-            myService.addAdvertisemenInfo(advertisement);
-            returnResult.setMessage("信息插入成功");
-            returnResult.setStatus(Boolean.TRUE);
+            Advertisement adver = myService.findAdvertisement(advertisement.getAgencyCode(),advertisement.getProduceAddr(),advertisement.getPhone());
+            if(StringUtils.isNotNull(adver)){
+                returnResult.setMessage("请勿重复添加！");
+            } else {
+                myService.addAdvertisemenInfo(advertisement);
+                returnResult.setMessage("信息插入成功");
+                returnResult.setStatus(Boolean.TRUE);
+            }
+        }catch (Exception e){
+            log.info("信息插入失败");
+            returnResult.setMessage("信息插入失败");
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
