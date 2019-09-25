@@ -201,8 +201,7 @@ public class PayController extends BaseController{
      */
     @ResponseBody
     @RequestMapping(value = "/wxpayNotify")
-    public synchronized JSONObject wxpay(HttpServletRequest request) throws Exception {
-        ReturnResult returnResult = new ReturnResult();
+    public synchronized void wxpay(HttpServletRequest request) throws Exception {
         log.info((new StringBuilder()).append("回调的内容为+++++++++++++++++++++++++++++++++").append(request).toString());
         BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), CHARSET));
         StringBuffer buffer = new StringBuffer();
@@ -217,7 +216,7 @@ public class PayController extends BaseController{
         log.info((new StringBuilder()).append("\u56DE\u8C03\uFF1A").append(orderId).toString());
         if (StringUtils.isNotEmpty(orderId)) {
             Order orderNo = payService.getOrderId(orderId);
-            if (returnCode.equals("SUCCESS")) {
+            if (!"10B".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS") ) {
                 if (orderNo != null) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
@@ -226,18 +225,14 @@ public class PayController extends BaseController{
                     AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
                     BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
                     payService.updateTotal(appUser.getId(), add);
-                    returnResult.setMessage("微信回调成功！");
-                    returnResult.setStatus(Boolean.TRUE);
                 }
-            }else {
+            }else if(!"SUCCESS".equals(returnCode)){
                 orderNo.setResponseCode(returnCode);
                 orderNo.setResponseMessage(object.get("result_code").toString());
                 orderNo.setStatus("10C");
                 payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                returnResult.setMessage("微信回调支付失败！");
             }
         }
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**
@@ -300,8 +295,7 @@ public class PayController extends BaseController{
      */
     @ResponseBody
     @RequestMapping(value = "/alipayNotify")
-    public synchronized JSONObject alipayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ReturnResult returnResult = new ReturnResult();
+    public synchronized void alipayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
         log.info("支付宝平台回调开始+++++++++++++++++++++++++++++++++");
         // 获取支付宝POST过来反馈信息
         Map<String, String> params = new HashMap<>();
@@ -328,7 +322,7 @@ public class PayController extends BaseController{
             Order orderNo = payService.getOrderId(orderId);
             if (orderNo != null) {
                 // 有可能出现多次回调，只有在该状态下的回调才是支付成功下的回调
-                if (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED")) {
+                if (!"10B".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
                     String trxNo = params.get("trade_status");
                     //加钱
                     orderNo.setResponseCode(trxNo);
@@ -338,21 +332,17 @@ public class PayController extends BaseController{
                     AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
                     BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
                     payService.updateTotal(appUser.getId(), add);
-                    returnResult.setMessage("支付宝回调成功！");
-                    returnResult.setStatus(Boolean.TRUE);
-                } else {
+                } else if(!"Success".equals(params.get("msg"))){
                     String trxNo = params.get("trade_status");
                     //加钱
                     orderNo.setResponseCode(trxNo);
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10C");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                    returnResult.setMessage("支付宝回调支付失败！");
                 }
             }
             log.info("支付宝平台回调结束+++++++++++++++++++++++++++++++++");
         }
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**
