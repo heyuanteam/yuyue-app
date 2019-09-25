@@ -40,15 +40,15 @@ public interface MyService {
      */
     List<AdPrice> getAdvertisementFeeInfo(String priceId);
 
-    Feedback getFeedback(String details);
-
-    Advertisement findAdvertisement(String agencyCode);
-
-    ShowName findShowName(String description, String phone);
-
     void insertShowName(String id, String userId, String teamName, String description, String size,
                         String categoryId, String address, String phone, String cardZUrl, String cardFUrl,
                         String videoAddress, String mail, String weChat);
 
     List<ChangeMoneyVo> changeMoneyList(String id);
+
+    Feedback getFeedback(String details, String contact);
+
+    ShowName findShowName(String description, String phone, String teamName);
+
+    Advertisement findAdvertisement(String agencyCode, String produceAddr, String phone);
 }

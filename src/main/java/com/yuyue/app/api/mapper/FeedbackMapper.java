@@ -15,6 +15,6 @@ public interface FeedbackMapper extends MyBaseMapper<Feedback> {
             "(#{id},#{contact},#{pictureUrl},#{details},#{userId})")
     void insertFeedback(Feedback feedback);
 
-    @Select("select * from yuyue_feedback where details =#{details} LIMIT 1")
-    Feedback getFeedback(@Param("details") String details);
+    @Select("select * from yuyue_feedback where details =#{details} and contact=#{contact} LIMIT 1")
+    Feedback getFeedback(@Param("details") String details,@Param("contact") String contact);
 }

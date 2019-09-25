@@ -389,10 +389,9 @@ public class LoginController extends BaseController{
             loginService.updateAppUser(appUserById.getId(),"","","","","","",
                     "","","","","","","","",
                     "",city,jpushName,"","","");
-            result.setMessage("获取成功！");
-            result.setStatus(Boolean.TRUE);
-            result.setToken(loginService.getToken(appUserById));
-            result.setResult(JSONObject.toJSON(appUserById));
+            AppUser appUser = loginService.getAppUserMsg("","",appUserById.getId());
+            result.setToken(loginService.getToken(appUser));
+            result.setResult(JSONObject.toJSON(appUser));
         }
         result.setMessage("获取成功！");
         result.setStatus(Boolean.TRUE);

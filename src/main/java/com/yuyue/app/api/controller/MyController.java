@@ -78,7 +78,7 @@ public class MyController extends BaseController{
             feedback.setPictureUrl(mapValue.get("pictureUrl"));
             feedback.setDetails(mapValue.get("details"));
             feedback.setUserId(userId);
-            Feedback feed = myService.getFeedback(feedback.getDetails());
+            Feedback feed = myService.getFeedback(feedback.getDetails(),feedback.getContact());
             if(StringUtils.isNotNull(feed)){
                 returnResult.setMessage("请勿重复提交！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -222,7 +222,7 @@ public class MyController extends BaseController{
         advertisement.setMerchandiseUrl(parameterMap.get("merchandiseUrl"));
         advertisement.setTelephone(parameterMap.get("telephone"));
 
-        Advertisement adver = myService.findAdvertisement(advertisement.getAgencyCode());
+        Advertisement adver = myService.findAdvertisement(advertisement.getAgencyCode(),advertisement.getProduceAddr(),advertisement.getPhone());
         if(StringUtils.isNotNull(adver)){
             returnResult.setMessage("请勿重复添加！");
         } else {
@@ -355,7 +355,7 @@ public class MyController extends BaseController{
             showName.setMail(mapValue.get("mail"));
             //    微信
             showName.setWeChat(mapValue.get("weChat"));
-            ShowName show = myService.findShowName(showName.getDescription(),showName.getPhone());
+            ShowName show = myService.findShowName(showName.getDescription(),showName.getPhone(),showName.getTeamName());
             if(StringUtils.isNotNull(show)){
                 returnResult.setMessage("请勿重复添加！");
             } else {
