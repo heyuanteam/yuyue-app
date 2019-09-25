@@ -745,7 +745,6 @@ public class PayController extends BaseController{
      */
     @ResponseBody
     @RequestMapping("/payNative")
-    @LoginRequired
     public JSONObject payNative(Order order,HttpServletRequest request, HttpServletResponse response) throws Exception {
         //允许跨域
         response.setHeader("Access-Control-Allow-Origin","*");
