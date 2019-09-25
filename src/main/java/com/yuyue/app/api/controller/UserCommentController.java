@@ -112,8 +112,14 @@ public class UserCommentController extends BaseController{
             comment.setVideoId(videoId);
             comment.setUserId(user.getId());
             comment.setText(mapValue.get("text"));
-            //用户表，视频表评论数+1
-            uploadFileService.commentAmount(authorId,videoId);
+            //普通用户，商人  评论
+            if (!"2".equals(user.getUserType()) && !"4".equals(user.getUserType())){
+                uploadFileService.allRoleCommentAmount(authorId,videoId,user.getId());
+            }
+            //艺人评论   用户表，视频表评论数+1
+            else {
+                uploadFileService.allRoleCommentAmount(authorId,videoId,"");
+            }
             //数据插入到Comment表中
             userCommentService.addComment(comment);
             //获取所有评论
@@ -147,9 +153,16 @@ public class UserCommentController extends BaseController{
         if(authorId.isEmpty() || videoId.isEmpty() || user.getId().isEmpty()){
             returnResult.setMessage("作者id或视频id不能为空!!");
         }else {
+            if (!"2".equals(user.getUserType()) && !"4".equals(user.getUserType())){
+                uploadFileService.reduceCommentAmount(authorId,videoId,user.getId());
+            }
+            //艺人评论   用户表，视频表评论数+1
+            else {
+                uploadFileService.reduceCommentAmount(authorId,videoId,"");
+            }
             //通过评论id查询是否存在此评论
             userCommentService.deleteComment(commentId,videoId);
-            uploadFileService.reduceCommentAmount(authorId,videoId);
+
             returnResult.setMessage("删除成功！");
             returnResult.setStatus(Boolean.TRUE);
         }

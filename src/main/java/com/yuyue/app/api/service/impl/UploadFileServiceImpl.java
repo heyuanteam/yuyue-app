@@ -325,15 +325,32 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     /**
-     *视频表、用户表评论量+1
+     *视频表、用户表  艺人评论量+1
      * @param videoId
      * @return
      */
-    @Override
+    /*@Override
     public JSONObject commentAmount(String authorId,String videoId) {
         ReturnResult returnResult=new ReturnResult();
         uploadFileMapper.commentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
         uploadFileMapper.userCommentAmount(authorId);
+        returnResult.setMessage("评论成功!");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }*/
+
+    /**
+     *视频表、用户表  视频评论量,艺人评论量,用户评论量都+1
+     * @param videoId
+     * @return
+     */
+    @Override
+    public JSONObject allRoleCommentAmount(String authorId,String videoId,String userId) {
+        ReturnResult returnResult=new ReturnResult();
+        uploadFileMapper.commentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
+        uploadFileMapper.userCommentAmount(authorId);
+        if (StringUtils.isNotNull(userId))
+        uploadFileMapper.userCommentAmount(userId);
         returnResult.setMessage("评论成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -346,9 +363,13 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @param videoId
      */
     @Override
-    public void reduceCommentAmount(String authorId,String videoId){
+    public void reduceCommentAmount(String authorId,String videoId,String userId){
         uploadFileMapper.delCommentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), videoId);
+
         uploadFileMapper.delUserCommentAmount(authorId);
+        if (StringUtils.isNotNull(userId))
+            uploadFileMapper.delUserCommentAmount(userId);
+
     }
 
 

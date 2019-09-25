@@ -52,19 +52,23 @@ public interface UploadFileService {
      * 视频评论量
      * @param
      */
-    JSONObject commentAmount(String authorId,String videoId);
+    //JSONObject commentAmount(String authorId,String videoId);
 
 
-
+    /**
+     * 视频表,用户表 评论量 +1
+     * @param
+     */
+     JSONObject allRoleCommentAmount(String authorId,String videoId,String userId);
 
 
 
     /**
-     * 删除评论， 评论量 -1
+     * 删除评论， 视频表,用户表 评论量 -1
      * @param authorId
      * @param videoId
      */
-    void reduceCommentAmount(String authorId,String videoId);
+    void reduceCommentAmount(String authorId,String videoId,String userId);
     /**
      * 视频页 获取视频  默认每张表查询五表记录
      * @param bdgin

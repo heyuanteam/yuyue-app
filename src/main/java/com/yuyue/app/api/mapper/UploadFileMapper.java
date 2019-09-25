@@ -119,14 +119,12 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
 
 
     /**
-     * 用户表  通过用户id  评论量+1
+     * 用户表  通过艺人id  评论量+1
      * @param authorId
      */
     @Transactional
-    @Update("UPDATE yuyue_merchant  SET COMMENT_TOTAL =COMMENT_TOTAL +1  WHERE id = #{authorId} ")
+    @Update("UPDATE yuyue_merchant  SET COMMENT_TOTAL =COMMENT_TOTAL + 1  WHERE id = #{authorId} ")
     void userCommentAmount(String authorId);
-
-
 
 
 
