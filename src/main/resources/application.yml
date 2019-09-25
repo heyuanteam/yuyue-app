@@ -85,8 +85,8 @@ logging:
     #root: info
 
 fdfs:
-  so-timeout: 60000 #上传的超时时间
-  connect-timeout: 60000 #连接超时时间
+  so-timeout: 600000 #上传的超时时间
+  connect-timeout: 600000 #连接超时时间
   tracker-list: 101.37.252.177:22122
   pool:
     jmx-enabled: false
