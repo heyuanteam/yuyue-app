@@ -7,10 +7,7 @@ import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.AppVersion;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.service.LoginService;
-import com.yuyue.app.utils.MD5Utils;
-import com.yuyue.app.utils.RandomSaltUtil;
-import com.yuyue.app.utils.ResultJSONUtils;
-import com.yuyue.app.utils.StringUtils;
+import com.yuyue.app.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +34,8 @@ public class LoginController extends BaseController{
     private LoginService loginService;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 获取版本号
@@ -283,7 +282,7 @@ public class LoginController extends BaseController{
     @RequestMapping(value = "/updateAppUser", produces = "application/json; charset=UTF-8")
     @ResponseBody
     @LoginRequired
-    public JSONObject updateAppUser(@CurrentUser AppUser user, String nickName, String realName, String idCard, String phone,
+    public JSONObject updateAppUser(@CurrentUser AppUser user, String nickName, String realName, String idCard, String newPhone,
                                     String sex, String headpUrl, String userStatus, String addrDetail, String education, String wechat,
                                     String signature, String password, String oldPassword,String code,
                                     String userUrl, String cardZUrl, String cardFUrl,HttpServletRequest request) throws Exception {
@@ -299,11 +298,11 @@ public class LoginController extends BaseController{
                 return ResultJSONUtils.getJSONObjectBean(result);
             }
             ciphertextPwd = MD5Utils.getMD5Str(password + user.getSalt());
-        } else if (StringUtils.isNotEmpty(phone)){
+        } else if (StringUtils.isNotEmpty(newPhone)){
             if(StringUtils.isEmpty(code)){
                 result.setMessage("验证码为空！");
                 return ResultJSONUtils.getJSONObjectBean(result);
-            } else if(!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
+            } else if(!code.equals(redisUtil.getString(user.getPhone()).toString())) {
                 result.setMessage("验证码错误！");
                 return ResultJSONUtils.getJSONObjectBean(result);
             }
@@ -319,7 +318,7 @@ public class LoginController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(result);
         }
         LOGGER.info("============" + user.toString());
-        loginService.updateAppUser(user.getId(),nickName,realName,idCard,phone,sex,headpUrl, userStatus, addrDetail, education,
+        loginService.updateAppUser(user.getId(),nickName,realName,idCard,newPhone,sex,headpUrl, userStatus, addrDetail, education,
                 wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,"","","","","");
         result.setMessage("修改成功！");
         result.setStatus(Boolean.TRUE);

@@ -180,6 +180,7 @@ public class PayController extends BaseController{
             String signs = MD5Utils.signDatashwx(maps, KEY);
             maps.put("sign", signs);
             //        return JSONObject.toJSONString(maps);
+            maps.put("orderId",order.getId());
             returnResult.setMessage("返回成功！");
             returnResult.setStatus(Boolean.TRUE);
             returnResult.setResult(JSONObject.toJSON(maps));
@@ -268,6 +269,7 @@ public class PayController extends BaseController{
                 returnResult.setStatus(Boolean.TRUE);
                 Map map = new HashMap();
                 map.put("response",response.getBody());
+                map.put("orderId",order.getId());
 //                String[] split = response.getBody().split("&");
 //                for (int i = 0; i < split.length; i++) {
 //                    map.put(split[i].split("=")[0],split[i].split("=")[1]);
@@ -611,8 +613,8 @@ public class PayController extends BaseController{
         if("ZFB".equals(tradeType)){
 
         } else if ("WX".equals(tradeType)) {
-            String opendId = " ";
-            String wechatName = " ";
+            String opendId = "";
+            String wechatName = "";
             try {
                 loginService.updateOpendId(user.getId(),opendId,wechatName);
                 returnResult.setMessage("解绑成功！");
