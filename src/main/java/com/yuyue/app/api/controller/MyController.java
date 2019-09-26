@@ -265,17 +265,20 @@ public class MyController extends BaseController{
     /**
      * 我的评论
      * @param appUser
-     * @param videoId
+     * @param page
      * @return
      */
     @RequestMapping("/myComments")
     @ResponseBody
     @LoginRequired
-    public JSONObject getAllCommentByUserId(@CurrentUser AppUser appUser,String videoId,HttpServletRequest request){
+    public JSONObject getAllCommentByUserId(@CurrentUser AppUser appUser,String page,HttpServletRequest request){
         log.info("我的评论-------------->>/myController/myComments");
         getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
-        List<UserCommentVo> allComment = userCommentService.getAllComment("", appUser.getId());
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 10;
+        int begin = (Integer.parseInt(page) - 1) * limit;
+        List<UserCommentVo> allComment = userCommentService.getAllComment("", appUser.getId(),begin,limit);
         if (StringUtils.isEmpty(allComment)){
             returnResult.setMessage("暂无评论!!");
         }else {
@@ -408,12 +411,15 @@ public class MyController extends BaseController{
     @RequestMapping("/myRelease")
     @ResponseBody
     @LoginRequired
-    public JSONObject myRelease(@CurrentUser AppUser appUser,HttpServletRequest request){
+    public JSONObject myRelease(@CurrentUser AppUser appUser,HttpServletRequest request,String page){
         log.info("我的发布-------------->>/myController/myRelease");
         getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
         Map<String,Object> map = Maps.newHashMap();
-        List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(appUser.getId());
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 5;
+        int begin = (Integer.parseInt(page) - 1) * limit;
+        List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(appUser.getId(),begin,limit);
         if (StringUtils.isEmpty(videoByAuthorId)){
             returnResult.setMessage("暂无发布视频");
         } else {
@@ -455,12 +461,12 @@ public class MyController extends BaseController{
 
            /* BigDecimal bds = new BigDecimal(commodity.getAdDuration()).multiply
                     (new BigDecimal(commodity.getAdPrice())).setScale(2, BigDecimal.ROUND_HALF_UP);*/
+           //获取价格信息
             List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(commodity.getPriceId());
             if (StringUtils.isEmpty(advertisementFeeInfo)){
                 returnResult.setMessage("价格id传入错误！！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-            commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
             commodity.setMerchantId(user.getId());
             AdPrice adPrice = advertisementFeeInfo.get(0);
             BigDecimal bigDecimal = new BigDecimal(adPrice.getAdTotalPrice()).multiply(new BigDecimal(adPrice.getAdDiscount()))
@@ -468,31 +474,95 @@ public class MyController extends BaseController{
             Order order = new Order();
             order.setTradeType(tradeType);
             order.setMoney(bigDecimal);
-            try {
-                jsonObject = payController.payYuYue(order, user);
-
-                if ("true".equals(jsonObject.getString("status"))){
-                    String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
-
-                    if (StringUtils.isEmpty(orderId)){
+            if(StringUtils.isNotEmpty(commodity.getCommodityId())){
+                List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodity.getCommodityId());
+                if (StringUtils.isEmpty(commodityInfoList)){
+                    returnResult.setMessage("未查询该商品！！");
+                    returnResult.setResult(commodityInfoList);
+                    return ResultJSONUtils.getJSONObjectBean(returnResult);
+                }else {
+                    Order getOrder = payService.getOrderId(commodityInfoList.get(0).getOrderId());
+                    if (StringUtils.isNull(getOrder)){
                         returnResult.setMessage("订单Id为空！！");
                         return ResultJSONUtils.getJSONObjectBean(returnResult);
+                    }else if("10B".equals(getOrder.getStatus())){
+                        returnResult.setMessage("该商品的订单已成功生成！！");
+                        return ResultJSONUtils.getJSONObjectBean(returnResult);
+                    }else if("10A".equals(getOrder.getStatus())){
+                        if ("GGWX".equals(order.getTradeType())) {
+                            try {
+                                return payController.payWX(getOrder);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else if ("GGZFB".equals(order.getTradeType())) {
+                            try {
+                                return payController.payZFB(getOrder);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    else {
+                        try {
+                            jsonObject = payController.payYuYue(order, user);
+                            //生成订单
+                            if ("true".equals(jsonObject.getString("status"))){
+                                String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                                if (StringUtils.isEmpty(orderId)){
+                                    returnResult.setMessage("订单Id为空！！");
+                                    return ResultJSONUtils.getJSONObjectBean(returnResult);
+                                }
+                                commodity.setOrderId(orderId);
+                                Order newOrder = payService.getOrderId(orderId);
+                                if ("10B".equals(newOrder.getStatus()))
+                                    commodity.setStatus(newOrder.getStatus());
+                                else
+                                    commodity.setStatus("10A");
+                                returnResult.setMessage("订单重新生成，等待审核！！");
+                                returnResult.setStatus(Boolean.TRUE);
+                                returnResult.setResult(jsonObject.get("result"));
+                                myService.commodityToSpread(commodity);
+                                return ResultJSONUtils.getJSONObjectBean(returnResult);
+                            }else {
+                                returnResult.setMessage("订单生成失败！！");
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
-                    commodity.setOrderId(orderId);
-                    Order getOrder = payService.getOrderId(orderId);
-                    if ("10B".equals(getOrder.getStatus()))
-                        commodity.setStatus(getOrder.getStatus());
-                    else
-                        commodity.setStatus("10A");
-                    returnResult.setMessage("订单生成，等待审核！！");
-                    returnResult.setStatus(Boolean.TRUE);
-                    returnResult.setResult(jsonObject.get("result"));
-                    myService.commodityToSpread(commodity);
-                    return ResultJSONUtils.getJSONObjectBean(returnResult);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            }
+            else{
+                commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+                try {
+                    jsonObject = payController.payYuYue(order, user);
+                    //生成订单
+                    if ("true".equals(jsonObject.getString("status"))){
+                        String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                        if (StringUtils.isEmpty(orderId)){
+                            returnResult.setMessage("订单Id为空！！");
+                            return ResultJSONUtils.getJSONObjectBean(returnResult);
+                        }
+                        commodity.setOrderId(orderId);
+                        Order getOrder = payService.getOrderId(orderId);
+                        if ("10B".equals(getOrder.getStatus()))
+                            commodity.setStatus(getOrder.getStatus());
+                        else
+                            commodity.setStatus("10A");
+                        returnResult.setMessage("订单生成，等待审核！！");
+                        returnResult.setStatus(Boolean.TRUE);
+                        returnResult.setResult(jsonObject.get("result"));
+                        myService.commodityToSpread(commodity);
+                        return ResultJSONUtils.getJSONObjectBean(returnResult);
+                    }else {
+                        returnResult.setMessage("订单生成失败！！");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         return jsonObject;
@@ -541,9 +611,6 @@ public class MyController extends BaseController{
         if(StringUtils.isNotEmpty(commodityId)){
 
             List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodityId);
-            /*if (commodityInfoList.get(0).getOrderId())*/
-
-
             if (StringUtils.isEmpty(commodityInfoList)){
                 returnResult.setMessage("未查询该商品！！");
             }
@@ -563,6 +630,11 @@ public class MyController extends BaseController{
 
                     if ("10A".equals(commodity.getStatus())){
                         Order orderById=payService.getOrderId(commodity.getOrderId());
+                        if (StringUtils.isNull(orderById)){
+                            returnResult.setMessage("订单id为空！！");
+                            returnResult.setResult(new java.awt.List());
+                            return ResultJSONUtils.getJSONObjectBean(returnResult);
+                        }
                         if ("10A".equals(orderById.getStatus())){
                             continue;
                         }else if ("10B".equals(orderById.getStatus())){

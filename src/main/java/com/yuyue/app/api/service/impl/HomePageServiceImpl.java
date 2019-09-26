@@ -50,8 +50,8 @@ public class HomePageServiceImpl implements HomePageService {
     }
 
     @Override
-    public List<YuyueSite> getSiteList() {
-        return yuyueSiteMapper.getSiteList();
+    public List<YuyueSite> getSiteList(Integer begin,Integer limit) {
+        return yuyueSiteMapper.getSiteList(begin,limit);
     }
 
     @Override

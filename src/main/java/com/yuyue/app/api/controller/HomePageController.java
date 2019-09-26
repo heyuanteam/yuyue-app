@@ -147,18 +147,22 @@ public class HomePageController extends BaseController {
     }
 
     /**
-     * 获取现场节目
+     * 获取现场
      * @param id
      * @return
      */
     @RequestMapping("/getSite")
     @ResponseBody
-    public JSONObject getSite(String id,HttpServletRequest request){
+    public JSONObject getSite(String page,String id,HttpServletRequest request){
         log.info("获取现场节目-------------->>/homePage/getSite");
         getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
+
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 5;
+        int begin = (Integer.parseInt(page) - 1) * limit;
         if (StringUtils.isEmpty(id)){
-            List<YuyueSite> siteList = homePageService.getSiteList();
+            List<YuyueSite> siteList = homePageService.getSiteList(begin,limit);
             if (StringUtils.isEmpty(siteList)){
                 returnResult.setMessage("暂无信息！！");
             }else

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserCommentService {
 
-    List<UserCommentVo> getAllComment(String videoId ,String userId);
+    List<UserCommentVo> getAllComment(String videoId ,String userId,Integer begin,Integer limit);
 
 
     void addComment(UserComment comment);

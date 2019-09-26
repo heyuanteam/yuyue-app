@@ -68,7 +68,7 @@ public class UserCommentController extends BaseController{
 //                System.out.println("redis缓存取出的数据" + user);
 //            }
         } else {
-            userCommentList = userCommentService.getAllComment(videoId,"");
+            userCommentList = userCommentService.getAllComment(videoId,"",1,10);
             String str = JSON.toJSONString(userCommentList);
             redisUtil.setString("comment" + videoId, str, 60);
 //            System.out.println("查询数据库并存储redis---->>>>>>>" + str);
@@ -123,7 +123,7 @@ public class UserCommentController extends BaseController{
             //数据插入到Comment表中
             userCommentService.addComment(comment);
             //获取所有评论
-            List<UserCommentVo> allComment = userCommentService.getAllComment(videoId, "");
+            List<UserCommentVo> allComment = userCommentService.getAllComment(videoId, "",1,10);
             //获取评论数
             //int commentTotal = userCommentService.getCommentTotal(videoId);
             returnResult.setMessage("评论成功！");

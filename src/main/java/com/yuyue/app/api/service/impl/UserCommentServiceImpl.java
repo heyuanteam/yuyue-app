@@ -34,8 +34,8 @@ public class UserCommentServiceImpl implements UserCommentService{
      * @return
      */
     @Override
-    public List<UserCommentVo> getAllComment(String videoId,String userId) {
-        return userCommentMapper.getAllComment(videoId,userId);
+    public List<UserCommentVo> getAllComment(String videoId,String userId,Integer begin,Integer limit) {
+        return userCommentMapper.getAllComment(videoId,userId,begin,limit);
     }
     /**
      * 获取分页所有评论

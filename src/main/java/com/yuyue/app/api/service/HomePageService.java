@@ -12,7 +12,7 @@ public interface HomePageService {
     List<Address> getAddress();
     YuyueSite getSite(String id);
     void updateSite(String id);
-    List<YuyueSite> getSiteList();
+    List<YuyueSite> getSiteList(Integer begin,Integer limit);
     List<SiteShow> getShow(String siteId);
     void addSitePerson(YuyueSitePerson yuyueSitePerson);
     YuyueSitePerson getSitePerson(String userId, String siteId);

@@ -22,7 +22,7 @@
         <result column="status" property="status"/>
         <association property="appUser" javaType="com.yuyue.app.api.domain.AppUser">
             <!-- 关联条件Employee的dept_id对应着Department的id -->
-            <id column="ID" property="id"/>
+            <id column="userId" property="id"/>
             <result column="USER_NICK_NAME" property="nickName"/>
             <result column="HEADP_URL" property="headpUrl"/>
             <result column="ATTENTION_TOTAL" property="attentionTotal"/>
@@ -33,10 +33,10 @@
 
     <select id="getVideo" resultMap="myUploadFile" parameterType="String">
         select
-        b.id,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b.filesName,b.filesPath,
+        b.id ,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b.filesName,b.filesPath,
         b.filesType,b.fileSize,b.authorId,b.description,b.playAmount,b.commentAmount,b.likeAmount,b.attentionAmount,
         b.duration,b.title,b.videoAddress,b.categoryId,b.status,
-        m.ID,m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL
+        m.ID "userId",m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL
         from ${tableName} b
         left join yuyue_merchant m on b.authorId = m.ID
         WHERE  1=1 and b.filesType = 'video' and b.status ='10B'
@@ -46,7 +46,7 @@
             <choose>
                 <when test="content!=null and content!=''">  and CONCAT(b.title,m.USER_NICK_NAME) LIKE '%'#{content}'%'  </when>
             </choose>
-        ORDER BY b.UPLOAD_TIME DESC
+            ORDER BY b.UPLOAD_TIME DESC
          LIMIT #{begin},#{size}
 
     </select>
@@ -54,10 +54,10 @@
 
     <select id="getVideoToHomePage" resultMap="myUploadFile" parameterType="Integer">
         select
-        b.id,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b.filesName,b.filesPath,
+        b.id ,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b.filesName,b.filesPath,
         b.filesType,b.fileSize,b.authorId,b.description,b.playAmount,b.commentAmount,b.likeAmount,b.attentionAmount,
         b.duration,b.title,b.videoAddress,b.categoryId,b.status,
-        m.ID,m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL
+        m.ID "userId",m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL
         from yuyue_upload_file_home b
         left join yuyue_merchant m on b.authorId = m.ID
         WHERE  1=1 and b.filesType = 'video' and b.status ='10B'

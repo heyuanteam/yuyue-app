@@ -288,8 +288,8 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @param
      * @return
      */
-     public List<UploadFile> getVideoByAuthorId(String authorId){
-         return uploadFileMapper.getVideoByAuthorId(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), authorId);
+     public List<UploadFile> getVideoByAuthorId(String authorId,Integer begin,Integer limit){
+         return uploadFileMapper.getVideoByAuthorId(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), authorId,begin,limit);
     }
 
     /**
