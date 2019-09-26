@@ -59,10 +59,12 @@ public class MyServiceImpl implements MyService {
      * @return
      */
     @Override
-    public List<Advertisement> getCommodityInfo(String merchantId, String videoId,String commodityId) {
+    public List<Commodity> getCommodityInfo(String merchantId, String videoId,String commodityId) {
         return commodityMapper.getCommodityInfo(merchantId,videoId,commodityId);
     }
-
+    public void updateCommodityStatus(String commodityId,String status){
+        commodityMapper.updateCommodityStatus(commodityId,status);
+    }
     @Override
     public List<AdPrice> getAdvertisementFeeInfo(String priceId) {
         return adPriceMapper.getAdvertisementFeeInfo(priceId);
