@@ -132,6 +132,8 @@ public class LoginController extends BaseController{
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)) {
                 result.setMessage("账号密码不能为空!");
+            } else if (code.length() != 6) {
+                result.setMessage("验证码输入错误！");
             }else {
                 AppUser appUser = loginService.getAppUserMsg("",phone,"");
                 try {
@@ -176,8 +178,8 @@ public class LoginController extends BaseController{
         getParameterMap(request);
         ReturnResult result = new ReturnResult();
         try {
-            if (StringUtils.isEmpty(code)) {
-                result.setMessage("验证码为空！");
+            if (StringUtils.isEmpty(code) || code.length() != 6) {
+                result.setMessage("验证码输入错误！");
             } else {
                 try {
                     AppUser appUser = loginService.getAppUserMsg("",phone,"");
@@ -226,6 +228,8 @@ public class LoginController extends BaseController{
                 result.setMessage("参数错误！");
             } else if (pattern.matcher(phone).matches() == false || phone.length() != 11) {
                 result.setMessage("手机号输入错误！");
+            } else if (code.length() != 6) {
+                result.setMessage("验证码输入错误！");
             } else {
                 AppUser appUserMsgByPhone = loginService.getAppUserMsg("",phone,"");
                 try {
@@ -314,7 +318,7 @@ public class LoginController extends BaseController{
             ciphertextPwd = MD5Utils.getMD5Str(password + user.getSalt());
         } else if (StringUtils.isNotEmpty(newPhone)){
             try {
-                if(StringUtils.isEmpty(code) || code.length() > 6){
+                if(StringUtils.isEmpty(code) || code.length() != 6){
                     result.setMessage("验证码错误！");
                     return ResultJSONUtils.getJSONObjectBean(result);
                 } else if(!code.equals(redisUtil.getString(newPhone).toString())) {
@@ -327,7 +331,7 @@ public class LoginController extends BaseController{
                 return ResultJSONUtils.getJSONObjectBean(result);
             }
         } else if (StringUtils.isNotEmpty(idCard)){
-            if(idCard.length() < 18){
+            if(idCard.length() != 18){
                 result.setMessage("身份证号码错误！");
                 return ResultJSONUtils.getJSONObjectBean(result);
             }

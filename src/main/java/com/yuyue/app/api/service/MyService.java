@@ -7,7 +7,7 @@ import java.util.List;
 public interface MyService {
     void insertFeedback(Feedback feedback);
 
-    List<Order> getMoneyList(String id);
+    List<Order> getMoneyList(String id, int begin, int size);
 
     /**
      * 插入广告推广信息
@@ -46,7 +46,7 @@ public interface MyService {
                         String categoryId, String address, String phone, String cardZUrl, String cardFUrl,
                         String videoAddress, String mail, String weChat);
 
-    List<ChangeMoneyVo> changeMoneyList(String id);
+    List<ChangeMoneyVo> changeMoneyList(String id, int begin, int size);
 
     Feedback getFeedback(String details, String contact);
 

@@ -49,7 +49,7 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public List<OutMoney> getOutMoneyList(String id) { return payMapper.getOutMoneyList(id); }
+    public List<OutMoney> getOutMoneyList(String id,int begin, int size) { return payMapper.getOutMoneyList(id,begin,size); }
 
     @Override
     public List<Gift> getGiftList() { return payMapper.getGiftList();}
@@ -59,5 +59,8 @@ public class PayServiceImpl implements PayService {
 
     @Override
     public void createShouMoney(ChangeMoney changeMoney) {  payMapper.createShouMoney(changeMoney); }
+
+    @Override
+    public List<Order> findOrderList(String startTime) { return payMapper.findOrderList(startTime);}
 
 }
