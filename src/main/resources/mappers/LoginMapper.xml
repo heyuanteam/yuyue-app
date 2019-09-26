@@ -166,7 +166,7 @@
         FROM
         yuyue_merchant
         WHERE
-        user_nick_name LIKE '%'#{content}'%'
+        user_nick_name LIKE "%"#{content}"%"
         AND ID IN (
         SELECT
         authorId
