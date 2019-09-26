@@ -134,15 +134,21 @@ public class LoginController extends BaseController{
                 result.setMessage("账号密码不能为空!");
             }else {
                 AppUser appUser = loginService.getAppUserMsg("",phone,"");
-                if (appUser == null) {
-                    result.setMessage("该用户未注册!");
-                } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
-                    result.setMessage("验证码错误！");
-                } else {
-                    String ciphertextPwd = MD5Utils.getMD5Str(password + appUser.getSalt());
-                    loginService.editPassword(phone, ciphertextPwd);
-                    result.setMessage("修改密码成功！");
-                    result.setStatus(Boolean.TRUE);
+                try {
+                    if (appUser == null) {
+                        result.setMessage("该用户未注册!");
+                    } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
+                        result.setMessage("验证码错误！");
+                    } else {
+                        String ciphertextPwd = MD5Utils.getMD5Str(password + appUser.getSalt());
+                        loginService.editPassword(phone, ciphertextPwd);
+                        result.setMessage("修改密码成功！");
+                        result.setStatus(Boolean.TRUE);
+                    }
+                } catch (Exception e){
+                    LOGGER.info("验证码已超时！");
+                    result.setMessage("验证码已超时！");
+                    return ResultJSONUtils.getJSONObjectBean(result);
                 }
             }
         } catch (Exception e) {
@@ -173,16 +179,22 @@ public class LoginController extends BaseController{
             if (StringUtils.isEmpty(code)) {
                 result.setMessage("验证码为空！");
             } else {
-                AppUser appUser = loginService.getAppUserMsg("",phone,"");
-                if (appUser == null) {
-                    result.setMessage("请您先去注册！");
-                } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
-                    result.setMessage("验证码错误！");
-                } else {
-                    result.setMessage("登录成功！");
-                    result.setStatus(Boolean.TRUE);
-                    result.setToken(loginService.getToken(appUser));
-                    result.setResult(JSONObject.toJSON(appUser));
+                try {
+                    AppUser appUser = loginService.getAppUserMsg("",phone,"");
+                    if (appUser == null) {
+                        result.setMessage("请您先去注册！");
+                    } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
+                        result.setMessage("验证码错误！");
+                    } else {
+                        result.setMessage("登录成功！");
+                        result.setStatus(Boolean.TRUE);
+                        result.setToken(loginService.getToken(appUser));
+                        result.setResult(JSONObject.toJSON(appUser));
+                    }
+                } catch (Exception e){
+                    LOGGER.info("验证码已超时！");
+                    result.setMessage("验证码已超时！");
+                    return ResultJSONUtils.getJSONObjectBean(result);
                 }
             }
         } catch (Exception e) {
@@ -216,25 +228,31 @@ public class LoginController extends BaseController{
                 result.setMessage("手机号输入错误！");
             } else {
                 AppUser appUserMsgByPhone = loginService.getAppUserMsg("",phone,"");
-                if (appUserMsgByPhone != null) {
-                    result.setMessage("该号码已注册！");
-                } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
-                    result.setMessage("验证码错误！");
-                } else {
-                    //uuid
-                    String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
-                    String salt = RandomSaltUtil.generetRandomSaltCode(4);
-                    AppUser appUser = new AppUser();
-                    appUser.setId(uuid);
-                    appUser.setUserNo(RandomSaltUtil.randomNumber(15));
-                    appUser.setNickName(phone);
-                    appUser.setRealName(phone);
-                    appUser.setPhone(phone);
-                    appUser.setPassword(MD5Utils.getMD5Str(password + salt));
-                    appUser.setSalt(salt);//盐
-                    loginService.addUser(appUser);
-                    result.setMessage("注册成功！");
-                    result.setStatus(Boolean.TRUE);
+                try {
+                    if (appUserMsgByPhone != null) {
+                        result.setMessage("该号码已注册！");
+                    } else if (!code.equals(redisTemplate.opsForValue().get(phone).toString())) {
+                        result.setMessage("验证码错误！");
+                    } else {
+                        //uuid
+                        String uuid = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+                        String salt = RandomSaltUtil.generetRandomSaltCode(4);
+                        AppUser appUser = new AppUser();
+                        appUser.setId(uuid);
+                        appUser.setUserNo(RandomSaltUtil.randomNumber(15));
+                        appUser.setNickName(phone);
+                        appUser.setRealName(phone);
+                        appUser.setPhone(phone);
+                        appUser.setPassword(MD5Utils.getMD5Str(password + salt));
+                        appUser.setSalt(salt);//盐
+                        loginService.addUser(appUser);
+                        result.setMessage("注册成功！");
+                        result.setStatus(Boolean.TRUE);
+                    }
+                } catch (Exception e){
+                    LOGGER.info("验证码已超时！");
+                    result.setMessage("验证码已超时！");
+                    return ResultJSONUtils.getJSONObjectBean(result);
                 }
             }
         } catch (Exception e) {
@@ -257,10 +275,6 @@ public class LoginController extends BaseController{
         LOGGER.info("获取实时信息-------------->>/login/getMessage");
         getParameterMap(request);
         ReturnResult result = new ReturnResult();
-        if(StringUtils.isEmpty(user.getId())){
-            result.setMessage("缺少用户id!!!");
-            return ResultJSONUtils.getJSONObjectBean(result);
-        }
         AppUser appUserById = loginService.getAppUserMsg("","",user.getId());
         if (appUserById == null) {
             result.setMessage("查询数据失败！");
@@ -299,11 +313,17 @@ public class LoginController extends BaseController{
             }
             ciphertextPwd = MD5Utils.getMD5Str(password + user.getSalt());
         } else if (StringUtils.isNotEmpty(newPhone)){
-            if(StringUtils.isEmpty(code)){
-                result.setMessage("验证码为空！");
-                return ResultJSONUtils.getJSONObjectBean(result);
-            } else if(!code.equals(redisUtil.getString(user.getPhone()).toString())) {
-                result.setMessage("验证码错误！");
+            try {
+                if(StringUtils.isEmpty(code) || code.length() > 6){
+                    result.setMessage("验证码错误！");
+                    return ResultJSONUtils.getJSONObjectBean(result);
+                } else if(!code.equals(redisUtil.getString(newPhone).toString())) {
+                    result.setMessage("验证码错误！");
+                    return ResultJSONUtils.getJSONObjectBean(result);
+                }
+            } catch (Exception e){
+                LOGGER.info("验证码已超时！");
+                result.setMessage("验证码已超时！");
                 return ResultJSONUtils.getJSONObjectBean(result);
             }
         } else if (StringUtils.isNotEmpty(idCard)){
@@ -328,7 +348,7 @@ public class LoginController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(result);
     }
     /**
-     * 修改信息
+     * 认证信息
      *
      * @param user
      * @return

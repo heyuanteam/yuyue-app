@@ -130,7 +130,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                     //数据库修改
 //                uploadFileMapper.updateById(uploadFile);
 //                uploadFileList.add(uploadFileMapper.selectById(uploadFiles.get(i).getId()));
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     log.info("文件上传失败，正在清理文件==================>,{}", e.getMessage());
                     e.printStackTrace();
 //                    for (int j = 0; j < listMDs.size(); j++) {
@@ -138,6 +138,8 @@ public class UploadFileServiceImpl implements UploadFileService {
 //                        this.storageClient.deleteFile(split[1] +"/"+ split[2] +"/"+ split[3] +"/"+ split[4] +"/"+ split[5]);
 //                    }
                     log.info("文件存储在服务器的失败=======>{}", e.getMessage());
+                    returnResult.setMessage("上传文件失败!");
+                    return ResultJSONUtils.getJSONObjectBean(returnResult);
                 }
             }
         }
