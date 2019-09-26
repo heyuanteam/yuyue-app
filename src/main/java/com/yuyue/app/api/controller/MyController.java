@@ -103,7 +103,7 @@ public class MyController extends BaseController{
         Map<String, String> parameterMap = getParameterMap(request);
         String page = parameterMap.get("page");
         if (StringUtils.isEmpty(page))  page = "1";
-        int limit = 20;
+        int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
         List<Order> list = myService.getMoneyList(user.getId(),begin,limit);
         if(CollectionUtils.isEmpty(list)){
@@ -129,7 +129,7 @@ public class MyController extends BaseController{
         Map<String, String> parameterMap = getParameterMap(request);
         String page = parameterMap.get("page");
         if (StringUtils.isEmpty(page))  page = "1";
-        int limit = 20;
+        int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
         List<ChangeMoneyVo> list = myService.changeMoneyList(user.getId(),begin,limit);
         if(CollectionUtils.isEmpty(list)){
@@ -624,7 +624,7 @@ public class MyController extends BaseController{
         Map<String, String> parameterMap = getParameterMap(request);
         String page = parameterMap.get("page");
         if (StringUtils.isEmpty(page))  page = "1";
-        int limit = 20;
+        int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
         ReturnResult returnResult =new ReturnResult();
         List<OutMoney> list = payService.getOutMoneyList(appUser.getId(),begin,limit);

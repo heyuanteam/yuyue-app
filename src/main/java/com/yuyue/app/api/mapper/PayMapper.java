@@ -71,7 +71,8 @@ public interface PayMapper extends MyBaseMapper<Order> {
             "(SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.sourceId) sourceName," +
             "b.changeNo,b.tradeType,b.money,b.`status`,b.note,DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime " +
             "FROM yuyue_change_money b  LIMIT #{begin},#{size}")
-    List<ChangeMoneyVo> changeMoneyList(String id,@Param(value = "begin") int begin,@Param(value = "size")int size);
+    List<ChangeMoneyVo> changeMoneyList(@Param(value = "id")String id,@Param(value = "begin") int begin,@Param(value = "size")int size);
 
-
+    @Select("SELECT * FROM yuyue_order b where DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') < #{startTime} AND b.`status` = '10A'")
+    List<Order> findOrderList(@Param(value = "startTime") String startTime);
 }
