@@ -152,7 +152,11 @@ public class PayController extends BaseController{
             map.put("appid", wxAppId);
             map.put("mch_id", wxMchID);
             map.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));
-            map.put("body", "yuyue-礼物充值");
+            if((order.getTradeType()).contains("GG")){
+                map.put("body", "yuyue-广告费用");
+            } else {
+                map.put("body", "yuyue-礼物充值");
+            }
             map.put("out_trade_no", order.getId());
             map.put("total_fee", moneyD);
             map.put("spbill_create_ip", "101.37.252.177");
@@ -224,8 +228,10 @@ public class PayController extends BaseController{
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
                     AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
-                    BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
-                    payService.updateTotal(appUser.getId(), add);
+                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")){
+                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
+                        payService.updateTotal(appUser.getId(), add);
+                    }
                 }
             }else if("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)){
                 orderNo.setResponseCode(returnCode);
@@ -249,8 +255,13 @@ public class PayController extends BaseController{
             AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
             // SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
             AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setBody("充值消费");
-            model.setSubject("充值消费");
+            if((order.getTradeType()).contains("GG")){
+                model.setBody("yuyue-广告费用");
+                model.setSubject("yuyue-广告费用");
+            } else {
+                model.setBody("yuyue-礼物充值");
+                model.setSubject("yuyue-礼物充值");
+            }
             model.setOutTradeNo(order.getId());
             model.setTimeoutExpress("30m");
 
@@ -333,8 +344,10 @@ public class PayController extends BaseController{
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
                     AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
-                    BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
-                    payService.updateTotal(appUser.getId(), add);
+                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")) {
+                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser, orderNo.getMoney(), "+");
+                        payService.updateTotal(appUser.getId(), add);
+                    }
                 } else if("10A".equals(orderNo.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
                     log.info("不加钱===================");
                     String trxNo = params.get("trade_status");
