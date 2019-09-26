@@ -23,7 +23,7 @@ public interface CommodityMapper extends MyBaseMapper<Advertisement> {
             "\tCOMMODITY_PRICE,\n" +
             "\tPAY_URL,\n" +
             "\tADDR,\n" +
-            "\tSTATUS\n" +
+            "\tSTATUS,\n" +
             "\tSPOKESPERSON_ID,\n" +
             "\tMERCHANT_ID\n" +
             ")  VALUES \n" +
