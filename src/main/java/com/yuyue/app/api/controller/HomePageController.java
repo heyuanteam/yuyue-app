@@ -94,7 +94,7 @@ public class HomePageController extends BaseController {
         ReturnResult returnResult=new ReturnResult();
         /*List<UploadFile> list = Lists.newArrayList();*/
         if (StringUtils.isEmpty(page))  page = "1";
-        int limit = 5;
+        int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
    /*   List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
         List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);
