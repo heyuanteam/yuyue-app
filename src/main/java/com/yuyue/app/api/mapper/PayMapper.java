@@ -38,8 +38,8 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Update("UPDATE yuyue_merchant b SET b.income = #{money} WHERE b.ID = #{merchantId}")
     void updateOutIncome(@Param("merchantId") String merchantId,@Param("money") BigDecimal money);
 
-    @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_order b WHERE b.merchantId = #{id} AND b.`status` = '10B' ")
-    List<Order> getMoneyList(@Param("id") String id);
+    @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_order b WHERE b.merchantId = #{id} AND b.`status` = '10B' LIMIT #{begin},#{size}")
+    List<Order> getMoneyList(@Param("id") String id,@Param(value = "begin") int begin,@Param(value = "size")int size);
 
     @Transactional
     @Insert("replace into yuyue_out_money (id,outNo,tradeType,money,merchantId,responseCode,responseMessage,moneyNumber,realName)  values  " +
@@ -53,8 +53,8 @@ public interface PayMapper extends MyBaseMapper<Order> {
     void updateOutStatus(@Param("responseCode") String responseCode,@Param("responseMessage") String responseMessage,
                          @Param("status") String status,@Param("outNo") String outNo);
 
-    @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_out_money b WHERE b.merchantId = #{id} ")
-    List<OutMoney> getOutMoneyList(@Param("id") String id);
+    @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_out_money b WHERE b.merchantId = #{id} LIMIT #{begin},#{size}")
+    List<OutMoney> getOutMoneyList(@Param("id") String id,@Param(value = "begin") int begin,@Param(value = "size")int size);
 
     @Select("SELECT * FROM yuyue_gift")
     List<Gift> getGiftList();
@@ -70,8 +70,8 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Select("SELECT (SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.merchantId) yiName," +
             "(SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.sourceId) sourceName," +
             "b.changeNo,b.tradeType,b.money,b.`status`,b.note,DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime " +
-            "FROM yuyue_change_money b ")
-    List<ChangeMoneyVo> changeMoneyList(String id);
+            "FROM yuyue_change_money b  LIMIT #{begin},#{size}")
+    List<ChangeMoneyVo> changeMoneyList(String id,@Param(value = "begin") int begin,@Param(value = "size")int size);
 
 
 }

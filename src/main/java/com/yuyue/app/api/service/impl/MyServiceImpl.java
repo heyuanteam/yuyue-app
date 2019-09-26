@@ -28,7 +28,7 @@ public class MyServiceImpl implements MyService {
     public void insertFeedback(Feedback feedback) { feedbackMapper.insertFeedback(feedback); }
 
     @Override
-    public List<Order> getMoneyList(String id) { return payMapper.getMoneyList(id); }
+    public List<Order> getMoneyList(String id,int begin, int size) { return payMapper.getMoneyList(id,begin,size); }
 
     @Override
     public void addAdvertisemenInfo(Advertisement advertisement) {
@@ -79,7 +79,7 @@ public class MyServiceImpl implements MyService {
     }
 
     @Override
-    public List<ChangeMoneyVo> changeMoneyList(String id) { return payMapper.changeMoneyList(id); }
+    public List<ChangeMoneyVo> changeMoneyList(String id,int begin, int size) { return payMapper.changeMoneyList(id,begin,size); }
 
     @Override
     public Feedback getFeedback(String details, String contact) { return feedbackMapper.getFeedback(details,contact); }

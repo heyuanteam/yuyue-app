@@ -99,9 +99,13 @@ public class MyController extends BaseController{
     @LoginRequired
     public JSONObject getMoneyList(@CurrentUser AppUser user,HttpServletRequest request){
         log.info("充值记录和送礼记录-------------->>/myController/getMoneyList");
-        getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
-        List<Order> list = myService.getMoneyList(user.getId());
+        Map<String, String> parameterMap = getParameterMap(request);
+        String page = parameterMap.get("page");
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 20;
+        int begin = (Integer.parseInt(page) - 1) * limit;
+        List<Order> list = myService.getMoneyList(user.getId(),begin,limit);
         if(CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无消费记录！");
         } else {
@@ -121,9 +125,13 @@ public class MyController extends BaseController{
     @LoginRequired
     public JSONObject changeMoneyList(@CurrentUser AppUser user,HttpServletRequest request){
         log.info("收益记录-------------->>/myController/changeMoneyList");
-        getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
-        List<ChangeMoneyVo> list = myService.changeMoneyList(user.getId());
+        Map<String, String> parameterMap = getParameterMap(request);
+        String page = parameterMap.get("page");
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 20;
+        int begin = (Integer.parseInt(page) - 1) * limit;
+        List<ChangeMoneyVo> list = myService.changeMoneyList(user.getId(),begin,limit);
         if(CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无收益记录！");
         } else {
@@ -536,31 +544,23 @@ public class MyController extends BaseController{
             userId = String.valueOf(JWT.decode(token).getAudience().get(0));
         }
         ReturnResult returnResult =new ReturnResult();
-
         //获取商品信息
         if(StringUtils.isNotEmpty(commodityId)){
-
             List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodityId);
             /*if (commodityInfoList.get(0).getOrderId())*/
-
-
             if (StringUtils.isEmpty(commodityInfoList)){
                 returnResult.setMessage("未查询该商品！！");
             }
             returnResult.setResult(commodityInfoList);
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        //我的广告
-        else if (StringUtils.isNotEmpty(userId) ){
+        } else if (StringUtils.isNotEmpty(userId) ){
+            //我的广告
             List<Commodity> commodityInfoList = myService.getCommodityInfo(userId, "","");
             if (StringUtils.isEmpty(commodityInfoList)){
                 returnResult.setMessage("暂无广告申请！！");
             }else {
-
-                for (Commodity commodity:commodityInfoList
-                     ) {
-
+                for (Commodity commodity:commodityInfoList) {
                     if ("10A".equals(commodity.getStatus())){
                         Order orderById=payService.getOrderId(commodity.getOrderId());
                         if ("10A".equals(orderById.getStatus())){
@@ -621,9 +621,13 @@ public class MyController extends BaseController{
     @LoginRequired
     public JSONObject getOutMoneyList(@CurrentUser AppUser appUser,HttpServletRequest request){
         log.info("提现记录-------------->>/myController/getOutMoneyList");
-        getParameterMap(request);
+        Map<String, String> parameterMap = getParameterMap(request);
+        String page = parameterMap.get("page");
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 20;
+        int begin = (Integer.parseInt(page) - 1) * limit;
         ReturnResult returnResult =new ReturnResult();
-        List<OutMoney> list = payService.getOutMoneyList(appUser.getId());
+        List<OutMoney> list = payService.getOutMoneyList(appUser.getId(),begin,limit);
         if (CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无提现记录！");
         }
