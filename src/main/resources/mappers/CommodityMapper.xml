@@ -7,6 +7,7 @@
         <!-- 定义结果集，column表示sql查询列,property表示映射到实体的属性 -->
         <resultMap type="com.yuyue.app.api.domain.Commodity" id="myCommodity">
             <id column="COMMODITY_ID" property="commodityId"/>
+            <id column="ORDER_ID" property="orderId"/>
             <result column="CATEGORY" property="category"/>
             <result column="COMMODITY_NAME" property="commodityName"/>
             <result column="AD_WORD" property="adWord"/>
@@ -32,6 +33,7 @@
     <select id="getCommodityInfo" parameterType="String" resultMap="myCommodity">
         SELECT
         c.COMMODITY_ID ,
+        c.ORDER_ID,
         c.PRICE_ID ,
         c.CATEGORY ,
         c.COMMODITY_NAME ,

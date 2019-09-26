@@ -14,6 +14,8 @@ public class Commodity implements Serializable {
     private static final long serialVersionUID = 1L;
     //商品id
     private String commodityId;
+    //订单ID
+    private String orderId;
     //广告价格ID
     private String priceId;
     //商品种类

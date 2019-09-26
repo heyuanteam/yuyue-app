@@ -426,7 +426,7 @@ public class MyController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
     /**
-     *商家上传广告申请
+     *商家上传 商品信息
      * @param commodity
      */
     @RequestMapping("/commodityToSpread")
@@ -452,8 +452,7 @@ public class MyController extends BaseController{
             returnResult.setMessage("金额输入错误！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else {
-            commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
-            commodity.setMerchantId(user.getId());
+
            /* BigDecimal bds = new BigDecimal(commodity.getAdDuration()).multiply
                     (new BigDecimal(commodity.getAdPrice())).setScale(2, BigDecimal.ROUND_HALF_UP);*/
             List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(commodity.getPriceId());
@@ -461,6 +460,8 @@ public class MyController extends BaseController{
                 returnResult.setMessage("价格id传入错误！！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
+            commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+            commodity.setMerchantId(user.getId());
             AdPrice adPrice = advertisementFeeInfo.get(0);
             BigDecimal bigDecimal = new BigDecimal(adPrice.getAdTotalPrice()).multiply(new BigDecimal(adPrice.getAdDiscount()))
                     .setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -469,7 +470,20 @@ public class MyController extends BaseController{
             order.setMoney(bigDecimal);
             try {
                 jsonObject = payController.payYuYue(order, user);
+
                 if ("true".equals(jsonObject.getString("status"))){
+                    String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                    if (StringUtils.isEmpty(orderId)){
+                        returnResult.setMessage("订单Id为空！！");
+                        return ResultJSONUtils.getJSONObjectBean(returnResult);
+                    }
+                    Order orderStatus = payService.getOrderId(orderId);
+                    if (StringUtils.isNull(orderStatus)){
+                        returnResult.setMessage("未查询该订单！！");
+                        return ResultJSONUtils.getJSONObjectBean(returnResult);
+                    }
+                    commodity.setOrderId(orderId);
+                    commodity.setStatus(orderStatus.getStatus());
                     returnResult.setMessage("订单生成，等待审核！！");
                     returnResult.setStatus(Boolean.TRUE);
                     returnResult.setResult(jsonObject.get("result"));
