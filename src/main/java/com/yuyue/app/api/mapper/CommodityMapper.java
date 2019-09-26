@@ -1,16 +1,16 @@
 package com.yuyue.app.api.mapper;
 
-import com.yuyue.app.api.domain.Advertisement;
 import com.yuyue.app.api.domain.Commodity;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
-public interface CommodityMapper extends MyBaseMapper<Advertisement> {
+public interface CommodityMapper extends MyBaseMapper<Commodity> {
     @Transactional
     @Insert("replace INTO yuyue_commodity (\n" +
             "\tCOMMODITY_ID,\n" +
@@ -32,6 +32,9 @@ public interface CommodityMapper extends MyBaseMapper<Advertisement> {
     void commodityToSpread(Commodity commodity);
 
 
-    List<Advertisement> getCommodityInfo(@Param("merchantId")String merchantId,@Param("videoId")String videoId,@Param(value = "commodityId")String commodityId);
+    List<Commodity> getCommodityInfo(@Param("merchantId")String merchantId,@Param("videoId")String videoId,@Param(value = "commodityId")String commodityId);
 
+    @Transactional
+    @Update("UPDATE yuyue_commodity SET `STATUS`= #{status} WHERE COMMODITY_ID = #{commodityId}")
+    void updateCommodityStatus(@Param("commodityId")String commodityId,@Param("status")String status);
 }

@@ -57,6 +57,7 @@
         p.AD_TOTAL_PRICE ,
         p.AD_DISCOUNT ,
         DATE_FORMAT(p.CREATE_TIME ,'%Y-%m-%d %H:%i:%s') CREATE_TIME
+
         FROM yuyue_commodity   c
         LEFT join yuyue_commodity_price p on c.PRICE_ID = p.ID
         where 1=1 and

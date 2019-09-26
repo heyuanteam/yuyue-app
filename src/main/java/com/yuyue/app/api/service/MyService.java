@@ -31,8 +31,10 @@ public interface MyService {
      * @param videoId
      * @return
      */
-    List<Advertisement> getCommodityInfo(String merchantId, String videoId,String commodityId);
+    List<Commodity> getCommodityInfo(String merchantId, String videoId,String commodityId);
 
+
+    void updateCommodityStatus(String commodityId,String status);
     /**
      * 获取广告费用信息
      * @param
