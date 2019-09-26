@@ -98,7 +98,7 @@
                 b.`opendId` = #{opendId},
             </if>
             <if test="wechatName!=null and wechatName!=''">
-                b.`wechatName` = #{wechatName}
+                b.`wechatName` = #{wechatName},
             </if>
         </set>
         WHERE 1=1
