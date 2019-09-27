@@ -166,7 +166,7 @@
         FROM
         yuyue_merchant
         WHERE
-        user_nick_name LIKE  concat('%', #{content}, '%')
+        user_nick_name like concat('%', #{content}, '%')
         AND ID IN (
         SELECT
         authorId

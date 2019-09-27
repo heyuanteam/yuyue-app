@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yuyue.app.api.mapper.CommodityMapper">
 
-
-
         <!-- 定义结果集，column表示sql查询列,property表示映射到实体的属性 -->
         <resultMap type="com.yuyue.app.api.domain.Commodity" id="myCommodity">
             <id column="COMMODITY_ID" property="commodityId"/>
