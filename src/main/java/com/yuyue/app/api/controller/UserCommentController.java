@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
@@ -16,6 +17,8 @@ import com.yuyue.app.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +43,8 @@ public class UserCommentController extends BaseController{
     private LoginService loginService;
     @Autowired
     private UploadFileService uploadFileService;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
     /**
@@ -87,7 +91,20 @@ public class UserCommentController extends BaseController{
         returnResult.setResult(map);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+    @RequestMapping("/test")
+    @ResponseBody
+    public void test(){
+        ValueOperations<String, String> valueTemplate = redisTemplate.opsForValue();
+        Gson gson = new Gson();
 
+        valueTemplate.set("StringKey1", "hello spring boot redis, String Redis");
+        String value = valueTemplate.get("StringKey1");
+        System.out.println(value);
+
+        valueTemplate.set("StringKey2", gson.toJson(new Person("theName", 11)));
+        Person person = gson.fromJson(valueTemplate.get("StringKey2"), Person.class);
+        System.out.println(person);
+    }
 
 
     /**

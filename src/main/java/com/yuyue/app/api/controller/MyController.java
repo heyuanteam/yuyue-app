@@ -814,53 +814,50 @@ public class MyController extends BaseController{
         if ("10A".equals(appUser.getUserStatus())){
             returnResult.setMessage("未实名,请前往实名验证！！");
             returnResult.setCode("01");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else if ("10B".equals(appUser.getUserStatus())){
             if (StringUtils.isEmpty(siteId)){
                 returnResult.setMessage("扫描二维码，获取信息存在空值！！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             YuyueSite site = homePageService.getSite(siteId);
-            YuyueSitePerson sitePerson = homePageService.getSitePerson(appUser.getId(), siteId);
-            String startTime = site.getStartTime().split(" ")[1];
-            String startHour=startTime.split(":")[0];
-            String format = new SimpleDateFormat("HH").format(new Date());
-            int personSum = Integer.parseInt(site.getPersonSum());
-            int personTotal = Integer.parseInt(site.getPersonTotal());
             if (StringUtils.isNull(site)){
                 returnResult.setMessage("查无本场次演出！！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }else if (format.compareTo(startHour)>2){
-                returnResult.setMessage("本场次结束进场！！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }else if("10B".equals(sitePerson.getStatus())){
-                returnResult.setMessage("通过！！");
-                returnResult.setStatus(Boolean.TRUE);
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            } else if(personSum >= personTotal ){
-                returnResult.setMessage("本场次已经满员！！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }else {
-                homePageService.updateSite(siteId);
-                YuyueSitePerson yuyueSitePerson=new YuyueSitePerson();
-                String id=UUID.randomUUID().toString().replace("-","").toUpperCase();
-                yuyueSitePerson.setId(id);
-                yuyueSitePerson.setSiteId(siteId);
-                yuyueSitePerson.setUserRealName(appUser.getRealName());
-                yuyueSitePerson.setUserId(appUser.getId());
-                homePageService.addSitePerson(yuyueSitePerson);
-                returnResult.setMessage("通过！！");
-                returnResult.setStatus(Boolean.TRUE);
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-
+            YuyueSitePerson sitePerson = homePageService.getSitePerson(appUser.getId(), siteId);
+            //未入场
+            if(StringUtils.isNull(sitePerson)){
+                String startTime = site.getStartTime().split(" ")[1];
+                String startHour=startTime.split(":")[0];
+                String format = new SimpleDateFormat("HH").format(new Date());
+                int personSum = Integer.parseInt(site.getPersonSum());
+                int personTotal = Integer.parseInt(site.getPersonTotal());
+                if (Integer.parseInt(format) - Integer.parseInt(startHour) >2 ||Integer.parseInt(startHour) - Integer.parseInt(format) >2 ){
+                    returnResult.setMessage("本场次结束进场！！");
+                }else if(personSum >= personTotal ){
+                    returnResult.setMessage("本场次已经满员！！");
+                }else {
+                    YuyueSitePerson yuyueSitePerson=new YuyueSitePerson();
+                    String id=UUID.randomUUID().toString().replace("-","").toUpperCase();
+                    yuyueSitePerson.setId(id);
+                    yuyueSitePerson.setSiteId(siteId);
+                    yuyueSitePerson.setUserRealName(appUser.getRealName());
+                    yuyueSitePerson.setUserId(appUser.getId());
+                    homePageService.addSitePerson(yuyueSitePerson);
+                    //更新现场入场人数
+                    homePageService.updateSite(siteId);
+                    returnResult.setMessage("通过！！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }
+            }
+            //已入场
+            else if("10B".equals(sitePerson.getStatus())){
+                returnResult.setMessage("通过！！");
+                returnResult.setStatus(Boolean.TRUE);
+            }
         }else if ("10C".equals(appUser.getUserStatus())){
             returnResult.setMessage("实名中，敬请等候！！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else {
             returnResult.setMessage("实名失败,重新实名！！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }
