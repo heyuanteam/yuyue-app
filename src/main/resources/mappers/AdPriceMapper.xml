@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yuyue.app.api.mapper.AdPriceMapper">
 
-
-
     <!-- 查询单条记录 -->
     <select id="getAdvertisementFeeInfo"  parameterType="String" resultType="com.yuyue.app.api.domain.AdPrice">
         SELECT ID priceId,
