@@ -467,15 +467,11 @@ public class MyController extends BaseController{
             returnResult.setMessage("金额输入错误！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else {
-
-           /* BigDecimal bds = new BigDecimal(commodity.getAdDuration()).multiply
-                    (new BigDecimal(commodity.getAdPrice())).setScale(2, BigDecimal.ROUND_HALF_UP);*/
             List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(commodity.getPriceId());
             if (StringUtils.isEmpty(advertisementFeeInfo)){
                 returnResult.setMessage("价格id传入错误！！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-            /*commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());*/
             commodity.setMerchantId(user.getId());
             AdPrice adPrice = advertisementFeeInfo.get(0);
             BigDecimal bigDecimal = new BigDecimal(adPrice.getAdTotalPrice()).multiply(new BigDecimal(adPrice.getAdDiscount()))
@@ -483,19 +479,24 @@ public class MyController extends BaseController{
             Order order = new Order();
             order.setTradeType(tradeType);
             order.setMoney(bigDecimal);
+            //传入商品id重新支付
             if(StringUtils.isNotEmpty(commodity.getCommodityId())){
                 List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodity.getCommodityId(),-1,-1);
                 if (StringUtils.isEmpty(commodityInfoList)){
-                    returnResult.setMessage("未查询该商品！！");
+                    returnResult.setMessage("未查询该商品申请！！");
                     returnResult.setResult(commodityInfoList);
+                    returnResult.setStatus(Boolean.TRUE);
                     return ResultJSONUtils.getJSONObjectBean(returnResult);
                 }else {
                     Order getOrder = payService.getOrderId(commodityInfoList.get(0).getOrderId());
                     if (StringUtils.isNull(getOrder)){
                         returnResult.setMessage("订单Id为空！！");
                         return ResultJSONUtils.getJSONObjectBean(returnResult);
-                    }else if("10B".equals(getOrder.getStatus())){
+                    }else if("10B".equals(getOrder.getStatus()) && "10B".equals(commodity.getStatus()) ){
                         returnResult.setMessage("该商品的订单已成功生成！！");
+                        return ResultJSONUtils.getJSONObjectBean(returnResult);
+                    }else if("10B".equals(getOrder.getStatus()) && "10C".equals(commodity.getStatus()) ){
+                        returnResult.setMessage("该商品的订单已成功生成,并正在发布状态！！");
                         return ResultJSONUtils.getJSONObjectBean(returnResult);
                     }else if("10A".equals(getOrder.getStatus())){
                         if ("GGWX".equals(order.getTradeType())) {
@@ -512,7 +513,8 @@ public class MyController extends BaseController{
                             }
                         }
                     }
-                    else {
+
+                    else if ("10D".equals(commodityInfoList.get(0).getStatus()) ){
                         try {
                             jsonObject = payController.payYuYue(order, user);
                             //生成订单
@@ -540,10 +542,13 @@ public class MyController extends BaseController{
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }else {
+                        return ResultJSONUtils.getJSONObjectBean(returnResult);
                     }
 
                 }
             }
+            //新的商品推广申请
             else{
                 commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
                 try {
@@ -620,7 +625,7 @@ public class MyController extends BaseController{
         }
         ReturnResult returnResult =new ReturnResult();
         //获取商品信息
-        if(StringUtils.isNotEmpty(commodityId)){
+        if(StringUtils.isNotEmpty(commodityId) && StringUtils.isEmpty(userId) && StringUtils.isEmpty(videoId)){
             List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodityId,-1,-1);
             /*if (commodityInfoList.get(0).getOrderId())*/
             if (StringUtils.isEmpty(commodityInfoList)){
@@ -629,7 +634,7 @@ public class MyController extends BaseController{
             returnResult.setResult(commodityInfoList);
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (StringUtils.isNotEmpty(userId) ){
+        } else if (StringUtils.isNotEmpty(userId)  && StringUtils.isEmpty(videoId) && StringUtils.isEmpty(commodityId)){
             //我的广告
             List<Commodity> commodityInfoList = myService.getCommodityInfo(userId, "","", begin, limit);
             if (StringUtils.isEmpty(commodityInfoList)){
@@ -687,7 +692,7 @@ public class MyController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         //获取爆款
-        else if (StringUtils.isNotEmpty(videoId)){
+        else if (StringUtils.isNotEmpty(videoId) && StringUtils.isEmpty(commodityId) && StringUtils.isEmpty(commodityId)){
             List<Commodity> commodityInfoList = myService.getCommodityInfo("", videoId,"", -1, -1);
             if (StringUtils.isEmpty(commodityInfoList)){
                 returnResult.setMessage("暂无代言商品！！");
