@@ -28,6 +28,7 @@ public interface UserCommentMapper extends MyBaseMapper<UserComment> {
      * @param userId
      * @return
      */
+
     @Select("SELECT comment.ID as id,comment.TEXT as text,comment.VIDEO_ID as videoId,comment.USER_ID as userId," +
             "DATE_FORMAT(comment.CREATE_TIME,'%Y-%m-%d %H:%i:%s') as createTime ,user.USER_NICK_NAME as userName,user.HEADP_URL as  headUrl " +
             "FROM yuyue_user_comment as comment left join yuyue_merchant as user on comment.user_id = user.id " +

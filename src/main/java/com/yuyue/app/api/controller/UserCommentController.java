@@ -1,7 +1,5 @@
 package com.yuyue.app.api.controller;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
@@ -23,9 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author ly   This Controller class provides user attention, likes, comments
@@ -63,23 +62,23 @@ public class UserCommentController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         Map<String,Object> map= Maps.newTreeMap();
-        List<UserCommentVo> userCommentList = null;
+
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
         //设置缓存
+        /*
+        List<UserCommentVo> userCommentList = null;
         if (redisUtil.existsKey("comment" + videoId)) {
             userCommentList = JSON.parseObject((String) redisUtil.getString("comment" + videoId),
                     new TypeReference<List<UserCommentVo>>() {});
-//            for (UserCommentVo user : userCommentList) {
-//                System.out.println("redis缓存取出的数据" + user);
-//            }
+
         } else {
             userCommentList = userCommentService.getAllComment(videoId,"",begin,limit);
             String str = JSON.toJSONString(userCommentList);
             redisUtil.setString("comment" + videoId, str, 60);
-//            System.out.println("查询数据库并存储redis---->>>>>>>" + str);
-        }
+        }*/
+        List<UserCommentVo> userCommentList = userCommentService.getAllComment(videoId,"",begin,limit);
         if(userCommentList.isEmpty()) {
             returnResult.setMessage("暂无评论！");
         }else {
@@ -122,7 +121,7 @@ public class UserCommentController extends BaseController{
         ReturnResult returnResult =new ReturnResult();
         String videoId=mapValue.get("videoId");
         String authorId=mapValue.get("authorId");
-        Map<String,Object> map= Maps.newTreeMap();
+        /*Map<String,Object> map= Maps.newTreeMap();*/
         if(authorId.isEmpty() || videoId.isEmpty() || user.getId().isEmpty()){
             returnResult.setMessage("作者id或视频id不能为空!!");
         } else {
@@ -132,6 +131,8 @@ public class UserCommentController extends BaseController{
             comment.setVideoId(videoId);
             comment.setUserId(user.getId());
             comment.setText(mapValue.get("text"));
+            //数据插入到Comment表中
+            userCommentService.addComment(comment);
             //普通用户，商人  评论
             if (!"2".equals(user.getUserType()) && !"4".equals(user.getUserType())){
                 uploadFileService.allRoleCommentAmount(authorId,videoId,user.getId());
@@ -140,16 +141,12 @@ public class UserCommentController extends BaseController{
             else {
                 uploadFileService.allRoleCommentAmount(authorId,videoId,"");
             }
-            //数据插入到Comment表中
-            userCommentService.addComment(comment);
+
             //获取所有评论
-            List<UserCommentVo> allComment = userCommentService.getAllComment(videoId, "",1,10);
+           /* List<UserCommentVo> allComment = userCommentService.getAllComment(videoId, "",1,10);*/
             //获取评论数
             //int commentTotal = userCommentService.getCommentTotal(videoId);
-            returnResult.setMessage("评论成功！");
-            map.put("comment", allComment);
-            map.put("commentNum",userCommentService.getCommentTotal(videoId));
-            returnResult.setResult(map);
+            returnResult.setMessage("评论成功！！");
             returnResult.setStatus(Boolean.TRUE);
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);

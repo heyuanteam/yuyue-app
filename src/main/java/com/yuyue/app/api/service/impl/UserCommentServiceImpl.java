@@ -9,6 +9,8 @@ import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +36,7 @@ public class UserCommentServiceImpl implements UserCommentService{
      * @return
      */
     @Override
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public List<UserCommentVo> getAllComment(String videoId,String userId,int begin,int limit) {
         return userCommentMapper.getAllComment(videoId,userId,begin,limit);
     }
@@ -56,6 +59,7 @@ public class UserCommentServiceImpl implements UserCommentService{
     public int getCommentTotal(String videoId){
         return userCommentMapper.getCommentTotal(videoId);
     }
+
     @Override
     public void addComment(UserComment comment) {
         userCommentMapper.addComment(comment);
