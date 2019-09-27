@@ -479,10 +479,10 @@ public class PayController extends BaseController{
         } else if (outMoney.getMoney().compareTo(new BigDecimal(5000))==1){
             returnResult.setMessage("转账的钱不能高于5000元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } /*else if (outMoney.getMoney().compareTo(new BigDecimal(50))==-1){
+        } else if (outMoney.getMoney().compareTo(new BigDecimal(50))==-1){
             returnResult.setMessage("转账的钱不能低于50元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }*/
+        }
 
         outMoney.setOutNo("YYTX" + RandomSaltUtil.randomNumber(14));
         outMoney.setMerchantId(user.getId());
