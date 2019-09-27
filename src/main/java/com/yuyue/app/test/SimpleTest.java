@@ -3,10 +3,9 @@ package com.yuyue.app.test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.regex.Pattern;
-
 
 public class SimpleTest {
+
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -71,7 +70,7 @@ public class SimpleTest {
             System.out.println("----------");
         }
         System.out.println("upload url:"+upload.getAbsolutePath());*/
-        String idCard="412726199410042431";
+        /*String idCard="412726199410042431";
         System.getProperty("user.dir").replace("bin", "webapps/qrcode_image");
         //Pattern pattern = Pattern.compile(" ^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$");
         //Pattern pattern = Pattern.compile("\\\\d{15}(\\\\d{2}[0-9xX])?");
@@ -80,7 +79,9 @@ public class SimpleTest {
 
         if (pattern.matcher(idCard).matches() == false || idCard.length() != 18) {
             System.out.println("错误");
-        }else System.out.println("正确");
+        }else System.out.println("正确");*/
+        RedisTemplate<String, String> stringTemplate = new RedisTemplate<>();
+
     }
 
 }
