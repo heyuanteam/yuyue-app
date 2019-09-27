@@ -1,13 +1,13 @@
 package com.yuyue.app.test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class SimpleTest {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
+
 
     public static void main(String[] args) {
 
@@ -80,8 +80,34 @@ public class SimpleTest {
         if (pattern.matcher(idCard).matches() == false || idCard.length() != 18) {
             System.out.println("错误");
         }else System.out.println("正确");*/
-        RedisTemplate<String, String> stringTemplate = new RedisTemplate<>();
+        /*RedisTemplate<String, String> stringTemplate = new RedisTemplate<>();*/
+       /* String a="2019-09-27 13:37:20";
+        String b="2019-09-22 13:37:20";
+        Date date = new Date("2019-09-22 13:37:20");*/
+/*        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-10-22 13:37:20");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        boolean before = new Date().after(date);
+        if (before != false) System.out.println("2222"+before);
+        else System.out.println(before);*/
 
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-03-29 13:37:20");
+            endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-04-24 13:37:20");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        boolean isStart = new Date().after(startDate);
+        boolean notEnd = new Date().before(endDate);
+
+        if (isStart &&  notEnd) System.out.println("发布中");
+        else if (notEnd ==false) System.out.println("已过期");
+        else System.out.println("未发布");
     }
 
 }

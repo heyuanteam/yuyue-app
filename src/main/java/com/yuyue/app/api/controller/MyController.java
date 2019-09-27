@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -647,6 +648,34 @@ public class MyController extends BaseController{
                         }else {
                             continue;
                         }
+                    }else if ("10B".equals(commodity.getStatus()) &&  StringUtils.isNotEmpty(commodity.getStartDate()) &&   StringUtils.isNotEmpty(commodity.getEndDate())){
+                        Date startDate = null;
+                        Date endDate = null;
+                        try {
+                            startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(commodity.getStartDate());
+                            endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(commodity.getEndDate());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        boolean isStart = new Date().after(startDate);
+                        boolean notEnd = new Date().before(endDate);
+
+                        if (isStart &&  notEnd) myService.updateCommodityStatus(commodity.getCommodityId(),"10C");
+                        else continue;
+                    }else if ("10C".equals(commodity.getStatus()) &&  StringUtils.isNotEmpty(commodity.getStartDate()) &&   StringUtils.isNotEmpty(commodity.getEndDate())){
+                        Date startDate = null;
+                        Date endDate = null;
+                        try {
+                            startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(commodity.getStartDate());
+                            endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(commodity.getEndDate());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        boolean isStart = new Date().after(startDate);
+                        boolean notEnd = new Date().before(endDate);
+
+                        if (notEnd ==false) myService.updateCommodityStatus(commodity.getCommodityId(),"10D");
+                        else continue;
                     }
 
                 }
