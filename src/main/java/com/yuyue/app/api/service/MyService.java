@@ -31,7 +31,7 @@ public interface MyService {
      * @param videoId
      * @return
      */
-    List<Commodity> getCommodityInfo(String merchantId, String videoId,String commodityId);
+    List<Commodity> getCommodityInfo(String merchantId, String videoId,String commodityId,int begin,int limit);
 
 
     void updateCommodityStatus(String commodityId,String status);

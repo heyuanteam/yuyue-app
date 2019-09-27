@@ -159,7 +159,7 @@ public class HomePageController extends BaseController {
         ReturnResult returnResult=new ReturnResult();
 
         if (StringUtils.isEmpty(page))  page = "1";
-        int limit = 5;
+        int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
         if (StringUtils.isEmpty(id)){
             List<YuyueSite> siteList = homePageService.getSiteList(begin,limit);

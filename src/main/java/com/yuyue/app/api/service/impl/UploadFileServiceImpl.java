@@ -284,21 +284,21 @@ public class UploadFileServiceImpl implements UploadFileService {
 //    }
 
     /**
-     * 通过作者id查询本人上传的所有视频,展示所有状态的视频
+     * 我的作品发布  通过作者id查询本人上传的所有视频,展示所有状态的视频
      * @param
      * @return
      */
-     public List<UploadFile> getVideoByAuthorId(String authorId,Integer begin,Integer limit){
+     public List<UploadFile> getVideoByAuthorId(String authorId,int begin,int limit){
          return uploadFileMapper.getVideoByAuthorId(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), authorId,begin,limit);
     }
 
     /**
-     *用户通过作者id查询本人上传的视频,只展示通过审核的视频
+     *用户获取艺人视频列表    用户通过作者id查询本人上传的视频,只展示通过审核的视频
      * @param authorId
      * @return
      */
-    public List<UploadFile> getVideoByAuthor(String authorId){
-        return uploadFileMapper.getVideoByAuthor(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), authorId);
+    public List<UploadFile> getVideoByAuthor(String authorId,int begin,int limit ){
+        return uploadFileMapper.getVideoByAuthor(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), authorId,begin,limit);
     }
 
 

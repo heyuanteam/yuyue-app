@@ -32,7 +32,7 @@ public interface CommodityMapper extends MyBaseMapper<Commodity> {
     void commodityToSpread(Commodity commodity);
 
 
-    List<Commodity> getCommodityInfo(@Param("merchantId")String merchantId,@Param("videoId")String videoId,@Param(value = "commodityId")String commodityId);
+    List<Commodity> getCommodityInfo(@Param("merchantId")String merchantId,@Param("videoId")String videoId,@Param(value = "commodityId")String commodityId,@Param(value = "begin")int begin,@Param(value = "limit")int limit);
 
     @Transactional
     @Update("UPDATE yuyue_commodity SET `STATUS`= #{status} WHERE COMMODITY_ID = #{commodityId}")

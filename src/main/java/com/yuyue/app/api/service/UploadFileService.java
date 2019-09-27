@@ -98,13 +98,13 @@ public interface UploadFileService {
      * @param
      * @return
      */
-     List<UploadFile> getVideoByAuthorId(String authorId,Integer begin,Integer limit);
+     List<UploadFile> getVideoByAuthorId(String authorId,int begin,int limit);
     /**
      *用户通过作者id查询本人上传的视频,只展示通过审核的视频
      * @param authorId
      * @return
      */
-    List<UploadFile> getVideoByAuthor(String authorId);
+    List<UploadFile> getVideoByAuthor(String authorId,int begin,int limit);
 
 
 }

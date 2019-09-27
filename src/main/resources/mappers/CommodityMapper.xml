@@ -73,6 +73,9 @@
         <if test="videoId != null and videoId != '' and merchantId != null and merchantId != ''">
             VIDEO_ID = #{videoId} and MERCHANT_ID = #{merchantId}  and status ='10B'
         </if>
+        <if test="begin >=0 and  limit >0">
+            limit #{begin},#{limit}
+        </if>
 
     </select>
 </mapper>

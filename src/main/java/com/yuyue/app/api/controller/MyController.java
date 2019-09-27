@@ -425,7 +425,7 @@ public class MyController extends BaseController{
         ReturnResult returnResult =new ReturnResult();
         Map<String,Object> map = Maps.newHashMap();
         if (StringUtils.isEmpty(page))  page = "1";
-        int limit = 5;
+        int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
         List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(appUser.getId(),begin,limit);
         if (StringUtils.isEmpty(videoByAuthorId)){
@@ -474,7 +474,7 @@ public class MyController extends BaseController{
                 returnResult.setMessage("价格id传入错误！！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-            commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+            /*commodity.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());*/
             commodity.setMerchantId(user.getId());
             AdPrice adPrice = advertisementFeeInfo.get(0);
             BigDecimal bigDecimal = new BigDecimal(adPrice.getAdTotalPrice()).multiply(new BigDecimal(adPrice.getAdDiscount()))
@@ -483,7 +483,7 @@ public class MyController extends BaseController{
             order.setTradeType(tradeType);
             order.setMoney(bigDecimal);
             if(StringUtils.isNotEmpty(commodity.getCommodityId())){
-                List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodity.getCommodityId());
+                List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodity.getCommodityId(),-1,-1);
                 if (StringUtils.isEmpty(commodityInfoList)){
                     returnResult.setMessage("未查询该商品！！");
                     returnResult.setResult(commodityInfoList);
@@ -609,14 +609,18 @@ public class MyController extends BaseController{
         String token = request.getHeader("token");
         String videoId = request.getParameter("videoId");
         String commodityId = request.getParameter("commodityId");
+        String page = request.getParameter("page");
         String userId="";
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 10;
+        int begin = (Integer.parseInt(page) - 1) * limit;
         if(StringUtils.isNotEmpty(token)) {
             userId = String.valueOf(JWT.decode(token).getAudience().get(0));
         }
         ReturnResult returnResult =new ReturnResult();
         //获取商品信息
         if(StringUtils.isNotEmpty(commodityId)){
-            List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodityId);
+            List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodityId,-1,-1);
             /*if (commodityInfoList.get(0).getOrderId())*/
             if (StringUtils.isEmpty(commodityInfoList)){
                 returnResult.setMessage("未查询该商品！！");
@@ -626,7 +630,7 @@ public class MyController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (StringUtils.isNotEmpty(userId) ){
             //我的广告
-            List<Commodity> commodityInfoList = myService.getCommodityInfo(userId, "","");
+            List<Commodity> commodityInfoList = myService.getCommodityInfo(userId, "","", begin, limit);
             if (StringUtils.isEmpty(commodityInfoList)){
                 returnResult.setMessage("暂无广告申请！！");
             }else {
@@ -638,15 +642,15 @@ public class MyController extends BaseController{
                             returnResult.setResult(new java.awt.List());
                             return ResultJSONUtils.getJSONObjectBean(returnResult);
                         }
-                        if ("10A".equals(orderById.getStatus())){
-                            continue;
-                        }else if ("10B".equals(orderById.getStatus())){
+                        if ("10B".equals(orderById.getStatus())){
                             myService.updateCommodityStatus(commodity.getCommodityId(),"10B");
+                        }else {
+                            continue;
                         }
                     }
 
                 }
-                commodityInfoList = myService.getCommodityInfo(userId, "","");
+                commodityInfoList = myService.getCommodityInfo(userId, "","", begin, limit);
                 returnResult.setMessage("返回成功！！");
             }
             returnResult.setResult(commodityInfoList);
@@ -655,7 +659,7 @@ public class MyController extends BaseController{
         }
         //获取爆款
         else if (StringUtils.isNotEmpty(videoId)){
-            List<Commodity> commodityInfoList = myService.getCommodityInfo("", videoId,"");
+            List<Commodity> commodityInfoList = myService.getCommodityInfo("", videoId,"", -1, -1);
             if (StringUtils.isEmpty(commodityInfoList)){
                 returnResult.setMessage("暂无代言商品！！");
             }

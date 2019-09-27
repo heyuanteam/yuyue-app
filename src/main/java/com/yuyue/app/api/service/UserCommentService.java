@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface UserCommentService {
 
-    List<UserCommentVo> getAllComment(String videoId ,String userId,Integer begin,Integer limit);
+    List<UserCommentVo> getAllComment(String videoId ,String userId,int begin,int limit);
 
 
     void addComment(UserComment comment);
@@ -23,7 +23,7 @@ public interface UserCommentService {
      * @param userId
      * @return
      */
-     List<Attention> getUserAttention(String userId);
+     List<Attention> getUserAttention(String userId,int begin,int limit);
     /**
      * 获取分页所有评论
      * @param videoId

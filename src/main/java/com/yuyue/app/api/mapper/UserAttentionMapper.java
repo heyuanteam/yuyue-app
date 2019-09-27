@@ -15,8 +15,8 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      * @return
      */
     @Select("SELECT *,DATE_FORMAT(CREATE_TIME,'%Y-%m-%d %H:%i:%s') createTime" +
-            " FROM yuyue_attention WHERE userId = #{userId} AND status = '1'")
-    List<Attention> getUserAttention(String userId);
+            " FROM yuyue_attention WHERE userId = #{userId} AND status = '1' limit #{begin},#{limit}")
+    List<Attention> getUserAttention(@Param("userId")String userId,@Param("begin")int begin,@Param("limit")int limit);
 
     /**
      * 添加关注

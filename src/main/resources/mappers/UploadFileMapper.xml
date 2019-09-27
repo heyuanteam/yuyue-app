@@ -44,7 +44,7 @@
                 <when test="categoryId!=null and categoryId!=''">  and b.categoryId=#{categoryId}  </when>
             </choose>
             <choose>
-                <when test="content!=null and content!=''">  and CONCAT(b.title,m.USER_NICK_NAME) LIKE "%"#{content}"%"  </when>
+                <when test="content!=null and content!=''">  and CONCAT(b.title,m.USER_NICK_NAME) like concat('%', #{content}, '%')  </when>
             </choose>
             ORDER BY b.UPLOAD_TIME DESC
          LIMIT #{begin},#{size}

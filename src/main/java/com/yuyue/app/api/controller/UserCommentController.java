@@ -50,7 +50,7 @@ public class UserCommentController extends BaseController{
      */
     @RequestMapping("/getAllComment")
     @ResponseBody
-    public JSONObject getAllComment(String videoId, HttpServletRequest request) {
+    public JSONObject getAllComment(String videoId,String page, HttpServletRequest request) {
         log.info("获取视频中所有的评论-------------->>/userComment/getAllComment");
         getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
@@ -60,6 +60,9 @@ public class UserCommentController extends BaseController{
         }
         Map<String,Object> map= Maps.newTreeMap();
         List<UserCommentVo> userCommentList = null;
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 10;
+        int begin = (Integer.parseInt(page) - 1) * limit;
         //设置缓存
         if (redisUtil.existsKey("comment" + videoId)) {
             userCommentList = JSON.parseObject((String) redisUtil.getString("comment" + videoId),
@@ -68,7 +71,7 @@ public class UserCommentController extends BaseController{
 //                System.out.println("redis缓存取出的数据" + user);
 //            }
         } else {
-            userCommentList = userCommentService.getAllComment(videoId,"",1,10);
+            userCommentList = userCommentService.getAllComment(videoId,"",begin,limit);
             String str = JSON.toJSONString(userCommentList);
             redisUtil.setString("comment" + videoId, str, 60);
 //            System.out.println("查询数据库并存储redis---->>>>>>>" + str);
@@ -79,7 +82,7 @@ public class UserCommentController extends BaseController{
             returnResult.setMessage("返回成功！");
         }
         map.put("comment", userCommentList);
-        map.put("commentNum", userCommentList.size());
+        map.put("commentNum", userCommentService.getCommentTotal(videoId));
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(map);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -128,7 +131,7 @@ public class UserCommentController extends BaseController{
             //int commentTotal = userCommentService.getCommentTotal(videoId);
             returnResult.setMessage("评论成功！");
             map.put("comment", allComment);
-            map.put("commentNum", allComment.size());
+            map.put("commentNum",userCommentService.getCommentTotal(videoId));
             returnResult.setResult(map);
             returnResult.setStatus(Boolean.TRUE);
         }
@@ -178,13 +181,16 @@ public class UserCommentController extends BaseController{
     @RequestMapping("/getUserAttention")
     @ResponseBody
     @LoginRequired
-    public JSONObject getUserAttention(@CurrentUser AppUser user,String content, HttpServletRequest request){
+    public JSONObject getUserAttention(@CurrentUser AppUser user,String content,String page ,HttpServletRequest request){
         log.info("查询用户所有的关注-------------->>/userComment/getUserAttention");
         getParameterMap(request);
         ReturnResult returnResult =new ReturnResult();
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 10;
+        int begin = (Integer.parseInt(page) - 1) * limit;
         List<AppUser> appUserList= Lists.newArrayList();
 //        System.out.println("---------"+user.getId());
-        List<Attention> userAttentions = userCommentService.getUserAttention(user.getId());
+        List<Attention> userAttentions = userCommentService.getUserAttention(user.getId(),begin,limit);
 
         if(userAttentions.isEmpty()){
             returnResult.setResult(userAttentions);
@@ -214,7 +220,7 @@ public class UserCommentController extends BaseController{
     }
 
     /**
-     * 通过艺人id获取视频
+     * (我的发布)通过艺人id获取视频
      * @param user
      * @param authorId
      * @param request
@@ -223,15 +229,18 @@ public class UserCommentController extends BaseController{
     @RequestMapping("/getVideoByAuthorId")
     @ResponseBody
     @LoginRequired
-    public JSONObject getVideoByAuthorId(@CurrentUser AppUser user,String authorId, HttpServletRequest request){
+    public JSONObject getVideoByAuthorId(@CurrentUser AppUser user,String authorId,String page, HttpServletRequest request){
         log.info("通过艺人id获取视频-------------->>/userComment/getVideoByAuthorId");
         getParameterMap(request);
         Map<String,Object> map= Maps.newTreeMap();
         ReturnResult returnResult =new ReturnResult();
+        if (StringUtils.isEmpty(page))  page = "1";
+        int limit = 10;
+        int begin = (Integer.parseInt(page) - 1) * limit;
         if(authorId.isEmpty()  || user.getId().isEmpty()){
             returnResult.setMessage("作者id不能为空!!");
         }
-        List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthor(authorId);
+        List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthor(authorId,begin,limit);
         if(videoByAuthorId.isEmpty()){
             returnResult.setResult(map);
             returnResult.setMessage("暂无视频！！");
@@ -264,7 +273,7 @@ public class UserCommentController extends BaseController{
             returnResult.setMessage("不能关注自己！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        List<Attention> userAttention = userCommentService.getUserAttention(user.getId());
+        List<Attention> userAttention = userCommentService.getUserAttention(user.getId(),1,10);
         for (Attention attertion:userAttention) {
             if (attertion.getAuthorId().equals(authorId)){
                 returnResult.setMessage("用户已关注！！");

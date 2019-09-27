@@ -34,7 +34,7 @@ public class UserCommentServiceImpl implements UserCommentService{
      * @return
      */
     @Override
-    public List<UserCommentVo> getAllComment(String videoId,String userId,Integer begin,Integer limit) {
+    public List<UserCommentVo> getAllComment(String videoId,String userId,int begin,int limit) {
         return userCommentMapper.getAllComment(videoId,userId,begin,limit);
     }
     /**
@@ -76,8 +76,8 @@ public class UserCommentServiceImpl implements UserCommentService{
     }
 
     @Override
-    public List<Attention> getUserAttention(String userId) {
-        return userAttentionMapper.getUserAttention(userId);
+    public List<Attention> getUserAttention(String userId,int begin,int limit) {
+        return userAttentionMapper.getUserAttention(userId,begin,limit);
     }
 
     @Override

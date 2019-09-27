@@ -32,7 +32,7 @@ public interface UserCommentMapper extends MyBaseMapper<UserComment> {
             "DATE_FORMAT(comment.CREATE_TIME,'%Y-%m-%d %H:%i:%s') as createTime ,user.USER_NICK_NAME as userName,user.HEADP_URL as  headUrl " +
             "FROM yuyue_user_comment as comment left join yuyue_merchant as user on comment.user_id = user.id " +
             "where VIDEO_ID = #{videoId} or USER_ID = #{userId} ORDER BY comment.CREATE_TIME desc limit #{begin},#{limit}")
-    List<UserCommentVo> getAllComment(@Param(value = "videoId") String videoId,@Param(value = "userId") String userId,@Param(value = "begin")Integer begin,@Param(value = "limit")Integer limit);
+    List<UserCommentVo> getAllComment(@Param(value = "videoId") String videoId,@Param(value = "userId") String userId,@Param(value = "begin")int begin,@Param(value = "limit")int limit);
     /**
      * 评论分页通过视频id 获取所有评论
      * @param videoId
