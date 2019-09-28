@@ -20,10 +20,10 @@
         SELECT id,system_type,version_no,update_user,program_description,number,
         DATE_FORMAT(CREATE_TIME ,'%Y-%m-%d %H:%i:%s') CREATE_TIME,
         DATE_FORMAT(UPDATE_TIME ,'%Y-%m-%d %H:%i:%s') UPDATE_TIME
-        FROM yuyue_app_version where `status` = '10B'
+        FROM yuyue_app_version where
         <if test="appVersion != null and appVersion != ''">
             and system_type = #{appVersion}
         </if>
-        ORDER BY version_no DESC LIMIT 1
+        ORDER BY number DESC LIMIT 1
     </select>
 </mapper>
