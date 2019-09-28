@@ -330,6 +330,7 @@
     </dependencies>
 
     <build>
+        <finalName>yuyue-app</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
