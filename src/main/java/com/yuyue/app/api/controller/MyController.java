@@ -542,8 +542,6 @@ public class MyController extends BaseController{
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }else {
-                        return ResultJSONUtils.getJSONObjectBean(returnResult);
                     }
 
                 }
@@ -625,7 +623,7 @@ public class MyController extends BaseController{
         }
         ReturnResult returnResult =new ReturnResult();
         //获取商品信息
-        if(StringUtils.isNotEmpty(commodityId) && StringUtils.isEmpty(userId) && StringUtils.isEmpty(videoId)){
+        if(StringUtils.isNotEmpty(commodityId) ){
             List<Commodity> commodityInfoList = myService.getCommodityInfo("", "",commodityId,-1,-1);
             /*if (commodityInfoList.get(0).getOrderId())*/
             if (StringUtils.isEmpty(commodityInfoList)){
@@ -634,7 +632,17 @@ public class MyController extends BaseController{
             returnResult.setResult(commodityInfoList);
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (StringUtils.isNotEmpty(userId)  && StringUtils.isEmpty(videoId) && StringUtils.isEmpty(commodityId)){
+        }
+        //获取爆款
+        else if (StringUtils.isNotEmpty(videoId) ){
+            List<Commodity> commodityInfoList = myService.getCommodityInfo("", videoId,"", -1, -1);
+            if (StringUtils.isEmpty(commodityInfoList)){
+                returnResult.setMessage("暂无代言商品！！");
+            }
+            returnResult.setResult(commodityInfoList);
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else {
             //我的广告
             List<Commodity> commodityInfoList = myService.getCommodityInfo(userId, "","", begin, limit);
             if (StringUtils.isEmpty(commodityInfoList)){
@@ -691,17 +699,7 @@ public class MyController extends BaseController{
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        //获取爆款
-        else if (StringUtils.isNotEmpty(videoId) && StringUtils.isEmpty(commodityId) && StringUtils.isEmpty(commodityId)){
-            List<Commodity> commodityInfoList = myService.getCommodityInfo("", videoId,"", -1, -1);
-            if (StringUtils.isEmpty(commodityInfoList)){
-                returnResult.setMessage("暂无代言商品！！");
-            }
-            returnResult.setResult(commodityInfoList);
-            returnResult.setStatus(Boolean.TRUE);
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        return ResultJSONUtils.getJSONObjectBean(returnResult);
+
 
     }
 
