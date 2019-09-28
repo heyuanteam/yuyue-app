@@ -514,7 +514,7 @@ public class MyController extends BaseController{
                         }
                     }
 
-                    else if ("10D".equals(commodityInfoList.get(0).getStatus()) ){
+                    else if ("10D".equals(commodityInfoList.get(0).getStatus()) || "10D".equals(getOrder.getStatus())){
                         try {
                             jsonObject = payController.payYuYue(order, user);
                             //生成订单
