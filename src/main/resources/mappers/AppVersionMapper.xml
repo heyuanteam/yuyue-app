@@ -11,12 +11,13 @@
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="update_user" property="updateUser" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
         <result column="program_description" property="programDescription" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!-- 查询单条记录 -->
     <select id="getAppVersion" parameterType="String" resultMap="BaseResultMap">
-        SELECT id,system_type,version_no,update_user,program_description,
+        SELECT id,system_type,version_no,update_user,program_description,number,
         DATE_FORMAT(CREATE_TIME ,'%Y-%m-%d %H:%i:%s') CREATE_TIME,
         DATE_FORMAT(UPDATE_TIME ,'%Y-%m-%d %H:%i:%s') UPDATE_TIME
         FROM yuyue_app_version where `status` = '10B'

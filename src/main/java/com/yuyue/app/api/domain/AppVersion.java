@@ -21,5 +21,6 @@ public class AppVersion implements Serializable {
     private String updateTime;
     private String updateUser;
     private String status;
+    private String number;
     private String programDescription;
 }
