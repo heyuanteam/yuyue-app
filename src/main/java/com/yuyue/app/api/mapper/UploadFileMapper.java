@@ -181,6 +181,6 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
      * @param authorId
      * @return
      */
-    @Select("SELECT *,DATE_FORMAT(UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') uploadTime FROM ${tableName} WHERE authorId = #{authorId} AND status = '10B' ORDER BY UPLOAD_TIME DESC #{begin},#{limit}")
+    @Select("SELECT *,DATE_FORMAT(UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') uploadTime FROM ${tableName} WHERE authorId = #{authorId} AND status = '10B' ORDER BY UPLOAD_TIME DESC limit #{begin},#{limit}")
     List<UploadFile> getVideoByAuthor(@Param("tableName") String tableName,@Param("authorId") String authorId,@Param("begin")int begin,@Param("limit")int limit);
 }
