@@ -17,7 +17,7 @@
 
     <!-- 查询单条记录 -->
     <select id="getAppVersion" parameterType="String" resultMap="BaseResultMap">
-        SELECT id,system_type,version_no,update_user,program_description,number,
+        SELECT *,
         DATE_FORMAT(CREATE_TIME ,'%Y-%m-%d %H:%i:%s') CREATE_TIME,
         DATE_FORMAT(UPDATE_TIME ,'%Y-%m-%d %H:%i:%s') UPDATE_TIME
         FROM yuyue_app_version where 1=1
