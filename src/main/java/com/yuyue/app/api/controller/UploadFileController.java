@@ -192,21 +192,12 @@ public class UploadFileController extends  BaseController{
         ReturnResult returnResult=new ReturnResult();
         List<UploadFile> list = Lists.newArrayList();
         if (StringUtils.isEmpty(page))  page = "1";
-        int limit = 1;
+        int limit = 5;
         int begin = (Integer.parseInt(page) - 1) * limit;
    /*     List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
         List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);*/
-        for (int i =0; i<10; i++){
-            List<UploadFile> uploadFilList = uploadFileService.getVideo("yuyue_upload_file_"+i,begin, limit,categoryId,content);
-            list.addAll(uploadFilList);
-        }
-
-        returnResult.setResult(list);
-        if(CollectionUtils.isEmpty(list)){
-            returnResult.setMessage("暂无视频！");
-        } else {
-            returnResult.setMessage("视频请求成功！");
-        }
+        List<UploadFile> uploadFilList0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId,content);
+        List<UploadFile> uploadFileList1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId,content);
 
         /*for (UploadFile uploadFile:uploadFilList0) {
             //视频中插入作者信息
@@ -220,7 +211,13 @@ public class UploadFileController extends  BaseController{
             uploadFile.setAppUser(appUserMsg);
             list.add(uploadFile);
         }*/
-
+        uploadFilList0.addAll(uploadFileList1);
+        returnResult.setResult(uploadFilList0);
+        if(CollectionUtils.isEmpty(list)){
+            returnResult.setMessage("暂无视频！");
+        } else {
+            returnResult.setMessage("视频请求成功！");
+        }
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
