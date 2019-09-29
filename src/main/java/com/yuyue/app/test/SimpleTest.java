@@ -1,10 +1,5 @@
 package com.yuyue.app.test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
 public class SimpleTest {
 
 
@@ -94,7 +89,7 @@ public class SimpleTest {
         if (before != false) System.out.println("2222"+before);
         else System.out.println(before);*/
 
-        Date startDate = null;
+        /*Date startDate = null;
         Date endDate = null;
         try {
             startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-03-29 13:37:20");
@@ -107,7 +102,42 @@ public class SimpleTest {
 
         if (isStart &&  notEnd) System.out.println("发布中");
         else if (notEnd ==false) System.out.println("已过期");
-        else System.out.println("未发布");
+        else System.out.println("未发布");*/
+
+        /*String a="112";
+        String b="123.23";
+        String c="123a";
+        if (a.matches("[0-9]+")){
+            System.out.println("a:是整数"+a);
+        }else {
+            System.out.println("a:不是整数"+a);
+        }if (b.matches("[0-9]+")){
+            System.out.println("b:是整数"+b);
+        }else {
+            System.out.println("b:不是整数"+b);
+        }if (c.matches("[0-9]+")){
+            System.out.println("c：是整数"+c);
+        }else {
+            System.out.println("c:不是整数"+c);
+        }*/
+
+       /* List<String> list = Lists.newArrayList();
+        List<String> list1 = Lists.newArrayList();
+        list1.add("123");
+        list.addAll(list1);
+        System.out.println(list.get(0));*/
+
+
+        String [] strs= new String[]{
+                "B044C53B38BA4E84B507E62402683E26",
+                "4D42B0ED17C64653AD31FD402858FBBB",
+                "C7EC5FA6E0964CC9AD14222D780F6AEB",
+                "A408C597F8A140F68D10C21CCDFF2AF3",
+                "F38607A875A44CF78D84176B545282B7"};
+        for (String s : strs) {
+            System.out.println(Math.abs(s.hashCode() % 10)+"");
+        }
+
     }
 
 }
