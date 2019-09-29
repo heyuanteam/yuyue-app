@@ -135,7 +135,7 @@ public class SimpleTest {
                 "A408C597F8A140F68D10C21CCDFF2AF3",
                 "F38607A875A44CF78D84176B545282B7"};
         for (String s : strs) {
-            System.out.println(Math.abs(s.hashCode() % 10)+"");
+            System.out.println(Math.abs(s.hashCode()) % 10+"");
         }
 
     }
