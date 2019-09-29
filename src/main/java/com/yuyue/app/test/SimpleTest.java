@@ -1,10 +1,5 @@
 package com.yuyue.app.test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
 public class SimpleTest {
 
 
@@ -94,7 +89,7 @@ public class SimpleTest {
         if (before != false) System.out.println("2222"+before);
         else System.out.println(before);*/
 
-        Date startDate = null;
+        /*Date startDate = null;
         Date endDate = null;
         try {
             startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-03-29 13:37:20");
@@ -107,7 +102,24 @@ public class SimpleTest {
 
         if (isStart &&  notEnd) System.out.println("发布中");
         else if (notEnd ==false) System.out.println("已过期");
-        else System.out.println("未发布");
+        else System.out.println("未发布");*/
+
+        String a="112";
+        String b="123.23";
+        String c="123a";
+        if (a.matches("[0-9]+")){
+            System.out.println("a:是整数"+a);
+        }else {
+            System.out.println("a:不是整数"+a);
+        }if (b.matches("[0-9]+")){
+            System.out.println("b:是整数"+b);
+        }else {
+            System.out.println("b:不是整数"+b);
+        }if (c.matches("[0-9]+")){
+            System.out.println("c：是整数"+c);
+        }else {
+            System.out.println("c:不是整数"+c);
+        }
     }
 
 }
