@@ -104,7 +104,7 @@ public class SimpleTest {
         else if (notEnd ==false) System.out.println("已过期");
         else System.out.println("未发布");*/
 
-        String a="112";
+        /*String a="112";
         String b="123.23";
         String c="123a";
         if (a.matches("[0-9]+")){
@@ -119,7 +119,25 @@ public class SimpleTest {
             System.out.println("c：是整数"+c);
         }else {
             System.out.println("c:不是整数"+c);
+        }*/
+
+       /* List<String> list = Lists.newArrayList();
+        List<String> list1 = Lists.newArrayList();
+        list1.add("123");
+        list.addAll(list1);
+        System.out.println(list.get(0));*/
+
+
+        String [] strs= new String[]{
+                "B044C53B38BA4E84B507E62402683E26",
+                "4D42B0ED17C64653AD31FD402858FBBB",
+                "C7EC5FA6E0964CC9AD14222D780F6AEB",
+                "A408C597F8A140F68D10C21CCDFF2AF3",
+                "F38607A875A44CF78D84176B545282B7"};
+        for (String s : strs) {
+            System.out.println(Math.abs(s.hashCode() % 10)+"");
         }
+
     }
 
 }
