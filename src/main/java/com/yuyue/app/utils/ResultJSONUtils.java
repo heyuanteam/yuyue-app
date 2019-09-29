@@ -31,7 +31,7 @@ public class ResultJSONUtils {
      */
     public static String getHashValue(String tableName, String tableId){
         StringBuilder name = new StringBuilder(tableName);
-        int temp = tableId.hashCode() % 2 == 0 ? 0 : 1; //几张表，就是几
+        int temp = tableId.hashCode() % 10; //几张表，就是几
         String append = name.append(temp).toString();
         return append;
     }
