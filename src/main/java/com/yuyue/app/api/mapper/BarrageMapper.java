@@ -35,7 +35,7 @@ public interface BarrageMapper extends MyBaseMapper<Barrage> {
     List<Barrage> getBarrages(@Param(value = "videoId") String videoId, @Param(value = "startTime")  int startTime, @Param(value = "endTime") int endTime);
 
     @Transactional
-    @Insert("replace into yuyue_video_barrage " +
+    @Insert("INSERT into yuyue_video_barrage " +
             "(BARRAGE_ID,USER_ID,VIDEO_ID,USER_NAME,USER_HEAD_URL,TEXT,TIME_POINT)  " +
             "values  " +
             "(#{barrageId},#{userId},#{videoId},#{userName},#{userHeadUrl},#{text},#{timePoint})")

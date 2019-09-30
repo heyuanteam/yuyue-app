@@ -54,7 +54,7 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
      * @param description
      */
     @Transactional
-    @Insert("replace INTO ${tableName} " +
+    @Insert("INSERT INTO ${tableName} " +
             "(id,filesName,filesPath,filesType,authorId,description,videoAddress,title,categoryId) VALUES " +
             "(#{id},#{filesName},#{filesPath},#{filesType},#{authorId},#{description},#{videoAddress}," +
             "#{title},#{categoryId})")

@@ -12,7 +12,7 @@ import java.util.List;
 public interface PayMapper extends MyBaseMapper<Order> {
 
     @Transactional
-    @Insert("replace into yuyue_order (id,orderNo,tradeType,money,mobile,status,statusCode,merchantId,note,sourceId)  values  " +
+    @Insert("INSERT into yuyue_order (id,orderNo,tradeType,money,mobile,status,statusCode,merchantId,note,sourceId)  values  " +
             "(#{id},#{orderNo},#{tradeType},#{money},#{mobile},#{status},#{statusCode},#{merchantId},#{note},#{sourceId})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createOrder(Order order);
@@ -42,7 +42,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
     List<Order> getMoneyList(@Param("id") String id,@Param(value = "begin") int begin,@Param(value = "size")int size);
 
     @Transactional
-    @Insert("replace into yuyue_out_money (id,outNo,tradeType,money,merchantId,responseCode,responseMessage,moneyNumber,realName)  values  " +
+    @Insert("INSERT into yuyue_out_money (id,outNo,tradeType,money,merchantId,responseCode,responseMessage,moneyNumber,realName)  values  " +
             " (#{id},#{outNo},#{tradeType},#{money},#{merchantId},#{responseCode},#{responseMessage},#{moneyNumber},#{realName})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createOut(OutMoney outMoney);
@@ -63,7 +63,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
     Gift getGift(@Param("id") String id);
 
     @Transactional
-    @Insert("replace into yuyue_change_money (id,changeNo,tradeType,money,merchantId,mobile,note,sourceId)  values  " +
+    @Insert("INSERT into yuyue_change_money (id,changeNo,tradeType,money,merchantId,mobile,note,sourceId)  values  " +
             " (#{id},#{changeNo},#{tradeType},#{money},#{merchantId},#{mobile},#{note},#{sourceId})")
     void createShouMoney(ChangeMoney changeMoney);
 

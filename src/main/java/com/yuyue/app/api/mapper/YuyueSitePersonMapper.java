@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface YuyueSitePersonMapper extends MyBaseMapper<YuyueSitePerson>{
@@ -14,7 +15,8 @@ public interface YuyueSitePersonMapper extends MyBaseMapper<YuyueSitePerson>{
             "WHERE USER_ID = #{userId} and SITE_ID = #{siteId}")
     YuyueSitePerson getSitePerson(@Param(value = "userId") String userId, @Param(value = "siteId") String siteId);
 
-    @Insert("REPLACE INTO yuyue_site_person (ID,SITE_ID,USER_ID,USER_REAL_NAME) VALUES (#{id},#{siteId},#{userId},#{userRealName})")
+    @Transactional
+    @Insert("INSERT INTO yuyue_site_person (ID,SITE_ID,USER_ID,USER_REAL_NAME) VALUES (#{id},#{siteId},#{userId},#{userRealName})")
     void addSitePerson(YuyueSitePerson yuyueSitePerson);
 
 }

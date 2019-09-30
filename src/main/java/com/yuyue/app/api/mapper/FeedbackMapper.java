@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface FeedbackMapper extends MyBaseMapper<Feedback> {
 
     @Transactional
-    @Insert("replace INTO yuyue_feedback (id,contact,pictureUrl,details,userId) VALUES " +
+    @Insert("INSERT INTO yuyue_feedback (id,contact,pictureUrl,details,userId) VALUES " +
             "(#{id},#{contact},#{pictureUrl},#{details},#{userId})")
     void insertFeedback(Feedback feedback);
 
