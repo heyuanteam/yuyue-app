@@ -17,7 +17,7 @@ public interface ShowNameMapper extends MyBaseMapper<ShowName> {
     ShowName findShowName(@Param("description")String description,@Param("phone") String phone,@Param("teamName") String teamName);
 
     @Transactional
-    @Insert("replace INTO yuyue_show_name (id,userId,teamName,size,address,cardZUrl,cardFUrl,categoryId,description,phone,videoAddress,mail,weChat)" +
+    @Insert("INSERT INTO yuyue_show_name (id,userId,teamName,size,address,cardZUrl,cardFUrl,categoryId,description,phone,videoAddress,mail,weChat)" +
             " VALUES (#{id},#{userId},#{teamName},#{size},#{address},#{cardZUrl},#{cardFUrl},#{categoryId},#{description},#{phone},#{videoAddress},#{mail},#{weChat})")
     void insertShowName(@Param("id") String id, @Param("userId") String userId,@Param("teamName")  String teamName, @Param("size")  String size,
                         @Param("address") String address,@Param("cardZUrl")  String cardZUrl, @Param("cardFUrl") String cardFUrl,

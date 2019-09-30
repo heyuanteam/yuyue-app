@@ -24,14 +24,27 @@ public class ResultJSONUtils {
     }
 
     /**
-     * 获取hash值分表，物理分表
+     * 获取hash值分表，物理分表，视频的
      * @param tableName
      * @param tableId
      * @return
      */
     public static String getHashValue(String tableName, String tableId){
         StringBuilder name = new StringBuilder(tableName);
-        int temp = Math.abs(tableId.hashCode()) % 10; //几张表，就是几
+        int temp = Math.abs(tableId.hashCode()) % 2 == 0 ? 0 : 1; //几张表，就是几
+        String append = name.append(temp).toString();
+        return append;
+    }
+
+    /**
+     * 获取hash值分表，物理分表，评论的
+     * @param tableName
+     * @param tableId
+     * @return
+     */
+    public static String getHash(String tableName, String tableId){
+        StringBuilder name = new StringBuilder(tableName);
+        int temp = Math.abs(tableId.hashCode()) % 5; //几张表，就是几
         String append = name.append(temp).toString();
         return append;
     }

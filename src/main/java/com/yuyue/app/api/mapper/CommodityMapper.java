@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface CommodityMapper extends MyBaseMapper<Commodity> {
     @Transactional
-    @Insert("replace INTO yuyue_commodity (\n" +
+    @Insert("INSERT INTO yuyue_commodity (\n" +
             "\tCOMMODITY_ID,\n" +
             "\tORDER_ID,\n" +
             "\tPRICE_ID," +

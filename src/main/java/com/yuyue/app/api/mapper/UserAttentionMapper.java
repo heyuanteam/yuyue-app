@@ -24,7 +24,7 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      * @return
      */
     @Transactional
-    @Insert("replace into yuyue_attention (id,userId,authorId) " +
+    @Insert("INSERT into yuyue_attention (id,userId,authorId) " +
             "VALUES (#{id}, #{userId}, #{authorId})")
     void addAttention(@Param("id") String id, @Param("userId")String userId,@Param("authorId") String authorId);
 

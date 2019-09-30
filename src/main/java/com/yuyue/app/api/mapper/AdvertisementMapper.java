@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface AdvertisementMapper extends MyBaseMapper<Advertisement> {
 
     @Transactional
-    @Insert("replace INTO yuyue_advertisement_info  (id,userId,merchantAddr,businessLicense,idCardZM,idCardFM,agencyCode," +
+    @Insert("INSERT INTO yuyue_advertisement_info  (id,userId,merchantAddr,businessLicense,idCardZM,idCardFM,agencyCode," +
             "merchantName,phone,produceAddr,fixedPhone,email,wx,qqNum,merchandiseUrl,telephone) \n" +
             " VALUES (#{id},#{userId},#{merchantAddr},#{businessLicense},#{idCardZM},#{idCardFM},#{agencyCode},#{merchantName},#{phone}," +
             "#{produceAddr},#{fixedPhone},#{email},#{wx},#{qqNum},#{merchandiseUrl},#{telephone})")
