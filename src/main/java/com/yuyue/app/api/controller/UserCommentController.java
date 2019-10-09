@@ -234,7 +234,7 @@ public class UserCommentController extends BaseController{
     }
 
     /**
-     * (我的发布)通过艺人id获取视频
+     * 通过艺人id获取视频,只展示通过审核的视频
      * @param user
      * @param authorId
      * @param request
@@ -256,16 +256,13 @@ public class UserCommentController extends BaseController{
         }
         List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthor(authorId,begin,limit);
         if(videoByAuthorId.isEmpty()){
-            returnResult.setResult(map);
             returnResult.setMessage("暂无视频！！");
-            returnResult.setStatus(Boolean.TRUE);
-
         }else {
-            returnResult.setResult(videoByAuthorId);
             returnResult.setMessage("返回成功！！");
-            returnResult.setStatus(Boolean.TRUE);
         }
-          return ResultJSONUtils.getJSONObjectBean(returnResult);
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(videoByAuthorId);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**

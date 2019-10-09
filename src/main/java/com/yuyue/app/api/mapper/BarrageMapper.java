@@ -27,7 +27,7 @@ public interface BarrageMapper extends MyBaseMapper<Barrage> {
             "\tUSER_HEAD_URL userHeadUrl\n" +
             "FROM\n" +
             "\tyuyue_video_barrage\n" +
-            "WHERE\n" +
+            "WHERE VIDEO_ID = #{videoId} AND \n" +
             "\tTIME_POINT BETWEEN #{startTime}\n" +
             "AND #{endTime}\n" +
             "ORDER BY\n" +

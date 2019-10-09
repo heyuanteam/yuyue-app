@@ -25,7 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * 我的页面
@@ -431,6 +434,8 @@ public class MyController extends BaseController{
         List<UploadFile> videoByAuthorId = uploadFileService.getVideoByAuthorId(appUser.getId(),begin,limit);
         if (StringUtils.isEmpty(videoByAuthorId)){
             returnResult.setMessage("暂无发布视频");
+            returnResult.setResult(videoByAuthorId);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else {
             map.put("Author", appUser);
             map.put("videoList", videoByAuthorId);
@@ -768,6 +773,8 @@ public class MyController extends BaseController{
 
     /**
      * 送礼物
+     * giftId 礼物id
+     * sourceId  收礼物的人
      */
     @RequestMapping(value = "/sendMoney")
     @ResponseBody

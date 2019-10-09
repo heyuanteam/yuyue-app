@@ -94,7 +94,7 @@ public interface UploadFileService {
     JSONObject addRelease(String authorId,String categoryId, String title, String description, String fileType, String videoAddress,String fileName,String filesPath);
 
     /**
-     *通过作者id 获取视频
+     *(我的发布列表)通过作者id 获取视频
      * @param
      * @return
      */
