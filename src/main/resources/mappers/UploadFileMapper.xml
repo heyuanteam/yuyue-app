@@ -32,12 +32,12 @@
     </resultMap>
 
     <select id="getVideo" resultMap="myUploadFile" parameterType="String">
-        select
+        SELECT
         b.id ,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b.filesName,b.filesPath,
         b.filesType,b.fileSize,b.authorId,b.description,b.playAmount,b.commentAmount,b.likeAmount,b.attentionAmount,
         b.duration,b.title,b.videoAddress,b.categoryId,b.status,
         m.ID "userId",m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL
-        from ${tableName} b
+        from yuyue_upload_file_0 b
         left join yuyue_merchant m on b.authorId = m.ID
         WHERE  1=1 and b.filesType = 'video' and b.status ='10B'
             <choose>
@@ -46,8 +46,26 @@
             <choose>
                 <when test="content!=null and content!=''">  and CONCAT(b.title,m.USER_NICK_NAME) like concat('%', #{content}, '%')  </when>
             </choose>
-            ORDER BY b.UPLOAD_TIME DESC
-         LIMIT #{begin},#{size}
+        UNION
+        SELECT
+        b1.id ,DATE_FORMAT(b1.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b1.filesName,b1.filesPath,
+        b1.filesType,b1.fileSize,b1.authorId,b1.description,b1.playAmount,b1.commentAmount,b1.likeAmount,b1.attentionAmount,
+        b1.duration,b1.title,b1.videoAddress,b1.categoryId,b1.status,
+        m1.ID "userId",m1.USER_NICK_NAME,m1.HEADP_URL,m1.ATTENTION_TOTAL,m1.LIKE_TOTAL,m1.COMMENT_TOTAL
+        from yuyue_upload_file_1 b1
+        left join yuyue_merchant  m1 on b1.authorId = m1.ID
+
+        WHERE 1=1 and b1.filesType = 'video' and b1.status ='10B'
+        <choose>
+            <when test="categoryId!=null and categoryId!=''">  and b1.categoryId=#{categoryId}  </when>
+        </choose>
+        <choose>
+            <when test="content!=null and content!=''">  and CONCAT(b1.title,m1.USER_NICK_NAME) like concat('%', #{content}, '%')  </when>
+        </choose>
+
+
+        ORDER BY UPLOAD_TIME DESC
+
 
     </select>
 

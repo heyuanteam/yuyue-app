@@ -70,12 +70,12 @@ public interface UploadFileService {
      */
     void reduceCommentAmount(String authorId,String videoId,String userId);
     /**
-     * 视频页 获取视频  默认每张表查询五表记录
-     * @param bdgin
-     * @param size
+     * 视频页 获取视频列表 ； 视频种类 ； 视频搜索  并分页
+     * @param
+     * @param
      * @return
      */
-    List<UploadFile> getVideo(String tableName, int bdgin, int size,String categoryId,String content);
+    List<UploadFile> getVideo(String categoryId,String content);
 
     /**
      * 获取首页视频   默认每张表查询五表记录

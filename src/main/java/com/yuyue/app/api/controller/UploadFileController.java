@@ -2,6 +2,8 @@ package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
@@ -186,33 +188,23 @@ public class UploadFileController extends  BaseController{
     @ResponseBody
     @RequestMapping("/getVideo")
     public JSONObject getVideo(String page,String categoryId,String content,HttpServletRequest request){
-        log.info("获取视频列表-------------->>/homePage/getVideo");
+        log.info("获取视频列表-----视频分类-----视频搜索---->>/uploadFile/getVideo");
         getParameterMap(request);
-        Map<String, List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
         List<UploadFile> list = Lists.newArrayList();
-        if (StringUtils.isEmpty(page))  page = "1";
-        int limit = 5;
-        int begin = (Integer.parseInt(page) - 1) * limit;
-   /*     List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
-        List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);*/
-        List<UploadFile> uploadFilList0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId,content);
-        List<UploadFile> uploadFileList1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId,content);
+        if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
 
-        /*for (UploadFile uploadFile:uploadFilList0) {
-            //视频中插入作者信息
-            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
-            uploadFile.setAppUser(appUserMsg);
-            list.add(uploadFile);
-        }
-        for (UploadFile uploadFile:uploadFileList1) {
-            //视频中插入作者信息
-            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
-            uploadFile.setAppUser(appUserMsg);
-            list.add(uploadFile);
-        }*/
-        uploadFilList0.addAll(uploadFileList1);
-        returnResult.setResult(uploadFilList0);
+        PageHelper.startPage(Integer.parseInt(page), 10);
+        List<UploadFile> uploadFileList = uploadFileService.getVideo(categoryId,content);
+
+        System.out.println(uploadFileList.size());
+        PageInfo<UploadFile> pageInfo=new PageInfo<>(uploadFileList);
+        long total = pageInfo.getTotal();
+        int pages = pageInfo.getPages();
+        int currentPage = Integer.parseInt(page);
+        System.out.println("total:" + total + "  pages: "+pages+"  currentPage:"+currentPage);
+        returnResult.setResult(uploadFileList);
+
         if(CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无视频！");
         } else {

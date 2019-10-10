@@ -24,7 +24,7 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
      * @param
      * @return
      */
-    List<UploadFile> getVideo(@Param("tableName")String tableName, @Param("begin")int begin, @Param("size")int size,@Param("categoryId")String categoryId,@Param("content")String content);
+    List<UploadFile> getVideo(@Param("categoryId")String categoryId,@Param("content")String content);
 
     /**
      * 通过视频种类  获取视频详情列表

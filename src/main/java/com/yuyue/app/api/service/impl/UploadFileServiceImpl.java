@@ -179,14 +179,14 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     /**
      * 获取视频，并做分页
-     * @param tableName
-     * @param begin
-     * @param size
+     * @param
+     * @param
+     * @param
      * @return
      */
     @Override
-    public List<UploadFile> getVideo(String tableName, int begin, int size,String categoryId,String content) {
-        return uploadFileMapper.getVideo(tableName,begin,size,categoryId,content);
+    public List<UploadFile> getVideo(String categoryId,String content) {
+        return uploadFileMapper.getVideo(categoryId,content);
     }
     /**
      * 首页获取视频，并做分页
