@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.ReturnResult;
-import com.yuyue.app.utils.RandomSaltUtil;
-import com.yuyue.app.utils.RedisUtil;
-import com.yuyue.app.utils.ResultJSONUtils;
-import com.yuyue.app.utils.SmsUtil;
+import com.yuyue.app.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +36,8 @@ public class SendSmsController extends BaseController{
     @RequestMapping("/sendSms")
     @ResponseBody
     public JSONObject sendSms(HttpServletRequest request, HttpServletResponse response){
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
+        //解决一下跨域问题
+        HttpUtils.setHeader(request,response);
         log.info("发送消息验证码，通用接口-------------->>/send/sendSms");
         Map<String, String> map = getParameterMap(request);
         HashMap<String,String> hashMap = Maps.newHashMap();

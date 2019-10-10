@@ -14,6 +14,7 @@ import com.yuyue.app.api.domain.UploadFile;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
+import com.yuyue.app.utils.HttpUtils;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -141,8 +142,8 @@ public class UploadFileController extends  BaseController{
     public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) throws Exception {
         log.info("批量上传文件到fastdfs服务器-------------->>/uploadFile/uploadServer");
 //        getParameterMap(request);
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
+        //解决一下跨域问题
+        HttpUtils.setHeader(request,response);
 //        Map<String, String> mapValue = getParameterMap(request);
 //        String token = request.getHeader("token");
 //        String userId = "";

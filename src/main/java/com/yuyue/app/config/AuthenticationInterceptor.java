@@ -10,7 +10,9 @@ import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.api.service.LoginService;
+import com.yuyue.app.utils.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,6 +30,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         ReturnResult returnResult=new ReturnResult();
+        //设置跨域--开始
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        //解决一下跨域问题
+        if (httpRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
+            HttpUtils.setHeader(httpRequest,httpResponse);
+            return true;
+        }
+
         // 如果不是映射到方法直接通过
         if (!(handler instanceof HandlerMethod)) {
             return true;

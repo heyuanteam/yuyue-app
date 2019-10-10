@@ -38,7 +38,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <!-- 移除嵌入式tomcat插件,上线放开-->
-     <!--       <exclusions>
+            <!--<exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -46,7 +46,7 @@
             </exclusions>-->
         </dependency>
         <!--上线放开-->
-<!--        <dependency>
+        <!--<dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-servlet-api</artifactId>
             <version>8.0.36</version>
