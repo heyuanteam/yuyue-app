@@ -2,6 +2,7 @@ package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.ReturnResult;
 import com.yuyue.app.utils.*;
@@ -51,8 +52,8 @@ public class SendSmsController extends BaseController{
 
             log.info("验证码：=========="+lcode);
 
-//            SendSmsResponse response = smsUtil.sendSms(
-//                    map.get("mobile"), map.get("template_code") , map.get("sign_name")  , map.get("param") );
+            SendSmsResponse sendSmsResponse = smsUtil.sendSms(
+                    map.get("mobile"), map.get("template_code") , map.get("sign_name")  , map.get("param") );
 //
 //            System.out.println("短信接口返回的数据----------------");
 //            System.out.println("Code=" + response.getCode());
@@ -60,14 +61,13 @@ public class SendSmsController extends BaseController{
 //            System.out.println("RequestId=" + response.getRequestId());
 //            System.out.println("BizId=" + response.getBizId());
 
-//            if("OK".equals(response.getCode()) ){
-            if("OK".equals("OK") ){
+            if("OK".equals(sendSmsResponse.getCode()) ){
+//            if("OK".equals("OK") ){
                 redisUtil.setString(map.get("mobile"),lcode);
                 redisUtil.expire(map.get("mobile"),5L*60L);
-
                 result.setMessage("短信发送成功!");
                 result.setStatus(Boolean.TRUE);
-                result.setResult(lcode);
+//                result.setResult(lcode);
             } else {
                 result.setMessage("短信发送失败！");
                 log.info("短信发送失败！");
