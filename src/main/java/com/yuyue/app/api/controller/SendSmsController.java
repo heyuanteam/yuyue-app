@@ -49,9 +49,7 @@ public class SendSmsController extends BaseController{
             map.put("sign_name", signName);
             hashMap.put("code",lcode);
             map.put("param", JSON.toJSON(hashMap).toString());
-
             log.info("验证码：=========="+lcode);
-
             SendSmsResponse sendSmsResponse = smsUtil.sendSms(
                     map.get("mobile"), map.get("template_code") , map.get("sign_name")  , map.get("param") );
 //
