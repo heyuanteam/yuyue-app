@@ -32,7 +32,7 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
      * @param
      * @return
      */
-    List<UploadFile> getVideoToHomePage(@Param(value = "begin") Integer begin,@Param(value = "size")Integer size);
+    List<UploadFile> getVideoToHomePage();
 
 
     /**

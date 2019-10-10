@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.HomePageService;
@@ -92,20 +93,11 @@ public class HomePageController extends BaseController {
         getParameterMap(request);
         Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
-        /*List<UploadFile> list = Lists.newArrayList();*/
-        if (StringUtils.isEmpty(page))  page = "1";
-        int limit = 10;
-        int begin = (Integer.parseInt(page) - 1) * limit;
-   /*   List<UploadFile> vdeio_0 = uploadFileService.getVideo("yuyue_upload_file_0",begin, limit,categoryId);
-        List<UploadFile> vdeio_1 = uploadFileService.getVideo("yuyue_upload_file_1",begin, limit,categoryId);
-        for (UploadFile uploadFile:videoToHomePage) {
-            //视频中插入作者信息
-            AppUser appUserMsg = loginService.getAppUserMsg("", "",uploadFile.getAuthorId());
-            uploadFile.setAppUser(appUserMsg);
-            list.add(uploadFile);
-        }
-*/
-        List<UploadFile> videoToHomePage = uploadFileService.getVideoToHomePage(begin,limit);
+
+        if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
+        PageHelper.startPage(Integer.parseInt(page), 10);
+
+        List<UploadFile> videoToHomePage = uploadFileService.getVideoToHomePage();
 
 
         returnResult.setResult(videoToHomePage);

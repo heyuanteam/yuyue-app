@@ -78,12 +78,12 @@ public interface UploadFileService {
     List<UploadFile> getVideo(String categoryId,String content);
 
     /**
-     * 获取首页视频   默认每张表查询五表记录
-     * @param page
+     * 获取首页视频
+     * @param
      *
      * @return
      */
-    List<UploadFile> getVideoToHomePage(int page,int size);
+    List<UploadFile> getVideoToHomePage();
     /**
      * 我的发布
      * @param categoryId

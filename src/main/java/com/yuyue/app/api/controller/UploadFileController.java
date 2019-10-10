@@ -193,7 +193,6 @@ public class UploadFileController extends  BaseController{
         ReturnResult returnResult=new ReturnResult();
         List<UploadFile> list = Lists.newArrayList();
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
-
         PageHelper.startPage(Integer.parseInt(page), 10);
         List<UploadFile> uploadFileList = uploadFileService.getVideo(categoryId,content);
 

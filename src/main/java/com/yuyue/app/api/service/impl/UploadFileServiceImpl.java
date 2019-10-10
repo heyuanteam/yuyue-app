@@ -195,8 +195,8 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public List<UploadFile> getVideoToHomePage(int page,int size){
-        return uploadFileMapper.getVideoToHomePage(page,size);
+    public List<UploadFile> getVideoToHomePage(){
+        return uploadFileMapper.getVideoToHomePage();
     }
     /**
      *视频发布
