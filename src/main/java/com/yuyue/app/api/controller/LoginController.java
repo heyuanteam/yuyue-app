@@ -408,7 +408,7 @@ public class LoginController extends BaseController{
         getParameterMap(request, response);
         ReturnResult result = new ReturnResult();
         AppUser appUserById = loginService.getAppUserMsg("","",id);
-        if (appUserById != null) {
+        if (StringUtils.isNotEmpty(id)) {
             loginService.updateAppUser(appUserById.getId(),"","","","","","",
                     "","","","","","","","",
                     "",city,jpushName,"","","");
