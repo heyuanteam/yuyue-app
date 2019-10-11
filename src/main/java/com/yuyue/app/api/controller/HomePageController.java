@@ -90,7 +90,7 @@ public class HomePageController extends BaseController {
     @RequestMapping("/getVideoToHomePage")
     public JSONObject getVideoToHomePage(String page,HttpServletRequest request, HttpServletResponse response) {
         log.info("获取首页视频列表-------------->>/homePage/getVideoToHomePage");
-        getParameterMap(request);
+        getParameterMap(request, response);
         Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
 
