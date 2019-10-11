@@ -58,9 +58,9 @@ public class UploadFileController extends  BaseController{
      */
     @RequestMapping(value = "/fileDetail")
     @ResponseBody
-    public JSONObject  fileDetail(String authorId,String videoId, HttpServletRequest request){
+    public JSONObject  fileDetail(String authorId,String videoId, HttpServletRequest request, HttpServletResponse response){
         log.info("视频详情-------------->>/uploadFile/fileDetail");
-        getParameterMap(request);
+        getParameterMap(request, response);
         String token = request.getHeader("token");
         String userId = "";
         if(StringUtils.isNotEmpty(token)){
@@ -119,9 +119,9 @@ public class UploadFileController extends  BaseController{
      */
     @RequestMapping(value = "/delfile")
     @ResponseBody
-    public JSONObject delfile(@RequestParam("id")String id,String authorId, HttpServletRequest request) throws Exception {
+    public JSONObject delfile(@RequestParam("id")String id,String authorId, HttpServletRequest request, HttpServletResponse response)throws Exception {
         log.info("删除单个文件-------------->>/uploadFile/delfile");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         if(authorId.isEmpty() || id.isEmpty()){
             returnResult.setMessage("作者id或视频id不能为空!!");
@@ -141,9 +141,7 @@ public class UploadFileController extends  BaseController{
     @ResponseBody
     public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) throws Exception {
         log.info("批量上传文件到fastdfs服务器-------------->>/uploadFile/uploadServer");
-//        getParameterMap(request);
-        //解决一下跨域问题
-        HttpUtils.setHeader(request,response);
+        getParameterMap(request, response);
 //        Map<String, String> mapValue = getParameterMap(request);
 //        String token = request.getHeader("token");
 //        String userId = "";
@@ -162,9 +160,11 @@ public class UploadFileController extends  BaseController{
     @RequestMapping(value = "/addRelease")
     @ResponseBody
     @LoginRequired
-    public JSONObject addRelease(@CurrentUser AppUser user,String categoryId,String title,String description, String fileType, String videoAddress,String fileName,String filesPath, HttpServletRequest request) throws Exception {
+    public JSONObject addRelease(@CurrentUser AppUser user,String categoryId,String title,String description, String fileType,
+                                 String videoAddress,String fileName,String filesPath, HttpServletRequest request
+                                    , HttpServletResponse response) throws Exception {
         log.info("视频发布-------------->>/uploadFile/addRelease");
-        getParameterMap(request);
+        getParameterMap(request, response);
         return uploadFileService.addRelease(user.getId(),categoryId,title,description,fileType,videoAddress,fileName,filesPath);
     }
 
@@ -175,9 +175,10 @@ public class UploadFileController extends  BaseController{
      * @param filesPath
      */
     @RequestMapping(value = "/downloadFile")
-    public void downloadFile(@RequestParam("filesName") String filesName,@RequestParam("filesPath") String filesPath, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public void downloadFile(@RequestParam("filesName") String filesName,@RequestParam("filesPath") String filesPath,
+                             HttpServletResponse response, HttpServletRequest request) throws IOException {
         log.info("单个文件下载-------------->>/uploadFile/downloadFile");
-        getParameterMap(request);
+        getParameterMap(request, response);
         uploadFileService.downloadFile(filesName, filesPath, response);
     }
 
@@ -188,9 +189,9 @@ public class UploadFileController extends  BaseController{
      */
     @ResponseBody
     @RequestMapping("/getVideo")
-    public JSONObject getVideo(String page,String categoryId,String content,HttpServletRequest request){
+    public JSONObject getVideo(String page,String categoryId,String content,HttpServletRequest request, HttpServletResponse response){
         log.info("获取视频列表-----视频分类-----视频搜索---->>/uploadFile/getVideo");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         List<UploadFile> list = Lists.newArrayList();
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";

@@ -40,7 +40,7 @@ public class SendSmsController extends BaseController{
         //解决一下跨域问题
         HttpUtils.setHeader(request,response);
         log.info("发送消息验证码，通用接口-------------->>/send/sendSms");
-        Map<String, String> map = getParameterMap(request);
+        Map<String, String> map = getParameterMap(request, response);
         HashMap<String,String> hashMap = Maps.newHashMap();
         ReturnResult result =new ReturnResult();
         String lcode = RandomSaltUtil.randomNumber(6);

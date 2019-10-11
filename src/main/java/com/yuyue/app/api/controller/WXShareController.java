@@ -197,7 +197,7 @@ public class WXShareController extends BaseController{
     @ResponseBody
     public JSONObject wxAppShare(HttpServletResponse response, Model model,HttpServletRequest request){
         log.info("APP网页分享-------------->>/share/wxAppShare");
-        Map<String, String> mapValue = getParameterMap(request);
+        Map<String, String> mapValue = getParameterMap(request, response);
         response.setHeader("Access-Control-Allow-Origin","*");
 
         ReturnResult returnResult = new ReturnResult();

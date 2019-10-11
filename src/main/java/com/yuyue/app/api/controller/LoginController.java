@@ -45,9 +45,10 @@ public class LoginController extends BaseController{
      */
     @ResponseBody
     @RequestMapping("/version")
-    public JSONObject getVersion(@RequestParam(value = "appVersion") String appVersion, HttpServletRequest request) {
+    public JSONObject getVersion(@RequestParam(value = "appVersion") String appVersion
+            , HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("获取版本号-------------->>/login/version");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(appVersion)) {
@@ -82,10 +83,8 @@ public class LoginController extends BaseController{
     @ResponseBody
     public JSONObject loginByPassword(@RequestParam(value = "password") String password, @RequestParam(value = "phone") String phone,
                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
         LOGGER.info("用户使用账号密码登录功能-------------->>/login/loginByPassword");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)) {
@@ -125,9 +124,10 @@ public class LoginController extends BaseController{
     @RequestMapping("/editPassword")
     @ResponseBody
     public JSONObject editPassword(@RequestParam(value = "password") String password, @RequestParam(value = "code") String code,
-                                   @RequestParam(value = "phone") String phone,HttpServletRequest request) throws Exception {
+                                   @RequestParam(value = "phone") String phone,HttpServletRequest request
+                                    , HttpServletResponse response) throws Exception {
         LOGGER.info("用户修改账号密码功能-------------->>/login/editPassword");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(password) || StringUtils.isEmpty(phone)) {
@@ -172,10 +172,8 @@ public class LoginController extends BaseController{
     @ResponseBody
     public JSONObject loginByPhone(@RequestParam(value = "phone") String phone, @RequestParam("code") String code,
                                    HttpServletRequest request, HttpServletResponse response) {
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
         LOGGER.info("用户通过手机号及验证码登录-------------->>/login/loginByPhone");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult result = new ReturnResult();
         try {
             if (StringUtils.isEmpty(code) || code.length() != 6) {
@@ -218,10 +216,11 @@ public class LoginController extends BaseController{
      */
     @RequestMapping("/registration")
     @ResponseBody
-    public JSONObject registration(@RequestParam(value = "phone") String phone,HttpServletRequest request,@RequestParam("code") String code, @RequestParam(value = "password") String password) throws Exception {
+    public JSONObject registration(@RequestParam(value = "phone") String phone,HttpServletRequest request,@RequestParam("code") String code,
+                                   @RequestParam(value = "password") String password, HttpServletResponse response) throws Exception {
         ReturnResult result = new ReturnResult();
         LOGGER.info("用户注册-------------->>/login/registration");
-        getParameterMap(request);
+        getParameterMap(request, response);
         Pattern pattern = Pattern.compile("^((13[0-9])|(14[5,7,9])|(15([0-3]|[5-9]))|(166)|(17[0,1,3,5,6,7,8])|(18[0-9])|(19[8|9]))\\d{8}$");
         try {
             if(StringUtils.isEmpty(code) || StringUtils.isEmpty(phone) || StringUtils.isEmpty(password)){
@@ -275,9 +274,9 @@ public class LoginController extends BaseController{
     @RequestMapping("/getMessage")
     @ResponseBody
     @LoginRequired
-    public JSONObject getMessage(@CurrentUser AppUser user,HttpServletRequest request) {
+    public JSONObject getMessage(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("获取实时信息-------------->>/login/getMessage");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult result = new ReturnResult();
         AppUser appUserById = loginService.getAppUserMsg("","",user.getId());
         if (appUserById == null) {
@@ -303,9 +302,10 @@ public class LoginController extends BaseController{
     public JSONObject updateAppUser(@CurrentUser AppUser user, String nickName, String realName, String idCard, String newPhone,
                                     String sex, String headpUrl, String userStatus, String addrDetail, String education, String wechat,
                                     String signature, String password, String oldPassword,String code,
-                                    String userUrl, String cardZUrl, String cardFUrl,HttpServletRequest request) throws Exception {
+                                    String userUrl, String cardZUrl, String cardFUrl,HttpServletRequest request
+                                     , HttpServletResponse response) throws Exception {
         LOGGER.info("修改信息-------------->>/login/updateAppUser");
-        getParameterMap(request);
+        getParameterMap(request, response);
         String ciphertextPwd = "";
         ReturnResult result = new ReturnResult();
         if (StringUtils.isNotEmpty(password) && StringUtils.isNotEmpty(oldPassword)) {
@@ -360,10 +360,10 @@ public class LoginController extends BaseController{
     @RequestMapping(value = "/userAuthentication")
     @ResponseBody
     @LoginRequired
-    public JSONObject userAuthentication(@CurrentUser AppUser user, String realName, String idCard,
-                                         String userUrl, String cardZUrl, String cardFUrl,HttpServletRequest request) throws Exception {
+    public JSONObject userAuthentication(@CurrentUser AppUser user, String realName, String idCard, String userUrl, String cardZUrl,
+                                         String cardFUrl,HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOGGER.info("用户认证-------------->>/login/userAuthentication");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
 
         if ("10B".equals(user.getUserStatus())){
@@ -403,9 +403,9 @@ public class LoginController extends BaseController{
      */
     @RequestMapping("/getJPush")
     @ResponseBody
-    public JSONObject getJPush(String id,String city,String jpushName,HttpServletRequest request) {
+    public JSONObject getJPush(String id,String city,String jpushName,HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("获取定位和极光别名-------------->>/login/getJPush");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult result = new ReturnResult();
         AppUser appUserById = loginService.getAppUserMsg("","",id);
         if (appUserById != null) {

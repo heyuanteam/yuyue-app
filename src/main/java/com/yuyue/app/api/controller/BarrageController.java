@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -46,9 +47,9 @@ public class BarrageController extends BaseController{
      */
     @RequestMapping("/getBarrages")
     @ResponseBody
-    public JSONObject getBarrages(HttpServletRequest request){
+    public JSONObject getBarrages(HttpServletRequest request, HttpServletResponse response) {
         log.info("获取弹幕信息-------------->>/barrage/getBarrages");
-        Map<String,String> mapValue = getParameterMap(request);
+        Map<String,String> mapValue = getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         final String videoId = mapValue.get("videoId");
         final int startTime = Integer.parseInt(mapValue.get("startTime"));
@@ -116,10 +117,10 @@ public class BarrageController extends BaseController{
     @RequestMapping("/addBarrages")
     @ResponseBody
     @LoginRequired
-    public JSONObject addBarrages(@CurrentUser AppUser user, HttpServletRequest request){
+    public JSONObject addBarrages(@CurrentUser AppUser user, HttpServletRequest request, HttpServletResponse response) {
         ReturnResult returnResult=new ReturnResult();
         log.info("发送弹幕-------------->>/barrage/addBarrages");
-        Map<String, String> mapValue = getParameterMap(request);
+        Map<String, String> mapValue = getParameterMap(request, response);
         Barrage barrage = new Barrage();
         String videoId=mapValue.get("videoId");
         String text=mapValue.get("text");

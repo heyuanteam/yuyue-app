@@ -766,9 +766,7 @@ public class PayController extends BaseController{
     @ResponseBody
     @RequestMapping("/payNative")
     public JSONObject payNative(Order order,HttpServletRequest request, HttpServletResponse response) throws Exception {
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
         String token = request.getHeader("token");
         if(StringUtils.isEmpty(token)) {
@@ -897,8 +895,7 @@ public class PayController extends BaseController{
     @RequestMapping("/getQRCode")
     @ResponseBody
     public JSONObject getQRCode(String code_url,HttpServletRequest request, HttpServletResponse response){
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
+        getParameterMap(request, response);
         String token = request.getHeader("token");
         ReturnResult returnResult = new ReturnResult();
         if(StringUtils.isEmpty(token)) {
