@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.HomePageService;
@@ -91,14 +93,22 @@ public class HomePageController extends BaseController {
     public JSONObject getVideoToHomePage(String page,HttpServletRequest request){
         log.info("获取首页视频列表-------------->>/homePage/getVideoToHomePage");
         getParameterMap(request);
-        Map<String,List> map= Maps.newHashMap();
+
         ReturnResult returnResult=new ReturnResult();
 
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
         PageHelper.startPage(Integer.parseInt(page), 10);
-
         List<UploadFile> videoToHomePage = uploadFileService.getVideoToHomePage();
+        PageInfo<UploadFile> pageInfo=new PageInfo<>(videoToHomePage);
+        int pages = pageInfo.getPages();
+        int currentPage = Integer.parseInt(page);
+        if (pages < currentPage){
 
+            returnResult.setMessage("暂无视频！");
+            returnResult.setResult(Lists.newArrayList());
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
 
         returnResult.setResult(videoToHomePage);
         if(CollectionUtils.isEmpty(videoToHomePage)){

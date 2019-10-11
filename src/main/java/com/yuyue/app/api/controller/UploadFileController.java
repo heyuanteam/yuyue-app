@@ -201,9 +201,14 @@ public class UploadFileController extends  BaseController{
         long total = pageInfo.getTotal();
         int pages = pageInfo.getPages();
         int currentPage = Integer.parseInt(page);
-        System.out.println("total:" + total + "  pages: "+pages+"  currentPage:"+currentPage);
+//        System.out.println("total:" + total + "  pages: "+pages+"  currentPage:"+currentPage);
         returnResult.setResult(uploadFileList);
-
+        if (pages < currentPage){
+            returnResult.setMessage("暂无视频！");
+            returnResult.setResult(list);
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         if(CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无视频！");
         } else {
