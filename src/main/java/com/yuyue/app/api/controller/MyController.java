@@ -63,9 +63,7 @@ public class MyController extends BaseController{
     @ResponseBody
     public JSONObject addBarrages(HttpServletRequest request, HttpServletResponse response){
         log.info("意见反馈提交-------------->>/myController/feedback");
-        Map<String, String> mapValue = getParameterMap(request);
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
+        Map<String, String> mapValue = getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         String token = request.getHeader("token");
         String userId = "";
@@ -101,10 +99,10 @@ public class MyController extends BaseController{
     @RequestMapping("/getMoneyList")
     @ResponseBody
     @LoginRequired
-    public JSONObject getMoneyList(@CurrentUser AppUser user,HttpServletRequest request){
+    public JSONObject getMoneyList(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response) {
         log.info("充值记录和送礼记录-------------->>/myController/getMoneyList");
         ReturnResult returnResult=new ReturnResult();
-        Map<String, String> parameterMap = getParameterMap(request);
+        Map<String, String> parameterMap = getParameterMap(request, response);
         String page = parameterMap.get("page");
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 10;
@@ -127,10 +125,10 @@ public class MyController extends BaseController{
     @RequestMapping("/changeMoneyList")
     @ResponseBody
     @LoginRequired
-    public JSONObject changeMoneyList(@CurrentUser AppUser user,HttpServletRequest request){
+    public JSONObject changeMoneyList(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response) {
         log.info("收益记录-------------->>/myController/changeMoneyList");
         ReturnResult returnResult=new ReturnResult();
-        Map<String, String> parameterMap = getParameterMap(request);
+        Map<String, String> parameterMap = getParameterMap(request, response);
         String page = parameterMap.get("page");
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 10;
@@ -155,9 +153,7 @@ public class MyController extends BaseController{
     @ResponseBody
     public JSONObject addAdvertisementInfo(HttpServletRequest request, HttpServletResponse response){
         log.info("广告推广申请-------------->>/myController/addAdvertisementInfo");
-        getParameterMap(request);
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
+        Map<String, String> parameterMap = getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         try {
             String token = request.getHeader("token");
@@ -177,7 +173,6 @@ public class MyController extends BaseController{
                     return ResultJSONUtils.getJSONObjectBean(returnResult);
                 }
             }
-            Map<String, String> parameterMap = getParameterMap(request);
             //商家地址
             String merchantAddr=parameterMap.get("merchantAddr");
             //营业执照
@@ -258,9 +253,9 @@ public class MyController extends BaseController{
     @RequestMapping("/getAdvertisementInfo")
     @ResponseBody
     @LoginRequired
-    public JSONObject getAdvertisementInfo(@CurrentUser AppUser appUser,HttpServletRequest request){
+    public JSONObject getAdvertisementInfo(@CurrentUser AppUser appUser,HttpServletRequest request, HttpServletResponse response){
         log.info("查看广告推广申请信息-------------->>/myController/getAdvertisementInfo");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult =new ReturnResult();
         Advertisement advertisementInfo = myService.getAdvertisementInfo(appUser.getId());
         if (StringUtils.isNull(advertisementInfo)){
@@ -283,9 +278,10 @@ public class MyController extends BaseController{
     @RequestMapping("/myComments")
     @ResponseBody
     @LoginRequired
-    public JSONObject getAllCommentByUserId(@CurrentUser AppUser appUser,String page,HttpServletRequest request){
+    public JSONObject getAllCommentByUserId(@CurrentUser AppUser appUser,String page,
+                                            HttpServletRequest request, HttpServletResponse response){
         log.info("我的评论-------------->>/myController/myComments");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 10;
@@ -311,10 +307,8 @@ public class MyController extends BaseController{
     @ResponseBody
     public JSONObject insertShowName(HttpServletRequest request, HttpServletResponse response){
         log.info("演出申请-------------->>/myController/insertShowName");
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
+        Map<String, String> mapValue = getParameterMap(request, response);
         String token = request.getHeader("token");
-        Map<String, String> mapValue = getParameterMap(request);
         ReturnResult returnResult=new ReturnResult();
         String userId = "";
         if(StringUtils.isNotEmpty(token)) {
@@ -398,9 +392,10 @@ public class MyController extends BaseController{
     @RequestMapping("/getShowInfo")
     @ResponseBody
     @LoginRequired
-    public JSONObject getShowInfo(@CurrentUser AppUser appUser,HttpServletRequest request){
+    public JSONObject getShowInfo(@CurrentUser AppUser appUser,
+                                  HttpServletRequest request, HttpServletResponse response){
         log.info("查看演出申请信息-------------->>/myController/getShowInfo");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult =new ReturnResult();
         ShowName showInfo = myService.getShowInfo(appUser.getId());
         if (StringUtils.isNull(showInfo)){
@@ -423,9 +418,10 @@ public class MyController extends BaseController{
     @RequestMapping("/myRelease")
     @ResponseBody
     @LoginRequired
-    public JSONObject myRelease(@CurrentUser AppUser appUser,HttpServletRequest request,String page){
+    public JSONObject myRelease(@CurrentUser AppUser appUser,HttpServletRequest request,String page
+                                    , HttpServletResponse response){
         log.info("我的发布-------------->>/myController/myRelease");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult =new ReturnResult();
         Map<String,Object> map = Maps.newHashMap();
         if (StringUtils.isEmpty(page))  page = "1";
@@ -452,9 +448,10 @@ public class MyController extends BaseController{
     @RequestMapping("/commodityToSpread")
     @ResponseBody
     @LoginRequired
-    public JSONObject commodityToSpread (Commodity commodity,String tradeType,@CurrentUser AppUser user,HttpServletRequest request){
+    public JSONObject commodityToSpread (Commodity commodity,String tradeType,@CurrentUser AppUser user,
+                                         HttpServletRequest request, HttpServletResponse response){
         log.info("商家上传广告申请-------------->>/myController/commodityToSpread");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult =new ReturnResult();
         JSONObject jsonObject = null;
         if ( StringUtils.isEmpty(commodity.getCategory())
@@ -612,9 +609,9 @@ public class MyController extends BaseController{
      */
     @RequestMapping(value = "/getHotSaleCommodityInfo")
     @ResponseBody
-    public JSONObject getHotSaleCommodityInfo(HttpServletRequest request){
+    public JSONObject getHotSaleCommodityInfo(HttpServletRequest request, HttpServletResponse response){
         log.info("获取爆款信息-------------->>/myController/getHotSaleCommodity");
-        getParameterMap(request);
+        getParameterMap(request, response);
         String token = request.getHeader("token");
         String videoId = request.getParameter("videoId");
         String commodityId = request.getParameter("commodityId");
@@ -715,9 +712,9 @@ public class MyController extends BaseController{
      */
     @RequestMapping(value = "/getAdvertisementFeeInfo")
     @ResponseBody
-    public JSONObject getAdvertisementFeeInfo(String priceId,HttpServletRequest request){
+    public JSONObject getAdvertisementFeeInfo(String priceId,HttpServletRequest request, HttpServletResponse response){
         log.info("获取广告费用信息-------------->>/myController/getAdvertisementFeeInfo");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult =new ReturnResult();
         List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(priceId);
 //        System.out.println(advertisementFeeInfo);
@@ -735,9 +732,9 @@ public class MyController extends BaseController{
     @RequestMapping(value = "/getOutMoneyList")
     @ResponseBody
     @LoginRequired
-    public JSONObject getOutMoneyList(@CurrentUser AppUser appUser,HttpServletRequest request){
+    public JSONObject getOutMoneyList(@CurrentUser AppUser appUser,HttpServletRequest request, HttpServletResponse response){
         log.info("提现记录-------------->>/myController/getOutMoneyList");
-        Map<String, String> parameterMap = getParameterMap(request);
+        Map<String, String> parameterMap = getParameterMap(request, response);
         String page = parameterMap.get("page");
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 10;
@@ -779,10 +776,10 @@ public class MyController extends BaseController{
     @RequestMapping(value = "/sendMoney")
     @ResponseBody
     @LoginRequired
-    public JSONObject sendMoney(@CurrentUser AppUser appUser, HttpServletRequest request) {
+    public JSONObject sendMoney(@CurrentUser AppUser appUser, HttpServletRequest request, HttpServletResponse response){
         log.info("送礼物 ============>>>>sendMoney");
         ReturnResult returnResult = new ReturnResult();
-        Map<String, String> mapValue = getParameterMap(request);
+        Map<String, String> mapValue = getParameterMap(request, response);
         if(StringUtils.isEmpty(mapValue.get("giftId"))){
             returnResult.setMessage("缺少送给礼物ID！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -843,10 +840,10 @@ public class MyController extends BaseController{
     @RequestMapping(value = "/analysisCode")
     @ResponseBody
     @LoginRequired
-    public JSONObject analysisCode(@CurrentUser AppUser appUser, HttpServletRequest request) {
+    public JSONObject analysisCode(@CurrentUser AppUser appUser, HttpServletRequest request, HttpServletResponse response){
         log.info("扫一扫,二维码解析 --------------->>/myController/analysisCode");
         ReturnResult returnResult = new ReturnResult();
-        Map<String, String> parameterMap = getParameterMap(request);
+        Map<String, String> parameterMap = getParameterMap(request, response);
         String siteId = parameterMap.get("siteId");
 
 

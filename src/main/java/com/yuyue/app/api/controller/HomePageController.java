@@ -56,9 +56,7 @@ public class HomePageController extends BaseController {
     @RequestMapping("/result")
     public JSONObject homePage(HttpServletRequest request, HttpServletResponse response){
         log.info("首页展示轮播图及视频种类-------------->>/homePage/result");
-        //允许跨域
-        response.setHeader("Access-Control-Allow-Origin","*");
-        getParameterMap(request);
+        getParameterMap(request, response);
         Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
         List<Banner> banners=null;
@@ -90,10 +88,10 @@ public class HomePageController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/getVideoToHomePage")
-    public JSONObject getVideoToHomePage(String page,HttpServletRequest request){
+    public JSONObject getVideoToHomePage(String page,HttpServletRequest request, HttpServletResponse response) {
         log.info("获取首页视频列表-------------->>/homePage/getVideoToHomePage");
         getParameterMap(request);
-
+        Map<String,List> map= Maps.newHashMap();
         ReturnResult returnResult=new ReturnResult();
 
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
@@ -128,10 +126,9 @@ public class HomePageController extends BaseController {
      */
     @RequestMapping("/getCity")
     @ResponseBody
-    public JSONObject getCity(HttpServletRequest request) {
+    public JSONObject getCity(HttpServletRequest request, HttpServletResponse response) {
         log.info("获取定位，省市区-------------->>/homePage/getCity");
-        getParameterMap(request);
-        Map<String,List> map= Maps.newHashMap();
+        getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         List<Address> list = new ArrayList<>();
         if (redisUtil.existsKey("shengshiqu")) {
@@ -155,9 +152,9 @@ public class HomePageController extends BaseController {
      */
     @RequestMapping("/getSite")
     @ResponseBody
-    public JSONObject getSite(String page,String id,HttpServletRequest request){
+    public JSONObject getSite(String page,String id,HttpServletRequest request, HttpServletResponse response) {
         log.info("获取现场节目-------------->>/homePage/getSite");
-        getParameterMap(request);
+        getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
 
         if (StringUtils.isEmpty(page))  page = "1";

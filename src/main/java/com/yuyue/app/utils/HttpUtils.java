@@ -10,8 +10,11 @@ import org.apache.http.ssl.SSLContexts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
 
 import javax.net.ssl.SSLContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -100,5 +103,19 @@ public class HttpUtils {
                 sslcontext, new String[]{"TLSv1"}, null,
                 SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
         return sslsf;
+    }
+
+    /**
+     * 为response设置header，实现跨域
+     */
+    public static void setHeader(HttpServletRequest request, HttpServletResponse response){
+        //跨域的header设置
+        response.setHeader("Access-control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Methods", request.getMethod());
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));
+        //防止乱码，适用于传输JSON数据
+        response.setHeader("Content-Type","application/json;charset=UTF-8");
+        response.setStatus(HttpStatus.OK.value());
     }
 }
