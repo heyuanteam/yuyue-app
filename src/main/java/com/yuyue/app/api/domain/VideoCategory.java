@@ -19,4 +19,5 @@ public class VideoCategory implements Serializable {
     private String url;
     private String description;
     private int categoryNo;
+    private String status;
 }
