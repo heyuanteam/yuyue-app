@@ -19,4 +19,6 @@ public class AdPrice implements Serializable {
     private String adDiscount;
     //创建时间
     private String createTime;
+    //价格名
+    private String adPriceName;
 }
