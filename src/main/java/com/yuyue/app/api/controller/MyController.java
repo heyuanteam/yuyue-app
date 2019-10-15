@@ -861,15 +861,27 @@ public class MyController extends BaseController{
             YuyueSitePerson sitePerson = homePageService.getSitePerson(appUser.getId(), siteId);
             //未入场
             if(StringUtils.isNull(sitePerson)){
-                String startTime = site.getStartTime().split(" ")[1];
-                String startHour=startTime.split(":")[0];
-                String format = new SimpleDateFormat("HH").format(new Date());
+                String startTime = site.getAdmissionTime();
+                String endTime = site.getEndTime();
                 int personSum = Integer.parseInt(site.getPersonSum());
                 int personTotal = Integer.parseInt(site.getPersonTotal());
-                if (Integer.parseInt(format) - Integer.parseInt(startHour) >2 ||Integer.parseInt(startHour) - Integer.parseInt(format) >2 ){
-                    returnResult.setMessage("本场次结束进场！！");
-                }else if(personSum >= personTotal ){
+                Date startDate = null;
+                Date endDate = null;
+                if (StringUtils.isNotEmpty(startTime) && StringUtils.isNotEmpty(endTime)){
+                    try {
+                        startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(startTime);
+                        endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(endTime);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        log.info("时间格式错误！！");
+                    }
+                }
+                if(personSum >= personTotal ){
                     returnResult.setMessage("本场次已经满员！！");
+                }else if(new Date().before(startDate)){
+                    returnResult.setMessage("本场次未开场！！");
+                }else if(new Date().after(endDate)){
+                    returnResult.setMessage("本场次结束进场！！");
                 }else {
                     YuyueSitePerson yuyueSitePerson=new YuyueSitePerson();
                     String id=UUID.randomUUID().toString().replace("-","").toUpperCase();

@@ -1,5 +1,9 @@
 package com.yuyue.app.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class SimpleTest {
 
 
@@ -76,18 +80,16 @@ public class SimpleTest {
             System.out.println("错误");
         }else System.out.println("正确");*/
         /*RedisTemplate<String, String> stringTemplate = new RedisTemplate<>();*/
-       /* String a="2019-09-27 13:37:20";
-        String b="2019-09-22 13:37:20";
-        Date date = new Date("2019-09-22 13:37:20");*/
-/*        Date date = null;
+
+        Date date = null;
         try {
             date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-10-22 13:37:20");
         } catch (ParseException e) {
             e.printStackTrace();
         }
         boolean before = new Date().after(date);
-        if (before != false) System.out.println("2222"+before);
-        else System.out.println(before);*/
+        if (before == false) System.out.println("结果"+before);
+        else System.out.println(before);
 
         /*Date startDate = null;
         Date endDate = null;
@@ -128,15 +130,15 @@ public class SimpleTest {
         System.out.println(list.get(0));*/
 
 
-        String [] strs= new String[]{
-                "B044C53B38BA4E84B507E62402683E26",
-                "4D42B0ED17C64653AD31FD402858FBBB",
-                "C7EC5FA6E0964CC9AD14222D780F6AEB",
-                "A408C597F8A140F68D10C21CCDFF2AF3",
-                "F38607A875A44CF78D84176B545282B7"};
-        for (String s : strs) {
-            System.out.println(Math.abs(s.hashCode()) % 10+"");
-        }
+//        String [] strs= new String[]{
+//                "B044C53B38BA4E84B507E62402683E26",
+//                "4D42B0ED17C64653AD31FD402858FBBB",
+//                "C7EC5FA6E0964CC9AD14222D780F6AEB",
+//                "A408C597F8A140F68D10C21CCDFF2AF3",
+//                "F38607A875A44CF78D84176B545282B7"};
+//        for (String s : strs) {
+//            System.out.println(Math.abs(s.hashCode()) % 10+"");
+//        }
 
     }
 
