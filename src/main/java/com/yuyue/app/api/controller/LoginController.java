@@ -407,8 +407,8 @@ public class LoginController extends BaseController{
         LOGGER.info("获取定位和极光别名-------------->>/login/getJPush");
         getParameterMap(request, response);
         ReturnResult result = new ReturnResult();
-        AppUser appUserById = loginService.getAppUserMsg("","",id);
         if (StringUtils.isNotEmpty(id)) {
+            AppUser appUserById = loginService.getAppUserMsg("","",id);
             loginService.updateAppUser(appUserById.getId(),"","","","","","",
                     "","","","","","","","",
                     "",city,jpushName,"","","");
