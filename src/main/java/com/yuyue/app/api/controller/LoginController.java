@@ -302,7 +302,7 @@ public class LoginController extends BaseController{
     public JSONObject updateAppUser(@CurrentUser AppUser user, String nickName, String realName, String idCard, String newPhone,
                                     String sex, String headpUrl, String userStatus, String addrDetail, String education, String wechat,
                                     String signature, String password, String oldPassword,String code,
-                                    String userUrl, String cardZUrl, String cardFUrl,HttpServletRequest request
+                                    String userUrl, String cardZUrl, String cardFUrl,String frontCover,HttpServletRequest request
                                      , HttpServletResponse response) throws Exception {
         LOGGER.info("修改信息-------------->>/login/updateAppUser");
         getParameterMap(request, response);
@@ -343,7 +343,7 @@ public class LoginController extends BaseController{
         }
         LOGGER.info("============" + user.toString());
         loginService.updateAppUser(user.getId(),nickName,realName,idCard,newPhone,sex,headpUrl, userStatus, addrDetail, education,
-                wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,"","","","","");
+                wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,"","","","",frontCover);
         result.setMessage("修改成功！");
         result.setStatus(Boolean.TRUE);
         AppUser appUser = loginService.getAppUserMsg("","",user.getId());

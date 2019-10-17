@@ -101,7 +101,7 @@
                 b.`wechatName` = #{wechatName},
             </if>
         </set>
-        WHERE 1=1
+         WHERE 1=1
         <if test="id!=null and id!=''">
             and b.id = #{id}
         </if>
