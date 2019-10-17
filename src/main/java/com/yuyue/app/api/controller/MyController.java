@@ -431,14 +431,13 @@ public class MyController extends BaseController{
         if (StringUtils.isEmpty(videoByAuthorId)){
             returnResult.setMessage("暂无发布视频");
             returnResult.setResult(videoByAuthorId);
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else {
             map.put("Author", appUser);
             map.put("videoList", videoByAuthorId);
             returnResult.setMessage("返回成功！！");
-            returnResult.setStatus(Boolean.TRUE);
             returnResult.setResult(map);
         }
+        returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
     /**
