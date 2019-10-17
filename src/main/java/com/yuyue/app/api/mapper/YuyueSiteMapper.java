@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public interface YuyueSiteMapper extends MyBaseMapper<YuyueSite> {
             " FROM yuyue_site  where  status = '10A' OR status = '10B' limit #{begin},#{limit}")
     List<YuyueSite> getSiteList(@Param(value = "begin") Integer begin, @Param(value = "limit") Integer limit);
 
+    @Transactional
     @Update("UPDATE yuyue_site set personSum=personSum+1 WHERE id = #{id}")
     void updateSite(String id);
 }
