@@ -115,13 +115,13 @@
             DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover
             FROM yuyue_merchant
             where 1=1
-            <choose>
-                <when test="phone!=null and phone!=''">  and phone=#{phone}  </when>
-                <when test="id!=null and id!='' ">  and id=#{id}  </when>
-                <when test="password!=null and password!='' ">  and password=#{password}  </when>
+           <!-- <choose>-->
+                <if test="phone!=null and phone!=''">  and phone=#{phone}  </if>
+                <if test="id!=null and id!='' ">  and id=#{id}  </if>
+                <if test="password!=null and password!='' ">  and password=#{password}  </if>
 
-            </choose>
-         LIMIT 1
+            <!--</choose>-->
+         order by createTime LIMIT 1
 
     </select>
 

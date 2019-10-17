@@ -875,7 +875,7 @@ public class PayController extends BaseController{
             //        return JSONObject.toJSONString(maps);
             returnResult.setMessage("返回成功！");
             returnResult.setStatus(Boolean.TRUE);
-            returnResult.setResult(JSONObject.toJSON(maps));
+            returnResult.setResult(JSONObject.toJSON(ValidCard));
         } catch (Exception e) {
             e.printStackTrace();
             log.info("支付失败！参数不对！");
@@ -885,23 +885,5 @@ public class PayController extends BaseController{
         }
         returnResult.setMessage("调用扫码微信成功！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
-    }
-
-    /**
-     * 生成二维码图片并直接以流的形式输出到页面
-     * @param code_url
-     * @param response
-     */
-    @RequestMapping("/getQRCode")
-    @ResponseBody
-    public JSONObject getQRCode(String code_url,HttpServletRequest request, HttpServletResponse response){
-        getParameterMap(request, response);
-        String token = request.getHeader("token");
-        ReturnResult returnResult = new ReturnResult();
-        if(StringUtils.isEmpty(token)) {
-            returnResult.setMessage("缺少token！请去登录");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        return QRCodeUtil.encodeQrcode(code_url, response);
     }
 }
