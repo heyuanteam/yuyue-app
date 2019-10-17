@@ -243,7 +243,7 @@ public class LoginController extends BaseController{
                         AppUser appUser = new AppUser();
                         appUser.setId(uuid);
                         appUser.setUserNo(RandomSaltUtil.randomNumber(15));
-                        appUser.setNickName(phone);
+                        appUser.setNickName("娱悦用户"+RandomSaltUtil.randomNumber(8));
                         appUser.setRealName(phone);
                         appUser.setPhone(phone);
                         appUser.setPassword(MD5Utils.getMD5Str(password + salt));

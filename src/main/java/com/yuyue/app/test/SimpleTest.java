@@ -1,8 +1,6 @@
 package com.yuyue.app.test;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.yuyue.app.utils.RandomSaltUtil;
 
 public class SimpleTest {
 
@@ -81,16 +79,8 @@ public class SimpleTest {
         }else System.out.println("正确");*/
         /*RedisTemplate<String, String> stringTemplate = new RedisTemplate<>();*/
 
-        Date date = null;
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2019-10-22 13:37:20");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        boolean before = new Date().after(date);
-        if (before == false) System.out.println("结果"+before);
-        else System.out.println(before);
-
+        String s="娱悦用户"+ RandomSaltUtil.randomNumber(8);
+        System.out.println(s);
         /*Date startDate = null;
         Date endDate = null;
         try {
