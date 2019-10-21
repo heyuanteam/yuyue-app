@@ -12,8 +12,8 @@ import java.util.List;
 public interface PayMapper extends MyBaseMapper<Order> {
 
     @Transactional
-    @Insert("INSERT into yuyue_order (id,orderNo,tradeType,money,mobile,status,statusCode,merchantId,note,sourceId)  values  " +
-            "(#{id},#{orderNo},#{tradeType},#{money},#{mobile},#{status},#{statusCode},#{merchantId},#{note},#{sourceId})")
+    @Insert("INSERT into yuyue_order (id,orderNo,tradeType,money,mobile,status,merchantId,note,sourceId)  values  " +
+            "(#{id},#{orderNo},#{tradeType},#{money},#{mobile},#{status},#{merchantId},#{note},#{sourceId})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createOrder(Order order);
 

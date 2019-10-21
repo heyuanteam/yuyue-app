@@ -309,6 +309,7 @@ public class PayController extends BaseController{
     @ResponseBody
     @RequestMapping(value = "/alipayNotify")
     public synchronized void alipayNotify(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        getParameterMap(request, response);
         log.info("支付宝平台回调开始+++++++++++++++++++++++++++++++++");
         // 获取支付宝POST过来反馈信息
         Map<String, String> params = new HashMap<>();
@@ -795,13 +796,14 @@ public class PayController extends BaseController{
         if ("SMWX".equals(order.getTradeType())) {
             return payNativeWX(order);
         } else if ("SMZFB".equals(order.getTradeType())) {
-            return payNativeZFB(order,response);
+            return payNativeZFB(order,request,response);
         }
         returnResult.setMessage("充值类型选择错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-    private JSONObject payNativeZFB(Order order, HttpServletResponse httpResponse) throws IOException {
+    private JSONObject payNativeZFB(Order order,HttpServletRequest request, HttpServletResponse httpResponse) throws IOException {
+        getParameterMap(request, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(AliPayReturnUrl);//同步通知页面
@@ -820,17 +822,20 @@ public class PayController extends BaseController{
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
-        httpResponse.setContentType("text/html;charset=" + CHARSET);
-        httpResponse.getWriter().write(form);//直接将完整的表单html输出到页面
-        httpResponse.getWriter().flush();
-        httpResponse.getWriter().close();
+//        写到html
+//        httpResponse.setContentType("text/html;charset=" + CHARSET);
+//        httpResponse.getWriter().write(form);//直接将完整的表单html输出到页面
+//        httpResponse.reset();//进行刷新
+//        ----------重复刷新问题
+//        httpResponse.getWriter().flush();
+//        httpResponse.getWriter().close();
+        returnResult.setResult(form);
 
         if (form == null) {
             log.error("订单" + order.getId() + "未成功获取支付宝付款界面！");
             returnResult.setMessage("未成功获取支付宝付款界面！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-
         returnResult.setMessage("调用扫码支付宝成功！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
