@@ -75,7 +75,7 @@ public class Variables {
 
     //    -------------------------------------------------------------------------------
 //    高德地图请求秘钥
-    public static final String gdKEY = "47dbdfb71335738ef99e0f49f4a10746";
+    public static final String gdKEY = "eb378313443345c6ae84ef4ac60dd661";
 //    返回值类型
     public static final String OUTPUT = "JSON";
 //    根据地名获取高德经纬度Api

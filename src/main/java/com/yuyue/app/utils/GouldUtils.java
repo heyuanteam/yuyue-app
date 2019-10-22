@@ -43,60 +43,33 @@ import java.nio.charset.CodingErrorAction;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * 高德API工具类
  */
 public class GouldUtils {
 
-    /**
-     * 连接池最大连接数
-     */
+//    连接池最大连接数
     private static final int MAX_TOTAL_CONNECTIONS = 4000;
-
-    /**
-     * 设置每个路由上的默认连接个数
-     */
+//    设置每个路由上的默认连接个数
     private static final int DEFAULT_MAX_PER_ROUTE = 200;
-
-    /**
-     * 请求的请求超时时间 单位：毫秒
-     */
+//    请求的请求超时时间 单位：毫秒
     private static final int REQUEST_CONNECTION_TIMEOUT = 8 * 1000;
-
-    /**
-     * 请求的等待数据超时时间 单位：毫秒
-     */
+//    请求的等待数据超时时间 单位：毫秒
     private static final int REQUEST_SOCKET_TIMEOUT = 8 * 1000;
-
-    /**
-     * 请求的连接超时时间 单位：毫秒
-     */
+//    请求的连接超时时间 单位：毫秒
     private static final int REQUEST_CONNECTION_REQUEST_TIMEOUT = 5 * 1000;
-
-    /**
-     * 连接闲置多久后需要重新检测 单位：毫秒
-     */
+//    连接闲置多久后需要重新检测 单位：毫秒
     private static final int VALIDATE_AFTER_IN_ACTIVITY = 2 * 1000;
-
-    /**
-     * 关闭Socket时，要么发送完所有数据，要么等待多少秒后，就关闭连接，此时socket.close()是阻塞的　单位秒
-     */
+//    关闭Socket时，要么发送完所有数据，要么等待多少秒后，就关闭连接，此时socket.close()是阻塞的　单位秒
     private static final int SOCKET_CONFIG_SO_LINGER = 60;
-
-    /**
-     * 接收数据的等待超时时间,即读超时时间，单位ms
-     */
+//    接收数据的等待超时时间,即读超时时间，单位ms
     private static final int SOCKET_CONFIG_SO_TIMEOUT = 5 * 1000;
-    /**
-     * 重试次数
-     */
+//    重试次数
     private static int RETRY_COUNT = 5;
-    /**
-     * 声明为 static volatile,会迫使线程每次读取时作为一个全局变量读取
-     */
+//    声明为 static volatile,会迫使线程每次读取时作为一个全局变量读取
     private static volatile CloseableHttpClient httpClient = null;
-
 
     /**
      * @param uri
@@ -142,7 +115,6 @@ public class GouldUtils {
 
                         return new BasicNameValuePair(innerEntry.getKey(), innerEntry.getValue());
                     }
-
                 }).toList();
 
         String paramSectionOfUrl = URLEncodedUtils.format(resultList, Consts.UTF_8);
@@ -161,7 +133,6 @@ public class GouldUtils {
             return resultUrl.toString();
         }
     }
-
 
     /**
      * @param uri
@@ -182,7 +153,6 @@ public class GouldUtils {
             httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
             httpPost.setConfig(getRequestConfig());
             responseBody = executeRequest(httpPost);
-
         } catch (Exception e) {
             throw new RuntimeException("httpclient doPost方法异常 ", e);
         } finally {
@@ -190,7 +160,6 @@ public class GouldUtils {
         }
         return responseBody;
     }
-
 
     /**
      * @param uri
@@ -207,7 +176,6 @@ public class GouldUtils {
             httpPost.setEntity(reqEntity);
             httpPost.setConfig(getRequestConfig());
             responseBody = executeRequest(httpPost);
-
         } catch (IOException e) {
             throw new RuntimeException("httpclient doPost方法异常 ", e);
         } finally {
@@ -285,8 +253,7 @@ public class GouldUtils {
         // 请求重试处理
         return new HttpRequestRetryHandler() {
             @Override
-            public boolean retryRequest(IOException exception,
-                                        int executionCount, HttpContext context) {
+            public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
                 if (executionCount >= RETRY_COUNT) {
                     // 假设已经重试了5次，就放弃
                     return false;
@@ -377,7 +344,6 @@ public class GouldUtils {
     public static String jointUrl(Map<String, String> params, String output, String key, String url) throws IOException {
         StringBuilder baseUrl = new StringBuilder();
         baseUrl.append(url);
-
         int index = 0;
         Set<Map.Entry<String, String>> entrys = params.entrySet();
         for (Map.Entry<String, String> param : entrys) {
@@ -391,7 +357,34 @@ public class GouldUtils {
             index++;
         }
         baseUrl.append("&output=").append(output).append("&key=").append(key);
-
         return baseUrl.toString();
+    }
+
+    /*
+     * 过滤掉html里不安全的标签，不允许用户输入这些标�?
+     */
+    public static String htmlFilter(String inputString) {
+        String htmlStr = inputString; // 含html标签的字符串
+        String textStr = "";
+        java.util.regex.Pattern p_script;
+        java.util.regex.Matcher m_script;
+        try {
+            String regEx_script = "<[\\s]*?(script|style)[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?(script|style)[\\s]*?>";
+            String regEx_onevent = "on[^\\s]+=\\s*";
+            String regEx_hrefjs = "href=javascript:";
+            String regEx_iframe = "<[\\s]*?(iframe|frameset)[^>]*?>[\\s\\S]*?<[\\s]*?\\/[\\s]*?(iframe|frameset)[\\s]*?>";
+            String regEx_link = "<[\\s]*?link[^>]*?/>";
+
+            htmlStr = Pattern.compile(regEx_script, Pattern.CASE_INSENSITIVE).matcher(htmlStr).replaceAll("");
+            htmlStr = Pattern.compile(regEx_onevent, Pattern.CASE_INSENSITIVE).matcher(htmlStr).replaceAll("");
+            htmlStr = Pattern.compile(regEx_hrefjs, Pattern.CASE_INSENSITIVE).matcher(htmlStr).replaceAll("");
+            htmlStr = Pattern.compile(regEx_iframe, Pattern.CASE_INSENSITIVE).matcher(htmlStr).replaceAll("");
+            htmlStr = Pattern.compile(regEx_link, Pattern.CASE_INSENSITIVE).matcher(htmlStr).replaceAll("");
+
+            textStr = htmlStr;
+        } catch (Exception e) {
+            System.err.println("Html2Text: " + e.getMessage());
+        }
+        return textStr;
     }
 }
