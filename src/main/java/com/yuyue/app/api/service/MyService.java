@@ -43,8 +43,8 @@ public interface MyService {
     List<AdPrice> getAdvertisementFeeInfo(String priceId);
 
     void insertShowName(String id, String userId, String teamName, String description, String size,
-                        String categoryId, String address, String phone, String cardZUrl, String cardFUrl,
-                        String videoAddress, String mail, String weChat);
+                        String categoryId, String address, String phone,
+                        String videoAddress,String imageAddress, String mail, String weChat);
 
     List<ChangeMoneyVo> changeMoneyList(String id, int begin, int size);
 

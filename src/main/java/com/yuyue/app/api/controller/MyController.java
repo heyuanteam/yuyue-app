@@ -359,12 +359,10 @@ public class MyController extends BaseController{
             showName.setAddress(mapValue.get("address"));
             //    手机
             showName.setPhone(mapValue.get("phone"));
-            //    身份证正面
-            showName.setCardZUrl(mapValue.get("cardZUrl"));
-            //    身份证反面
-            showName.setCardFUrl(mapValue.get("cardFUrl"));
             //    视频地址
             showName.setVideoAddress(mapValue.get("videoAddress"));
+            //    视频图片地址
+            showName.setVideoAddress(mapValue.get("imageAddress"));
             //    邮箱
             showName.setMail(mapValue.get("mail"));
             //    微信
@@ -374,9 +372,9 @@ public class MyController extends BaseController{
                 returnResult.setMessage("请勿重复添加！");
             } else {
                 myService.insertShowName(showName.getId(),showName.getUserId(),showName.getTeamName(), showName.getSize(),
-                        showName.getAddress(),showName.getCardZUrl(),showName.getCardFUrl(),showName.getCategoryId(),
+                        showName.getAddress(),showName.getCategoryId(),
                         showName.getDescription(),showName.getPhone(),
-                        showName.getVideoAddress(),showName.getMail(),showName.getWeChat());
+                        showName.getVideoAddress(), showName.getImageAddress(),showName.getMail(),showName.getWeChat());
                 returnResult.setMessage("添加成功！");
                 returnResult.setStatus(Boolean.TRUE);
             }

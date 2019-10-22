@@ -72,10 +72,9 @@ public class MyServiceImpl implements MyService {
 
     @Override
     public void insertShowName(String id, String userId, String teamName, String description, String size,
-                               String categoryId, String address, String phone, String cardZUrl, String cardFUrl,
-                               String videoAddress, String mail, String weChat) {
-        showNameMapper.insertShowName(id,userId,teamName,description,size,categoryId,address,phone,cardZUrl,
-                cardFUrl,videoAddress,mail,weChat);
+                               String categoryId, String address, String phone,
+                               String videoAddress,String imageAddress,  String mail, String weChat) {
+        showNameMapper.insertShowName(id,userId,teamName,description,size,categoryId,address,phone,videoAddress,imageAddress,mail,weChat);
     }
 
     @Override
