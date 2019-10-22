@@ -87,7 +87,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject UploadFilesToServer(MultipartFile[] files) throws Exception{
+    public JSONObject UploadFilesToServer(MultipartFile[] files,String version) throws Exception{
         ReturnResult returnResult=new ReturnResult();
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
@@ -96,7 +96,7 @@ public class UploadFileServiceImpl implements UploadFileService {
 //        List<String> listMDs = new ArrayList();
         List<UploadFile> lists = new ArrayList();
         HashMap<String,Object> hashMap = Maps.newHashMap();
-        if(157286400 < files[0].getSize()){
+        if(157286400 < files[0].getSize() && StringUtils.isEmpty(version)){
             returnResult.setMessage("上传文件不可大于150MB!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else {
@@ -192,7 +192,6 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
     /**
      * 首页获取视频，并做分页
-     * @param page
      *
      * @return
      */
