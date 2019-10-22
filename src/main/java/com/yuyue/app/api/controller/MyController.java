@@ -15,8 +15,6 @@ import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -327,16 +325,13 @@ public class MyController extends BaseController{
                 returnResult.setResult(showInfo);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
+
         }if (StringUtils.isEmpty(mapValue.get("teamName")) ){
             returnResult.setMessage("姓名或团队名称参数为空！！");
         }else if (StringUtils.isEmpty(mapValue.get("size"))){
             returnResult.setMessage("人数参数为空！！");
         }else if (StringUtils.isEmpty(mapValue.get("address"))){
             returnResult.setMessage("现住地址参数为空！！");
-        }else if (StringUtils.isEmpty(mapValue.get("cardZUrl"))){
-            returnResult.setMessage("身份证正面参数为空！！");
-        }else if (StringUtils.isEmpty(mapValue.get("cardFUrl"))){
-            returnResult.setMessage("身份证反面参数为空！！");
         }else if (StringUtils.isEmpty(mapValue.get("categoryId"))){
             returnResult.setMessage("分类ID参数为空！！");
         }else if (StringUtils.isEmpty(mapValue.get("description"))){
@@ -345,8 +340,12 @@ public class MyController extends BaseController{
             returnResult.setMessage("手机参数为空！！");
         }else if(StringUtils.isEmpty(mapValue.get("videoAddress"))){
             returnResult.setMessage("视频地址参数为空！！");
-        } else {
+        }else {
             ShowName showName = new ShowName();
+              if(StringUtils.isEmpty(mapValue.get("imageAddress"))){
+                  showName.setImageAddress("http://101.37.252.177:82/videoImage/videoImage.jpg");
+              }
+
             showName.setId(UUID.randomUUID().toString().replace("-", "").toUpperCase());
             showName.setUserId(userId);
             //    姓名或团队名称
@@ -364,7 +363,7 @@ public class MyController extends BaseController{
             //    视频地址
             showName.setVideoAddress(mapValue.get("videoAddress"));
             //    视频图片地址
-            showName.setVideoAddress(mapValue.get("imageAddress"));
+            showName.setImageAddress(mapValue.get("imageAddress"));
             //    邮箱
             showName.setMail(mapValue.get("mail"));
             //    微信
