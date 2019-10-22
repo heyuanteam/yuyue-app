@@ -27,7 +27,7 @@ public interface UploadFileService {
      *
      * @return
      */
-    JSONObject UploadFilesToServer(MultipartFile[] files)throws Exception;
+    JSONObject UploadFilesToServer(MultipartFile[] files,String version)throws Exception;
 
     /**
      * 从fastdfs服务器下载文件

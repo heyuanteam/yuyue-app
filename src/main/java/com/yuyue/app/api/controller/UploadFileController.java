@@ -140,7 +140,8 @@ public class UploadFileController extends  BaseController{
      */
     @RequestMapping(value = "/uploadServer")
     @ResponseBody
-    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public JSONObject uploadFileServer(@RequestParam("file") MultipartFile[] files,String version,
+                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
         log.info("批量上传文件到fastdfs服务器-------------->>/uploadFile/uploadServer");
         getParameterMap(request, response);
 //        Map<String, String> mapValue = getParameterMap(request);
@@ -149,7 +150,7 @@ public class UploadFileController extends  BaseController{
 //        if(StringUtils.isNotEmpty(token)){
 //            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
 //        }
-        return uploadFileService.UploadFilesToServer(files);
+        return uploadFileService.UploadFilesToServer(files,version);
     }
 
     /**
