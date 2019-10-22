@@ -21,6 +21,7 @@ import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.enums.ReturnResult;
+import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -50,53 +51,8 @@ public class PayController extends BaseController{
     @Autowired
     private LoginService loginService;
 
-    //微信APPID
-    private static final String wxAppId = "wx82e0374be0e044a4";
-    private static final String ip = "101.37.252.177";
-    //微信AppSecret
-    private static final String APP_SECRET = "c08075181dce2ffe3f036734f168318f";
-    //微信商户号
-    private static final String wxMchID = "1529278811";
-    //微信秘钥
-    private static final String KEY = "FE79E95059CDCA91646CDDA6A7F60A93";
-    private static final String wxNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/wxpayNotify";
     // 构造签名的map
     private SortedMap<Object, Object> parameters = new TreeMap<>();
-
-    //支付宝
-    private static final String AliAPPID = "2019082166401163";
-    private static final String AliAppPrivateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDD5vbz+U6bkpwHTnto4fg2" +
-            "er1oyxMHnGOPGeEl0MA2xuLtcTw8nPqp+ZMLGRWZxr7YLXv/372G6017ruKUE9Wh3ZrxestCDxDnhi7hfeLFPcsIryhpBTchfd7NhPJngGSUS8S" +
-            "O4W+x5Yco40fITdnTrGz+fFCnRuUOU7dzo4tHCkrkJlX4cZ6D1PR9IxRCvlCFbxYzTBsqVpn5Ekc+B3RcxycX+yP7CdFSn7frp+uJBHfwDz//NK" +
-            "X7OJbJDflNCacU4AFzF8M6wqs7bwIhi0GCZyZeS7FeCFuSAp7MW7Mk6OFDW/OM5bKftu+hwRxQ08o5ynh/6LapItEQSK4JxVGdAgMBAAECggEBA" +
-            "LV59VWHozldNGtUWeCMTKrzQxmb3fIT/uqm17p3Ski0L640Us/3wAHL8Fq8jxUYVtzeLduYQfOFcQ7dsInqYeID7zA6R6bXXBqOZEmBm5yKpNZT" +
-            "pMS9DxhYiRisSv50ozf5hImz7wvGjFHlUi8NZ3e+aG3Lbc+4TiLajLx0SWaxVEtBeHDzy3MYt4wf0soxHW040rOhk07YMf8g8W6yh7VX6OkkzVs" +
-            "UwtKk1iaUKE4xDuDvLOi1f3RwHRC+c4glfcNQ8EkGYupP760HmsdTC//Cl4XMfzQOoeMSH46xVjmWD+tBJ7zooQW6bm8mWCYYc4t/RNw/5nrkXx" +
-            "qd73qKEQECgYEA4HoDIncDXRD3gC6idYNEwDy8iC5UolPejHosQpYgG86XRp0NJYQ+JU9kQFj3YNAH2ks+yqzQq6LRaaci6ggpKGyvyBNk7FoFm" +
-            "sUCdBi6+oMXq4M4PwfuZ5IygBh1rLM8tQ+qOYI9Lj/2i46+5b2DB3RBWo1FtnQ7LA5Pl55Txl0CgYEA32myHFDxHoScyMjfqSALzOKMAYrZlIGH" +
-            "pZC7Lr6H2T/lrcQHAEpVkAZSAqrhKB0W9QwtkWBDAtV0jK75GIsTkVrJtIf2BSLnQ9wuI9qiDoYckyEw7xoV9uBV1Cxg5VoJZ+0I4su2zKE/YnG" +
-            "0OEkbg40GMgaJTRlahBEgrYGYhEECgYB0JQ08JuH5pE665uYt8TaAVKyjtX0a5FQw0QHXjf+dA55n7diggbT57wMK/D06vUhi3S3nBdWOCNdbWB" +
-            "wLhR9uiBXHaql8VPOzaZ3kXetYtL1pg6J1km/67LzuZDl2muKdODa2PLnVFUlGWhxRmGWUVMV/ybq5NZhsKhdqdoQYDQKBgG2dc1k3UYaStEZDY" +
-            "JGfeoq1INJk6OpXP1G5mE2QCCFMm4lNY839qst2fmh2pPBEjY3/wp/QZjCOwJeCBg/HtPsdW1frWYcdn/CIqE7JJ7gOjxiVMWgvGVW+rf3jJEuD" +
-            "iJfoEfMM1ozCFNJdTXpMTGaYG9ERqe4dIW8o5CqdKlLBAoGAbx4zaDeq4NFHmLYxOwUoDqOOaFEAOOR2ff1fBk/xoEpR/E2piI87sQs5l+V5L9w" +
-            "/TyV/61yQ6rbG/Pvlzzjj1n7/PbLmdSBWBYQjqK8TO3vOcCqsb6duJrcHPxLC48ieZ1ikIZEtRSEz4GrV62qqFNmBe09FrTjaUjo9Dn+NFDo=";
-    private static final String AliPayPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArkUo049kqx1Y6mme9Y1pjxNesSZgT" +
-            "LLcwdxRDS3JtkmhWgO/SX2xIFqkbmkMspm94iXklqwG5msWL23I5WTXjLHNGdv5mU9cKx64gN9atOsA0sQ38yiInYMd6PPBM4VOdvKyau0purE9" +
-            "RQqwKd1O/XTFlD9XDxEz3NiRD6sunLIxaPMMkt2+X7KPXAwYBIL5tymna3+rBnxYIAX2q5KORaYKoOWRK9ER+pMMXpcqNbMdO1ceOeUqx2XzpVZ" +
-            "oMlcgRB6BTKG59S+KVso1O9Cxx52lvYqisuei8OnNwmMxK+++psZXmdDuNpUc4OJXdA7Bc0zbwDedtxRJE3zNDONOOwIDAQAB";
-    private static final String AliPayNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/alipayNotify";
-    // 编码集，支持 GBK/UTF-8
-    protected static final String CHARSET = "utf-8";
-    private static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/pay";
-//    private static final String AliPayReturnUrl = "http://101.37.252.177:8082/yuyue-app/pay/returnUrl";
-//    private static final String subject = "杭州和元网络科技有限公司";
-
-    //支付宝转账
-    private static final String gateway="https://openapi.alipay.com/gateway.do";//支付宝网关
-    //填写自己创建的app的对应参数
-    private static AlipayClient alipayClient = new DefaultAlipayClient
-            (gateway, AliAPPID, AliAppPrivateKey, "json", CHARSET, AliPayPublicKey,"RSA2");
-
     //苹果内购
     private static final Map<String, Object> iosMap = new HashMap<>();
     static {
@@ -149,8 +105,8 @@ public class PayController extends BaseController{
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
                     .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
             log.info("金额==========>>>"+moneyD);
-            map.put("appid", wxAppId);
-            map.put("mch_id", wxMchID);
+            map.put("appid", Variables.wxAppId);
+            map.put("mch_id", Variables.wxMchID);
             map.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));
             if((order.getTradeType()).contains("GG")){
                 map.put("body", "yuyue-广告费用");
@@ -161,27 +117,27 @@ public class PayController extends BaseController{
             map.put("total_fee", moneyD);
             map.put("spbill_create_ip", "101.37.252.177");
             map.put("trade_type", "APP");
-            map.put("notify_url", wxNotifyUrl);
-            String sign = MD5Utils.signDatashwx(map, KEY);
+            map.put("notify_url", Variables.wxNotifyUrl);
+            String sign = MD5Utils.signDatashwx(map, Variables.wxKEY);
             map.put("sign", sign);
             StringBuffer sb = new StringBuffer();
             sb.append("<xml>");
             XMLUtils.mapToXMLTest2(map, sb);
             sb.append("</xml>");
             log.info((new StringBuilder()).append("上送的数据为+++++++").append(sb.toString()).toString());
-            String res = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), CHARSET, "application/json");
+            String res = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), Variables.CHARSET, "application/json");
             log.info("返回的数据为--------------------------+++++++" + res);
             Map ValidCard = XMLUtils.xmlString2Map(res);
             Map maps = new HashMap();
             String timestamp = String.valueOf((new Date()).getTime() / 1000L);
             maps.put("appid", ValidCard.get("appid").toString());
-            maps.put("partnerid", wxMchID);
+            maps.put("partnerid", Variables.wxMchID);
             maps.put("prepayid", ValidCard.get("prepay_id"));
             maps.put("package", "Sign=WXPay");
             maps.put("noncestr", ValidCard.get("nonce_str"));
             maps.put("timestamp", timestamp);
             //maps.put("signType", "MD5");
-            String signs = MD5Utils.signDatashwx(maps, KEY);
+            String signs = MD5Utils.signDatashwx(maps, Variables.wxKEY);
             maps.put("sign", signs);
             //        return JSONObject.toJSONString(maps);
             maps.put("orderId",order.getId());
@@ -208,7 +164,7 @@ public class PayController extends BaseController{
     @RequestMapping(value = "/wxpayNotify")
     public synchronized void wxpay(HttpServletRequest request) throws Exception {
         log.info((new StringBuilder()).append("回调的内容为+++++++++++++++++++++++++++++++++").append(request).toString());
-        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), CHARSET));
+        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream(), Variables.CHARSET));
         StringBuffer buffer = new StringBuffer();
         for (String line = " "; (line = br.readLine()) != null; )
             buffer.append(line);
@@ -270,10 +226,10 @@ public class PayController extends BaseController{
             model.setTotalAmount(moneyD);
             model.setProductCode("QUICK_MSECURITY_PAY");// 固定值
             request.setBizModel(model);
-            request.setNotifyUrl(AliPayNotifyUrl);// 商户外网可以访问的异步地址
+            request.setNotifyUrl(Variables.AliPayNotifyUrl);// 商户外网可以访问的异步地址
             try {
                 // 这里和普通的接口调用不同，使用的是sdkExecute
-                AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
+                AlipayTradeAppPayResponse response = Variables.alipayClient.sdkExecute(request);
                 log.info("response: " + response.getBody());// 就是orderString
                 // 可以直接给客户端请求，无需再做处理。
                 returnResult.setMessage("返回成功！");
@@ -330,7 +286,7 @@ public class PayController extends BaseController{
         // boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String
         // publicKey, String charset, String sign_type)
         String orderId = params.get("out_trade_no");
-        boolean flag = AlipaySignature.rsaCheckV1(params, AliPayPublicKey, CHARSET, "RSA2");
+        boolean flag = AlipaySignature.rsaCheckV1(params, Variables.AliPayPublicKey, Variables.CHARSET, "RSA2");
         if (flag) {
             log.info("支付宝验签成功+++++++++++++++++++++++++++++++++");
             Order orderNo = payService.getOrderId(orderId);
@@ -521,28 +477,28 @@ public class PayController extends BaseController{
         log.info("金额==========>>>"+moneyD);
         String desc = "娱悦APP提现"+outMoney.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"元";
         // 参数：开始生成第一次签名
-        parameters.put("mch_appid", wxAppId);
-        parameters.put("mchid", wxMchID);
+        parameters.put("mch_appid", Variables.wxAppId);
+        parameters.put("mchid", Variables.wxMchID);
         parameters.put("partner_trade_no", partner_trade_no);
         parameters.put("nonce_str", nonce_str);
         parameters.put("openid", user.getOpendId());
         parameters.put("check_name", checkName);
         parameters.put("amount", moneyD);
-        parameters.put("spbill_create_ip", ip);
+        parameters.put("spbill_create_ip", Variables.ip);
         parameters.put("desc", desc);
-        String sign = XMLUtils.createSign(CHARSET, parameters);
+        String sign = XMLUtils.createSign(Variables.CHARSET, parameters);
         log.info("sign==========>>>>"+sign);
         Map map = new HashMap();
         map.put("amount",moneyD);
         map.put("check_name",checkName);
         map.put("desc",desc);
-        map.put("mch_appid",wxAppId);
-        map.put("mchid",wxMchID);
+        map.put("mch_appid",Variables.wxAppId);
+        map.put("mchid",Variables.wxMchID);
         map.put("nonce_str",nonce_str);
         map.put("openid",user.getOpendId());
         map.put("partner_trade_no",partner_trade_no);
         map.put("sign",sign);
-        map.put("spbill_create_ip",ip);
+        map.put("spbill_create_ip",Variables.ip);
         StringBuffer sb = new StringBuffer();
         sb.append("<xml>");
         XMLUtils.mapToXMLTest2(map, sb);
@@ -551,7 +507,7 @@ public class PayController extends BaseController{
         try {
             CloseableHttpResponse response = HttpUtils.Post(
                     "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers", sb.toString(), true);
-            String transfersXml = EntityUtils.toString(response.getEntity(), CHARSET);
+            String transfersXml = EntityUtils.toString(response.getEntity(), Variables.CHARSET);
             Map<String, String> transferMap = XMLUtils.xmlString2Map(transfersXml);
             log.info("微信转账回返信息=============>>>>>>"+transferMap.toString());
             if (transferMap.size()>0) {
@@ -661,7 +617,7 @@ public class PayController extends BaseController{
                 + "access_token="+ accessToken
                 + "&openid="+ openid
                 + "&lang=zh_CN";
-        String result = getReturnData(url,CHARSET);
+        String result = HttpUtils.getReturnData(url,Variables.CHARSET);
         JSONObject json = JSON.parseObject(result);
         log.info("获取用户基本信息======>>>>>"+json);
         return json;
@@ -679,10 +635,10 @@ public class PayController extends BaseController{
         JSONObject jsonObject = new JSONObject();
         if (code != null) {
             String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
-                    + "appid="+ wxAppId
-                    + "&secret="+ APP_SECRET
+                    + "appid="+ Variables.wxAppId
+                    + "&secret="+ Variables.APP_SECRET
                     + "&code=" + code + "&grant_type=authorization_code";
-            String returnData = getReturnData(url,CHARSET);
+            String returnData = HttpUtils.getReturnData(url,Variables.CHARSET);
             log.info("用户授权====>>>>"+returnData);
             try {
                 jsonObject = JSONObject.parseObject(returnData);
@@ -694,25 +650,6 @@ public class PayController extends BaseController{
             log.info("openid======>>>>>"+jsonObject.getString("openid"));
         }
         return jsonObject;
-    }
-
-    public String getReturnData(String urlString,String enCode) {
-        String res = "";
-        try {
-            URL url = new URL(urlString);
-            java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
-            conn.connect();
-            java.io.BufferedReader in = new java.io.BufferedReader(
-                    new java.io.InputStreamReader(conn.getInputStream(), enCode));
-            String line;
-            while ((line = in.readLine()) != null) {
-                res += line;
-            }
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return res;
     }
 
     /**
@@ -732,7 +669,7 @@ public class PayController extends BaseController{
         try {
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
             request.setBizModel(model);
-            AlipayFundTransToaccountTransferResponse response = alipayClient.execute(request);
+            AlipayFundTransToaccountTransferResponse response = Variables.alipayClient.execute(request);
             log.info("转账信息=======>"+response.getBody());
             if (response.isSuccess()) {
                 JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("alipay_fund_trans_toaccount_transfer_response");
@@ -806,8 +743,8 @@ public class PayController extends BaseController{
         getParameterMap(request, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl(AliPayReturnUrl);//同步通知页面
-        alipayRequest.setNotifyUrl(AliPayNotifyUrl);//在公共参数中设置回跳和通知地址
+        alipayRequest.setReturnUrl(Variables.AliPayReturnUrl);//同步通知页面
+        alipayRequest.setNotifyUrl(Variables.AliPayNotifyUrl);//在公共参数中设置回跳和通知地址
         String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
         String body = "扫码支付宝充值";
         String subject = "扫码充值礼物";
@@ -818,7 +755,7 @@ public class PayController extends BaseController{
                 +"\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");//填充业务参数
         String form="";
         try {
-            form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
+            form = Variables.alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
             log.info("支付宝扫码返回结果====>>>>>"+form);
         } catch (AlipayApiException e) {
             e.printStackTrace();
@@ -856,30 +793,30 @@ public class PayController extends BaseController{
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
                     .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
             paramMap.put("total_fee", moneyD); //金额必须为整数  单位为分
-            paramMap.put("notify_url", wxNotifyUrl); //支付成功后，回调地址
-            paramMap.put("appid", wxAppId); //appid
-            paramMap.put("mch_id", wxMchID); //商户号
+            paramMap.put("notify_url", Variables.wxNotifyUrl); //支付成功后，回调地址
+            paramMap.put("appid", Variables.wxAppId); //appid
+            paramMap.put("mch_id", Variables.wxMchID); //商户号
             paramMap.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));  //随机数
-            String sign = MD5Utils.signDatashwx(paramMap, KEY);
+            String sign = MD5Utils.signDatashwx(paramMap, Variables.wxKEY);
             paramMap.put("sign",sign);//根据微信签名规则，生成签名
             StringBuffer sb = new StringBuffer();
             sb.append("<xml>");
             XMLUtils.mapToXMLTest2(paramMap, sb);
             sb.append("</xml>");
             log.info((new StringBuilder()).append("上送的数据为+++++++").append(sb.toString()).toString());
-            String resXml = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), CHARSET, "application/json");
+            String resXml = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), Variables.CHARSET, "application/json");
             log.info("返回的数据为--------------------------+++++++" + resXml);
             Map ValidCard = XMLUtils.xmlString2Map(resXml);
             Map maps = new HashMap();
             String timestamp = String.valueOf((new Date()).getTime() / 1000L);
             maps.put("appid", ValidCard.get("appid").toString());
-            maps.put("mch_id", wxMchID);
+            maps.put("mch_id", Variables.wxMchID);
             maps.put("prepayid", ValidCard.get("prepay_id"));
             maps.put("package", "Sign=WXPay");
             maps.put("noncestr", ValidCard.get("nonce_str"));
             maps.put("timestamp", timestamp);
             //maps.put("signType", "MD5");
-            String signs = MD5Utils.signDatashwx(maps, KEY);
+            String signs = MD5Utils.signDatashwx(maps, Variables.wxKEY);
             maps.put("sign", signs);
             //        return JSONObject.toJSONString(maps);
             returnResult.setMessage("返回成功！");
