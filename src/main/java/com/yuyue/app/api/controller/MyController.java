@@ -342,8 +342,12 @@ public class MyController extends BaseController{
             returnResult.setMessage("视频地址参数为空！！");
         }else {
             ShowName showName = new ShowName();
-              if(StringUtils.isEmpty(mapValue.get("imageAddress"))){
+            System.out.println(mapValue.get("imageAddress"));
+              if(StringUtils.isEmpty(mapValue.get("imageAddress")) ){
                   showName.setImageAddress("http://101.37.252.177:82/videoImage/videoImage.jpg");
+              }else {
+                  //    视频图片地址
+                  showName.setImageAddress(mapValue.get("imageAddress"));
               }
 
             showName.setId(UUID.randomUUID().toString().replace("-", "").toUpperCase());
@@ -362,12 +366,13 @@ public class MyController extends BaseController{
             showName.setPhone(mapValue.get("phone"));
             //    视频地址
             showName.setVideoAddress(mapValue.get("videoAddress"));
-            //    视频图片地址
-            showName.setImageAddress(mapValue.get("imageAddress"));
+
             //    邮箱
             showName.setMail(mapValue.get("mail"));
             //    微信
             showName.setWeChat(mapValue.get("weChat"));
+
+            System.out.println(showName);
             ShowName show = myService.findShowName(showName.getDescription(),showName.getPhone(),showName.getTeamName());
             if(StringUtils.isNotNull(show)){
                 returnResult.setMessage("请勿重复添加！");
