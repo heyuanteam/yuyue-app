@@ -8,14 +8,15 @@ import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,10 +30,10 @@ import java.util.UUID;
 /**
  * @author ly   This Controller class provides user attention, likes, comments
  */
-@RequestMapping(value="/userComment", produces = "application/json; charset=UTF-8")
+@Slf4j
 @RestController
+@RequestMapping(value="/userComment", produces = "application/json; charset=UTF-8")
 public class UserCommentController extends BaseController{
-    private static final Logger log = LoggerFactory.getLogger(UploadFileController.class);
 
     @Autowired
     private UserCommentService userCommentService;

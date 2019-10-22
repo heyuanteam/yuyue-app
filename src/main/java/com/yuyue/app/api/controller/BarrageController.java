@@ -5,12 +5,13 @@ import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.Barrage;
-import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.api.service.BarrageService;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.list.TreeList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,10 +27,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/barrage" ,produces = "application/json; charset=UTF-8")
 public class BarrageController extends BaseController{
-    private static Logger log = LoggerFactory.getLogger(BarrageController.class);
 
     @Autowired
     private BarrageService barrageService;

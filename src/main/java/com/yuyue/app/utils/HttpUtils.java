@@ -111,6 +111,7 @@ public class HttpUtils {
     public static void setHeader(HttpServletRequest request, HttpServletResponse response){
         //跨域的header设置
         response.setHeader("Access-control-Allow-Origin", request.getHeader("Origin"));
+//        response.setHeader("Access-control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", request.getMethod());
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Headers", request.getHeader("Access-Control-Request-Headers"));

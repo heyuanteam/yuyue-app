@@ -9,14 +9,14 @@ import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.api.domain.UploadFile;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
-import com.yuyue.app.utils.HttpUtils;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,10 +40,10 @@ import java.util.Map;
  * @description:
  **/
 
-@Controller
+@Slf4j
+@RestController
 @RequestMapping(value="/uploadFile", produces = "application/json; charset=UTF-8")
 public class UploadFileController extends  BaseController{
-    private static final Logger log = LoggerFactory.getLogger(UploadFileController.class);
 
     @Autowired
     private UploadFileService uploadFileService;

@@ -12,9 +12,11 @@ import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.HomePageService;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.RedisUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +35,10 @@ import java.util.Map;
 /**
  * @author ly
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/homePage", produces = "application/json; charset=UTF-8")
 public class HomePageController extends BaseController {
-    private static Logger log = LoggerFactory.getLogger(HomePageController.class);
 
     @Autowired
     private HomePageService homePageService;

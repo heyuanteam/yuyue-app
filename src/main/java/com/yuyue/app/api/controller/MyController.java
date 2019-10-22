@@ -9,9 +9,11 @@ import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.*;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +36,10 @@ import java.util.UUID;
  * 我的页面
  */
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/myController" ,produces = "application/json; charset=UTF-8")
 public class MyController extends BaseController{
-    private static Logger log = LoggerFactory.getLogger(MyController.class);
 
     @Autowired
     private MyService myService;

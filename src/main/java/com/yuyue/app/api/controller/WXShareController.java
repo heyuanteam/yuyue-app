@@ -6,7 +6,9 @@ import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +18,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@Slf4j
+@RestController
 @RequestMapping(value = "/share" ,method = RequestMethod.GET,produces = "application/json; charset=UTF-8")
 public class WXShareController extends BaseController{
-    private static Logger log = LoggerFactory.getLogger(WXShareController.class);
     @Autowired
     private RedisUtil redisUtil;
     @Autowired
