@@ -1,4 +1,4 @@
-package com.yuyue.app.config;
+package com.yuyue.app.token;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

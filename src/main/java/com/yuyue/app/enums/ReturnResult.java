@@ -1,4 +1,4 @@
-package com.yuyue.app.api.domain;
+package com.yuyue.app.enums;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +21,5 @@ public class ReturnResult implements Serializable {
     private Boolean status = false;     //返回执行结构（如，成功或失败,默认：false）
     private Object result = null;     //返回结果（如，有就是具体参数，没有就是object）
     private String token="";           //返回token值
-    private String tomcat = "yuyue-app";  //服务器指定的地址
+    private String tomcat = "yuyue-copy";  //服务器指定的地址
 }

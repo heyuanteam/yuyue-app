@@ -1,4 +1,4 @@
-package com.yuyue.app.config;
+package com.yuyue.app.token;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 

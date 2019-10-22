@@ -1,4 +1,4 @@
-package com.yuyue.app.config;
+package com.yuyue.app.token;
 
 import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.JWT;
@@ -8,7 +8,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.utils.HttpUtils;
 import org.springframework.beans.factory.annotation.Autowired;

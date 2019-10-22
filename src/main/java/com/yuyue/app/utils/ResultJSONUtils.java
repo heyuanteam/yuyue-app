@@ -2,7 +2,7 @@ package com.yuyue.app.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.enums.ReturnResult;
 import it.sauronsoftware.jave.Encoder;
 import it.sauronsoftware.jave.EncoderException;
 import it.sauronsoftware.jave.MultimediaInfo;
@@ -13,8 +13,6 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.net.*;
 import java.text.DecimalFormat;
-import java.util.Enumeration;
-import java.util.List;
 
 public class ResultJSONUtils {
     private static Logger log = LoggerFactory.getLogger(ResultJSONUtils.class);

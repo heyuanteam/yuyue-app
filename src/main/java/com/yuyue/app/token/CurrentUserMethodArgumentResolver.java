@@ -1,4 +1,4 @@
-package com.yuyue.app.config;
+package com.yuyue.app.token;
 
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.api.domain.AppUser;

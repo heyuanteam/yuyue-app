@@ -1,5 +1,5 @@
 package com.yuyue.app.config;
-import com.yuyue.app.api.domain.Variables;
+import com.yuyue.app.enums.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.github.tobato.fastdfs.conn.ConnectionManager;

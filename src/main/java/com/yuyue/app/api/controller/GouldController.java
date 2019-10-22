@@ -19,10 +19,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 高德地图API
+ */
+
 @Slf4j
 @RestController
-@RequestMapping(value="/send", produces = "application/json; charset=UTF-8")
-public class SendSmsController extends BaseController{
+@RequestMapping(value="/gould", produces = "application/json; charset=UTF-8")
+public class GouldController extends BaseController{
 
     @Autowired
     private SmsUtil smsUtil;
@@ -51,12 +55,6 @@ public class SendSmsController extends BaseController{
             log.info("验证码：=========="+lcode);
             SendSmsResponse sendSmsResponse = smsUtil.sendSms(
                     map.get("mobile"), map.get("template_code") , map.get("sign_name")  , map.get("param") );
-//
-//            System.out.println("短信接口返回的数据----------------");
-//            System.out.println("Code=" + response.getCode());
-//            System.out.println("Message=" + response.getMessage());
-//            System.out.println("RequestId=" + response.getRequestId());
-//            System.out.println("BizId=" + response.getBizId());
 
             if("OK".equals(sendSmsResponse.getCode()) ){
 //            if("OK".equals("OK") ){

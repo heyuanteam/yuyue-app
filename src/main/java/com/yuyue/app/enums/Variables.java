@@ -1,4 +1,4 @@
-package com.yuyue.app.api.domain;
+package com.yuyue.app.enums;
 import java.net.InetSocketAddress;
 
 /**

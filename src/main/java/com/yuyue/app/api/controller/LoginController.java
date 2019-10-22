@@ -5,7 +5,7 @@ import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
 import com.yuyue.app.api.domain.AppVersion;
-import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.utils.*;
 import org.slf4j.Logger;

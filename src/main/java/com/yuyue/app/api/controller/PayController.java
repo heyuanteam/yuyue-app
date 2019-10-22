@@ -20,7 +20,9 @@ import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.PayService;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -30,21 +32,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
 
-
+@Slf4j
 @RestController
 @RequestMapping(value = "/pay", produces = "application/json; charset=UTF-8")
 public class PayController extends BaseController{
-    private static Logger log = LoggerFactory.getLogger(PayController.class);
 
     @Autowired
     private PayService payService;

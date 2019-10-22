@@ -1,14 +1,11 @@
 package com.yuyue.app.utils;
 
 
-import com.github.tobato.fastdfs.domain.FileInfo;
 import com.github.tobato.fastdfs.domain.MateData;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.domain.ThumbImageConfig;
-import com.github.tobato.fastdfs.proto.storage.DownloadFileWriter;
-import com.github.tobato.fastdfs.proto.storage.StorageDownloadCommand;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import com.yuyue.app.api.domain.Variables;
+import com.yuyue.app.enums.Variables;
 import com.yuyue.app.config.CommandTestBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -9,6 +9,8 @@ import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.mapper.UploadFileMapper;
 import com.yuyue.app.api.service.UploadFileService;
+import com.yuyue.app.enums.ReturnResult;
+import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;

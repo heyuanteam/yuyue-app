@@ -1,6 +1,6 @@
 package com.yuyue.app.config;
 
-import com.yuyue.app.api.domain.ReturnResult;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.ResultJSONUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
