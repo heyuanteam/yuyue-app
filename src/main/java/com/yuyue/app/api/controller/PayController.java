@@ -89,7 +89,8 @@ public class PayController extends BaseController{
     // 编码集，支持 GBK/UTF-8
     protected static final String CHARSET = "utf-8";
     private static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/pay";
-    private static final String subject = "杭州和元网络科技有限公司";
+//    private static final String AliPayReturnUrl = "http://101.37.252.177:8082/yuyue-app/pay/returnUrl";
+//    private static final String subject = "杭州和元网络科技有限公司";
 
     //支付宝转账
     private static final String gateway="https://openapi.alipay.com/gateway.do";//支付宝网关
@@ -802,19 +803,20 @@ public class PayController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-    private JSONObject payNativeZFB(Order order,HttpServletRequest request, HttpServletResponse httpResponse) throws IOException {
+    private JSONObject payNativeZFB(Order order,HttpServletRequest request, HttpServletResponse httpResponse) {
         getParameterMap(request, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(AliPayReturnUrl);//同步通知页面
         alipayRequest.setNotifyUrl(AliPayNotifyUrl);//在公共参数中设置回跳和通知地址
-        alipayRequest.setBizContent("{" +
-                "    \"out_trade_no\":\""+ order.getId() +"\"," +
-                "    \"product_code\":\""+ "FAST_INSTANT_TRADE_PAY" +"\"," +
-                "    \"total_amount\":\""+ String.valueOf(order.getMoney()) +"\"," +
-                "    \"subject\":\""+ subject +"\"," +
-                "    \"body\":\""+ "扫码支付宝充值" +
-                "  }");//填充业务参数
+        String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        String body = "扫码支付宝充值";
+        String subject = "扫码充值礼物";
+        alipayRequest.setBizContent("{\"out_trade_no\":\""+ order.getId() +"\","
+                +"\"total_amount\":\""+ moneyD +"\","
+                +"\"subject\":\""+ subject +"\","
+                +"\"body\":\""+ body +"\","
+                +"\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");//填充业务参数
         String form="";
         try {
             form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
@@ -822,6 +824,9 @@ public class PayController extends BaseController{
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
+//        httpResponse.getWriter().println(head+form+buttom);
+//        httpResponse.reset();//进行刷新
+
 //        写到html
 //        httpResponse.setContentType("text/html;charset=" + CHARSET);
 //        httpResponse.getWriter().write(form);//直接将完整的表单html输出到页面
@@ -829,8 +834,8 @@ public class PayController extends BaseController{
 //        ----------重复刷新问题
 //        httpResponse.getWriter().flush();
 //        httpResponse.getWriter().close();
+        returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(form);
-
         if (form == null) {
             log.error("订单" + order.getId() + "未成功获取支付宝付款界面！");
             returnResult.setMessage("未成功获取支付宝付款界面！");
