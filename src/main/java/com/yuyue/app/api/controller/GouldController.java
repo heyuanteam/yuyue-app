@@ -8,8 +8,11 @@ import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -35,11 +38,15 @@ public class GouldController extends BaseController {
      * @param gdLat 高德地图纬度
      * @return
      */
-    public static String getAddressByLonLat(double gdLon, double gdLat) {
+    @ResponseBody
+    @RequestMapping("/getAddressByLonLat")
+    public String getAddressByLonLat(double gdLon, double gdLat,HttpServletRequest request, HttpServletResponse response){
+        logger.info("根据高德经纬度获取地址信息-------------->>/gould/getAddressByLonLat");
+        getParameterMap(request, response);
+
         String location = gdLon + "," + gdLat;
         Map<String, String> params = Maps.newHashMap();
         params.put("location", location);
-
         // Map<String, String> result = new HashMap<>();
         try {
             // 拼装url
@@ -65,10 +72,14 @@ public class GouldController extends BaseController {
      * @param address 地址信息
      * @return
      */
-    public static String getLonLarByAddress(String address) {
+    @ResponseBody
+    @RequestMapping("/getLonLarByAddress")
+    public String getLonLarByAddress(String address,HttpServletRequest request, HttpServletResponse response){
+        logger.info("根据地址信息获取高德经纬度-------------->>/gould/getLonLarByAddress");
+        getParameterMap(request, response);
+
         Map<String, String> params = Maps.newHashMap();
         params.put("address", address);
-
         // Map<String, String> result = new HashMap<>();
         try {
             // 拼装url
@@ -98,7 +109,12 @@ public class GouldController extends BaseController {
      * @param lat
      * @return
      */
-    public static String getAdd(String log, String lat) {
+    @ResponseBody
+    @RequestMapping("/getAdd")
+    public String getAdd(String log, String lat,HttpServletRequest request, HttpServletResponse response){
+        logger.info("阿里云api 根据经纬度获取地址-------------->>/gould/getAdd");
+        getParameterMap(request, response);
+
         StringBuffer s = new StringBuffer();
         s.append("key=").append(Variables.gdKEY).append("&location=").append(log).append(",").append(lat);
         String res = HttpUtils.sendPost("http://restapi.amap.com/v3/geocode/regeo", s.toString());
@@ -116,7 +132,12 @@ public class GouldController extends BaseController {
      * @param lat
      * @return
      */
-    public static String getCity(String log, String lat) {
+    @ResponseBody
+    @RequestMapping("/getCity")
+    public String getCity(String log, String lat,HttpServletRequest request, HttpServletResponse response){
+        logger.info("阿里云api 根据经纬度获取所在城市-------------->>/gould/getCity");
+        getParameterMap(request, response);
+
         // log 大 lat 小
         // 参数解释: 纬度,经度 type 001 (100代表道路，010代表POI，001代表门址，111可以同时显示前三项)
         String urlString = "http://gc.ditu.aliyun.com/regeocoding?l=" + lat + "," + log + "&type=010";
@@ -126,8 +147,8 @@ public class GouldController extends BaseController {
             java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
-            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream
-                    (), "UTF-8"));
+            java.io.BufferedReader in = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(conn.getInputStream(), "UTF-8"));
             String line;
             while ((line = in.readLine()) != null) {
                 res += line + "\n";
@@ -152,7 +173,12 @@ public class GouldController extends BaseController {
      * @param name
      * @return
      */
-    public static String getLatAndLogByName(String name) {
+    @ResponseBody
+    @RequestMapping("/getLatAndLogByName")
+    public String getLatAndLogByName(String name,HttpServletRequest request, HttpServletResponse response){
+        logger.info("高德api 根据地址获取经纬度-------------->>/gould/getLatAndLogByName");
+        getParameterMap(request, response);
+
         StringBuffer s = new StringBuffer();
         s.append("key=" + Variables.gdKEY + "&address=" + name);
         String res = HttpUtils.sendPost("http://restapi.amap.com/v3/geocode/geo", s.toString());
@@ -169,7 +195,12 @@ public class GouldController extends BaseController {
      *
      * @return
      */
-    public static String getAddByAMAP(String log, String lat) {
+    @ResponseBody
+    @RequestMapping("/getAddByAMAP")
+    public String getAddByAMAP(String log, String lat,HttpServletRequest request, HttpServletResponse response){
+        logger.info("高德api 根据地址获取经纬度-------------->>/gould/getAddByAMAP");
+        getParameterMap(request, response);
+
         StringBuffer s = new StringBuffer();
         s.append("key=").append(Variables.gdKEY).append("&location=").append(log).append(",").append(lat);
         String res = HttpUtils.sendPost("http://restapi.amap.com/v3/geocode/regeo", s.toString());
@@ -186,7 +217,12 @@ public class GouldController extends BaseController {
      *
      * @return
      */
-    public static String convertLocations(String log, String lat, String type) {
+    @ResponseBody
+    @RequestMapping("/convertLocations")
+    public String convertLocations(String log, String lat, String type,HttpServletRequest request, HttpServletResponse response){
+        logger.info("高德api 坐标转换---转换至高德经纬度-------------->>/gould/convertLocations");
+        getParameterMap(request, response);
+
         StringBuffer s = new StringBuffer();
         s.append("key=").append(Variables.gdKEY).append("&locations=").append(log).append(",").append(lat).append("&coordsys=");
         if (type == null) {
@@ -201,8 +237,12 @@ public class GouldController extends BaseController {
         return add;
     }
 
+    @ResponseBody
+    @RequestMapping("/getAddByName")
+    public String getAddByName(String name,HttpServletRequest request, HttpServletResponse response){
+        logger.info("高德API-------------->>/gould/getAddByName");
+        getParameterMap(request, response);
 
-    public static String getAddByName(String name) {
         // log 大 lat 小
         // 参数解释: 纬度,经度 type 001 (100代表道路，010代表POI，001代表门址，111可以同时显示前三项)
         String urlString = "http://gc.ditu.aliyun.com/geocoding?a=" + name;
@@ -222,7 +262,7 @@ public class GouldController extends BaseController {
             String lon = jsonObject.getString("lon");
             String lat = jsonObject.getString("lat");
             System.err.println(jsonObject);
-            res = getNearbyAdd(lon, lat);
+            res = getNearbyAdd(lon, lat,request,response);
         } catch (Exception e) {
             logger.info("error in wapaction,and e is " + e.getMessage());
             e.printStackTrace();
@@ -230,7 +270,11 @@ public class GouldController extends BaseController {
         return res;
     }
 
-    public static String getNearbyAdd(String log, String lat) {
+    @ResponseBody
+    @RequestMapping("/getNearbyAdd")
+    public String getNearbyAdd(String log, String lat,HttpServletRequest request, HttpServletResponse response){
+        logger.info("高德API-------------------------->>/gould/getNearbyAdd");
+        getParameterMap(request, response);
 
         String add = HttpUtils.sendGet("http://ditu.amap.com/service/regeo",
                 "longitude=" + log +
@@ -246,7 +290,12 @@ public class GouldController extends BaseController {
      * @param city
      * @return
      */
-    public static String getKeywordsAddByLbs(String keyWord, String city) {
+    @ResponseBody
+    @RequestMapping("/getKeywordsAddByLbs")
+    public String getKeywordsAddByLbs(String keyWord, String city,HttpServletRequest request, HttpServletResponse response){
+        logger.info("高德api 关键字模糊查询-------------->>/gould/getKeywordsAddByLbs");
+        getParameterMap(request, response);
+
         StringBuffer s = new StringBuffer();
         s.append("key=" + Variables.gdKEY + "&keywords=");
         if (keyWord.contains(" ")) {
@@ -275,9 +324,17 @@ public class GouldController extends BaseController {
      * @param keyWord
      * @return
      */
-    public static String getAroundAddByLbs(String log, String lat, String keyWord) {
+    @ResponseBody
+    @RequestMapping("/getAroundAddByLbs")
+    public String getAroundAddByLbs(String log, String lat, String keyWord,HttpServletRequest request, HttpServletResponse response){
+        logger.info("高德api 经纬度/关键字 附近地标建筑及地点查询-------------->>/gould/getAroundAddByLbs");
+        getParameterMap(request, response);
+
         String around = HttpUtils.sendPost("http://restapi.amap.com/v3/place/around",
-                "key=" + Variables.gdKEY + "&location=" + log + "," + lat + "&keywords=" + keyWord +
+                "key=" + Variables.gdKEY +
+                        "&location=" + log +
+                        "," + lat +
+                        "&keywords=" + keyWord +
                         "&radius=2000&offset=10&page=1");
         logger.info(around);
         return around;
