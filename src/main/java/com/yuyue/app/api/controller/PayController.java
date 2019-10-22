@@ -360,7 +360,6 @@ public class PayController extends BaseController{
 
                 String product_id = in_appJson.getString("product_id");
                 String transaction_id = in_appJson.getString("transaction_id"); // 订单号
-/************************************************+自己的业务逻辑**********************************************************/
                 //如果单号一致 则保存到数据库
                 if (TransactionID.equals(transaction_id)) {
                     String[] moneys = product_id.split("\\.");
@@ -381,7 +380,6 @@ public class PayController extends BaseController{
                     returnResult.setMessage("充值成功！");
                     returnResult.setResult(moneys[3]);
                 }
-/************************************************+自己的业务逻辑end**********************************************************/
             } else {
                 returnResult.setMessage("receipt数据有问题");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
