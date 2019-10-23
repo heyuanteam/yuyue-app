@@ -61,7 +61,7 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/feedback")
     @ResponseBody
-    public JSONObject addBarrages(HttpServletRequest request, HttpServletResponse response){
+    public JSONObject feedback(HttpServletRequest request, HttpServletResponse response){
         log.info("意见反馈提交-------------->>/myController/feedback");
         Map<String, String> mapValue = getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
