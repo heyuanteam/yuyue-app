@@ -74,12 +74,18 @@ public class Variables {
             (gateway, AliAPPID, AliAppPrivateKey, "json", CHARSET, AliPayPublicKey,"RSA2");
 
     //    -------------------------------------------------------------------------------
-//    高德地图请求秘钥
-    public static final String gdKEY = "47dbdfb71335738ef99e0f49f4a10746";
+//    高德地图请求秘钥，web服务
+    public static final String gdKEY = "eb378313443345c6ae84ef4ac60dd661";
 //    返回值类型
     public static final String OUTPUT = "JSON";
 //    根据地名获取高德经纬度Api
     public static final String GET_LNG_LAT_URL = "http://restapi.amap.com/v3/geocode/geo";
 //    根据高德经纬度获取地名Api
     public static final String GET_ADDRESS_URL = "http://restapi.amap.com/v3/geocode/regeo";
+//    转换至高德经纬度
+    public static final String gd_ADDRESS_URL = "http://restapi.amap.com/v3/assistant/coordinate/convert";
+//    关键字模糊查询
+    public static final String keyWord_URL = "http://restapi.amap.com/v3/place/text";
+//    经纬度/关键字 附近地标建筑及地点查询
+public static final String like_keyWord_URL = "http://restapi.amap.com/v3/place/around";
 }
