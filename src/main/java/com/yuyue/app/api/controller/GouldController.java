@@ -1,27 +1,19 @@
 package com.yuyue.app.api.controller;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 高德地图API
@@ -34,7 +26,6 @@ public class GouldController extends BaseController {
 
     /**
      * 根据高德经纬度获取地址信息
-     *
      * @param gdLon 高德地图经度
      * @param gdLat 高德地图纬度
      * @return
@@ -45,24 +36,29 @@ public class GouldController extends BaseController {
         log.info("根据高德经纬度获取地址信息-------------->>/gould/getAddressByLonLat");
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
-
-        String location = gdLon + "," + gdLat;
         Map<String, String> params = Maps.newHashMap();
-        params.put("location", location);
+        params.put("location", gdLon + "," + gdLat);
         try {
             // 拼装url
             String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.GET_ADDRESS_URL);
             // 调用高德SDK
-            GouldUtils.doPost(url, params);
+            JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
+            if ("OK".equals(parse.getString("info"))) {
+                returnResult.setMessage("获取地址信息成功！");
+                returnResult.setResult(parse);
+                returnResult.setStatus(Boolean.TRUE);
+            } else {
+                returnResult.setMessage("获取地址信息失败！");
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("根据高德经纬度获取地址信息失败！");
+            returnResult.setMessage("获取地址信息失败！");
         }
-        return null;
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**
      * 根据地址信息获取高德经纬度
-     *
      * @param address 地址信息
      * @return
      */
@@ -72,24 +68,27 @@ public class GouldController extends BaseController {
         log.info("根据地址信息获取高德经纬度-------------->>/gould/getLonLarByAddress");
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
-
         Map<String, String> params = Maps.newHashMap();
         params.put("address", address);
         try {
-            // 拼装url
             String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.GET_LNG_LAT_URL);
-            // 调用高德地图SDK
-            String s = GouldUtils.doPost(url, params);
-
+            JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
+            if ("OK".equals(parse.getString("info"))) {
+                returnResult.setMessage("获取高德经纬度成功！");
+                returnResult.setResult(parse);
+                returnResult.setStatus(Boolean.TRUE);
+            } else {
+                returnResult.setMessage("获取高德经纬度失败！");
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("获取高德经纬度失败！");
+            returnResult.setMessage("获取高德经纬度失败！");
         }
-        return null;
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**
      * 高德api 坐标转换---转换至高德经纬度
-     *
      * @return
      */
     @ResponseBody
@@ -98,24 +97,31 @@ public class GouldController extends BaseController {
         log.info("高德api 坐标转换---转换至高德经纬度-------------->>/gould/convertLocations");
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
-
-        StringBuffer s = new StringBuffer();
-        s.append("key=").append(Variables.gdKEY).append("&locations=").append(gdLon).append(",").append(gdLat).append("&coordsys=");
-        if (type == null) {
-            s.append("gps");
-        } else {
-            s.append(type);
+        Map<String, String> params = Maps.newHashMap();
+        if (StringUtils.isEmpty(type)) {
+            type = "gps";
         }
-//        String res = HttpUtils.sendPost("http://restapi.amap.com/v3/assistant/coordinate/convert", s.toString());
-//        log.info(res);
-//        JSONObject jsonObject = JSONObject.parseObject(res);
-//        String add = jsonObject.get("locations").toString();
-        return null;
+        try {
+            params.put("locations", gdLon+ "," +gdLat);
+            params.put("coordsys", type);
+            String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.gd_ADDRESS_URL);
+            JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
+            if ("OK".equals(parse.getString("info"))) {
+                returnResult.setMessage("转换至高德经纬度成功！");
+                returnResult.setResult(parse);
+                returnResult.setStatus(Boolean.TRUE);
+            } else {
+                returnResult.setMessage("转换至高德经纬度失败！");
+            }
+        } catch (Exception e) {
+            log.info("转换至高德经纬度失败！");
+            returnResult.setMessage("转换至高德经纬度失败！");
+        }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     /**
      * 高德api 关键字模糊查询
-     *
      * @param keyWord
      * @param city
      * @return
@@ -126,30 +132,31 @@ public class GouldController extends BaseController {
         log.info("高德api 关键字模糊查询-------------->>/gould/getKeywordsAddByLbs");
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
-
-        StringBuffer s = new StringBuffer();
-        s.append("key=" + Variables.gdKEY + "&keywords=");
-        if (keyWord.contains(" ")) {
-            String[] str = keyWord.split(" ");
-            for (int i = 0; i < str.length; i++) {
-                if (i == 0) {
-                    s.append(str[i]);
-                } else {
-                    s.append("+" + str[i]);
-                }
+        Map<String, String> params = Maps.newHashMap();
+        try {
+            //同时存在，以城市为准！
+            params.put("keywords", GouldUtils.getKeyWord(keyWord));
+            params.put("city", city);
+            params.put("offset", "10");
+            params.put("page", "1");
+            String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.keyWord_URL);
+            JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
+            if ("OK".equals(parse.getString("info"))) {
+                returnResult.setMessage("关键字模糊查询成功！");
+                returnResult.setResult(parse);
+                returnResult.setStatus(Boolean.TRUE);
+            } else {
+                returnResult.setMessage("关键字模糊查询失败！");
             }
-        } else {
-            s.append(keyWord);
+        } catch (Exception e) {
+            log.info("关键字模糊查询失败！");
+            returnResult.setMessage("关键字模糊查询失败！");
         }
-        s.append("&city=" + city);
-        s.append("offset=10&page=1");
-//        String around = HttpUtils.sendPost("http://restapi.amap.com/v3/place/text", s.toString());
-//        log.info(around);
-        return null;
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+
     /**
      * 高德api 经纬度/关键字 附近地标建筑及地点查询
-     *
      * @param keyWord
      * @return
      */
@@ -159,11 +166,34 @@ public class GouldController extends BaseController {
         log.info("高德api 经纬度/关键字 附近地标建筑及地点查询-------------->>/gould/getAroundAddByLbs");
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
-
-//        String around = HttpUtils.sendPost("http://restapi.amap.com/v3/place/around",
-//                "key=" + Variables.gdKEY + "&location=" + gdLon + "," + gdLat
-//                        + "&keywords=" + keyWord + "&radius=2000&offset=10&page=1");
-//        log.info(around);
-        return null;
+        Map<String, String> params = Maps.newHashMap();
+        try {
+            String location = "";
+            if (StringUtils.isNotEmpty(gdLon) && StringUtils.isNotEmpty(gdLat)) {
+                location = gdLon + "," + gdLat;
+            }
+            if (StringUtils.isNotEmpty(gdLon) && (StringUtils.isNotEmpty(gdLon) || StringUtils.isNotEmpty(gdLat))) {
+                returnResult.setMessage("经纬度/关键字不对！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            params.put("location", location);
+            params.put("keywords", GouldUtils.getKeyWord(keyWord));
+            params.put("radius", "2000");
+            params.put("offset", "10");
+            params.put("page", "1");
+            String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.like_keyWord_URL);
+            JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
+            if ("OK".equals(parse.getString("info"))) {
+                returnResult.setMessage("经纬度/关键字 附近地标建筑及地点查询成功！");
+                returnResult.setResult(parse);
+                returnResult.setStatus(Boolean.TRUE);
+            } else {
+                returnResult.setMessage("经纬度/关键字 附近地标建筑及地点查询失败！");
+            }
+        } catch (Exception e) {
+            log.info("经纬度/关键字 附近地标建筑及地点查询失败！");
+            returnResult.setMessage("经纬度/关键字 附近地标建筑及地点查询失败！");
+        }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }

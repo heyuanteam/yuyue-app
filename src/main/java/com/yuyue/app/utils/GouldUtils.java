@@ -37,12 +37,11 @@ import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
 import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.CodingErrorAction;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -112,14 +111,12 @@ public class GouldUtils {
                 new Function<Map.Entry<String, String>, BasicNameValuePair>() {
                     @Override
                     public BasicNameValuePair apply(Map.Entry<String, String> innerEntry) {
-
                         return new BasicNameValuePair(innerEntry.getKey(), innerEntry.getValue());
                     }
                 }).toList();
 
         String paramSectionOfUrl = URLEncodedUtils.format(resultList, Consts.UTF_8);
         StringBuffer resultUrl = new StringBuffer(uri);
-
         if (StringUtils.isEmpty(uri)) {
             return uri;
         } else {
@@ -387,4 +384,122 @@ public class GouldUtils {
         }
         return textStr;
     }
+
+    /**
+     * 关键字截取
+     * @param keyWord
+     * @return
+     */
+    public static String getKeyWord(String keyWord){
+        StringBuffer sb = new StringBuffer();
+        if (com.yuyue.app.utils.StringUtils.isNotEmpty(keyWord) && keyWord.contains(" ")) {
+            String[] str = keyWord.split(" ");
+            for (int i = 0; i < str.length; i++) {
+                if (i == 0) {
+                    sb.append(str[i]);
+                } else {
+                    sb.append("+" + str[i]);
+                }
+            }
+        } else {
+            sb.append(keyWord);
+        }
+        if (com.yuyue.app.utils.StringUtils.isEmpty(sb.toString())){
+            return "";
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 查找附近的门店
+     * @param    longitude 经度
+     * @param    latitude 纬度
+     * @param    distince 距离 (千米)
+     * @return   List 符合距离范围的所有的点
+     * @Data     2018.10.26
+     */
+//    public List<PickStoreOfflineModel> findNearbyStore(BigDecimal longitude, BigDecimal latitude, Integer distince) {
+//        String[] split = getNearbyByLongitudeAndLatitudeAndDistince(longitude, latitude, distince).split("-");
+//        BigDecimal minlng = new BigDecimal(split[0]);
+//        BigDecimal maxlng = new BigDecimal(split[1]);
+//        BigDecimal minlat = new BigDecimal(split[2]);
+//        BigDecimal maxlat = new BigDecimal(split[3]);
+//        return pickStoreOfflineDao.findNearbyStore(minlng, maxlng, minlat, maxlat);
+//    }
+
+    /**
+     *
+     * @Description   计算给定经纬度附近相应公里数的经纬度范围
+     * @param         longitude 经度
+     * @param         latitude 纬度
+     * @param         distince 距离（千米）
+     * @return        String 格式：经度最小值-经度最大值-纬度最小值-纬度最大值
+     * @Data          2018.10.26
+     **/
+    public static String getNearbyByLongitudeAndLatitudeAndDistince(BigDecimal longitude, BigDecimal latitude, Integer distince) {
+        double r = 6371.393;    // 地球半径千米
+        double lng = longitude.doubleValue();
+        double lat = latitude.doubleValue();
+        double dlng = 2 * Math.asin(Math.sin(distince / (2 * r)) / Math.cos(lat * Math.PI / 180));
+        dlng = dlng * 180 / Math.PI;// 角度转为弧度
+        double dlat = distince / r;
+        dlat = dlat * 180 / Math.PI;
+        double minlat = lat - dlat;
+        double maxlat = lat + dlat;
+        double minlng = lng - dlng;
+        double maxlng = lng + dlng;
+        //sql语句
+        return minlng + "-" + maxlng + "-" + minlat + "-" + maxlat;
+    }
+
+    /**
+     * @Description  计算距离远近并按照距离排序
+     * @param        longitude 经度
+     * @param        latitude 纬度
+     * @param        nearbyStoreList  附近门店
+     * @return       按照距离由近到远排序之后List
+     */
+//    public List<PickStoreOfflineDto> getNearbyStoreByDistinceAsc(BigDecimal longitude, BigDecimal latitude, List<PickStoreOfflineModel> nearbyStoreList) {
+//        List<PickStoreOfflineDto> list = new ArrayList<>();
+//        nearbyStoreList.forEach(pickStoreOfflineModel -> {
+//            PickStoreOfflineDto pickStoreOfflineDto = new PickStoreOfflineDto();
+//            BeanUtil.copyProperties(pickStoreOfflineModel, pickStoreOfflineDto);
+//            Double distince = getDistince(longitude, latitude,
+//                    pickStoreOfflineModel.getLongitude(), pickStoreOfflineModel.getLatitude());
+//            pickStoreOfflineDto.setDistince(distince.longValue());
+//            list.add(pickStoreOfflineDto);
+//        });
+//        Collections.sort(list, Comparator.comparing(PickStoreOfflineDto::getDistince));
+//        return list;
+//    }
+
+    /**
+     * @Description     根据经纬度获取两点之间的距离
+     * @param           longitude1   地点1经度
+     * @param           latitude1    地点1纬度
+     * @param           longitude2   地点2经度
+     * @param           latitude2    地点2纬度
+     * @return          距离：单位 米
+     */
+    public static Double getDistince(BigDecimal longitude1, BigDecimal latitude1, BigDecimal longitude2, BigDecimal latitude2) {
+        double r = 6371.393;         // 地球半径千米
+        double lat1 = latitude1.doubleValue();
+        double lng1 = longitude1.doubleValue();
+        double lat2 = latitude2.doubleValue();
+        double lng2 = longitude2.doubleValue();
+        double radLat1 = rad(lat1);
+        double radLat2 = rad(lat2);
+        double a = radLat1 - radLat2;
+        double b = rad(lng1) - rad(lng2);
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+                Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+        s = s * r;
+        s = Math.round(s * 1000);
+        return s;
+    }
+
+    private static Double rad(double d) {
+        return d * Math.PI / 180.0;
+    }
+
 }
