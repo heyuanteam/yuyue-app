@@ -78,7 +78,7 @@ public class PayController extends BaseController{
             returnResult.setMessage("充值类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        if (order.getTradeType().contains("GG")){
+        if (order.getTradeType().contains("GG") || !order.getTradeType().contains("XF")){
             order.setOrderNo("YY"+ order.getTradeType() + RandomSaltUtil.randomNumber(14));
             order.setStatus("10A");
             order.setStatusCode("100001");
