@@ -110,6 +110,7 @@ public class PayController extends BaseController{
             xfMoney.setSourceId(appUser.getId());
             xfMoney.setNote("用户消费");
             xfMoney.setTradeType(order.getTradeType());
+            xfMoney.setMoney(order.getMoney());
             createShouMoney(xfMoney);
 
             order.setId(xfMoney.getId());
