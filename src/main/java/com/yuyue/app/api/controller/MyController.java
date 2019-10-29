@@ -300,7 +300,7 @@ public class MyController extends BaseController{
 
 
     /**
-     * 演出申请
+     * 艺人申请  or  演出申请
      * @return
      */
     @RequestMapping("/insertShowName")
@@ -366,6 +366,8 @@ public class MyController extends BaseController{
             showName.setPhone(mapValue.get("phone"));
             //    视频地址
             showName.setVideoAddress(mapValue.get("videoAddress"));
+            //    状态（去掉艺人审核步骤）
+            showName.setStatus("10B");
 
             //    邮箱
             showName.setMail(mapValue.get("mail"));

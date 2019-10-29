@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuyue.app.api.mapper.MallShopMapper">
+    <resultMap type="com.yuyue.app.api.domain.MallShop" id="MallShop">
+            <id column="shop_id" property="shopId"/>
+            <result column="merchant_id" property="merchantId"/>
+            <result column="category" property="category"/>
+            <result column="commodity_name" property="commodityName"/>
+            <result column="detail" property="detail"/>
+            <result column="service_type" property="serviceType"/>
+            <result column="fare" property="fare"/>
+            <result column="business_time" property="businessTime"/>
+            <result column="merchant_addr" property="merchantAddr"/>
+            <result column="merchant_phone" property="merchantPhone"/>
+            <result column="service_area" property="serviceArea"/>
+            <result column="fee_area" property="feeArea"/>
+            <result column="video_path" property="videoPath"/>
+            <result column="remark" property="remark"/>
+            <result column="createTime" property="create_time"/>
+        <collection property="images" ofType="com.yuyue.app.api.domain.ShopImage" >
+            <id column="image_id" property="imageId"/>
+            <result column="image_path" property="imagePath"/>
+            <result column="image_path" property="imagePath"/>
+        </collection>
+
+        <collection property="specifications" ofType="com.yuyue.app.api.domain.Specification" >
+            <id column="commodity_id" property="commodityId"/>
+            <result column="commodity_detail" property="commodityDetail"/>
+            <result column="commodity_price" property="commodityPrice"/>
+            <result column="commodity_reserve" property="commodityReserve"/>
+            <result column="image_path" property="imagePath"/>
+            <result column="status" property="status"/>
+            <result column="create_time" property="createTime"/>
+        </collection>
+    </resultMap>
+
+    <select id="getMyMallShop"  parameterType="String" resultMap="MallShop">
+
+       SELECT * FROM yuyue_mall_shop s
+        left join  yuyue_mall_shop_images i
+        on   s.shop_id = i.shop_id
+        left join yuyue_mall_shop_commodity c
+        on c.shop_id = s.shop_id
+        where s.shop_id  = #{shopId}
+
+    </select>
+
+
+    <select id="getAllMallShop"  parameterType="String" resultType = "com.yuyue.app.api.domain.MallShop">
+
+        SELECT * FROM  (SELECT * FROM yuyue_mall_shop where  service_area  LIKE  '全国%'
+          UNION
+        SELECT * FROM yuyue_mall_shop  where
+        CONCAT(service_area) like concat('%', #{myArea}, '%')  ) s
+
+        where s.business_time != 'rest'
+
+    </select>
+
+    <insert id="insertMyMallShop" parameterType="com.yuyue.app.api.domain.MallShop">
+         insert  into yuyue_mall_shop (shop_id,merchant_id,category,commodity_name,detail,service_type,fare,
+         business_time,merchant_addr,merchant_phone,service_area,fee_area,video_path,remark)
+         VALUES
+         (#{shopId},#{merchantId},#{category},#{commodityName},#{detail},#{serviceType},#{fare},
+         #{businessTime},#{merchantAddr},#{merchantPhone},#{serviceArea},#{feeArea},#{videoPath},#{remark})
+    </insert>
+
+
+</mapper>
+
