@@ -151,27 +151,23 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/addAdvertisementInfo")
     @ResponseBody
-    public JSONObject addAdvertisementInfo(HttpServletRequest request, HttpServletResponse response){
+    @LoginRequired
+    public JSONObject addAdvertisementInfo(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response){
         log.info("广告推广申请-------------->>/myController/addAdvertisementInfo");
         Map<String, String> parameterMap = getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         try {
-            String token = request.getHeader("token");
-            String userId = "";
-            if(StringUtils.isNotEmpty(token)){
-                userId = String.valueOf(JWT.decode(token).getAudience().get(0));
-                Advertisement advertisementInfo = myService.getAdvertisementInfo(userId);
-                if(StringUtils.isNotNull(advertisementInfo)){
-                    if("10B".equals(advertisementInfo.getStatus())){
-                        returnResult.setMessage("审核通过！！");
-                        returnResult.setStatus(Boolean.TRUE);
-                    }else {
-                        returnResult.setMessage("已提交，待审核");
-                        returnResult.setStatus(Boolean.TRUE);
-                    }
-                    returnResult.setResult(advertisementInfo);
-                    return ResultJSONUtils.getJSONObjectBean(returnResult);
+            Advertisement advertisementInfo = myService.getAdvertisementInfo(user.getId());
+            if(StringUtils.isNotNull(advertisementInfo)){
+                if("10B".equals(advertisementInfo.getStatus())){
+                    returnResult.setMessage("审核通过！！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }else {
+                    returnResult.setMessage("已提交，待审核");
+                    returnResult.setStatus(Boolean.TRUE);
                 }
+                returnResult.setResult(advertisementInfo);
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             //商家地址
             String merchantAddr=parameterMap.get("merchantAddr");
@@ -212,7 +208,7 @@ public class MyController extends BaseController{
             Advertisement advertisement=new Advertisement();
             advertisement.setId(UUID.randomUUID().toString().replace("-","").toUpperCase());
             //必填的属性
-            advertisement.setUserId(userId);
+            advertisement.setUserId(user.getId());
             advertisement.setMerchantAddr(merchantAddr);
             advertisement.setBusinessLicense(businessLicense);
             advertisement.setIdCardZM(idCardZM);
@@ -305,28 +301,24 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/insertShowName")
     @ResponseBody
-    public JSONObject insertShowName(HttpServletRequest request, HttpServletResponse response){
+    @LoginRequired
+    public JSONObject insertShowName(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response){
         log.info("演出申请-------------->>/myController/insertShowName");
         Map<String, String> mapValue = getParameterMap(request, response);
-        String token = request.getHeader("token");
         ReturnResult returnResult=new ReturnResult();
-        String userId = "";
-        if(StringUtils.isNotEmpty(token)) {
-            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
-            ShowName showInfo = myService.getShowInfo(userId);
-            if (StringUtils.isNotNull(showInfo)){
-                if("10B".equals(showInfo.getStatus())){
-                    returnResult.setMessage("审核通过！！");
-                    returnResult.setStatus(Boolean.TRUE);
-                }else {
-                    returnResult.setMessage("已提交，待审核");
-                    returnResult.setStatus(Boolean.TRUE);
-                }
-                returnResult.setResult(showInfo);
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
+        ShowName showInfo = myService.getShowInfo(user.getId());
+        if (StringUtils.isNotNull(showInfo)){
+            if("10B".equals(showInfo.getStatus())){
+                returnResult.setMessage("审核通过！！");
+                returnResult.setStatus(Boolean.TRUE);
+            }else {
+                returnResult.setMessage("已提交，待审核");
+                returnResult.setStatus(Boolean.TRUE);
             }
-
-        }if (StringUtils.isEmpty(mapValue.get("teamName")) ){
+            returnResult.setResult(showInfo);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        if (StringUtils.isEmpty(mapValue.get("teamName")) ){
             returnResult.setMessage("姓名或团队名称参数为空！！");
         }else if (StringUtils.isEmpty(mapValue.get("size"))){
             returnResult.setMessage("人数参数为空！！");
@@ -351,7 +343,7 @@ public class MyController extends BaseController{
               }
 
             showName.setId(UUID.randomUUID().toString().replace("-", "").toUpperCase());
-            showName.setUserId(userId);
+            showName.setUserId(user.getId());
             //    姓名或团队名称
             showName.setTeamName(mapValue.get("teamName"));
             //    节目名称
@@ -366,7 +358,6 @@ public class MyController extends BaseController{
             showName.setPhone(mapValue.get("phone"));
             //    视频地址
             showName.setVideoAddress(mapValue.get("videoAddress"));
-
             //    邮箱
             showName.setMail(mapValue.get("mail"));
             //    微信
