@@ -19,11 +19,13 @@ import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
+import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -50,6 +52,8 @@ public class PayController extends BaseController{
     private PayService payService;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private MyService myService;
 
     // 构造签名的map
     private SortedMap<Object, Object> parameters = new TreeMap<>();
@@ -74,22 +78,47 @@ public class PayController extends BaseController{
             returnResult.setMessage("充值类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        order.setOrderNo("YYCZ" + RandomSaltUtil.randomNumber(14));
-        order.setStatus("10A");
-        order.setStatusCode("100001");
-        order.setMobile(user.getPhone());
-        order.setMerchantId(user.getId());
+        if (order.getTradeType().contains("GG") || !order.getTradeType().contains("XF")){
+            order.setOrderNo("YY"+ order.getTradeType() + RandomSaltUtil.randomNumber(14));
+            order.setStatus("10A");
+            order.setStatusCode("100001");
+            order.setMobile(user.getPhone());
+            order.setMerchantId(user.getId());
 //        order.setTradeType("CZWX");
 //        order.setMoney("100");
-        createOrder(order);
-        if (StringUtils.isEmpty(order.getId())) {
-            returnResult.setMessage("创建订单失败！缺少参数！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        if ("CZWX".equals(order.getTradeType()) || "GGWX".equals(order.getTradeType())) {
-            return payWX(order);
-        } else if ("CZZFB".equals(order.getTradeType()) || "GGZFB".equals(order.getTradeType())) {
-            return payZFB(order);
+            createOrder(order);
+            if (StringUtils.isEmpty(order.getId())) {
+                returnResult.setMessage("创建订单失败！缺少参数！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            if (order.getTradeType().contains("WX")) {
+                return payWX(order);
+            } else if (order.getTradeType().contains("ZFB")) {
+                return payZFB(order);
+            }
+        } else if (order.getTradeType().contains("XF")) {
+            AppUser appUser = loginService.getAppUserMsg("","",order.getSourceId());
+            if(StringUtils.isNull(appUser)){
+                returnResult.setMessage("您想送礼的用户，不存在！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            ChangeMoney xfMoney = new ChangeMoney();
+            xfMoney.setChangeNo("YY"+order.getTradeType() + RandomSaltUtil.randomNumber(14));
+            xfMoney.setStatus("10A");
+            xfMoney.setMobile(user.getPhone());
+            xfMoney.setMerchantId(user.getId());
+            xfMoney.setSourceId(appUser.getId());
+            xfMoney.setNote("用户消费");
+            xfMoney.setTradeType(order.getTradeType());
+            xfMoney.setMoney(order.getMoney());
+            createShouMoney(xfMoney);
+
+            order.setId(xfMoney.getId());
+            if (order.getTradeType().contains("WX")) {
+                return payWX(order);
+            } else if (order.getTradeType().contains("ZFB")) {
+                return payZFB(order);
+            }
         }
         returnResult.setMessage("充值类型选择错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -177,23 +206,55 @@ public class PayController extends BaseController{
         log.info((new StringBuilder()).append("\u56DE\u8C03\uFF1A").append(orderId).toString());
         if (StringUtils.isNotEmpty(orderId)) {
             Order orderNo = payService.getOrderId(orderId);
-            if (!"10B".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS") ) {
-                if (orderNo != null) {
+            if (orderNo != null) {
+                if (!"10B".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS")) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
-                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")){
-                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
-                        payService.updateTotal(appUser.getId(), add);
+//                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
+//                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")){
+//                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
+//                        payService.updateTotal(appUser.getId(), add);
+//                    }
+                } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
+                    orderNo.setResponseCode(returnCode);
+                    orderNo.setResponseMessage(object.get("result_code").toString());
+                    orderNo.setStatus("10C");
+                    payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
+                }
+            } else {
+                ChangeMoney changeMoney = myService.getChangeMoney(orderId);
+                if(StringUtils.isNotNull(changeMoney)) {
+                    if (!"10B".equals(changeMoney.getStatus()) && returnCode.equals("SUCCESS")) {
+                        changeMoney.setResponseCode(returnCode);
+                        changeMoney.setResponseMessage(object.get("result_code").toString());
+                        changeMoney.setStatus("10B");
+                        payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
+
+                        AppUser appUser = loginService.getAppUserMsg("","",changeMoney.getMerchantId());
+                        BigDecimal bigDecimal = changeMoney.getMoney().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        ChangeMoney syMoney = new ChangeMoney();
+                        syMoney.setChangeNo("YYSY" + RandomSaltUtil.randomNumber(14));
+                        syMoney.setStatus("10B");
+                        syMoney.setMobile(appUser.getPhone());
+                        syMoney.setMerchantId(appUser.getId());
+                        syMoney.setSourceId(changeMoney.getId());
+                        syMoney.setMoney(bigDecimal);
+                        syMoney.setNote("用户收益");
+                        syMoney.setTradeType("SY");
+                        createShouMoney(syMoney);
+
+                        syMoney.setResponseCode(returnCode);
+                        syMoney.setResponseMessage(object.get("result_code").toString());
+                        payService.updateChangeMoneyStatus(syMoney.getResponseCode(), syMoney.getResponseMessage(), syMoney.getStatus(), syMoney.getId());
+                    } else if ("10A".equals(changeMoney.getStatus()) && !"SUCCESS".equals(returnCode)) {
+                        changeMoney.setResponseCode(returnCode);
+                        changeMoney.setResponseMessage(object.get("result_code").toString());
+                        changeMoney.setStatus("10C");
+                        payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
                     }
                 }
-            }else if("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)){
-                orderNo.setResponseCode(returnCode);
-                orderNo.setResponseMessage(object.get("result_code").toString());
-                orderNo.setStatus("10C");
-                payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
             }
         }
     }
@@ -300,11 +361,11 @@ public class PayController extends BaseController{
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
-                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")) {
-                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser, orderNo.getMoney(), "+");
-                        payService.updateTotal(appUser.getId(), add);
-                    }
+//                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
+//                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")) {
+//                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser, orderNo.getMoney(), "+");
+//                        payService.updateTotal(appUser.getId(), add);
+//                    }
                 } else if("10A".equals(orderNo.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
                     log.info("不加钱===================");
                     String trxNo = params.get("trade_status");
@@ -313,6 +374,38 @@ public class PayController extends BaseController{
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10C");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
+                }
+            } else {
+                ChangeMoney changeMoney = myService.getChangeMoney(orderId);
+                if(StringUtils.isNotNull(changeMoney)) {
+                    if (!"10B".equals(changeMoney.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
+                        changeMoney.setResponseCode(params.get("trade_status"));
+                        changeMoney.setResponseMessage(params.get("trade_status"));
+                        changeMoney.setStatus("10B");
+                        payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
+
+                        AppUser appUser = loginService.getAppUserMsg("","",changeMoney.getMerchantId());
+                        BigDecimal bigDecimal = changeMoney.getMoney().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        ChangeMoney syMoney = new ChangeMoney();
+                        syMoney.setChangeNo("YYSY" + RandomSaltUtil.randomNumber(14));
+                        syMoney.setStatus("10B");
+                        syMoney.setMobile(appUser.getPhone());
+                        syMoney.setMerchantId(appUser.getId());
+                        syMoney.setSourceId(changeMoney.getId());
+                        syMoney.setMoney(bigDecimal);
+                        syMoney.setNote("用户收益");
+                        syMoney.setTradeType("SY");
+                        createShouMoney(syMoney);
+
+                        syMoney.setResponseCode(params.get("trade_status"));
+                        syMoney.setResponseMessage(params.get("trade_status"));
+                        payService.updateChangeMoneyStatus(syMoney.getResponseCode(), syMoney.getResponseMessage(), syMoney.getStatus(), syMoney.getId());
+                    } else if("10A".equals(changeMoney.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
+                        changeMoney.setResponseCode(params.get("trade_status"));
+                        changeMoney.setResponseMessage(params.get("trade_status"));
+                        changeMoney.setStatus("10C");
+                        payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
+                    }
                 }
             }
             log.info("支付宝平台回调结束+++++++++++++++++++++++++++++++++");
@@ -400,7 +493,7 @@ public class PayController extends BaseController{
         payService.createOut(outMoney);
     }
 
-    //创建收益订单
+    //创建账户流水订单
     public void createShouMoney(ChangeMoney changeMoney) {
         changeMoney.setId(RandomSaltUtil.generetRandomSaltCode(32));
         payService.createShouMoney(changeMoney);
@@ -415,65 +508,65 @@ public class PayController extends BaseController{
     @ResponseBody
     @RequestMapping("/outMoney")
     @LoginRequired
-    public JSONObject outMoney(OutMoney outMoney, @CurrentUser AppUser user) throws Exception {
+    public JSONObject outMoney(ChangeMoney changeMoney, @CurrentUser AppUser user) throws Exception {
         ReturnResult returnResult = new ReturnResult();
         log.info("-------提现订单-----------");
-        if (StringUtils.isEmpty(outMoney.getTradeType())) {
+        if (StringUtils.isEmpty(changeMoney.getTradeType())) {
             returnResult.setMessage("提现类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (outMoney.getMoney() == null|| outMoney.getMoney().compareTo(BigDecimal.ZERO)==0){
+        } else if (changeMoney.getMoney() == null|| changeMoney.getMoney().compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("转账的钱不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (user.getIncome().compareTo(outMoney.getMoney()) == -1){
+        } else if (user.getIncome().compareTo(changeMoney.getMoney()) == -1){
             returnResult.setMessage("转账的钱不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (StringUtils.isEmpty(user.getOpendId())){
             returnResult.setCode("02");
             returnResult.setMessage("openId为空！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (outMoney.getMoney().compareTo(new BigDecimal(5000))==1){
+        } else if (changeMoney.getMoney().compareTo(new BigDecimal(5000))==1){
             returnResult.setMessage("转账的钱不能高于5000元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (outMoney.getMoney().compareTo(new BigDecimal(50))==-1){
-            returnResult.setMessage("转账的钱不能低于50元！");
+        } else if (changeMoney.getMoney().compareTo(new BigDecimal(1))==-1){
+            returnResult.setMessage("转账的钱不能低于1元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
-        outMoney.setOutNo("YYTX" + RandomSaltUtil.randomNumber(14));
-        outMoney.setMerchantId(user.getId());
-        outMoney.setRealName(user.getWechatName());
-        outMoney.setMoneyNumber(user.getOpendId());
-//        outMoney.setTradeType("TXZFB");
-//        outMoney.setMoney(new BigDecimal("1"));
+        changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
+        changeMoney.setMerchantId(user.getId());
+        changeMoney.setRealName(user.getWechatName());
+        changeMoney.setMoneyNumber(user.getOpendId());
+//        changeMoney.setTradeType("TXZFB");
+//        changeMoney.setMoney(new BigDecimal("1"));
 
-        createOut(outMoney);
-        if (StringUtils.isEmpty(outMoney.getId())) {
+        createShouMoney(changeMoney);
+        if (StringUtils.isEmpty(changeMoney.getId())) {
             returnResult.setMessage("创建提现订单失败！缺少参数！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        if ("TXZFB".equals(outMoney.getTradeType())) {
+        if ("TXZFB".equals(changeMoney.getTradeType())) {
 //            return outZFB(outMoney,user);
-        } else if ("TXWX".equals(outMoney.getTradeType())) {
-            return outWX(outMoney,user);
+        } else if ("TXWX".equals(changeMoney.getTradeType())) {
+            return outWX(changeMoney,user);
         }
         returnResult.setMessage("提现正在进行中！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
     //单笔提现到微信
-    private synchronized JSONObject outWX(OutMoney outMoney,AppUser user) {
+    private synchronized JSONObject outWX(ChangeMoney changeMoney,AppUser user) {
         ReturnResult returnResult = new ReturnResult();
         String nonce_str = RandomSaltUtil.getRandomString(16);
         //是否校验用户姓名 NO_CHECK：不校验真实姓名 FORCE_CHECK：强校验真实姓名
         String checkName ="NO_CHECK";
         String partner_trade_no = RandomSaltUtil.generetRandomSaltCode(32);
         //描述
-        log.info("金额==========>>>"+outMoney.getMoney());
-        String moneyD = outMoney.getMoney()
+        log.info("金额==========>>>"+changeMoney.getMoney());
+        String moneyD = changeMoney.getMoney()
                 .setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
                 .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
         log.info("金额==========>>>"+moneyD);
-        String desc = "娱悦APP提现"+outMoney.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"元";
+        String desc = "娱悦APP提现"+changeMoney.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"元";
         // 参数：开始生成第一次签名
         parameters.put("mch_appid", Variables.wxAppId);
         parameters.put("mchid", Variables.wxMchID);
@@ -513,13 +606,13 @@ public class PayController extends BaseController{
                     //成功需要进行的逻辑操作，
                     returnResult.setMessage("企业转账成功");
                     returnResult.setStatus(Boolean.TRUE);
-                    payService.updateOutStatus(transferMap.get("result_code"), "微信转账成功", "10B", outMoney.getOutNo());
-                    BigDecimal subtract = ResultJSONUtils.updateOutIncome(user, outMoney.getMoney(), "");
+                    payService.updateChangeMoneyStatus(transferMap.get("result_code"), "微信转账成功", "10B", changeMoney.getId());
+                    BigDecimal subtract = ResultJSONUtils.updateOutIncome(user, changeMoney.getMoney(), "");
                     payService.updateOutIncome(user.getId(),subtract);
                 } else {
                     //失败原因
                     returnResult.setMessage("企业转账失败");
-                    payService.updateOutStatus(transferMap.get("err_code_des"), transferMap.get("return_msg"), "10C", outMoney.getOutNo());
+                    payService.updateChangeMoneyStatus(transferMap.get("err_code_des"), transferMap.get("return_msg"), "10C", changeMoney.getId());
                 }
             }
         } catch (Exception e) {

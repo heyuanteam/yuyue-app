@@ -76,4 +76,9 @@ public interface PayMapper extends MyBaseMapper<Order> {
 
     @Select("SELECT * FROM yuyue_order b where DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') < #{startTime} AND b.`status` = '10A'")
     List<Order> findOrderList(@Param(value = "startTime") String startTime);
+
+    ChangeMoney getChangeMoney(@Param(value = "id")String id);
+
+    void updateChangeMoneyStatus(@Param(value = "responseCode")String responseCode,@Param(value = "responseMessage") String responseMessage,
+                                 @Param(value = "status")String status,@Param(value = "id") String id);
 }

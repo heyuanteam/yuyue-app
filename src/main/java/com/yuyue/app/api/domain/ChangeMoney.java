@@ -30,6 +30,14 @@ public class ChangeMoney implements Serializable {
     private String createTime;
 //    完成时间
     private String completeTime;
+//    支付返回码
+    private String responseCode;
+//    支付返回详情
+    private String responseMessage;
+//    转账收款账户号
+    private String moneyNumber;
+//    账户真实名称
+    private String realName;
 //    备注
     private String note;
 //    收礼物的那个人

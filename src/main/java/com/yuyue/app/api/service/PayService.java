@@ -35,4 +35,6 @@ public interface PayService {
     void createShouMoney(ChangeMoney changeMoney);
 
     List<Order> findOrderList(String startTime);
+
+    void updateChangeMoneyStatus(String responseCode, String responseMessage, String status, String id);
 }

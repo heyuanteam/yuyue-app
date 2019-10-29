@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuyue.app.api.mapper.PayMapper">
+
+    <!-- 查询单条记录 -->
+    <select id="getChangeMoney" parameterType="String" resultType="com.yuyue.app.api.domain.ChangeMoney">
+        SELECT b.*,DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime
+            ,DATE_FORMAT(b.CREATE_TIME ,'%Y-%m-%d %H:%i:%s') createTime
+        FROM yuyue_change_money b where 1=1
+        <if test="id != null and id != ''">
+            and b.id = #{id}
+        </if>
+        order by b.COMPLETE_TIME desc LIMIT 1
+    </select>
+
+    <update id="updateChangeMoneyStatus"  parameterType="String">
+        UPDATE yuyue_change_money
+        <set>
+            <if test="responseCode != null and responseCode != ''"> responseCode= #{responseCode},</if>
+            <if test="responseMessage != null and responseMessage != ''"> responseMessage= #{responseMessage},</if>
+            <if test="status != null and status != ''"> status= #{status}, </if>
+        </set>
+        WHERE 1=1
+        <if test="id!=null and id!=''">
+            and id = #{id}
+        </if>
+    </update>
+</mapper>

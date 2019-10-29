@@ -63,4 +63,8 @@ public class PayServiceImpl implements PayService {
     @Override
     public List<Order> findOrderList(String startTime) { return payMapper.findOrderList(startTime);}
 
+    @Override
+    public void updateChangeMoneyStatus(String responseCode, String responseMessage, String status, String id) {
+        payMapper.updateChangeMoneyStatus(responseCode,responseMessage,status,id);}
+
 }

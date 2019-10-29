@@ -53,4 +53,6 @@ public interface MyService {
     ShowName findShowName(String description, String phone, String teamName);
 
     Advertisement findAdvertisement(String agencyCode, String produceAddr, String phone);
+
+    ChangeMoney getChangeMoney(String orderId);
 }
