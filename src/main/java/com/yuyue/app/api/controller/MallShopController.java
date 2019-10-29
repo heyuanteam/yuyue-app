@@ -106,8 +106,8 @@ public class MallShopController extends BaseController{
 
         MallShop myMallShop = mallShopService.getMyMallShop(shopId);
         if (StringUtils.isNotNull(myMallShop)){
-            System.out.println("已添加成功，请等待审核"+myMallShop);
-            returnResult.setMessage("已添加成功，请等待审核");
+            System.out.println("已添加待审核，请勿重复添加"+myMallShop);
+            returnResult.setMessage("已添加待审核，请勿重复添加！");
             returnResult.setStatus(Boolean.TRUE);
             returnResult.setResult(myMallShop);
             return returnResult;
@@ -153,6 +153,7 @@ public class MallShopController extends BaseController{
                 return returnResult;
             }
             mallShop.setFare(new BigDecimal(request.getParameter("fare")));
+            mallShop.setVideoPath(request.getParameter("remark"));
             mallShop.setBusinessTime(request.getParameter("businessTime"));
             mallShop.setMerchantAddr(request.getParameter("merchantAddr"));
             mallShop.setMerchantPhone(request.getParameter("merchantPhone"));
@@ -171,7 +172,7 @@ public class MallShopController extends BaseController{
     }
 
     /**
-     * 查询商品规格
+     * 通过商铺id -->查询商品规格
      * @param request
      * @param response
      * @return
@@ -179,6 +180,8 @@ public class MallShopController extends BaseController{
     @RequestMapping(value = "getSpecification")
     @ResponseBody
     public ReturnResult getSpecification(HttpServletRequest request, HttpServletResponse response){
+        log.info("通过商铺id查询规格------------->>/mallShop/getSpecification");
+        getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
         String shopId = request.getParameter("shopId");
         if (StringUtils.isEmpty(shopId)){
@@ -192,7 +195,30 @@ public class MallShopController extends BaseController{
         return returnResult;
 
     }
+    /**
+     * 通过规格id  -->查询规格
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "getSpecificationById")
+    @ResponseBody
+    public ReturnResult getSpecificationById(HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("通过规格id查询规格------------->>/mallShop/getSpecificationById");
+        getParameterMap(request, response);
+        String commodityId = request.getParameter("commodityId");
+        if (StringUtils.isEmpty(commodityId)){
+            returnResult.setMessage("规格id不能为空！！");
+            return returnResult;
+        }
+        Specification specification = mallShopService.getSpecificationById(commodityId);
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(specification);
+        returnResult.setMessage("返回成功");
+        return returnResult;
 
+    }
     /**
      * 添加商品规格
      * @param shopId
@@ -209,7 +235,7 @@ public class MallShopController extends BaseController{
     @RequestMapping(value = "insertSpecification")
     @ResponseBody
     @LoginRequired
-    public ReturnResult insertSpecification(String shopId ,String commodityDetail,
+    public ReturnResult insertSpecification(String shopId ,String commodityDetail,String commoditySize,
                                             String commodityPrice,String commodityReserve,
                                             String imagePath,String status,
                                             @CurrentUser AppUser user,
@@ -241,6 +267,7 @@ public class MallShopController extends BaseController{
         }
         specification.setShopId(shopId);
         specification.setCommodityDetail(commodityDetail);
+        specification.setCommoditySize(commoditySize);
         specification.setImagePath(imagePath);
         mallShopService.insertSpecification(specification);
         returnResult.setStatus(Boolean.TRUE);
@@ -249,5 +276,54 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
+    /**
+     * 删除规格
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "deleteSpecificationById")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult deleteSpecificationById(HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("删除规格------------->>/mallShop/deleteSpecificationById");
+        getParameterMap(request, response);
+        String commodityId = request.getParameter("commodityId");
+        if (StringUtils.isEmpty(commodityId)){
+            returnResult.setMessage("规格id不能为空！！");
+            return returnResult;
+        }
+        mallShopService.deleteSpecification(commodityId);
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setMessage("删除成功！");
+        return returnResult;
 
+    }
+
+
+    /**
+     * 修改规格
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "updateSpecification")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult updateSpecification(Specification specification,HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("修改规格------------->>/mallShop/updateSpecification");
+        getParameterMap(request, response);
+        String commodityId = request.getParameter("commodityId");
+        if (StringUtils.isEmpty(commodityId)){
+            returnResult.setMessage("规格id不能为空！");
+            return returnResult;
+        }
+        mallShopService.updateSpecification(specification);
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setMessage("修改成功！");
+        return returnResult;
+
+    }
 }

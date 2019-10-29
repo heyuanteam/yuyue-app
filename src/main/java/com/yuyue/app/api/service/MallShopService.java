@@ -24,7 +24,12 @@ public interface MallShopService {
 
     List<Specification> getSpecification(String shopId);
 
+    Specification getSpecificationById(String specificationId);
+
     void insertSpecification(Specification specification);
 
+    void deleteSpecification(String specificationId);
+
+    void updateSpecification(Specification specification);
 
 }

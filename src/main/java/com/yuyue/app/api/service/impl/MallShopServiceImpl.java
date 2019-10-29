@@ -53,7 +53,22 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public Specification getSpecificationById(String specificationId) {
+        return specificationMapper.getSpecificationById(specificationId);
+    }
+
+    @Override
     public void insertSpecification(Specification specification) {
         specificationMapper.insertSpecification(specification);
+    }
+
+    @Override
+    public void deleteSpecification(String specificationId) {
+        specificationMapper.deleteSpecification(specificationId);
+    }
+
+    @Override
+    public void updateSpecification(Specification specification) {
+        specificationMapper.updateSpecification(specification);
     }
 }

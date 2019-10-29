@@ -1,11 +1,13 @@
 package com.yuyue.app.api.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +20,8 @@ public class Specification implements Serializable {
     private String shopId;
     //  商品规格    描述
     private String commodityDetail;
+    //  商铺规格    规格/尺寸
+    private String commoditySize;
     //  商品规格    价格
     private BigDecimal commodityPrice;
     //  商品规格    库存
@@ -27,7 +31,8 @@ public class Specification implements Serializable {
     //  商品规格    状态（是否上架）
     private String status;
     //创建时间
-    private String createTime;
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
 
 
 }

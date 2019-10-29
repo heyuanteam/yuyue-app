@@ -33,6 +33,8 @@ public class MallShop implements Serializable {
     private String serviceType;
     //    运费
     private BigDecimal fare;
+    //    运费
+    private BigDecimal commodityPrice;
     //    营业时间
     private String businessTime;
     //    商家地址

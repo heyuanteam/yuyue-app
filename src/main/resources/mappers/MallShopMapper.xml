@@ -26,6 +26,7 @@
         <collection property="specifications" ofType="com.yuyue.app.api.domain.Specification" >
             <id column="commodity_id" property="commodityId"/>
             <result column="commodity_detail" property="commodityDetail"/>
+            <result column="commodity_size" property="commoditySize"/>
             <result column="commodity_price" property="commodityPrice"/>
             <result column="commodity_reserve" property="commodityReserve"/>
             <result column="image_path" property="imagePath"/>
@@ -46,17 +47,12 @@
     </select>
 
 
-    <select id="getAllMallShop"  parameterType="String" resultMap="MallShop">
+    <select id="getAllMallShop"  parameterType="String" resultType="com.yuyue.app.api.domain.MallShop">
 
         SELECT * FROM  (SELECT * FROM yuyue_mall_shop where  service_area  LIKE  '全国%'
           UNION
         SELECT * FROM yuyue_mall_shop  where
         CONCAT(service_area) like concat('%', #{myArea}, '%')  ) s
-        left join  yuyue_mall_shop_images i
-        on   s.shop_id = i.shop_id
-        left join yuyue_mall_shop_commodity c
-        on c.shop_id = s.shop_id
-
         where s.business_time != 'rest'
 
     </select>
