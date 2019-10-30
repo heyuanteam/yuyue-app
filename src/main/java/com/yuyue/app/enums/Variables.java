@@ -88,4 +88,6 @@ public class Variables {
     public static final String keyWord_URL = "http://restapi.amap.com/v3/place/text";
 //    经纬度/关键字 附近地标建筑及地点查询
     public static final String like_keyWord_URL = "http://restapi.amap.com/v3/place/around";
+//    IP定位API服务地址
+    public static final String ip_URL = "https://restapi.amap.com/v3/ip?parameters";
 }
