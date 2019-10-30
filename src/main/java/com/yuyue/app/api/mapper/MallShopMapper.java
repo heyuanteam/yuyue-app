@@ -16,4 +16,7 @@ public interface MallShopMapper extends MyBaseMapper<MallShop> {
 
     @Transactional
     void insertMyMallShop(MallShop mallShop);
+
+    @Transactional
+    void updateMyMallShopInfo(MallShop mallShop);
 }

@@ -22,17 +22,6 @@
             <result column="image_path" property="imagePath"/>
             <result column="image_sort" property="imageSort"/>
         </collection>
-
-        <collection property="specifications" ofType="com.yuyue.app.api.domain.Specification" >
-            <id column="commodity_id" property="commodityId"/>
-            <result column="commodity_detail" property="commodityDetail"/>
-            <result column="commodity_size" property="commoditySize"/>
-            <result column="commodity_price" property="commodityPrice"/>
-            <result column="commodity_reserve" property="commodityReserve"/>
-            <result column="image_path" property="imagePath"/>
-            <result column="status" property="status"/>
-            <result column="create_time" property="createTime"/>
-        </collection>
     </resultMap>
 
     <select id="getMyMallShop"  parameterType="String" resultMap="MallShop">
@@ -40,9 +29,8 @@
        SELECT * FROM yuyue_mall_shop s
         left join  yuyue_mall_shop_images i
         on   s.shop_id = i.shop_id
-        left join yuyue_mall_shop_commodity c
-        on c.shop_id = s.shop_id
         where s.shop_id  = #{shopId}
+        order by i.image_sort
 
     </select>
 
@@ -64,6 +52,62 @@
          (#{shopId},#{merchantId},#{category},#{commodityName},#{detail},#{serviceType},#{fare},
          #{businessTime},#{merchantAddr},#{merchantPhone},#{serviceArea},#{feeArea},#{videoPath},#{remark})
     </insert>
+
+    <update id="updateMyMallShopInfo" parameterType="com.yuyue.app.api.domain.MallShop">
+        update  yuyue_mall_shop
+        <set>
+            <if test=" category != null and category != ''">
+                category = #{category},
+            </if>
+
+            <if test=" commodityName != null and commodityName != ''">
+                commodity_name = #{commodityName},
+            </if>
+
+            <if test=" detail != null and detail != ''">
+                detail = #{detail},
+            </if>
+
+            <if test=" serviceType != null and serviceType != ''">
+                service_type = #{serviceType},
+            </if>
+
+            <if test=" fare != null and fare != ''">
+                fare = #{fare},
+            </if>
+
+            <if test=" businessTime != null and businessTime != ''">
+                business_time = #{businessTime},
+            </if>
+
+            <if test=" merchantAddr != null and merchantAddr != ''">
+                merchant_addr = #{merchantAddr},
+            </if>
+
+            <if test=" merchantPhone != null and merchantPhone != ''">
+                merchant_phone = #{merchantPhone},
+            </if>
+
+            <if test=" serviceArea != null and serviceArea != ''">
+                service_area = #{serviceArea},
+            </if>
+
+            <if test=" feeArea != null and feeArea != ''">
+                fee_area = #{feeArea},
+            </if>
+
+            <if test=" videoPath != null and videoPath != ''">
+                video_path = #{videoPath},
+            </if>
+
+            <if test=" remark != null and remark != ''">
+                remark = #{remark}
+            </if>
+
+
+        </set>
+        where  shop_id = #{shopId}
+    </update>
 
 
 </mapper>

@@ -22,9 +22,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-@Slf4j
 @RestController
 @RequestMapping(value = "/mallShop" , produces = "application/json; charset=UTF-8")
+@Slf4j
 public class MallShopController extends BaseController{
 
     @Autowired
@@ -54,8 +54,9 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
+
     /**
-     * 查询我的商铺
+     * 查询所有符合条件的商铺
      * @param request
      * @param response
      * @return
@@ -80,6 +81,8 @@ public class MallShopController extends BaseController{
         returnResult.setResult(allMallShop);
         return returnResult;
     }
+    
+    
 
     /**
      * 添加商铺
@@ -120,7 +123,6 @@ public class MallShopController extends BaseController{
 
                 for ( Byte i = 0 ; i < images.length ; i++) {
                     ShopImage shopImage = new ShopImage();
-                    shopImage.setImageId(UUID.randomUUID().toString().replace("-","").toUpperCase());
                     shopImage.setImagePath(images[i]);
                     shopImage.setImageSort(i);
                     shopImage.setShopId(shopId);
@@ -167,6 +169,129 @@ public class MallShopController extends BaseController{
         }
 
     }
+
+    /**
+     * 修改我的商铺
+     * @param mallShop
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "updateMyMallShopInfo")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult updateMyMallShopInfo(MallShop mallShop,HttpServletRequest request, HttpServletResponse response){
+        log.info("修改商铺信息------------->>/mallShop/updateMyMallShopInfo");
+        getParameterMap(request, response);
+        ReturnResult returnResult = new ReturnResult();
+         if(StringUtils.isEmpty(mallShop.getShopId())){
+            returnResult.setMessage("商铺ID不能为空！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallShop.getCategory())){
+            returnResult.setMessage("商品/服务分类不能为空！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallShop.getCommodityName())){
+            returnResult.setMessage("商品/服务名称不能为空！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallShop.getDetail())){
+            returnResult.setMessage("商品/服务介绍不能为空！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallShop.getServiceType())){
+            returnResult.setMessage("服务方式不能为空！");
+            return returnResult;
+        }
+        else if (StringUtils.isEmpty(mallShop.getFare().toString())){
+            returnResult.setMessage("运费不能为空！");
+            return returnResult;
+        }
+        //验证金额格式
+        java.util.regex.Pattern pattern=java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$");
+        java.util.regex.Matcher match=pattern.matcher(mallShop.getFare().toString());
+        if(match.matches()==false)
+        {
+            returnResult.setMessage("运费格式输入错误！！！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallShop.getBusinessTime())){
+            returnResult.setMessage("营业时间不能为空！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallShop.getMerchantAddr())){
+            returnResult.setMessage("商家地址不能为空！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallShop.getMerchantPhone())){
+            returnResult.setMessage("商家电话不能为空！");
+            return returnResult;
+        }
+        mallShopService.updateMyMallShopInfo(mallShop);
+
+        returnResult.setMessage("修改成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+    }
+
+    /**
+     * 修改商铺图片
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "insertShopImage")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult insertShopImage(HttpServletRequest request, HttpServletResponse response){
+        log.info("删除商铺图片------------->>/mallShop/deleteShopImage");
+        getParameterMap(request, response);
+        ReturnResult returnResult = new ReturnResult();
+        String commodityImage = request.getParameter("images");
+        String shopId = request.getParameter("shopId");
+        if (StringUtils.isEmpty(shopId)){
+            returnResult.setMessage("商铺id为空！");
+            return returnResult;
+        }
+        if (StringUtils.isEmpty(commodityImage)){
+            returnResult.setMessage("图片路径为空！");
+            return returnResult;
+        }else {
+            String[] images = commodityImage.split(";");
+
+            for ( Byte i = 0 ; i < images.length ; i++) {
+                ShopImage shopImage = new ShopImage();
+                shopImage.setImagePath(images[i]);
+                shopImage.setImageSort(i);
+                shopImage.setShopId(shopId);
+                System.out.println(images[i]);
+                mallShopService.insertShopImage(shopImage);
+            }
+            returnResult.setMessage("图片修改成功！");
+            returnResult.setStatus(Boolean.TRUE);
+            return returnResult;
+        }
+    }
+
+    /**
+     * 删除商铺图片
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "deleteShopImage")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult deleteShopImage(HttpServletRequest request, HttpServletResponse response){
+        log.info("删除商铺图片------------->>/mallShop/deleteShopImage");
+        getParameterMap(request, response);
+        ReturnResult returnResult = new ReturnResult();
+        String imagePath = request.getParameter("imagePath");
+        if (StringUtils.isEmpty(imagePath)){
+            returnResult.setMessage("图片路径为空！");
+            return returnResult;
+        }
+        mallShopService.deleteShopImage(imagePath);
+        returnResult.setMessage("图片删除成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+    }
+
+
 
     /**
      * 通过商铺id -->查询商品规格
@@ -217,6 +342,90 @@ public class MallShopController extends BaseController{
         return returnResult;
 
     }
+
+    /**
+     * 编辑规格(添加删除)
+     * @param commodityId
+     * @param shopId
+     * @param commodityDetail
+     * @param commoditySize
+     * @param commodityPrice
+     * @param commodityReserve
+     * @param imagePath
+     * @param status
+     * @param user
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "editSpecification")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult editSpecification(String commodityId,String shopId ,String commodityDetail,String commoditySize,
+                                          String commodityPrice,String commodityReserve,
+                                          String imagePath,String status,
+                                          @CurrentUser AppUser user,
+                                          HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        getParameterMap(request, response);
+        if (StringUtils.isEmpty(commodityId)){
+
+            Specification specification = new Specification();
+            specification.setCommodityId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+
+            if (StringUtils.isEmpty(commodityPrice)){
+                returnResult.setMessage("价格不能为空！");
+                return returnResult;
+            }
+            // 判断小数点后2位的数字的正则表达式
+            java.util.regex.Pattern pattern=java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$");
+            java.util.regex.Matcher match=pattern.matcher(commodityPrice);
+            if(match.matches()==false)
+            {
+                returnResult.setMessage("价格输入错误！");
+                return returnResult;
+            }else {
+                specification.setCommodityPrice(new BigDecimal(commodityPrice));
+            }if (StringUtils.isEmpty(commodityReserve)){
+                returnResult.setMessage("库存不能为空！");
+                return returnResult;
+            }else if(commodityReserve.matches("[0-9]+")){
+                specification.setCommodityReserve(Integer.parseInt(commodityReserve));
+            }else {
+                returnResult.setMessage("库存不是整数类型！");
+                return returnResult;
+            }if ("10A".equals(status)  || "10B".equals(status)){
+                specification.setStatus(status);
+            }else {
+                returnResult.setMessage("状态输入错误！");
+                return returnResult;
+            }
+            specification.setShopId(shopId);
+            specification.setCommodityDetail(commodityDetail);
+            System.out.println(commodityDetail);
+            specification.setCommoditySize(commoditySize);
+            specification.setImagePath(imagePath);
+            System.out.println(specification);
+            mallShopService.insertSpecification(specification);
+            returnResult.setStatus(Boolean.TRUE);
+            returnResult.setResult(specification);
+            returnResult.setMessage("规格添加成功！");
+            return returnResult;
+        }else {
+            log.info("删除规格------------->>/mallShop/deleteSpecificationById");
+            if (StringUtils.isEmpty(commodityId)){
+                returnResult.setMessage("规格id不能为空！！");
+                return returnResult;
+            }
+            mallShopService.deleteSpecification(commodityId);
+            returnResult.setStatus(Boolean.TRUE);
+            returnResult.setMessage("删除成功！");
+            return returnResult;
+        }
+
+    }
+
+
 
     /**
      * 添加商品规格
@@ -324,5 +533,4 @@ public class MallShopController extends BaseController{
         return returnResult;
 
     }
-
 }
