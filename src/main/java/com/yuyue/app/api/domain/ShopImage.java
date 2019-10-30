@@ -11,8 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ShopImage implements Serializable {
     private static final long serialVersionUID = 1L;
-    //  商品图片id
-    private String imageId;
+
     //  商品id    描述
     private String shopId;
     //  商品图片路径

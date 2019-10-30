@@ -16,10 +16,13 @@ public interface MallShopService {
 
     void insertMyMallShop(MallShop mallShop);
 
+    void updateMyMallShopInfo(MallShop mallShop);
 
     ShopImage getShopImage(String shopId);
 
     void insertShopImage(ShopImage shopImage);
+
+    void deleteShopImage(String imagePath);
 /*----------------------------商品接口-------------————————---------*/
 
     List<Specification> getSpecification(String shopId);

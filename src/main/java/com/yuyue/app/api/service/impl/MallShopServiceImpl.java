@@ -38,6 +38,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public void updateMyMallShopInfo(MallShop mallShop) {
+        mallShopMapper.updateMyMallShopInfo(mallShop);
+    }
+
+    @Override
     public ShopImage getShopImage(String shopId) {
         return shopImageMapper.getShopImage(shopId);
     }
@@ -45,6 +50,11 @@ public class MallShopServiceImpl implements MallShopService {
     @Override
     public void insertShopImage(ShopImage shopImage) {
         shopImageMapper.insertShopImage(shopImage);
+    }
+
+    @Override
+    public void deleteShopImage(String imagePath) {
+        shopImageMapper.deleteShopImage(imagePath);
     }
 
     @Override
