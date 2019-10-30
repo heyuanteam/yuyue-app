@@ -30,7 +30,6 @@ public class MallShopController extends BaseController{
     @Autowired
     private MallShopService mallShopService;
 
-
     /**
      * 查询我的商铺
      * @param request
@@ -82,7 +81,8 @@ public class MallShopController extends BaseController{
         returnResult.setResult(allMallShop);
         return returnResult;
     }
-
+    
+    
 
     /**
      * 添加商铺
@@ -318,7 +318,6 @@ public class MallShopController extends BaseController{
 
     }
 
-
     /**
      * 通过规格id  -->查询规格
      * @param request
@@ -427,6 +426,7 @@ public class MallShopController extends BaseController{
     }
 
 
+
     /**
      * 添加商品规格
      * @param shopId
@@ -484,7 +484,6 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
-
     /**
      * 删除规格
      * @param request
@@ -509,7 +508,6 @@ public class MallShopController extends BaseController{
         return returnResult;
 
     }
-
 
     /**
      * 修改规格
