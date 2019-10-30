@@ -22,9 +22,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/mallShop" , produces = "application/json; charset=UTF-8")
-@Slf4j
 public class MallShopController extends BaseController{
 
     @Autowired
@@ -54,7 +54,6 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
-
     /**
      * 查询我的商铺
      * @param request
@@ -81,8 +80,6 @@ public class MallShopController extends BaseController{
         returnResult.setResult(allMallShop);
         return returnResult;
     }
-    
-    
 
     /**
      * 添加商铺
@@ -195,6 +192,7 @@ public class MallShopController extends BaseController{
         return returnResult;
 
     }
+
     /**
      * 通过规格id  -->查询规格
      * @param request
@@ -219,6 +217,7 @@ public class MallShopController extends BaseController{
         return returnResult;
 
     }
+
     /**
      * 添加商品规格
      * @param shopId
@@ -301,7 +300,6 @@ public class MallShopController extends BaseController{
 
     }
 
-
     /**
      * 修改规格
      * @param request
@@ -326,4 +324,5 @@ public class MallShopController extends BaseController{
         return returnResult;
 
     }
+
 }
