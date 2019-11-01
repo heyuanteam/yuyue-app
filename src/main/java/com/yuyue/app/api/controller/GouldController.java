@@ -196,4 +196,36 @@ public class GouldController extends BaseController {
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
+
+    /**
+     * 根据本机IP获取地址
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getAddressByIP")
+    public JSONObject getAddressByIP(HttpServletRequest request, HttpServletResponse response){
+        log.info("根据本机IP获取地址-------------->>/gould/getAddressByIP");
+        getParameterMap(request, response);
+        ReturnResult returnResult=new ReturnResult();
+        Map<String, String> params = Maps.newHashMap();
+        params.put("ip", QRCodeUtil.localIp());
+        try {
+            // 拼装url
+            String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.ip_URL);
+            // 调用高德SDK
+            JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doGet(url, params));
+            if ("OK".equals(parse.getString("info"))) {
+                returnResult.setMessage("根据本机IP获取地址成功！");
+                returnResult.setResult(parse);
+                returnResult.setStatus(Boolean.TRUE);
+            } else {
+                returnResult.setMessage("根据本机IP获取地址失败！");
+            }
+        } catch (Exception e) {
+            log.info("根据本机IP获取地址失败！");
+            returnResult.setMessage("根据本机IP获取地址失败！");
+        }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
 }
