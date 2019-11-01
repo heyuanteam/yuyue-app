@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface MallShopMapper extends MyBaseMapper<MallShop> {
 
-    List<MallShop> getAllMallShop(@Param(value = "myArea") String myArea);
+    List<MallShop> getAllMallShop(@Param(value = "myArea") String myArea,@Param(value = "content") String content);
 
     MallShop getMyMallShop(@Param(value = "shopId") String shopId);
 

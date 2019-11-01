@@ -436,7 +436,7 @@ public class MyController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
     /**
-     *商家上传 商品信息
+     *商家上传 商品信息并支付
      * @param commodity
      */
     @RequestMapping("/commodityToSpread")

@@ -33,10 +33,12 @@ public class MallShop implements Serializable {
     private String serviceType;
     //    运费
     private BigDecimal fare;
-    //    运费
+    //    商铺价格
     private BigDecimal commodityPrice;
     //    营业时间
     private String businessTime;
+    //    营业状态
+    private String businessStatus;
     //    商家地址
     private String merchantAddr;
     //    商家电话
@@ -52,5 +54,16 @@ public class MallShop implements Serializable {
     //    创建时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+    //    商铺状态
+    private String status;
+    //    推广开始时间
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    private Date startTime;
+    //    推广结束时间
+    @JSONField(format = "yyyy-MM-dd HH:mm:ss")
+    private Date endTime;
+    //    订单id
+    private String orderId;
+
 
 }

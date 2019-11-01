@@ -9,19 +9,16 @@ import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.api.domain.UploadFile;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.api.service.UserCommentService;
+import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -100,6 +97,7 @@ public class UploadFileController extends  BaseController{
         }
         AppUser appUserMsg = loginService.getAppUserMsg("", "", uploadFile.getAuthorId());
         map.put("AuthorName",appUserMsg.getNickName());
+        map.put("AttentionNum",appUserMsg.getAttentionTotal());
         map.put("HeadUrl",appUserMsg.getHeadpUrl());
         map.put("fileDetail",uploadFile);
 //        System.out.println(map);

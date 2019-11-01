@@ -1,8 +1,10 @@
 package com.yuyue.app.api.service.impl;
 
+import com.yuyue.app.api.domain.Cart;
 import com.yuyue.app.api.domain.MallShop;
 import com.yuyue.app.api.domain.ShopImage;
 import com.yuyue.app.api.domain.Specification;
+import com.yuyue.app.api.mapper.CartMapper;
 import com.yuyue.app.api.mapper.MallShopMapper;
 import com.yuyue.app.api.mapper.ShopImageMapper;
 import com.yuyue.app.api.mapper.SpecificationMapper;
@@ -21,6 +23,8 @@ public class MallShopServiceImpl implements MallShopService {
     private ShopImageMapper shopImageMapper;
     @Autowired
     private SpecificationMapper specificationMapper;
+    @Autowired
+    private CartMapper cartMapper;
 
     @Override
     public MallShop getMyMallShop(String shopId) {
@@ -28,8 +32,8 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
-    public List<MallShop> getAllMallShop(String myArea) {
-        return mallShopMapper.getAllMallShop(myArea);
+    public List<MallShop> getAllMallShop(String myArea,String content) {
+        return mallShopMapper.getAllMallShop(myArea,content);
     }
 
     @Override
@@ -80,5 +84,25 @@ public class MallShopServiceImpl implements MallShopService {
     @Override
     public void updateSpecification(Specification specification) {
         specificationMapper.updateSpecification(specification);
+    }
+
+    @Override
+    public List<Cart> getCarts(String cartId,String  consumerId) {
+        return cartMapper.getCarts(cartId,consumerId);
+    }
+
+    @Override
+    public Cart getCart(String commodityId,String consumerId) {
+        return cartMapper.getCart(commodityId,consumerId);
+    }
+
+    @Override
+    public void editCart(Cart cart) {
+        cartMapper.addCart(cart);
+    }
+
+    @Override
+    public void deleteCart(Cart cart) {
+        cartMapper.deleteCart(cart);
     }
 }

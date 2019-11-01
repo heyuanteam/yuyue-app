@@ -9,13 +9,25 @@
             <result column="detail" property="detail"/>
             <result column="service_type" property="serviceType"/>
             <result column="fare" property="fare"/>
+            <result column="commodity_price" property="commodityPrice"/>
             <result column="business_time" property="businessTime"/>
+            <result column="business_status" property="businessStatus"/>
             <result column="merchant_addr" property="merchantAddr"/>
             <result column="merchant_phone" property="merchantPhone"/>
             <result column="service_area" property="serviceArea"/>
             <result column="fee_area" property="feeArea"/>
             <result column="video_path" property="videoPath"/>
             <result column="remark" property="remark"/>
+            <result column="create_time" property="remark"/>
+
+            <result column="status" property="status"/>
+
+            <result column="order_id" property="orderId"/>
+
+            <result column="start_time" property="startTime"/>
+
+            <result column="end_time" property="endTime"/>
+
         <collection property="images" ofType="com.yuyue.app.api.domain.ShopImage" >
             <id column="image_id" property="imageId"/>
             <result column="image_path" property="imagePath"/>
@@ -35,22 +47,29 @@
     </select>
 
 
-    <select id="getAllMallShop"  parameterType="String" resultType="com.yuyue.app.api.domain.MallShop">
+    <select id="getAllMallShop"  parameterType="String" resultMap="MallShop">
 
         SELECT * FROM  (SELECT * FROM yuyue_mall_shop where  service_area  LIKE  '全国%'
           UNION
         SELECT * FROM yuyue_mall_shop  where
         CONCAT(service_area) like concat('%', #{myArea}, '%')  ) s
-        where s.business_time != 'rest'
+        LEFT JOIN yuyue_mall_shop_images images
+		on s.shop_id = images.shop_id
+        where s.business_status = 'open' and status  IN ('10B','10C')
+        <if test="content != null and content != '' ">
+            and
+            CONCAT(IFNULL(category,''),IFNULL(commodity_name,''),IFNULL(detail,''))  LIKE  concat('%', #{content}, '%')
+        </if>
+
 
     </select>
 
     <insert id="insertMyMallShop" parameterType="com.yuyue.app.api.domain.MallShop">
-         insert  into yuyue_mall_shop (shop_id,merchant_id,category,commodity_name,detail,service_type,fare,
-         business_time,merchant_addr,merchant_phone,service_area,fee_area,video_path,remark)
+         replace into yuyue_mall_shop (shop_id,merchant_id,category,commodity_name,detail,service_type,fare,
+         business_time,business_status,merchant_addr,merchant_phone,service_area,fee_area,video_path,remark,order_id,status)
          VALUES
          (#{shopId},#{merchantId},#{category},#{commodityName},#{detail},#{serviceType},#{fare},
-         #{businessTime},#{merchantAddr},#{merchantPhone},#{serviceArea},#{feeArea},#{videoPath},#{remark})
+         #{businessTime},#{businessStatus},#{merchantAddr},#{merchantPhone},#{serviceArea},#{feeArea},#{videoPath},#{remark},#{orderId},#{status})
     </insert>
 
     <update id="updateMyMallShopInfo" parameterType="com.yuyue.app.api.domain.MallShop">
