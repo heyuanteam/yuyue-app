@@ -39,7 +39,6 @@ public class Variables {
     public static final String wxMchID = "1529278811";
     //微信秘钥
     public static final String wxKEY = "FE79E95059CDCA91646CDDA6A7F60A93";
-//    public static final String wxNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/wxpayNotify";
     public static final String wxNotifyUrl = "http://"+ip+":8082/yuyue-app/pay/wxpayNotify";
 
     //    -------------------------------------------------------------------------------
