@@ -31,14 +31,16 @@ public class Variables {
     //    -------------------------------------------------------------------------------
     //微信APPID
     public static final String wxAppId = "wx82e0374be0e044a4";
-    public static final String ip = "101.37.252.177";
+//    public static final String ip = "101.37.252.177";
+    public static final String ip = "47.97.125.222";
     //微信AppSecret
     public static final String APP_SECRET = "c08075181dce2ffe3f036734f168318f";
     //微信商户号
     public static final String wxMchID = "1529278811";
     //微信秘钥
     public static final String wxKEY = "FE79E95059CDCA91646CDDA6A7F60A93";
-    public static final String wxNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/wxpayNotify";
+//    public static final String wxNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/wxpayNotify";
+    public static final String wxNotifyUrl = "http://"+ip+":8082/yuyue-app/pay/wxpayNotify";
 
     //    -------------------------------------------------------------------------------
     //支付宝
@@ -62,7 +64,7 @@ public class Variables {
             "LLcwdxRDS3JtkmhWgO/SX2xIFqkbmkMspm94iXklqwG5msWL23I5WTXjLHNGdv5mU9cKx64gN9atOsA0sQ38yiInYMd6PPBM4VOdvKyau0purE9" +
             "RQqwKd1O/XTFlD9XDxEz3NiRD6sunLIxaPMMkt2+X7KPXAwYBIL5tymna3+rBnxYIAX2q5KORaYKoOWRK9ER+pMMXpcqNbMdO1ceOeUqx2XzpVZ" +
             "oMlcgRB6BTKG59S+KVso1O9Cxx52lvYqisuei8OnNwmMxK+++psZXmdDuNpUc4OJXdA7Bc0zbwDedtxRJE3zNDONOOwIDAQAB";
-    public static final String AliPayNotifyUrl = "http://101.37.252.177:8082/yuyue-app/pay/alipayNotify";
+    public static final String AliPayNotifyUrl = "http://"+ip+":8082/yuyue-app/pay/alipayNotify";
     public static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/pay";
 
     // 编码集，支持 GBK/UTF-8
