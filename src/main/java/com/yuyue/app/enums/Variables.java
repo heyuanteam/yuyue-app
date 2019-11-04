@@ -31,8 +31,8 @@ public class Variables {
     //    -------------------------------------------------------------------------------
     //微信APPID
     public static final String wxAppId = "wx82e0374be0e044a4";
-//    public static final String ip = "101.37.252.177";
-    public static final String ip = "47.97.125.222";
+    public static final String ip = "101.37.252.177";
+//    public static final String ip = "47.97.125.222";
     //微信AppSecret
     public static final String APP_SECRET = "c08075181dce2ffe3f036734f168318f";
     //微信商户号
