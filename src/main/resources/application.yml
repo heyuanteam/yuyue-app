@@ -44,8 +44,8 @@ spring:
     username: root
     password: Ab323232
     #基本属性
-#    url: jdbc:mysql://101.37.252.177:3306/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-    url: jdbc:mysql://47.97.125.222:3306/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+#    url: jdbc:mysql://101.37.252.177:33060/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    url: jdbc:mysql://47.97.125.222:33060/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.xa.DruidXADataSource
     #配置初始化大小/最小/最大
