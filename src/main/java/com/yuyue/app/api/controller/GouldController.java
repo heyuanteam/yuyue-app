@@ -213,7 +213,7 @@ public class GouldController extends BaseController {
             // 拼装url
             String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.ip_URL);
             // 调用高德SDK
-            JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doGet(url, params));
+            JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
             if ("OK".equals(parse.getString("info"))) {
                 returnResult.setMessage("根据本机IP获取地址成功！");
                 returnResult.setResult(parse);
