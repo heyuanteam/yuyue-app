@@ -25,7 +25,7 @@ public interface MallShopService {
 
     void deleteShopImage(String imagePath);
 
-/*---------------------------------商品接口---------------------------------*/
+/*---------------------------------商品(规格)接口---------------------------------*/
     List<Specification> getSpecification(String shopId);
 
     Specification getSpecificationById(String specificationId);

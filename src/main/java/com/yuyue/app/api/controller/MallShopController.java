@@ -61,6 +61,8 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
         MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+        List<Specification> specification = mallShopService.getSpecification(shopId);
+        myMallShop.setSpecifications(specification);
         returnResult.setMessage("返回成功！");
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(myMallShop);
@@ -737,6 +739,7 @@ public class MallShopController extends BaseController{
                 hashMap.put(myMallShop.getCommodityName(),newCarts);
             }
         }
+
         returnResult.setMessage("查询成功！");
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(hashMap);
