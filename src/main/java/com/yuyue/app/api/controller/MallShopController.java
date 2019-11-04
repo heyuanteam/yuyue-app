@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/mallShop" , produces = "application/json; charset=UTF-8")
@@ -704,7 +701,7 @@ public class MallShopController extends BaseController{
 
 
     /**
-     *
+     *查询我的购物车
      * @param appUser
      * @param request
      * @param response
@@ -715,7 +712,7 @@ public class MallShopController extends BaseController{
     @LoginRequired
     public ReturnResult getCart(@CurrentUser  AppUser appUser,HttpServletRequest request, HttpServletResponse response){
         ReturnResult returnResult = new ReturnResult();
-        log.info("修改规格------------->>/mallShop/updateSpecification");
+        log.info("查询我的购物车------------->>/mallShop/getCart");
 
         getParameterMap(request, response);
         List<Cart> carts = mallShopService.getCarts("",appUser.getId());
@@ -725,24 +722,50 @@ public class MallShopController extends BaseController{
             returnResult.setResult(carts);
             return returnResult;
         }
-        HashMap<String,List<Cart>> hashMap =  new HashMap<>();
+        List<ResultCart> resultCarts = new ArrayList<>();
         for (Cart cart : carts
              ) {
+
             MallShop myMallShop = mallShopService.getMyMallShop(cart.getShopId());
-            if (hashMap.containsKey(myMallShop.getCommodityName())){
-                List<Cart> addCarts = hashMap.get(myMallShop.getCommodityName());
-                addCarts.add(cart);
-                hashMap.put(myMallShop.getCommodityName(),addCarts);
-            }else {
-                List<Cart> newCarts =  new LinkedList<>();
+            System.out.println(myMallShop);
+            if (StringUtils.isEmpty(resultCarts)) {
+                ResultCart resultCart = new ResultCart();
+                resultCart.setShopId(myMallShop.getShopId());
+                resultCart.setCommodityName(myMallShop.getCommodityName());
+                List<Cart> newCarts = new ArrayList<>();
                 newCarts.add(cart);
-                hashMap.put(myMallShop.getCommodityName(),newCarts);
+                resultCart.setCommodityList(newCarts);
+                resultCarts.add(resultCart);
+                continue;
+            }
+            Boolean status = false;
+            for (ResultCart resultCart : resultCarts
+            ) {
+
+                if (resultCart.getShopId().equals(myMallShop.getShopId())) {
+                    List<Cart> addCarts = resultCart.getCommodityList();
+                    addCarts.add(cart);
+                    resultCart.setCommodityList(addCarts);
+                    status =true;
+                    continue;
+                }
+            }
+            System.out.println(status);
+            if (status == false) {
+                ResultCart resultCart1 = new ResultCart();
+                resultCart1.setShopId(myMallShop.getShopId());
+                resultCart1.setCommodityName(myMallShop.getCommodityName());
+                List<Cart> newCarts = new ArrayList<>();
+                newCarts.add(cart);
+                resultCart1.setCommodityList(newCarts);
+                resultCarts.add(resultCart1);
+                break;
             }
         }
 
         returnResult.setMessage("查询成功！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(hashMap);
+        returnResult.setResult(resultCarts);
         return returnResult;
     }
 
