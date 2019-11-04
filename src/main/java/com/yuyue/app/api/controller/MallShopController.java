@@ -40,6 +40,7 @@ public class MallShopController extends BaseController{
     private PayController payController;
 
 
+
     /**
      * 查询我的商铺
      * @param request
@@ -781,7 +782,7 @@ public class MallShopController extends BaseController{
     @LoginRequired
     public ReturnResult editCart(@CurrentUser  AppUser appUser,HttpServletRequest request, HttpServletResponse response){
         ReturnResult returnResult = new ReturnResult();
-        log.info("修改规格------------->>/mallShop/updateSpecification");
+        log.info("添加修改购物车------------->>/mallShop/editCart");
 
         getParameterMap(request, response);
         Cart cart = new Cart();
@@ -862,8 +863,8 @@ public class MallShopController extends BaseController{
     @LoginRequired
     public ReturnResult deleteCart(Cart cart,@CurrentUser  AppUser appUser,HttpServletRequest request, HttpServletResponse response){
         ReturnResult returnResult = new ReturnResult();
-        log.info("修改规格------------->>/mallShop/updateSpecification");
-
+        log.info("修改规格------------->>/mallShop/deleteCart");
+        getParameterMap(request, response);
         getParameterMap(request, response);
         cart.setConsumerId(appUser.getId());
 
@@ -872,4 +873,84 @@ public class MallShopController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;
     }
+
+    /**
+     * 获取用户评价
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "getMallComments")
+    @ResponseBody
+    public ReturnResult getMallComments(HttpServletRequest request, HttpServletResponse response) {
+
+        ReturnResult returnResult = new ReturnResult();
+        log.info("获取用户评价------------->>/mallShop/getMallComments");
+        getParameterMap(request, response);
+         String shopId = request.getParameter("shopId");
+         if (StringUtils.isEmpty(shopId)){
+             returnResult.setMessage("shopId不能为空！");
+             return returnResult;
+         }
+        List<MallComment> mallComments = mallShopService.getMallComments(shopId);
+        returnResult.setMessage("查询成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+
+    }
+
+
+    /**
+     * 添加用户评价
+     * @param mallComment
+     * @return
+     */
+    @RequestMapping(value = "addMallComment")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult addMallComment(@CurrentUser  AppUser appUser,MallComment mallComment,HttpServletRequest request, HttpServletResponse response) {
+        ReturnResult returnResult = new ReturnResult();
+        log.info("添加用户评价------------->>/mallShop/addMallComment");
+        if (StringUtils.isEmpty(mallComment.getShopId())){
+            returnResult.setMessage("shopId（商品）不能为空！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallComment.getContent())){
+            returnResult.setMessage("content（内容）不能为空！");
+            return returnResult;
+        }
+        try {
+             if (mallComment.getScore()<0 || mallComment.getScore()>5){
+                returnResult.setMessage("评分错误！");
+                return returnResult;
+            }
+        }catch (Exception e){
+            log.info("分数类型错误");
+            returnResult.setMessage("分数类型错误！");
+            return returnResult;
+        }
+
+        mallComment.setCommentId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+        mallComment.setConsumerId(appUser.getId());
+        mallShopService.addMallComment(mallComment);
+        returnResult.setMessage("评价成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

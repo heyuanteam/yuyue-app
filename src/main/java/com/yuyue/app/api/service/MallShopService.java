@@ -1,9 +1,6 @@
 package com.yuyue.app.api.service;
 
-import com.yuyue.app.api.domain.Cart;
-import com.yuyue.app.api.domain.MallShop;
-import com.yuyue.app.api.domain.ShopImage;
-import com.yuyue.app.api.domain.Specification;
+import com.yuyue.app.api.domain.*;
 
 import java.util.List;
 
@@ -44,5 +41,17 @@ public interface MallShopService {
     void editCart (Cart cart);
 
     void deleteCart (Cart cart);
+
+/*---------------------------------评价---------------------------------*/
+    List<MallComment> getMallComments(String shopId);
+
+
+    MallComment getMallComment( String shopId,String consumerId);
+
+
+    Double getScore( String shopId);
+
+
+    void addMallComment(MallComment mallComment);
 
 }

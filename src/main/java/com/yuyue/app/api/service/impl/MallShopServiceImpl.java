@@ -1,13 +1,7 @@
 package com.yuyue.app.api.service.impl;
 
-import com.yuyue.app.api.domain.Cart;
-import com.yuyue.app.api.domain.MallShop;
-import com.yuyue.app.api.domain.ShopImage;
-import com.yuyue.app.api.domain.Specification;
-import com.yuyue.app.api.mapper.CartMapper;
-import com.yuyue.app.api.mapper.MallShopMapper;
-import com.yuyue.app.api.mapper.ShopImageMapper;
-import com.yuyue.app.api.mapper.SpecificationMapper;
+import com.yuyue.app.api.domain.*;
+import com.yuyue.app.api.mapper.*;
 import com.yuyue.app.api.service.MallShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +19,8 @@ public class MallShopServiceImpl implements MallShopService {
     private SpecificationMapper specificationMapper;
     @Autowired
     private CartMapper cartMapper;
+    @Autowired
+    private MallCommentMapper commentMapper;
 
     @Override
     public MallShop getMyMallShop(String shopId) {
@@ -104,5 +100,25 @@ public class MallShopServiceImpl implements MallShopService {
     @Override
     public void deleteCart(Cart cart) {
         cartMapper.deleteCart(cart);
+    }
+
+    @Override
+    public List<MallComment> getMallComments(String shopId) {
+        return commentMapper.getMallComments(shopId);
+    }
+
+    @Override
+    public MallComment getMallComment(String shopId, String consumerId) {
+        return commentMapper.getMallComment(shopId,consumerId);
+    }
+
+    @Override
+    public Double getScore(String shopId) {
+        return commentMapper.getScore(shopId);
+    }
+
+    @Override
+    public void addMallComment(MallComment mallComment) {
+        commentMapper.addMallComment(mallComment);
     }
 }
