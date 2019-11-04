@@ -747,7 +747,7 @@ public class MallShopController extends BaseController{
                     addCarts.add(cart);
                     resultCart.setCommodityList(addCarts);
                     status =true;
-                    continue;
+                    break;
                 }
             }
             System.out.println(status);
