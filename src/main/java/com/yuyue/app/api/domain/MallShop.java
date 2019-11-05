@@ -64,6 +64,8 @@ public class MallShop implements Serializable {
     private Date endTime;
     //    订单id
     private String orderId;
+    //商铺评分
+    private double score;
 
 
 }

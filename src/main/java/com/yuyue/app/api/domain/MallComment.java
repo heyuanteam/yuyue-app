@@ -24,8 +24,12 @@ public class MallComment implements Serializable {
     private String  content;
     //评分
     private double  score;
+    //商品规格
+    private String  commoditySize;
     //评论时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+    //评价人
+    private AppUser appUser;
 
 }

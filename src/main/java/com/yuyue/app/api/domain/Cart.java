@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -23,11 +22,11 @@ public class Cart implements Serializable {
     //商铺id
     private String shopId;
     //商品名
-    private String commodityName;
+    //private String commodityName;
     //商品规格
-    private String commoditySize;
+    //private String commoditySize;
     //商品价格
-    private BigDecimal commodityPrice;
+    //private BigDecimal commodityPrice;
     //商品数量
     private Integer commodityNum;
     //创建时间

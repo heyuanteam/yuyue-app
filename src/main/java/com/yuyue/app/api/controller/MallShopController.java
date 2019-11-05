@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
+import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.api.service.PayService;
@@ -38,6 +39,9 @@ public class MallShopController extends BaseController{
     private PayService payService;
     @Autowired
     private PayController payController;
+    @Autowired
+    private LoginService loginService;
+
 
 
 
@@ -790,13 +794,14 @@ public class MallShopController extends BaseController{
 
         String commodityId = request.getParameter("commodityId");
         String shopId = request.getParameter("shopId");
-        String commodityName = request.getParameter("commodityName");
-        String commodityPrice = request.getParameter("commodityPrice");
+        //String commodityName = request.getParameter("commodityName");
+        //String commodityPrice = request.getParameter("commodityPrice");
+        //String commoditySize = request.getParameter("commoditySize");
         String commodityNum = request.getParameter("commodityNum");
-        String commoditySize = request.getParameter("commoditySize");
+
 
         cart.setConsumerId(appUser.getId());
-        java.util.regex.Matcher match=pattern.matcher(commodityPrice);
+        //java.util.regex.Matcher match=pattern.matcher(commodityPrice);
         if (StringUtils.isEmpty(commodityId)){
             returnResult.setMessage("商品id为空！");
             return returnResult;
@@ -809,7 +814,7 @@ public class MallShopController extends BaseController{
         }else {
             cart.setShopId(shopId);
         }
-        if (StringUtils.isEmpty(commodityName)){
+        /*if (StringUtils.isEmpty(commodityName)){
             returnResult.setMessage("商品名为空！");
             return returnResult;
         }else {
@@ -822,21 +827,25 @@ public class MallShopController extends BaseController{
         }
         else {
             cart.setCommodityPrice(new BigDecimal(commodityPrice));
-        }
+        }*/
 
         if(commodityNum.matches("[0-9]+")){
             String cartId = request.getParameter("cartId");
             int numAfter = Integer.parseInt(commodityNum);
+            //判断是否加入过该商品
             if (StringUtils.isEmpty(cartId)){
-                 if (StringUtils.isNull(mallShopService.getCart(commodityId, appUser.getId()))){
+                 Cart isAdd = mallShopService.getCart(commodityId, appUser.getId());
+                 if (StringUtils.isNull(isAdd)){
                      cartId = UUID.randomUUID().toString().replace("-","").toUpperCase();
                  }else {
-                     int numBefore= mallShopService.getCart(commodityId, appUser.getId()).getCommodityNum();
+                     //曾添加过,修改商品数量
+                     int numBefore= isAdd.getCommodityNum();
                      numAfter = numBefore + numAfter;
-                     cartId = mallShopService.getCart(commodityId, appUser.getId()).getCartId();
+                     cartId = isAdd.getCartId();
                  }
 
             }else {
+                //购物车id不为空，直接修改信息
                 List<Cart> oneCart = mallShopService.getCarts(cartId, "");
                 if (StringUtils.isEmpty(oneCart)){
                     returnResult.setMessage("购物车id错误！");
@@ -850,7 +859,7 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
 
-        cart.setCommoditySize(commoditySize);
+        //cart.setCommoditySize(commoditySize);
         mallShopService.editCart(cart);
         returnResult.setMessage("编辑成功！");
         returnResult.setStatus(Boolean.TRUE);
@@ -893,8 +902,21 @@ public class MallShopController extends BaseController{
              return returnResult;
          }
         List<MallComment> mallComments = mallShopService.getMallComments(shopId);
+         if (StringUtils.isNotEmpty(mallComments)){
+             for (MallComment mallComment : mallComments
+                  ) {
+                 AppUser appUserMsg = loginService.getAppUserMsg("", "", mallComment.getConsumerId());
+                 AppUser appUser  =  new AppUser();
+                 appUser.setNickName(appUserMsg.getNickName());
+                 appUser.setHeadpUrl(appUserMsg.getHeadpUrl());
+                 mallComment.setAppUser(appUser);
+
+             }
+         }
+
         returnResult.setMessage("查询成功！");
         returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(mallComments);
         return returnResult;
 
     }
@@ -911,8 +933,19 @@ public class MallShopController extends BaseController{
     public ReturnResult addMallComment(@CurrentUser  AppUser appUser,MallComment mallComment,HttpServletRequest request, HttpServletResponse response) {
         ReturnResult returnResult = new ReturnResult();
         log.info("添加用户评价------------->>/mallShop/addMallComment");
+        getParameterMap(request, response);
+
+        MallComment isComment = mallShopService.getMallComment(mallComment.getShopId(), appUser.getId());
+        if (StringUtils.isNotNull(isComment)){
+            returnResult.setMessage("该商品已评价！");
+            returnResult.setStatus(Boolean.TRUE);
+            return returnResult;
+        }
         if (StringUtils.isEmpty(mallComment.getShopId())){
             returnResult.setMessage("shopId（商品）不能为空！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallComment.getCommoditySize())){
+            returnResult.setMessage("commoditySize（商品规格）不能为空！");
             return returnResult;
         }else if (StringUtils.isEmpty(mallComment.getContent())){
             returnResult.setMessage("content（内容）不能为空！");

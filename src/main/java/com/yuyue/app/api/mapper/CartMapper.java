@@ -24,9 +24,9 @@ public interface CartMapper extends MyBaseMapper<Cart> {
 
     @Transactional
     @Insert("REPLACE INTO yuyue_mall_cart " +
-            "(cart_id,consumer_id,commodity_id,shop_id,commodity_name,commodity_price,commodity_num,commodity_size) \n" +
+            "(cart_id,consumer_id,commodity_id,shop_id,commodity_num) \n" +
             "VALUES \n" +
-            "(#{cartId},#{consumerId},#{commodityId},#{shopId},#{commodityName},#{commodityPrice},#{commodityNum},#{commoditySize});")
+            "(#{cartId},#{consumerId},#{commodityId},#{shopId},#{commodityNum});")
     void addCart (Cart cart);
 
     @Delete("DELETE FROM yuyue_mall_cart where cart_id = #{cartId} or shop_id = #{shopId} and pay_status = '10A'")
