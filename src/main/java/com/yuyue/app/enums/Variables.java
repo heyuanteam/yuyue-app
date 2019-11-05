@@ -91,4 +91,6 @@ public class Variables {
     public static final String like_keyWord_URL = "http://restapi.amap.com/v3/place/around";
 //    IP定位API服务地址
     public static final String ip_URL = "http://restapi.amap.com/v3/ip";
+//    轨迹纠偏地址
+    public static final String driving_URL = "http://restapi.amap.com/v4/grasproad/driving";
 }

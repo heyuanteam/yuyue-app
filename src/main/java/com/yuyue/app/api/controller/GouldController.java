@@ -1,6 +1,7 @@
 package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.yuyue.app.enums.ReturnResult;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -172,7 +174,7 @@ public class GouldController extends BaseController {
             if (StringUtils.isNotEmpty(gdLon) && StringUtils.isNotEmpty(gdLat)) {
                 location = gdLon + "," + gdLat;
             }
-            if (StringUtils.isNotEmpty(gdLon) && (StringUtils.isNotEmpty(gdLon) || StringUtils.isNotEmpty(gdLat))) {
+            if (StringUtils.isEmpty(gdLon) || StringUtils.isEmpty(gdLat)) {
                 returnResult.setMessage("经纬度/关键字不对！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
@@ -210,9 +212,7 @@ public class GouldController extends BaseController {
         Map<String, String> params = Maps.newHashMap();
         params.put("ip", QRCodeUtil.localIp());
         try {
-            // 拼装url
             String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.ip_URL);
-            // 调用高德SDK
             JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
             if ("OK".equals(parse.getString("info"))) {
                 returnResult.setMessage("根据本机IP获取地址成功！");
@@ -224,6 +224,45 @@ public class GouldController extends BaseController {
         } catch (Exception e) {
             log.info("根据本机IP获取地址失败！");
             returnResult.setMessage("根据本机IP获取地址失败！");
+        }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 轨迹纠偏
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getAddressByDriving")
+    public JSONObject getAddressByDriving(BigDecimal gdLon, BigDecimal gdLat,HttpServletRequest request, HttpServletResponse response){
+        log.info("轨迹纠偏-------------->>/gould/getAddressByDriving");
+        getParameterMap(request, response);
+        ReturnResult returnResult=new ReturnResult();
+        Map<String, Object> params = Maps.newHashMap();
+        if (StringUtils.isNull(gdLon) || StringUtils.isNull(gdLat)) {
+            returnResult.setMessage("经纬度/关键字不对！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        params.put("x", gdLon);//经度
+        params.put("y", gdLat);//纬度
+        params.put("sp", 4);
+        params.put("ag", 110);
+        params.put("tm", System.currentTimeMillis());
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(params);
+        try {
+            String url = GouldUtils.jointUrl(jsonArray, Variables.OUTPUT, Variables.gdKEY, Variables.driving_URL);
+//            JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPosts(url, params));
+//            if ("OK".equals(parse.getString("info"))) {
+//                returnResult.setMessage("轨迹纠偏成功！");
+//                returnResult.setResult(parse);
+//                returnResult.setStatus(Boolean.TRUE);
+//            } else {
+//                returnResult.setMessage("轨迹纠偏失败！");
+//            }
+        } catch (Exception e) {
+            log.info("轨迹纠偏失败！");
+            returnResult.setMessage("轨迹纠偏失败！");
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
