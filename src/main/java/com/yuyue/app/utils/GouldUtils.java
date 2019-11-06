@@ -1,8 +1,12 @@
 package com.yuyue.app.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import net.sf.jsqlparser.statement.create.table.ForeignKeyIndex;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
@@ -352,6 +356,37 @@ public class GouldUtils {
             }
             baseUrl.append(param.getKey()).append("=").append(URLEncoder.encode(param.getValue(), "utf-8"));
             index++;
+        }
+        baseUrl.append("&output=").append(output).append("&key=").append(key);
+        return baseUrl.toString();
+    }
+
+    /**
+     * 拼接请求字符串
+     *
+     * @param output
+     * @param key
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    public static String jointUrl(JSONArray jsonArray, String output, String key, String url) throws IOException {
+        StringBuilder baseUrl = new StringBuilder();
+        baseUrl.append(url);
+        int index = 0;
+        for (int i = 0;jsonArray != null && i < jsonArray.size(); i++) {
+            String str = jsonArray.get(i).toString().replace("=",":");
+            Set<Map.Entry<String, Object>> entrys = JSON.parseObject(str,Map.class).entrySet();
+            for (Map.Entry<String, Object> param : entrys) {
+                // 判断是否是第一个参数
+                if (index == 0) {
+                    baseUrl.append("?");
+                } else {
+                    baseUrl.append("&");
+                }
+                baseUrl.append(param.getKey()).append("=").append(URLEncoder.encode(param.getValue().toString(), "utf-8"));
+                index++;
+            }
         }
         baseUrl.append("&output=").append(output).append("&key=").append(key);
         return baseUrl.toString();
