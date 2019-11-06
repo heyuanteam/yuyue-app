@@ -21,9 +21,9 @@ public class Variables {
     //    返回值类型
     public static final String OUTPUT = "JSON";
 
+    public static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/pay";
     public static final String wxNotifyUrl = "http://"+ip+appPort+"/yuyue-app/pay/wxpayNotify";
     public static final String AliPayNotifyUrl = "http://"+ip+appPort+"/yuyue-app/pay/alipayNotify";
-    public static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/pay";
     //    极光库存通知 : 7 (merchantId,shopid)
     public static final String sendStockJPushUrl = "http://"+ip+bossPort+"/yuyue-boss/send/sendStockJPush";
 
