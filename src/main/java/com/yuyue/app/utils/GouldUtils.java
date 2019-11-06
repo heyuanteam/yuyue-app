@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.sf.jsqlparser.statement.create.table.ForeignKeyIndex;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
@@ -446,32 +447,14 @@ public class GouldUtils {
     }
 
     /**
-     * 查找附近的门店
-     * @param    longitude 经度
-     * @param    latitude 纬度
-     * @param    distince 距离 (千米)
-     * @return   List 符合距离范围的所有的点
-     * @Data     2018.10.26
-     */
-//    public List<PickStoreOfflineModel> findNearbyStore(BigDecimal longitude, BigDecimal latitude, Integer distince) {
-//        String[] split = getNearbyByLongitudeAndLatitudeAndDistince(longitude, latitude, distince).split("-");
-//        BigDecimal minlng = new BigDecimal(split[0]);
-//        BigDecimal maxlng = new BigDecimal(split[1]);
-//        BigDecimal minlat = new BigDecimal(split[2]);
-//        BigDecimal maxlat = new BigDecimal(split[3]);
-//        return pickStoreOfflineDao.findNearbyStore(minlng, maxlng, minlat, maxlat);
-//    }
-
-    /**
      *
      * @Description   计算给定经纬度附近相应公里数的经纬度范围
      * @param         longitude 经度
      * @param         latitude 纬度
      * @param         distince 距离（千米）
-     * @return        String 格式：经度最小值-经度最大值-纬度最小值-纬度最大值
-     * @Data          2018.10.26
      **/
-    public static String getNearbyByLongitudeAndLatitudeAndDistince(BigDecimal longitude, BigDecimal latitude, Integer distince) {
+    public static Map<String,Object> getNearbyByLongitudeAndLatitudeAndDistince(BigDecimal longitude, BigDecimal latitude, Integer distince) {
+        HashMap<String, Object> hashMap = Maps.newHashMap();
         double r = 6371.393;    // 地球半径千米
         double lng = longitude.doubleValue();
         double lat = latitude.doubleValue();
@@ -483,8 +466,12 @@ public class GouldUtils {
         double maxlat = lat + dlat;
         double minlng = lng - dlng;
         double maxlng = lng + dlng;
-        //sql语句
-        return minlng + "-" + maxlng + "-" + minlat + "-" + maxlat;
+
+        hashMap.put("minlng",new BigDecimal(minlng));//经度最小值
+        hashMap.put("maxlng",new BigDecimal(maxlng));//经度最大值
+        hashMap.put("minlat",new BigDecimal(minlat));//纬度最小值
+        hashMap.put("maxlat",new BigDecimal(maxlat));//纬度最大值
+        return hashMap;
     }
 
     /**

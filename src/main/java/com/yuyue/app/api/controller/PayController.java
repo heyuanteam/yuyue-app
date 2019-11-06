@@ -877,7 +877,7 @@ public class PayController extends BaseController{
         HashMap<String, String> paramMap = Maps.newHashMap();
         try {
             paramMap.put("trade_type", "NATIVE"); //交易类型
-            paramMap.put("spbill_create_ip",QRCodeUtil.localIp()); //本机的Ip
+            paramMap.put("spbill_create_ip",HttpUtils.localIp()); //本机的Ip
             paramMap.put("product_id", "WX"+RandomSaltUtil.generetRandomSaltCode(30));  // 商户根据自己业务传递的参数 必填
             paramMap.put("body", "扫码充值");         //描述
             paramMap.put("out_trade_no", order.getId()); //商户 后台的贸易单号

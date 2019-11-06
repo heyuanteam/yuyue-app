@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
+import java.net.InetAddress;
 import java.util.Map;
 
 /**
@@ -210,7 +211,7 @@ public class GouldController extends BaseController {
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> params = Maps.newHashMap();
-        params.put("ip", QRCodeUtil.localIp());
+        params.put("ip", HttpUtils.getIpAddress(request,response));
         try {
             String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.ip_URL);
             JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));

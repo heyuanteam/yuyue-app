@@ -16,10 +16,9 @@ import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.security.KeyStore;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -146,6 +145,69 @@ public class HttpUtils {
         //防止乱码，适用于传输JSON数据
         response.setHeader("Content-Type","application/json;charset=UTF-8");
         response.setStatus(HttpStatus.OK.value());
+    }
+
+    /**
+     * 获取本机Ip
+     *
+     *  通过 获取系统所有的networkInterface网络接口 然后遍历 每个网络下的InterfaceAddress组。
+     *  获得符合 <code>InetAddress instanceof Inet4Address</code> 条件的一个IpV4地址
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public static String localIp(){
+        String ip = null;
+        Enumeration allNetInterfaces;
+        try {
+            allNetInterfaces = NetworkInterface.getNetworkInterfaces();
+            while (allNetInterfaces.hasMoreElements()) {
+                NetworkInterface netInterface = (NetworkInterface) allNetInterfaces.nextElement();
+                List<InterfaceAddress> InterfaceAddress = netInterface.getInterfaceAddresses();
+                for (InterfaceAddress add : InterfaceAddress) {
+                    InetAddress Ip = add.getAddress();
+                    if (Ip != null && Ip instanceof Inet4Address) {
+                        ip = Ip.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
+            log.warn("获取本机Ip失败:异常信息:"+e.getMessage());
+        }
+        log.info("ip=========>>>>"+ip);
+        return ip;
+    }
+
+    //获取客户端，外网IP地址
+    public static String getIpAddress(HttpServletRequest request, HttpServletResponse response) {
+        String ip = request.getHeader("x-forwarded-for");
+        if(ip == null || ip.length() == 0 || "unknow".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length () == 0 || "unknown".equalsIgnoreCase (ip)) {
+            ip = request.getHeader ("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length () == 0 || "unknown".equalsIgnoreCase (ip)) {
+            ip = request.getRemoteAddr ();
+            if (ip.equals ("127.0.0.1")) {
+                //根据网卡取本机配置的IP
+                InetAddress inet = null;
+                try {
+                    inet = InetAddress.getLocalHost ();
+                } catch (Exception e) {
+                    e.printStackTrace ();
+                }
+                ip = inet.getHostAddress ();
+            }
+        }
+        log.info("ip=========>>>>"+ip);
+        // 多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+        if (ip != null && ip.length () > 15) {
+            if (ip.indexOf (",") > 0) {
+                ip = ip.substring (0, ip.indexOf (","));
+            }
+        }
+        return ip;
     }
 
 }
