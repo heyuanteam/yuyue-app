@@ -3,6 +3,7 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
@@ -29,6 +30,7 @@ import java.util.*;
 public class MallShopController extends BaseController{
 
     private static  final  java.util.regex.Pattern pattern=java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$");
+
 
 
     @Autowired
@@ -63,7 +65,14 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
         MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+        if (StringUtils.isNull(myMallShop)){
+            returnResult.setMessage("未查询到该商铺");
+            return returnResult;
+        }
         List<Specification> specification = mallShopService.getSpecification(shopId);
+        if (StringUtils.isEmpty(specification)){
+            specification = new ArrayList<>();
+        }
         myMallShop.setSpecifications(specification);
         returnResult.setMessage("返回成功！");
         returnResult.setStatus(Boolean.TRUE);
@@ -86,6 +95,7 @@ public class MallShopController extends BaseController{
         getParameterMap(request, response);
         String myArea = request.getParameter("myArea");
         String page = request.getParameter("page");
+        String pageSize = request.getParameter("pageSize");
         String content = request.getParameter("content");
         if(StringUtils.isEmpty(myArea)){
             returnResult.setMessage("定位地址不能为空！");
@@ -93,7 +103,9 @@ public class MallShopController extends BaseController{
         }
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))
             page = "1";
-        PageHelper.startPage(Integer.parseInt(page), 10);
+        if (StringUtils.isEmpty(pageSize) || !page.matches("[0-9]+"))
+            page = "10";
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(page));
         List<MallShop> allMallShop = mallShopService.getAllMallShop(myArea,content);
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(allMallShop);
@@ -727,6 +739,7 @@ public class MallShopController extends BaseController{
             returnResult.setResult(carts);
             return returnResult;
         }
+        //购物车返回值List
         List<ResultCart> resultCarts = new ArrayList<>();
         for (Cart cart : carts
              ) {
@@ -734,6 +747,8 @@ public class MallShopController extends BaseController{
             MallShop myMallShop = mallShopService.getMyMallShop(cart.getShopId());
             System.out.println(myMallShop);
             if (StringUtils.isEmpty(resultCarts)) {
+
+                cart.setSpecification(mallShopService.getSpecificationById(cart.getCommodityId()));
                 ResultCart resultCart = new ResultCart();
                 resultCart.setShopId(myMallShop.getShopId());
                 resultCart.setCommodityName(myMallShop.getCommodityName());
@@ -748,6 +763,7 @@ public class MallShopController extends BaseController{
             ) {
 
                 if (resultCart.getShopId().equals(myMallShop.getShopId())) {
+                    cart.setSpecification(mallShopService.getSpecificationById(cart.getCommodityId()));
                     List<Cart> addCarts = resultCart.getCommodityList();
                     addCarts.add(cart);
                     resultCart.setCommodityList(addCarts);
@@ -757,6 +773,7 @@ public class MallShopController extends BaseController{
             }
             System.out.println(status);
             if (status == false) {
+                cart.setSpecification(mallShopService.getSpecificationById(cart.getCommodityId()));
                 ResultCart resultCart1 = new ResultCart();
                 resultCart1.setShopId(myMallShop.getShopId());
                 resultCart1.setCommodityName(myMallShop.getCommodityName());
@@ -893,14 +910,17 @@ public class MallShopController extends BaseController{
     @ResponseBody
     public ReturnResult getMallComments(HttpServletRequest request, HttpServletResponse response) {
 
-        ReturnResult returnResult = new ReturnResult();
-        log.info("获取用户评价------------->>/mallShop/getMallComments");
-        getParameterMap(request, response);
+         ReturnResult returnResult = new ReturnResult();
+         log.info("获取用户评价------------->>/mallShop/getMallComments");
+         getParameterMap(request, response);
          String shopId = request.getParameter("shopId");
          if (StringUtils.isEmpty(shopId)){
              returnResult.setMessage("shopId不能为空！");
              return returnResult;
          }
+        String page = request.getParameter("page");
+        if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
+        PageHelper.startPage(Integer.parseInt(page), 10);
         List<MallComment> mallComments = mallShopService.getMallComments(shopId);
          if (StringUtils.isNotEmpty(mallComments)){
              for (MallComment mallComment : mallComments
@@ -913,10 +933,19 @@ public class MallShopController extends BaseController{
 
              }
          }
+        PageInfo<MallComment> pageInfo=new PageInfo<>(mallComments);
+        long total = pageInfo.getTotal();
+        int pages = pageInfo.getPages();
+        int currentPage = Integer.parseInt(page);
+        Map<String,Object> map = new HashMap<>();
+        map.put("mallComments",mallComments);
+        map.put("pages",pages);
+        map.put("currentPage",currentPage);
+        map.put("total",total);
 
         returnResult.setMessage("查询成功！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(mallComments);
+        returnResult.setResult(map);
         return returnResult;
 
     }
@@ -930,7 +959,8 @@ public class MallShopController extends BaseController{
     @RequestMapping(value = "addMallComment")
     @ResponseBody
     @LoginRequired
-    public ReturnResult addMallComment(@CurrentUser  AppUser appUser,MallComment mallComment,HttpServletRequest request, HttpServletResponse response) {
+    public ReturnResult addMallComment(@CurrentUser  AppUser appUser,MallComment mallComment,
+                                       HttpServletRequest request, HttpServletResponse response) {
         ReturnResult returnResult = new ReturnResult();
         log.info("添加用户评价------------->>/mallShop/addMallComment");
         getParameterMap(request, response);
@@ -938,7 +968,6 @@ public class MallShopController extends BaseController{
         MallComment isComment = mallShopService.getMallComment(mallComment.getShopId(), appUser.getId());
         if (StringUtils.isNotNull(isComment)){
             returnResult.setMessage("该商品已评价！");
-            returnResult.setStatus(Boolean.TRUE);
             return returnResult;
         }
         if (StringUtils.isEmpty(mallComment.getShopId())){
@@ -965,24 +994,549 @@ public class MallShopController extends BaseController{
         mallComment.setCommentId(UUID.randomUUID().toString().replace("-","").toUpperCase());
         mallComment.setConsumerId(appUser.getId());
         mallShopService.addMallComment(mallComment);
+        double score = mallShopService.getScore(mallComment.getShopId());
+        score = (double) Math.round(score * 10) / 10;
+        MallShop mallShop = new MallShop();
+        mallShop.setScore(score);
+        mallShop.setShopId(mallComment.getShopId());
+        mallShopService.updateMyMallShopInfo(mallShop);
         returnResult.setMessage("评价成功！");
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;
     }
 
 
+    @RequestMapping(value = "oldTemporaryOrder")
+    @ResponseBody
+    public ReturnResult oldTemporaryOrder(String cartStr,
+                                       HttpServletRequest request, HttpServletResponse response) {
+        ReturnResult returnResult = new ReturnResult();
+        log.info("生成订单项------------->>/mallShop/temporaryOrder");
+        getParameterMap(request, response);
+        List<ResultCart> resultCarts = new ArrayList<>();
+        ResultCart resultCart = new ResultCart();
+        if (cartStr.contains("-")){
+            String[] cartStrings = cartStr.split("-");
+            for (String s:cartStrings
+            ) {
+                String[] split = s.split(":");
+                resultCart = getReturnResult(split[0], split[1]);
+                System.out.println(resultCart);
+                if (StringUtils.isNull(resultCart)){
+                    returnResult.setMessage("未查询到商铺或规格:"+resultCart.getShopId());
+                    return returnResult;
+                }
+                //第一次插入
+                if (StringUtils.isEmpty(resultCarts)){
+                        resultCarts.add(resultCart);
+                }
+                else {
+                    //第二次或第n次插入
+                    Boolean status = false;
+                    for (ResultCart r:resultCarts
+                         ) {
+                        //如果存在相同的值，直接插入
+
+                        if (r.getShopId().equals(resultCart.getShopId())){
+                            r.getCommodities().addAll(resultCart.getCommodities());
+                            BigDecimal subtract = r.getPayAmount().add(resultCart.getPayAmount()).subtract(resultCart.getFare());
+                            r.setPayAmount(subtract);
+                            status = true;
+                            continue;
+                        }
+                    }if (status == false){
+                        System.out.println("-----------");
+                        resultCarts.add(resultCart);
+                    }
+                }
+
+            }
+        }else {
+            String[] split = cartStr.split(":");
+            System.out.println(split[0]+ split[1]);
+            resultCart = getReturnResult(split[0], split[1]);
+            if (StringUtils.isNull(resultCart)){
+                returnResult.setMessage("未查询到该商铺或规格");
+                return returnResult;
+            }
+            else {
+                resultCarts.add(resultCart);
+            }
+        }
+        returnResult.setMessage("成功生成订单项！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(resultCarts);
+        return returnResult;
+    }
+
+    /**
+     * 获取购物车返回值
+     * @param commodityId
+     * @param commodityNum
+     * @return
+     */
+    public ResultCart getReturnResult(String commodityId,String commodityNum){
+        List<Specification> commodities= new ArrayList<>();
+        ResultCart resultCart = new ResultCart();
+        //获取规格id
+        Specification specification = mallShopService.getSpecificationById(commodityId);
+        if (StringUtils.isNull(specification)){
+            return resultCart;
+        }
+        //获取商铺id
+        String shopId = specification.getShopId();
+        MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+        if (StringUtils.isNull(myMallShop)){
+            return resultCart;
+        }
+        //获取商铺运费
+        BigDecimal fare = myMallShop.getFare();
+        //获取商品价格
+        BigDecimal commodityPrice = specification.getCommodityPrice();
+        BigDecimal payAmount = commodityPrice.multiply(new BigDecimal(commodityNum)).add(fare);
+        resultCart.setCommodityName(myMallShop.getCommodityName());
+        resultCart.setShopId(shopId);
+        resultCart.setFare(myMallShop.getFare());
+        resultCart.setPayAmount(payAmount);
+        commodities.add(specification);
+        resultCart.setCommodities(commodities);
+        return resultCart;
+//        if (StringUtils.isNull(resultCart)){
+//                resultCart.setCommodityName(myMallShop.getCommodityName());
+//                resultCart.setShopId(shopId);
+//                resultCart.setPayAmount(payAmount);
+//                commodities.add(specification);
+//                resultCart.setCommodities(commodities);
+//
+//
+//        }else {
+//            if (resultCart.getShopId().equals(shopId)){
+//                commodities.add(specification);
+//                resultCart.setCommodities(commodities);
+//            }else {
+//                ResultCart resultCart =new  ResultCart();
+//                resultCart.setCommodityName(myMallShop.getCommodityName());
+//                resultCart.setShopId(shopId);
+//                resultCart.setPayAmount(payAmount);
+//                commodities.add(specification);
+//                resultCart.setCommodities(commodities);
+//                returnResult.setMessage("返回成功！");
+//                returnResult.setStatus(Boolean.TRUE);
+//                returnResult.setResult(resultCart);
+//                return returnResult;
+//
+//
+//            }
+//
+//        }
+//        returnResult.setMessage("返回成功！");
+//        returnResult.setStatus(Boolean.TRUE);
+//        returnResult.setResult(resultCart);
+//        return returnResult;
+    }
+    /**
+     * 生成订单项
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "createOrder")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult createOrder(@CurrentUser  AppUser appUser,String cartStr,String addressId,
+                                       String payType,
+                                       HttpServletRequest request, HttpServletResponse response){
+
+        ReturnResult returnResult = new ReturnResult();
+        log.info("生成订单项------------->>/mallShop/createOrder");
+        getParameterMap(request, response);
+        OrderItem orderItem = new OrderItem();
+
+        //      地址id
+        if (StringUtils.isEmpty(addressId)){
+            returnResult.setMessage("收货地址不可为空");
+            return  returnResult;
+        }if ("SCZFB".equals(payType) || "SCWX".equals(payType)){
+
+        }else {
+            returnResult.setMessage("支付方式错误！");
+            return  returnResult;
+        }
+
+
+
+        List<ResultCart> getOrder = (List<ResultCart>) oldTemporaryOrder(cartStr,request,response).getResult();
+        if (StringUtils.isEmpty(getOrder)){
+            returnResult.setMessage("生成订单异常");
+            return  returnResult;
+        }
+        //获取交易总额
+        //BigDecimal payTotal = new BigDecimal(0);
+        String payTotal = "0";
+
+        for (ResultCart resultCart: getOrder) {
+            System.out.println("单个商铺"+resultCart.getPayAmount());
+            payTotal = new BigDecimal(payTotal).add(resultCart.getPayAmount()).toString();
+
+        }
+        System.out.println("总金额"+new BigDecimal(payTotal));
+        Order order =new Order();
+        order.setMoney(new BigDecimal(payTotal));
+        order.setTradeType(payType);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = payController.payYuYue(order, appUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String orderId = null ;
+
+        if ("true".equals(jsonObject.getString("status"))){
+             orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+             returnResult.setResult(jsonObject.get("result"));
+        }
+        Order getPayStatus = payService.getOrderId(orderId);
+
+        try {
+            if (cartStr.contains("-")){
+                String[] split = cartStr.split("-");
+                for (String s: split
+                ) {
+                     String[] split1 = s.split(":");
+                    orderItem = addCartItem(split1[0], Integer.parseInt(split1[1]));
+                    orderItem.setAddressId(addressId);
+                    //      消费者id
+                    orderItem.setConsumerId(appUser.getId());
+                    orderItem.setOrderId(orderId);
+                    orderItem.setStatus(getPayStatus.getStatus());
+                    mallShopService.editMallOrderItem(orderItem);
+                }
+            }else {
+                String[] split = cartStr.split(":");
+                 orderItem = addCartItem(split[0], Integer.parseInt(split[1]));
+                 orderItem.setAddressId(addressId);
+                 //      消费者id
+                 orderItem.setConsumerId(appUser.getId());
+                 orderItem.setStatus(getPayStatus.getStatus());
+                 orderItem.setOrderId(orderId);
+                 mallShopService.editMallOrderItem(orderItem);
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            returnResult.setMessage("cartStr格式异常");
+            return  returnResult;
+        }
+        returnResult.setMessage("订单生成成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+    }
+
+    /**
+     * 添加订单项
+     * @param commodityId
+     */
+    public OrderItem addCartItem(String commodityId,int commodityNum){
+        OrderItem orderItem = new OrderItem();
+
+
+        //获取规格
+        Specification specification = mallShopService.getSpecificationById(commodityId);
+        //获取规格价格
+        BigDecimal commodityPrice = specification.getCommodityPrice();
+
+        //获取商铺id
+        String shopId = specification.getShopId();
+        MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+        //获取运费
+        BigDecimal fare = myMallShop.getFare();
+
+        //该订单项总金额
+        BigDecimal payAmount = commodityPrice.multiply(new BigDecimal(commodityNum)).add(fare);
+        System.out.println(payAmount);
+        //生成订单项id
+        orderItem.setOrderItemId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+
+        orderItem.setShopId(shopId);
+        //规格id
+        orderItem.setCommodityId(commodityId);
+        //      运费
+        orderItem.setFare(fare);
+        //      规格价格
+        orderItem.setCommodityPrice(specification.getCommodityPrice());
+        //添加购买商品数量
+        orderItem.setCommodityNum(commodityNum);
+
+        return orderItem;
+
+
+    }
 
 
 
 
+    @RequestMapping(value = "getOrder")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult getOrder(@CurrentUser  AppUser appUser,String orderId,
+                                    HttpServletRequest request, HttpServletResponse response){
+
+        ReturnResult returnResult = new ReturnResult();
+        log.info("生成订单项------------->>/mallShop/createOrder");
+        getParameterMap(request, response);
+        List<OrderItem> mallOrderItems = mallShopService.getMallOrderItem(orderId);
+
+        return returnResult;
+    }
 
 
+    /**
+     * 临时订单（最新）
+     * @param cartStr
+     * @param addressId
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "temporaryOrder")
+    @ResponseBody
+    public ReturnResult temporaryOrder(String cartStr,String addressId,
+                                          HttpServletRequest request, HttpServletResponse response) {
+
+        ReturnResult returnResult = new ReturnResult();
+        log.info("生成订单项------------->>/mallShop/temporaryOrder");
+        getParameterMap(request, response);
+        MallAddress mallAddress = mallShopService.getMallAddress(addressId);
+        if (StringUtils.isNull(mallAddress)){
+            returnResult.setMessage("未查询到地址！");
+            return returnResult;
+        }
+        List<ResultCart> resultCarts = new ArrayList<>();
+
+        if (cartStr.contains("-")) {
+
+            String[] cartStrings = cartStr.split("-");
+            for (String cartString:cartStrings
+                 ) {
+                ResultCart resultCart = getResultCart(cartString, addressId);
+                if (StringUtils.isNull(resultCart)){
+                    returnResult.setMessage("数据格式错误！");
+                    return returnResult;
+                }
+                resultCarts.add(resultCart);
+            }
+
+        }else {
+            ResultCart resultCart = getResultCart(cartStr,addressId);
+            if (StringUtils.isNull(resultCart)){
+                returnResult.setMessage("数据格式错误！");
+                return returnResult;
+            }
+            resultCarts.add(resultCart);
+        }
+
+        returnResult.setMessage("返回成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(resultCarts);
+        return returnResult;
+    }
+
+    /**
+     * 临时订单（最新）获取返回ResultCart结果
+     * @param cartStr
+     * @param addressId
+     * @return
+     */
+    public ResultCart getResultCart(String cartStr,String addressId){
+        ResultCart resultCart = new ResultCart();
+        //获取shopId
+        String shopId = cartStr.substring(0, cartStr.indexOf("["));
+        MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+        if (StringUtils.isNull(myMallShop)){
+            return null;
+        }
+        //获取收费区域
+        String feeArea = myMallShop.getFeeArea();
+        //获取运费
+        BigDecimal getFare =  getFare(feeArea,addressId);
+        System.out.println("匹配后的价格："+getFare);
+        //设置运费
+        if (getFare.compareTo(new BigDecimal(-1)) == 0){
+            return null;
+        }
+        if (getFare.compareTo(BigDecimal.ZERO) ==0) {
+            resultCart.setFare(myMallShop.getFare());
+            System.out.println("匹配全国包邮后的价格："+myMallShop.getFare());
+        }else {
+            resultCart.setFare(getFare);
+            System.out.println("匹配后部分收费区域的价格："+getFare);
+        }
+        //设置shopId
+        resultCart.setShopId(shopId);
+        //设置商铺名
+        resultCart.setCommodityName(myMallShop.getCommodityName());
+        try {
+            String commodityIds = cartStr.substring( cartStr.indexOf("[")+1,cartStr.lastIndexOf("]"));
+            //设置规格列表
+            List<Specification> commodities = new ArrayList<>();
+            if (cartStr.contains(";")){
+                String[] commodityInfos = commodityIds.split(";");
+                String payTotal = "0";
+                for (String commodityInfo:commodityInfos
+                ) {
+                    String commodityId = commodityInfo.split(":")[0];
+                    String commodityNum = commodityInfo.split(":")[1];
+                    Specification specificationById = mallShopService.getSpecificationById(commodityId);
+                    specificationById.setCommodityNum(Integer.parseInt(commodityNum));
+                    commodities.add(specificationById);
+                    payTotal = new BigDecimal(payTotal).add(specificationById.getCommodityPrice().multiply(new BigDecimal(commodityNum))).toString();
+                }
+                resultCart.setCommodities(commodities);
+                resultCart.setPayAmount(new BigDecimal(payTotal).add(resultCart.getFare()));
+            }else {
+                String commodityId = commodityIds.split(":")[0];
+                String commodityNum = commodityIds.split(":")[1];
+                Specification specificationById = mallShopService.getSpecificationById(commodityId);
+                specificationById.setCommodityNum(Integer.parseInt(commodityNum));
+                commodities.add(specificationById);
+                BigDecimal payTotal = specificationById.getCommodityPrice().multiply(new BigDecimal(commodityNum)).add(resultCart.getFare());
+                resultCart.setPayAmount(payTotal);
+                resultCart.setCommodities(commodities);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("参数格式错误！");
+            return null;
+        }
+
+        return resultCart;
+    }
+    //获取运费
+    public BigDecimal getFare(String feeArea,String addressId){
+        if (StringUtils.isEmpty(feeArea)){
+            return new BigDecimal(0);
+        }
+        MallAddress mallAddress = mallShopService.getMallAddress(addressId);
+        String specificAddr = mallAddress.getSpecificAddr();
+        try{
+            String substring = specificAddr.substring(0, specificAddr.indexOf("-"));
+            if (feeArea.contains(substring)){
+                if (feeArea.contains(";")){
+                    String[] split = feeArea.split(";");
+                    for (String s:split
+                    ) {
+                        if (s.contains(substring)){
+                            String fare = s.split(":")[1];
+                            System.out.println("匹配成功！-"+fare);
+                            return new BigDecimal(fare);
+                        }
+                    }
+                    return new BigDecimal(0);
+                }else {
+                    if (feeArea.contains(substring)){
+                        String fare = feeArea.split(":")[1];
+                        System.out.println("匹配成功！");
+                        return new BigDecimal(fare);
+                    }else {
+                        System.out.println("匹配失败！");
+                        return new BigDecimal(0);
+                    }
+                }
+            }else {
+                return new BigDecimal(0);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("数据格式错误！");
+            return new BigDecimal(-1);
+        }
+
+    }
 
 
+    /**
+     *获取我的收货地址
+     * @param appUser
+     * @param addressId
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "getMyAddress")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult getMyAddress(@CurrentUser  AppUser appUser,String addressId,
+                                    HttpServletRequest request, HttpServletResponse response){
+
+        ReturnResult returnResult = new ReturnResult();
+
+        log.info("获取我的收货地址------------->>/mallShop/getMyAddress");
+        getParameterMap(request, response);
+        if (StringUtils.isNotEmpty(addressId)){
+            MallAddress mallAddress = mallShopService.getMallAddress(addressId);
+            returnResult.setResult(mallAddress);
+        }else {
+            List<MallAddress> mallAddrByUserId = mallShopService.getMallAddrByUserId(appUser.getId());
+            returnResult.setResult(mallAddrByUserId);
+        }
+        returnResult.setMessage("返回成功");
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+    }
 
 
+    /**
+     *
+     * @param appUser
+     * @param mallAddress
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "editMyAddress")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult editMyAddress(@CurrentUser  AppUser appUser,MallAddress mallAddress,
+                                     HttpServletRequest request, HttpServletResponse response){
 
+        ReturnResult returnResult = new ReturnResult();
+        log.info("获取我的收货地址------------->>/mallShop/editMyAddress");
+        getParameterMap(request, response);
+        if (StringUtils.isEmpty(mallAddress.getAddressId())){
+            mallAddress.setAddressId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+            mallAddress.setUserId(appUser.getId());
+            returnResult.setMessage("添加成功");
 
+        }else {
+            returnResult.setMessage("修改成功");
+        }
+        mallShopService.editMallAddr(mallAddress);
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+
+    }
+
+    /**
+     * 通过地址id删除地址
+     * @param appUser
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "deleteMyAddressById")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult deleteMyAddressById(@CurrentUser  AppUser appUser,
+                                      HttpServletRequest request, HttpServletResponse response){
+        String addressId = request.getParameter("addressId");
+
+        ReturnResult returnResult = new ReturnResult();
+        log.info("通过地址id删除地址------------->>/mallShop/deleteMyAddressById");
+        getParameterMap(request, response);
+        mallShopService.deleteMallAddr(addressId);
+        returnResult.setMessage("删除成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+    }
 
 
 

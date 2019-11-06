@@ -14,12 +14,12 @@ import java.util.List;
 public interface CartMapper extends MyBaseMapper<Cart> {
 
     @Select("SELECT * from yuyue_mall_cart where cart_id = #{cartId} \n" +
-            "or  consumer_id = #{consumerId} and pay_status = '10A'")
+            "or  consumer_id = #{consumerId} ")
     List<Cart> getCarts(@Param(value = "cartId") String cartId,@Param(value = "consumerId") String consumerId);
 
 
     @Select("SELECT * from yuyue_mall_cart where  commodity_id = #{commodityId} " +
-            "and consumer_id = #{consumerId}   and pay_status = '10A' LIMIT 1" )
+            "and consumer_id = #{consumerId}    LIMIT 1" )
     Cart getCart(@Param(value = "commodityId") String commodityId,@Param(value = "consumerId") String consumerId);
 
     @Transactional
@@ -29,6 +29,6 @@ public interface CartMapper extends MyBaseMapper<Cart> {
             "(#{cartId},#{consumerId},#{commodityId},#{shopId},#{commodityNum});")
     void addCart (Cart cart);
 
-    @Delete("DELETE FROM yuyue_mall_cart where cart_id = #{cartId} or shop_id = #{shopId} and pay_status = '10A'")
+    @Delete("DELETE FROM yuyue_mall_cart where cart_id = #{cartId} or shop_id = #{shopId} ")
     void deleteCart (Cart cart);
 }

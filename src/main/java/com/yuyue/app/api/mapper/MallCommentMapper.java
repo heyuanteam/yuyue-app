@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface MallCommentMapper extends MyBaseMapper<MallComment> {
 
-    @Select("SELECT * FROM yuyue_mall_comment WHERE shop_id = #{shopId}")
+    @Select("SELECT * FROM yuyue_mall_comment WHERE shop_id = #{shopId}  ORDER BY create_time DESC ")
     List<MallComment> getMallComments(@Param(value = "shopId") String shopId);
 
 
@@ -20,7 +20,7 @@ public interface MallCommentMapper extends MyBaseMapper<MallComment> {
     MallComment getMallComment(@Param(value = "shopId") String shopId,@Param(value = "consumerId")String consumerId);
 
     @Select("SELECT AVG(score) FROM yuyue_mall_comment WHERE shop_id = #{shopId}")
-    Double getScore(@Param(value = "shopId") String shopId);
+    double getScore(@Param(value = "shopId") String shopId);
 
     @Transactional
     @Insert("INSERT INTO yuyue_mall_comment (comment_id,consumer_id,shop_id,content,score,commodity_size) " +

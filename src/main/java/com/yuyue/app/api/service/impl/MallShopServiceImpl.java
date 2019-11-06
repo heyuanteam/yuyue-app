@@ -21,6 +21,10 @@ public class MallShopServiceImpl implements MallShopService {
     private CartMapper cartMapper;
     @Autowired
     private MallCommentMapper commentMapper;
+    @Autowired
+    private MallOrderItemMapper mallOrderItemMapper;
+    @Autowired
+    private MallAddressMapper mallAddressMapper;
 
     @Override
     public MallShop getMyMallShop(String shopId) {
@@ -113,12 +117,42 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
-    public Double getScore(String shopId) {
+    public double getScore(String shopId) {
         return commentMapper.getScore(shopId);
     }
 
     @Override
     public void addMallComment(MallComment mallComment) {
         commentMapper.addMallComment(mallComment);
+    }
+
+    @Override
+    public List<OrderItem> getMallOrderItem(String orderId) {
+        return mallOrderItemMapper.getMallOrderItem(orderId);
+    }
+
+    @Override
+    public void editMallOrderItem(OrderItem orderItem) {
+        mallOrderItemMapper.editMallOrderItem(orderItem);
+    }
+
+    @Override
+    public List<MallAddress> getMallAddrByUserId(String userId) {
+        return mallAddressMapper.getMallAddrByUserId(userId);
+    }
+
+    @Override
+    public MallAddress getMallAddress(String addressId) {
+        return mallAddressMapper.getMallAddress(addressId);
+    }
+
+    @Override
+    public void editMallAddr(MallAddress mallAddress) {
+        mallAddressMapper.editMallAddr(mallAddress);
+    }
+
+    @Override
+    public void deleteMallAddr(String addressId) {
+        mallAddressMapper.deleteMallAddr(addressId);
     }
 }

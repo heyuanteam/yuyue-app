@@ -29,11 +29,16 @@ public class Cart implements Serializable {
     //private BigDecimal commodityPrice;
     //商品数量
     private Integer commodityNum;
+    //规格库存
+    private Integer commodityReserve;
+
     //创建时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     //支付状态
-    private String payStatus;
+    //private String payStatus;
+    //规格信息
+    private Specification specification;
 
 
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -17,8 +18,14 @@ public class ResultCart implements Serializable {
     private String shopId;
     //商品名
     private String commodityName;
-    //商品列表
+    //订单列表
     private List<Cart> commodityList;
+    //商品列表
+    private List<Specification> commodities;
+    //商品总额
+    private BigDecimal payAmount;
+    //运费
+    private BigDecimal fare;
 
 
 
