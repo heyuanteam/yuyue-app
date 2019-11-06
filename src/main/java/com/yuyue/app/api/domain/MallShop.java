@@ -49,6 +49,8 @@ public class MallShop implements Serializable {
     private String feeArea;
     //    上传视频
     private String videoPath;
+    //商铺评分
+    private double score;
     //    备注
     private String remark;
     //    创建时间
@@ -64,6 +66,7 @@ public class MallShop implements Serializable {
     private Date endTime;
     //    订单id
     private String orderId;
+
 
 
 }

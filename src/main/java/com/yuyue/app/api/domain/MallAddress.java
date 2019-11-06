@@ -11,25 +11,28 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MallComment implements Serializable {
+public class MallAddress implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    //评论id
-    private String commentId;
-    //消费者id
-    private String consumerId;
-    //  商品id
-    private String shopId;
-    //内容
-    private String  content;
-    //评分
-    private double  score;
-    //商品规格
-    private String  commoditySize;
-    //评论时间
+    //地址id
+    private String addressId;
+    //下单人id
+    private String userId;
+    //详细地址
+    private String specificAddr;
+    //收货人
+    private String receiver;
+    //手机号
+    private String phone;
+    //右边
+    private String zipCode;
+    //创建时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    //评价人
-    private AppUser appUser;
+    //地址id
+    private String defaultAddr;
+
+
+
+
 
 }

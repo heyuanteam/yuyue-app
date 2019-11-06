@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -23,18 +22,23 @@ public class Cart implements Serializable {
     //商铺id
     private String shopId;
     //商品名
-    private String commodityName;
+    //private String commodityName;
     //商品规格
-    private String commoditySize;
+    //private String commoditySize;
     //商品价格
-    private BigDecimal commodityPrice;
+    //private BigDecimal commodityPrice;
     //商品数量
     private Integer commodityNum;
+    //规格库存
+    private Integer commodityReserve;
+
     //创建时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     //支付状态
-    private String payStatus;
+    //private String payStatus;
+    //规格信息
+    private Specification specification;
 
 
 }

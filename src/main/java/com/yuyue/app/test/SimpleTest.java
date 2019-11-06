@@ -1,6 +1,6 @@
 package com.yuyue.app.test;
 
-import com.yuyue.app.utils.RandomSaltUtil;
+import java.math.BigDecimal;
 
 public class SimpleTest {
 
@@ -79,8 +79,8 @@ public class SimpleTest {
         }else System.out.println("正确");*/
         /*RedisTemplate<String, String> stringTemplate = new RedisTemplate<>();*/
 
-        String s="娱悦用户"+ RandomSaltUtil.randomNumber(8);
-        System.out.println(s);
+        /*String s="娱悦用户"+ RandomSaltUtil.randomNumber(8);
+        System.out.println(s);*/
         /*Date startDate = null;
         Date endDate = null;
         try {
@@ -129,6 +129,73 @@ public class SimpleTest {
 //        for (String s : strs) {
 //            System.out.println(Math.abs(s.hashCode()) % 10+"");
 //        }
+
+//         double d = 4.145;
+//         d = (double) Math.round(d * 10) / 10;
+//         System.out.println(d);
+//        String cartStr = "FBE391F5D4C04D5DB60F9ADF79F6AA94:5-5FF99665F69C4CE7B33669876395BB7C:4";
+//        if (cartStr.contains("-")){
+//            String[] cartStrings = cartStr.split("-");
+//            for (String s:cartStrings
+//                 ) {
+//                System.out.println(s);
+//                String[] split = s.split(":");
+//                System.out.println(split[0]+ split[1]);
+//            }
+//        }else {
+//            System.out.println(cartStr);
+//            String[] split = cartStr.split(":");
+//            System.out.println(split[0]+ split[1]);
+//        }
+        /*    634543A9414EFDBEB63B6BDDB8535D11[488DA0232479449D9FE0571FA4FFB984:2]-
+              A0E34543A9414EFDBEB63B6BDDB8156[5FF99665F69C4CE7B33669876395BB7C:1;
+              F2F6F78CE342413AA20C4968F1BCED0A:1;FBE391F5D4C04D5DB60F9ADF79F6AA94:1]*/
+//        String s = "A0E34543A9414EFDBEB63B6BDDB8156[5FF99665F69C4CE7B33669876395BB7C:1;F2F6F78CE342413AA20C4968F1BCED0A:1;FBE391F5D4C04D5DB60F9ADF79F6AA94:1]";
+//        String shopId = s.substring(0, s.indexOf("["));
+//        String commodityIds = s.substring( s.indexOf("[")+1,s.lastIndexOf("]"));
+//        String[] commodityInfos = commodityIds.split(";");
+//        for (String commodityInfo:commodityInfos
+//             ) {
+//            System.out.println(commodityInfo);
+//            String commodityId = commodityInfo.split(":")[0];
+//            String commodityNum = commodityInfo.split(":")[1];
+//            System.out.println(commodityId+":    "+commodityNum);
+//
+//        }
+//        System.out.println(shopId);
+//        System.out.println(commodityIds);
+//        String feeArea = "西藏省:15;新疆省:22;内蒙古:18;青海:30";
+//
+//        String specificAddr = "河南-杭州市-萧山区杭州湾信息港";
+//        String substring = specificAddr.substring(0, specificAddr.indexOf("-"));
+//        System.out.println(substring);
+//        if (feeArea.contains(substring)){
+//            if (feeArea.contains(";")){
+//                String[] split = feeArea.split(";");
+//                for (String s:split
+//                     ) {
+//                    if (s.contains(substring)){
+//                        String fare = s.split(":")[1];
+//                        System.out.println("     -------"+fare);
+//                        System.out.println("匹配成功！");
+//                    }
+//                }
+//            }else {
+//                if (feeArea.contains(substring)){
+//                    String fare = feeArea.split(":")[1];
+//                    System.out.println("匹配成功！");
+//                }else {
+//                    System.out.println("匹配失败！");
+//                }
+//
+//            }
+//
+//
+//        }
+        BigDecimal getFare = new BigDecimal(0);
+        if (getFare.compareTo(new BigDecimal(-1)) == 0){
+            System.out.println(true);
+        }else System.out.println(false);
 
     }
 

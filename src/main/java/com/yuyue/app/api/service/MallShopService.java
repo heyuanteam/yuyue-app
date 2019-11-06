@@ -49,9 +49,29 @@ public interface MallShopService {
     MallComment getMallComment( String shopId,String consumerId);
 
 
-    Double getScore( String shopId);
+    double getScore( String shopId);
 
 
     void addMallComment(MallComment mallComment);
+
+
+/*---------------------------------订单---------------------------------*/
+
+
+    List<OrderItem> getMallOrderItem(String orderId);
+
+
+    void editMallOrderItem(OrderItem orderItem);
+
+/*---------------------------------地址---------------------------------*/
+    List<MallAddress> getMallAddrByUserId(String userId);
+
+    MallAddress getMallAddress(String addressId);
+
+    void editMallAddr(MallAddress mallAddress);
+
+    void deleteMallAddr(String addressId);
+
+
 
 }
