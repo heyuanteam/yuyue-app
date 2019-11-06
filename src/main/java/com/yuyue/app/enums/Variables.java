@@ -28,20 +28,22 @@ public class Variables {
     public static InetSocketAddress address = new InetSocketAddress(ip_home, port);
     public static InetSocketAddress store_address = new InetSocketAddress(ip_home, store_port);
 
-    //    -------------------------------------------------------------------------------
+//        -------------------------------------------------------------------------------
     //微信APPID
     public static final String wxAppId = "wx82e0374be0e044a4";
     public static final String ip = "101.37.252.177";
 //    public static final String ip = "47.97.125.222";
+    public static final String appPort = ":28082";
+    public static final String bossPort = ":28088";
     //微信AppSecret
     public static final String APP_SECRET = "c08075181dce2ffe3f036734f168318f";
     //微信商户号
     public static final String wxMchID = "1529278811";
     //微信秘钥
     public static final String wxKEY = "FE79E95059CDCA91646CDDA6A7F60A93";
-    public static final String wxNotifyUrl = "http://"+ip+":8082/yuyue-app/pay/wxpayNotify";
+    public static final String wxNotifyUrl = "http://"+ip+appPort+"/yuyue-app/pay/wxpayNotify";
 
-    //    -------------------------------------------------------------------------------
+//        -------------------------------------------------------------------------------
     //支付宝
     public static final String AliAPPID = "2019082166401163";
     public static final String AliAppPrivateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDD5vbz+U6bkpwHTnto4fg2" +
@@ -63,7 +65,7 @@ public class Variables {
             "LLcwdxRDS3JtkmhWgO/SX2xIFqkbmkMspm94iXklqwG5msWL23I5WTXjLHNGdv5mU9cKx64gN9atOsA0sQ38yiInYMd6PPBM4VOdvKyau0purE9" +
             "RQqwKd1O/XTFlD9XDxEz3NiRD6sunLIxaPMMkt2+X7KPXAwYBIL5tymna3+rBnxYIAX2q5KORaYKoOWRK9ER+pMMXpcqNbMdO1ceOeUqx2XzpVZ" +
             "oMlcgRB6BTKG59S+KVso1O9Cxx52lvYqisuei8OnNwmMxK+++psZXmdDuNpUc4OJXdA7Bc0zbwDedtxRJE3zNDONOOwIDAQAB";
-    public static final String AliPayNotifyUrl = "http://"+ip+":8082/yuyue-app/pay/alipayNotify";
+    public static final String AliPayNotifyUrl = "http://"+ip+appPort+"/yuyue-app/pay/alipayNotify";
     public static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/pay";
 
     // 编码集，支持 GBK/UTF-8
@@ -74,7 +76,12 @@ public class Variables {
     public static AlipayClient alipayClient = new DefaultAlipayClient
             (gateway, AliAPPID, AliAppPrivateKey, "json", CHARSET, AliPayPublicKey,"RSA2");
 
-    //    -------------------------------------------------------------------------------
+//       -------------------------------------------------------------------------------
+
+//    极光库存通知 : 7 (merchantId,shopid)
+    public static final String sendStockJPushUrl = "http://"+ip+bossPort+"/yuyue-boss/send/sendStockJPush";
+
+//        -------------------------------------------------------------------------------
 //    高德地图请求秘钥，web服务
     public static final String gdKEY = "eb378313443345c6ae84ef4ac60dd661";
 //    返回值类型
