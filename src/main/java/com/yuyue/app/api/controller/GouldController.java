@@ -211,6 +211,10 @@ public class GouldController extends BaseController {
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> params = Maps.newHashMap();
+        if (StringUtils.isEmpty(ip)) {
+            returnResult.setMessage("ip不可以为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         params.put("ip", ip);
         try {
             String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.ip_URL);
