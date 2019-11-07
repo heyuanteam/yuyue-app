@@ -206,12 +206,12 @@ public class GouldController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/getAddressByIP")
-    public JSONObject getAddressByIP(HttpServletRequest request, HttpServletResponse response){
+    public JSONObject getAddressByIP(String ip,HttpServletRequest request, HttpServletResponse response){
         log.info("根据本机IP获取地址-------------->>/gould/getAddressByIP");
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> params = Maps.newHashMap();
-        params.put("ip", HttpUtils.getIpAddress(request,response));
+        params.put("ip", ip);
         try {
             String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.ip_URL);
             JSONObject parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
