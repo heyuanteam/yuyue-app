@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
@@ -12,8 +13,10 @@ import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.enums.ReturnResult;
+import com.yuyue.app.utils.GouldUtils;
 import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,13 +27,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/mallShop" , produces = "application/json; charset=UTF-8")
-@Slf4j
 public class MallShopController extends BaseController{
 
     private static  final  java.util.regex.Pattern pattern=java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$");
-
 
 
     @Autowired
@@ -91,24 +93,29 @@ public class MallShopController extends BaseController{
     @ResponseBody
     public ReturnResult getAllMallShop(HttpServletRequest request, HttpServletResponse response){
         ReturnResult returnResult = new ReturnResult();
-        log.info("查询我的商铺-------------->>/mallShop/getAllMallShop");
+        log.info("查询所有符合条件的商铺-------------->>/mallShop/getAllMallShop");
         getParameterMap(request, response);
-        String myArea = request.getParameter("myArea");
+        String myArea = request.getParameter("myArea");//区域
         String page = request.getParameter("page");
         String pageSize = request.getParameter("pageSize");
-        String content = request.getParameter("content");
-        if(StringUtils.isEmpty(myArea)){
-            returnResult.setMessage("定位地址不能为空！");
+        String content = request.getParameter("content");//分类、名称、详情
+        String gdLon = request.getParameter("gdLon");//经度
+        String gdLat = request.getParameter("gdLat");//纬度
+        String sortType = request.getParameter("sortType");//排序类别
+        if (StringUtils.isEmpty(gdLon) || StringUtils.isEmpty(gdLat)){
+            returnResult.setMessage("经纬度不可以为空！");
             return returnResult;
         }
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))
             page = "1";
-        if (StringUtils.isEmpty(pageSize) || !page.matches("[0-9]+"))
-            page = "10";
-        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(page));
+        if (StringUtils.isEmpty(pageSize) || !pageSize.matches("[0-9]+"))
+            pageSize = "10";
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(pageSize));
         List<MallShop> allMallShop = mallShopService.getAllMallShop(myArea,content);
+
+        List<MallShopVo> list = GouldUtils.getNearbyStoreByDistinceAsc(sortType, new BigDecimal(gdLon), new BigDecimal(gdLat), allMallShop);
+        returnResult.setResult(list);
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(allMallShop);
         return returnResult;
     }
     

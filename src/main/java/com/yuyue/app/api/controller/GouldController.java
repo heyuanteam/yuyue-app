@@ -40,6 +40,11 @@ public class GouldController extends BaseController {
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> params = Maps.newHashMap();
+
+        if (StringUtils.isEmpty(gdLon) || StringUtils.isEmpty(gdLat)){
+            returnResult.setMessage("经纬度不可以为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         params.put("location", gdLon + "," + gdLat);
         try {
             // 拼装url
@@ -72,6 +77,10 @@ public class GouldController extends BaseController {
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> params = Maps.newHashMap();
+        if (StringUtils.isEmpty(address)) {
+            returnResult.setMessage("地址不可以为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         params.put("address", address);
         try {
             String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.GET_LNG_LAT_URL);
@@ -101,6 +110,10 @@ public class GouldController extends BaseController {
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> params = Maps.newHashMap();
+        if (StringUtils.isEmpty(gdLon) || StringUtils.isEmpty(gdLat)){
+            returnResult.setMessage("经纬度不可以为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         if (StringUtils.isEmpty(type)) {
             type = "gps";
         }
@@ -136,6 +149,10 @@ public class GouldController extends BaseController {
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> params = Maps.newHashMap();
+        if (StringUtils.isEmpty(city)){
+            returnResult.setMessage("城市不可以为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         try {
             //同时存在，以城市为准！
             params.put("keywords", GouldUtils.getKeyWord(keyWord));
@@ -170,15 +187,12 @@ public class GouldController extends BaseController {
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> params = Maps.newHashMap();
+        if (StringUtils.isEmpty(gdLon) || StringUtils.isEmpty(gdLat)) {
+            returnResult.setMessage("经纬度/关键字不对！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         try {
-            String location = "";
-            if (StringUtils.isNotEmpty(gdLon) && StringUtils.isNotEmpty(gdLat)) {
-                location = gdLon + "," + gdLat;
-            }
-            if (StringUtils.isEmpty(gdLon) || StringUtils.isEmpty(gdLat)) {
-                returnResult.setMessage("经纬度/关键字不对！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
+            String location = gdLon + "," + gdLat;
             params.put("location", location);
             params.put("keywords", GouldUtils.getKeyWord(keyWord));
             params.put("radius", "2000");
