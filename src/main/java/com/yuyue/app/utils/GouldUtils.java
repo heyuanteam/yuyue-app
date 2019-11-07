@@ -559,11 +559,7 @@ public class GouldUtils {
                     return -1;
                 }
                 int toFlag = new BigDecimal(m1.getDistance()).compareTo(new BigDecimal(m2.getDistance()));
-                if (flag == -1 || flag == 1) {
-                    return toFlag;
-                }  else {
-                    return 0;
-                }
+                return toFlag;
             }
         });
     }
