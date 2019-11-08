@@ -29,4 +29,6 @@ public interface LoginService {
     void userAuthentication(String userId,String realName, String idCard,
                                    String userUrl, String cardZUrl, String cardFUrl);
     void updateOpendId(String id, String opendId, String wechatName);
+
+    AppUser getAppUserMsg(String idCard);
 }

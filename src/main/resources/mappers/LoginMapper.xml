@@ -119,6 +119,7 @@
                 <if test="phone!=null and phone!=''">  and phone=#{phone}  </if>
                 <if test="id!=null and id!='' ">  and id=#{id}  </if>
                 <if test="password!=null and password!='' ">  and password=#{password}  </if>
+                <if test="idCard!=null and idCard!='' ">  and id_card=#{idCard}  </if>
 
             <!--</choose>-->
          order by createTime LIMIT 1

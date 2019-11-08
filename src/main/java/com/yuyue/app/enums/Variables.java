@@ -26,7 +26,7 @@ public class Variables {
     public static final String AliPayNotifyUrl = "http://"+ip+appPort+"/yuyue-app/pay/alipayNotify";
     //    极光库存通知 : 7 (merchantId,shopid)
     public static final String sendStockJPushUrl = "http://"+ip+bossPort+"/yuyue-boss/send/sendStockJPush";
-    //    极光商家卖出商品通知 : 8 (merchantId,shopid)
+    //    极光商家卖出商品通知 : 8 (orderId)
     public static final String sendClotheSoldUrl = "http://"+ip+bossPort+"/yuyue-boss/send/sendClotheSold";
 
 // -------------------------------------------------------------------------------
