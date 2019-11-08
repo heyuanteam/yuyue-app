@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
@@ -16,7 +15,6 @@ import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.GouldUtils;
 import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -1684,7 +1682,10 @@ public class MallShopController extends BaseController{
         log.info("临时订单（最新）------------->>/mallShop/temporaryOrder");
         getParameterMap(request, response);
         List<ResultCart> resultCarts = new ArrayList<>();
-
+        if (StringUtils.isEmpty(cartStr)){
+            returnResult.setMessage("cartStr参数不能为空！");
+            return returnResult;
+        }
         if (cartStr.contains("-")) {
 
             String[] cartStrings = cartStr.split("-");
