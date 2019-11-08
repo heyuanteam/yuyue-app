@@ -392,7 +392,7 @@ public class LoginController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
-        AppUser appUser = loginService.getAppUserMsg(user.getIdCard());
+        AppUser appUser = loginService.getAppUserByIdCard(user.getIdCard());
         if (StringUtils.isNotNull(appUser)) {
             returnResult.setMessage("一个身份证号只能绑定一个账号！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);

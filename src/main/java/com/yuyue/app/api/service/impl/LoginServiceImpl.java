@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public AppUser getAppUserMsg(String password, String phone, String id) { return loginMapper.getAppUserMsg(password,phone,id); }
+    public AppUser getAppUserMsg(String password, String phone, String id) { return loginMapper.getAppUserMsg(password,phone,id,""); }
 
     /**
      * 通过用户名模糊查询用户信息
@@ -88,8 +88,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public AppUser getAppUserMsg(String idCard) {
-        return loginMapper.getAppUserMsg(idCard);
+    public AppUser getAppUserByIdCard(String idCard) {
+        return loginMapper.getAppUserMsg("","","",idCard);
     }
 
 }
