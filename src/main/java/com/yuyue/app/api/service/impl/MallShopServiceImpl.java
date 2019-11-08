@@ -32,6 +32,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public MallShop myMallShopInfo(String merchantId) {
+        return mallShopMapper.myMallShopInfo(merchantId);
+    }
+
+    @Override
     public List<MallShop> getAllMallShop(String myArea,String content) {
         return mallShopMapper.getAllMallShop(myArea,content);
     }
@@ -127,8 +132,13 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
-    public List<OrderItem> getMallOrderItem(String orderId) {
-        return mallOrderItemMapper.getMallOrderItem(orderId);
+    public List<OrderItem> getMallOrderItem(String orderId,String shopId,String status) {
+        return mallOrderItemMapper.getMallOrderItem(orderId,shopId,status);
+    }
+
+    @Override
+    public List<String> getOrderToItem(String shopId,String consumerId,String status) {
+        return mallOrderItemMapper.getOrderToItem(shopId,consumerId,status);
     }
 
     @Override

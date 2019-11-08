@@ -25,6 +25,11 @@ public class PayServiceImpl implements PayService {
     public Order getOrderId(String orderId) {return payMapper.getOrderId(orderId); }
 
     @Override
+    public List<Order> getSCOrder(String consumerId,String status) {
+        return payMapper.getSCOrder(consumerId,status);
+    }
+
+    @Override
     public void updateStatus(String id,String status) {payMapper.updateStatus(id,status);}
 
     @Override

@@ -10,6 +10,8 @@ public interface MallShopService {
 /*---------------------------------商铺接口---------------------------------*/
     MallShop getMyMallShop(String shopId);
 
+    MallShop myMallShopInfo(String merchantId);
+
     List<MallShop> getAllMallShop(String myArea,String content);
 
     void insertMyMallShop(MallShop mallShop);
@@ -58,7 +60,10 @@ public interface MallShopService {
 /*---------------------------------订单---------------------------------*/
 
 
-    List<OrderItem> getMallOrderItem(String orderId);
+    List<OrderItem> getMallOrderItem(String orderId,String shopId,String status);
+
+
+    List<String> getOrderToItem(String shopId,String consumerId,String status);
 
 
     void editMallOrderItem(OrderItem orderItem);

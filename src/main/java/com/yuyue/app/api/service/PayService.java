@@ -7,12 +7,13 @@ import com.yuyue.app.api.domain.OutMoney;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 public interface PayService {
     void createOrder(Order order);
 
     Order getOrderId(String orderId);
+
+    List<Order> getSCOrder(String consumerId,String status);
 
     void updateStatus(String id,String status);
 

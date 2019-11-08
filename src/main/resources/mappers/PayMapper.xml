@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yuyue.app.api.mapper.PayMapper">
 
+    <!-- 查询多记录 -->
+    <select id="getSCOrder"  parameterType="String" resultType="com.yuyue.app.api.domain.Order">
+        SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s')completeTime
+         FROM yuyue_order b WHERE 1 = 1 and tradeType like  'SC%'
+        <if test ="consumerId!=null and consumerId!=''">
+            and  b.merchantId = #{consumerId}
+        </if>
+
+        <if test ="status!=null and status!=''">
+            and  status = #{status}
+        </if>
+        order  by create_time desc
+    </select>
+
+
     <!-- 查询单条记录 -->
     <select id="getChangeMoney" parameterType="String" resultType="com.yuyue.app.api.domain.ChangeMoney">
         SELECT b.*,DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime

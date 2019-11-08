@@ -3,7 +3,6 @@ package com.yuyue.app.api.mapper;
 import com.yuyue.app.api.domain.OrderItem;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,12 +13,14 @@ public interface MallOrderItemMapper extends MyBaseMapper<OrderItem> {
 
 
 
-    @Select("SELECT * FROM yuyue_mall_order_item WHERE order_id = #{orderId} and status = '10A'")
-    List<OrderItem> getMallOrderItem(@Param(value = "orderId") String orderId);
+    List<OrderItem> getMallOrderItem(@Param(value = "orderId") String orderId,@Param(value = "shopId") String shopId,
+                                     @Param(value = "status") String status);
 
 
 
-    List<OrderItem> getMallOrderItem12(@Param(value = "orderId") String orderId);
+
+    List<String> getOrderToItem(@Param(value = "shopId") String shopId,@Param(value = "consumerId") String consumerId,
+                                  @Param(value = "status") String status);
 
 
 

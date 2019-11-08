@@ -3,7 +3,35 @@
 <mapper namespace="com.yuyue.app.api.mapper.MallOrderItemMapper">
 
     <!-- 查询单条记录 -->
-    <select id="getMallOrderItem12"  parameterType="String" resultType="com.yuyue.app.api.domain.OrderItem">
-        SELECT * FROM yuyue_mall_order_item WHERE order_id = #{orderId}
+    <select id="getMallOrderItem"  parameterType="String" resultType="com.yuyue.app.api.domain.OrderItem">
+        SELECT * FROM yuyue_mall_order_item
+            WHERE 1=1
+            <if test ="orderId!=null and orderId!=''">
+               and  order_id = #{orderId}
+            </if>
+            <if test ="shopId!=null and shopId!=''">
+                and  shop_id = #{shopId}
+            </if>
+            <if test ="status!=null and status!=''">
+                and  status = #{status}
+            </if>
+            order  by create_time desc
     </select>
+
+    <select id="getOrderToItem"  parameterType="String" resultType="String">
+        SELECT DISTINCT order_id FROM yuyue_mall_order_item
+        WHERE 1=1
+        <if test ="shopId!=null and shopId!=''">
+            and  shop_id = #{shopId}
+        </if>
+        <if test ="consumerId!=null and consumerId!=''">
+            and  consumer_id = #{consumerId}
+        </if>
+        <if test ="status!=null and status!=''">
+            and  status = #{status}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+
 </mapper>
