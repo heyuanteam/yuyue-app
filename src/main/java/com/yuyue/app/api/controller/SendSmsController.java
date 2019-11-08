@@ -44,6 +44,10 @@ public class SendSmsController extends BaseController{
         ReturnResult result =new ReturnResult();
         String lcode = RandomSaltUtil.randomNumber(6);
         try {
+            if (StringUtils.isEmpty(map.get("mobile"))) {
+                result.setMessage("缺少手机号！");
+                return ResultJSONUtils.getJSONObjectBean(result);
+            }
             map.put("template_code", templateCode);
             map.put("sign_name", signName);
             hashMap.put("code",lcode);

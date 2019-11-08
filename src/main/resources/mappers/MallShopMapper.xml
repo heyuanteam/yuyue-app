@@ -19,14 +19,13 @@
             <result column="video_path" property="videoPath"/>
             <result column="score" property="score"/>
             <result column="remark" property="remark"/>
-            <result column="create_time" property="remark"/>
+            <result column="create_time" property="createTime"/>
             <result column="status" property="status"/>
             <result column="order_id" property="orderId"/>
             <result column="start_time" property="startTime"/>
             <result column="end_time" property="endTime"/>
         <collection property="images" ofType="com.yuyue.app.api.domain.ShopImage" >
             <id column="image_id" property="imageId"/>
-            <result column="image_path" property="imagePath"/>
             <result column="image_path" property="imagePath"/>
             <result column="image_sort" property="imageSort"/>
         </collection>
@@ -45,19 +44,16 @@
 
     <select id="getAllMallShop"  parameterType="String" resultMap="MallShop">
 
-        SELECT * FROM  (SELECT * FROM yuyue_mall_shop where  service_area  LIKE  '全国%'
-          UNION
-        SELECT * FROM yuyue_mall_shop  where
-        CONCAT(service_area) like concat('%', #{myArea}, '%')  ) s
-        LEFT JOIN yuyue_mall_shop_images images
-		on s.shop_id = images.shop_id
-        where s.business_status = 'open' and status  IN ('10B','10C')
-        <if test="content != null and content != '' ">
-            and
-            CONCAT(IFNULL(category,''),IFNULL(commodity_name,''),IFNULL(detail,''))  LIKE  concat('%', #{content}, '%')
-        </if>
-
-
+        SELECT * FROM yuyue_mall_shop s,yuyue_mall_shop_images images
+            where s.shop_id = images.shop_id and images.image_sort = '0'
+              and s.status  IN ('10B','10C') and s.business_status = 'open'
+            <if test="content != null and content != '' ">
+                and CONCAT(IFNULL(s.category,''),IFNULL(s.commodity_name,''),IFNULL(s.detail,''))  LIKE  concat('%', #{content}, '%')
+            </if>
+            <if test="myArea != null and myArea != '' ">
+                and CONCAT(s.service_area) like concat('%', #{myArea}, '%')
+            </if>
+        order by s.create_time desc
     </select>
 
     <insert id="insertMyMallShop" parameterType="com.yuyue.app.api.domain.MallShop">

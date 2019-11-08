@@ -6,7 +6,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
-import net.sf.jsqlparser.statement.create.table.ForeignKeyIndex;
+import com.google.common.collect.Maps;
+import com.yuyue.app.api.controller.GouldController;
+import com.yuyue.app.api.domain.MallShop;
+import com.yuyue.app.api.domain.MallShopVo;
+import com.yuyue.app.enums.ReturnResult;
+import com.yuyue.app.enums.Variables;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
@@ -36,9 +42,14 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.math.BigDecimal;
@@ -51,6 +62,7 @@ import java.util.regex.Pattern;
 /**
  * 高德API工具类
  */
+@Slf4j
 public class GouldUtils {
 
 //    连接池最大连接数
@@ -446,32 +458,14 @@ public class GouldUtils {
     }
 
     /**
-     * 查找附近的门店
-     * @param    longitude 经度
-     * @param    latitude 纬度
-     * @param    distince 距离 (千米)
-     * @return   List 符合距离范围的所有的点
-     * @Data     2018.10.26
-     */
-//    public List<PickStoreOfflineModel> findNearbyStore(BigDecimal longitude, BigDecimal latitude, Integer distince) {
-//        String[] split = getNearbyByLongitudeAndLatitudeAndDistince(longitude, latitude, distince).split("-");
-//        BigDecimal minlng = new BigDecimal(split[0]);
-//        BigDecimal maxlng = new BigDecimal(split[1]);
-//        BigDecimal minlat = new BigDecimal(split[2]);
-//        BigDecimal maxlat = new BigDecimal(split[3]);
-//        return pickStoreOfflineDao.findNearbyStore(minlng, maxlng, minlat, maxlat);
-//    }
-
-    /**
      *
      * @Description   计算给定经纬度附近相应公里数的经纬度范围
      * @param         longitude 经度
      * @param         latitude 纬度
      * @param         distince 距离（千米）
-     * @return        String 格式：经度最小值-经度最大值-纬度最小值-纬度最大值
-     * @Data          2018.10.26
      **/
-    public static String getNearbyByLongitudeAndLatitudeAndDistince(BigDecimal longitude, BigDecimal latitude, Integer distince) {
+    public static Map<String,Object> getNearbyByLongitudeAndLatitudeAndDistince(BigDecimal longitude, BigDecimal latitude, Integer distince) {
+        HashMap<String, Object> hashMap = Maps.newHashMap();
         double r = 6371.393;    // 地球半径千米
         double lng = longitude.doubleValue();
         double lat = latitude.doubleValue();
@@ -483,30 +477,92 @@ public class GouldUtils {
         double maxlat = lat + dlat;
         double minlng = lng - dlng;
         double maxlng = lng + dlng;
-        //sql语句
-        return minlng + "-" + maxlng + "-" + minlat + "-" + maxlat;
+
+        hashMap.put("minlng",new BigDecimal(minlng));//经度最小值
+        hashMap.put("maxlng",new BigDecimal(maxlng));//经度最大值
+        hashMap.put("minlat",new BigDecimal(minlat));//纬度最小值
+        hashMap.put("maxlat",new BigDecimal(maxlat));//纬度最大值
+        return hashMap;
     }
 
     /**
      * @Description  计算距离远近并按照距离排序
-     * @param        longitude 经度
-     * @param        latitude 纬度
-     * @param        nearbyStoreList  附近门店
+     * @param        gdLon 经度
+     * @param        gdLat 纬度
+     * @param        allMallShop  附近门店
      * @return       按照距离由近到远排序之后List
      */
-//    public List<PickStoreOfflineDto> getNearbyStoreByDistinceAsc(BigDecimal longitude, BigDecimal latitude, List<PickStoreOfflineModel> nearbyStoreList) {
-//        List<PickStoreOfflineDto> list = new ArrayList<>();
-//        nearbyStoreList.forEach(pickStoreOfflineModel -> {
-//            PickStoreOfflineDto pickStoreOfflineDto = new PickStoreOfflineDto();
-//            BeanUtil.copyProperties(pickStoreOfflineModel, pickStoreOfflineDto);
-//            Double distince = getDistince(longitude, latitude,
-//                    pickStoreOfflineModel.getLongitude(), pickStoreOfflineModel.getLatitude());
-//            pickStoreOfflineDto.setDistince(distince.longValue());
-//            list.add(pickStoreOfflineDto);
-//        });
-//        Collections.sort(list, Comparator.comparing(PickStoreOfflineDto::getDistince));
-//        return list;
-//    }
+    public static List<MallShopVo> getNearbyStoreByDistinceAsc(String sortType, BigDecimal gdLon, BigDecimal gdLat, List<MallShop> allMallShop) {
+        for (MallShop mallShop: allMallShop) {
+            mallShop.getMerchantAddr().replace("-","");
+            JSONObject lonLarByAddress = getLonLarByAddress(mallShop.getMerchantAddr());
+            if (com.yuyue.app.utils.StringUtils.isNotEmpty(lonLarByAddress)) {
+                JSONObject jsonObject = JSONObject.parseObject(JSONArray.parseArray(lonLarByAddress.getString("geocodes")).get(0).toString());
+                String[] locations = jsonObject.getString("location").split(",");
+                mallShop.setGdLat(new BigDecimal(locations[1]));
+                mallShop.setGdLon(new BigDecimal(locations[0]));
+            }
+        }
+        List<MallShopVo> list = Lists.newArrayList();
+        allMallShop.forEach(mallShop -> {
+            MallShopVo mallShopVo = new MallShopVo();
+            BeanUtil.copyProperties(mallShop, mallShopVo);
+            Double distince = getDistince(gdLon, gdLat, mallShop.getGdLon(), mallShop.getGdLat());
+            mallShopVo.setDistance(distince.longValue());
+            list.add(mallShopVo);
+        });
+        if ("distance".equals(sortType)) {
+//            Collections.sort(list, Comparator.comparing(MallShopVo::getDistance));
+            getDistanceSort(list);
+        } else if("score".equals(sortType)) {
+            getScoreSort(list);
+        }
+        return list;
+    }
+
+    /**
+     * 距离一样，按照评分
+     * @param list
+     */
+    public static void getDistanceSort(List<MallShopVo> list){
+        Collections.sort(list, new Comparator<MallShopVo>() {
+            @Override
+            public int compare(MallShopVo m1, MallShopVo m2) {
+                int flag = new BigDecimal(m1.getDistance()).compareTo(new BigDecimal(m2.getDistance()));
+                if (flag == -1 || flag == 1) {
+                    return flag;
+                }
+                int toFlag = new BigDecimal(m1.getScore()).compareTo(new BigDecimal(m2.getScore()));
+                if (toFlag == -1) {
+                    return 1;
+                } else if (toFlag == 1) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+    }
+
+    /**
+     * 评分一样，按照距离
+     * @param list
+     */
+    public static void getScoreSort(List<MallShopVo> list){
+        Collections.sort(list, new Comparator<MallShopVo>() {
+            @Override
+            public int compare(MallShopVo m1, MallShopVo m2) {
+                int flag = new BigDecimal(m1.getScore()).compareTo(new BigDecimal(m2.getScore()));
+                if (flag == -1) {
+                    return 1;
+                } else if (flag == 1) {
+                    return -1;
+                }
+                int toFlag = new BigDecimal(m1.getDistance()).compareTo(new BigDecimal(m2.getDistance()));
+                return toFlag;
+            }
+        });
+    }
 
     /**
      * @Description     根据经纬度获取两点之间的距离
@@ -535,6 +591,34 @@ public class GouldUtils {
 
     private static Double rad(double d) {
         return d * Math.PI / 180.0;
+    }
+
+    /**
+     * 根据地址信息获取高德经纬度
+     * @param address 地址信息
+     * @return
+     */
+    public static JSONObject getLonLarByAddress(String address){
+        log.info("根据地址信息获取高德经纬度-------------->>");
+        JSONObject parse = new JSONObject();
+        Map<String, String> params = Maps.newHashMap();
+        if (com.yuyue.app.utils.StringUtils.isEmpty(address)) {
+            parse.put("error","地址不可以为空！");
+            return parse;
+        }
+        params.put("address", address);
+        try {
+            String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.GET_LNG_LAT_URL);
+            parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
+            if ("OK".equals(parse.getString("info"))) {
+                return parse;
+            } else {
+                log.info("获取高德经纬度失败！");
+            }
+        } catch (Exception e) {
+            log.info("获取高德经纬度失败！");
+        }
+        return parse;
     }
 
 }

@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -222,36 +224,6 @@ public class QRCodeUtil {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * 获取本机Ip
-     *
-     *  通过 获取系统所有的networkInterface网络接口 然后遍历 每个网络下的InterfaceAddress组。
-     *  获得符合 <code>InetAddress instanceof Inet4Address</code> 条件的一个IpV4地址
-     * @return
-     */
-    @SuppressWarnings("rawtypes")
-    public static String localIp(){
-        String ip = null;
-        Enumeration allNetInterfaces;
-        try {
-            allNetInterfaces = NetworkInterface.getNetworkInterfaces();
-            while (allNetInterfaces.hasMoreElements()) {
-                NetworkInterface netInterface = (NetworkInterface) allNetInterfaces.nextElement();
-                List<InterfaceAddress> InterfaceAddress = netInterface.getInterfaceAddresses();
-                for (InterfaceAddress add : InterfaceAddress) {
-                    InetAddress Ip = add.getAddress();
-                    if (Ip != null && Ip instanceof Inet4Address) {
-                        ip = Ip.getHostAddress();
-                    }
-                }
-            }
-        } catch (SocketException e) {
-            // TODO Auto-generated catch block
-            log.warn("获取本机Ip失败:异常信息:"+e.getMessage());
-        }
-        return ip;
     }
 
 }

@@ -67,6 +67,8 @@ public class MallShop implements Serializable {
     //    订单id
     private String orderId;
 
-
+    //经纬度
+    private BigDecimal gdLon;
+    private BigDecimal gdLat;
 
 }
