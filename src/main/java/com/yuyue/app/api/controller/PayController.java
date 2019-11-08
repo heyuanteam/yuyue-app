@@ -515,20 +515,23 @@ public class PayController extends BaseController{
             returnResult.setMessage("提现类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (changeMoney.getMoney() == null|| changeMoney.getMoney().compareTo(BigDecimal.ZERO)==0){
-            returnResult.setMessage("转账的钱不能为空！！");
+            returnResult.setMessage("提现不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (user.getIncome().compareTo(changeMoney.getMoney()) == -1){
-            returnResult.setMessage("转账的钱不能高于收益！！");
+            returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (StringUtils.isEmpty(user.getOpendId())){
             returnResult.setCode("02");
             returnResult.setMessage("openId为空！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (changeMoney.getMoney().compareTo(new BigDecimal(5000))==1){
-            returnResult.setMessage("转账的钱不能高于5000元！");
+        } else if (changeMoney.getMoney().compareTo(new BigDecimal(5001))==1){
+            returnResult.setMessage("提现不能高于5000元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (changeMoney.getMoney().compareTo(new BigDecimal(1))==-1){
-            returnResult.setMessage("转账的钱不能低于1元！");
+            returnResult.setMessage("提现不能低于1元！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if ("6".equals(user.getUserType()) && changeMoney.getMoney().compareTo(new BigDecimal(301))==1) {
+            returnResult.setMessage("业务员一天提现不能高于300元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 

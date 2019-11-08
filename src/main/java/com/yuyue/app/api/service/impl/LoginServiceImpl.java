@@ -87,4 +87,9 @@ public class LoginServiceImpl implements LoginService {
         loginMapper.updateOpendId(id,opendId,wechatName);
     }
 
+    @Override
+    public AppUser getAppUserMsg(String idCard) {
+        return loginMapper.getAppUserMsg(idCard);
+    }
+
 }

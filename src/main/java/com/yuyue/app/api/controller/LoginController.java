@@ -391,6 +391,12 @@ public class LoginController extends BaseController{
             returnResult.setMessage("身份证号输入错误！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
+
+        AppUser appUser = loginService.getAppUserMsg(user.getIdCard());
+        if (StringUtils.isNotNull(appUser)) {
+            returnResult.setMessage("一个身份证号只能绑定一个账号！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         loginService.userAuthentication(user.getId(),realName,idCard,userUrl,cardZUrl,cardFUrl);
         returnResult.setMessage("认证成功！！");
         returnResult.setStatus(Boolean.TRUE);
