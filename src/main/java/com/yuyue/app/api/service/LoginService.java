@@ -33,4 +33,6 @@ public interface LoginService {
     AppUser getAppUserByIdCard(String idCard);
 
     List<AppUser> getAppUserByFatherPhone(String fatherPhone);
+
+    void updateUserType(String id, String userType);
 }

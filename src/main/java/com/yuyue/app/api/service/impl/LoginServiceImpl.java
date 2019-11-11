@@ -74,7 +74,7 @@ public class LoginServiceImpl implements LoginService {
                               String signature, String userUrl, String cardZUrl, String cardFUrl, String ciphertextPwd,
                               String city, String jpushName, String opendId, String wechatName,String frontCover) {
         loginMapper.updateAppUser(id,nickName,realName,idCard,phone,sex,headpUrl, userStatus, addrDetail, education,
-                wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,city,jpushName,opendId,wechatName,frontCover);
+                wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,city,jpushName,opendId,wechatName,frontCover,"");
     }
 
     @Override
@@ -95,5 +95,11 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public List<AppUser> getAppUserByFatherPhone(String fatherPhone) {
         return loginMapper.getAppUserByFatherPhone(fatherPhone); }
+
+    @Override
+    public void updateUserType(String id, String userType) {
+        loginMapper.updateAppUser(id,"","","","","","", "", "",
+                "", "","","","","","","","","",
+                "","",userType); }
 
 }

@@ -216,8 +216,8 @@ public class LoginController extends BaseController{
      */
     @RequestMapping("/registration")
     @ResponseBody
-    public JSONObject registration(@RequestParam(value = "phone") String phone,HttpServletRequest request,@RequestParam("code") String code,
-                                   @RequestParam(value = "password") String password, HttpServletResponse response) throws Exception {
+    public JSONObject registration(@RequestParam(value = "phone") String phone,@RequestParam("code") String code, @RequestParam(value = "password") String password,
+                                   String fatherPhone,HttpServletRequest request,HttpServletResponse response) throws Exception {
         ReturnResult result = new ReturnResult();
         LOGGER.info("用户注册-------------->>/login/registration");
         getParameterMap(request, response);
@@ -246,6 +246,7 @@ public class LoginController extends BaseController{
                         appUser.setNickName("娱悦用户"+RandomSaltUtil.randomNumber(8));
                         appUser.setRealName(phone);
                         appUser.setPhone(phone);
+                        appUser.setFatherPhone(fatherPhone);
                         appUser.setPassword(MD5Utils.getMD5Str(password + salt));
                         appUser.setSalt(salt);//盐
                         loginService.addUser(appUser);

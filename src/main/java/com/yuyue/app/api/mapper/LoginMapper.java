@@ -19,8 +19,8 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
                           @Param("idCard") String idCard);
 
     @Transactional
-    @Insert("INSERT into yuyue_merchant (ID,USER_NO,USER_NICK_NAME,USER_REAL_NAME,PHONE,PASSWORD,SALT) " +
-            "values (#{id},#{userNo},#{nickName},#{realName},#{phone},#{password},#{salt})")
+    @Insert("INSERT into yuyue_merchant (ID,USER_NO,USER_NICK_NAME,USER_REAL_NAME,PHONE,PASSWORD,SALT,fatherPhone) " +
+            "values (#{id},#{userNo},#{nickName},#{realName},#{phone},#{password},#{salt},#{fatherPhone})")
     void addUser(AppUser appUser);
 
     @Transactional
@@ -34,7 +34,8 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
                        @Param("education") String education,@Param("wechat") String wechat,@Param("signature") String signature,
                        @Param("userUrl") String userUrl,@Param("cardZUrl") String cardZUrl,@Param("cardFUrl") String cardFUrl,
                        @Param("password") String password,@Param("city") String city,@Param("jpushName") String jpushName,
-                       @Param("opendId") String opendId,@Param("wechatName") String wechatName,@Param("frontCover") String frontCover);
+                       @Param("opendId") String opendId,@Param("wechatName") String wechatName,@Param("frontCover") String frontCover,
+                       @Param("userType") String userType);
 
     /**
      * 模糊查询   用户关注搜索
