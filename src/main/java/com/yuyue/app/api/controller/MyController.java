@@ -25,10 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 我的页面
@@ -900,6 +897,46 @@ public class MyController extends BaseController{
         }else {
             returnResult.setMessage("实名失败,重新实名！！");
         }
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 我的推广
+     * @return
+     */
+    @RequestMapping("/getExtension")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject getExtension(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response) {
+        log.info("我的推广-------------->>/myController/getExtension");
+        ReturnResult returnResult=new ReturnResult();
+        getParameterMap(request, response);
+        HashMap<String, Object> hashMap = Maps.newHashMap();
+        int sum = 0;//总数
+        int sum2 = 0;//艺人
+        int sum3 = 0;//商户
+        int sum4 = 0;//合作人
+        if ("6".equals(user.getUserType())) {
+            List<AppUser> list = loginService.getAppUserByFatherPhone(user.getPhone());
+            if(CollectionUtils.isNotEmpty(list)){
+                sum = list.size();
+                for (AppUser appUser:list) {
+                    if ("2".equals(appUser.getUserType())) {
+                        sum2 += 1;
+                    } else if ("3".equals(appUser.getUserType())) {
+                        sum3 += 1;
+                    } else if ("4".equals(appUser.getUserType())) {
+                        sum4 += 1;
+                    }
+                }
+            }
+        }
+        hashMap.put("sum",sum);
+        hashMap.put("artist",sum2);
+        hashMap.put("business",sum3);
+        hashMap.put("collaborator",sum4);
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(hashMap);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }

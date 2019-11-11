@@ -92,4 +92,8 @@ public class LoginServiceImpl implements LoginService {
         return loginMapper.getAppUserMsg("","","",idCard);
     }
 
+    @Override
+    public List<AppUser> getAppUserByFatherPhone(String fatherPhone) {
+        return loginMapper.getAppUserByFatherPhone(fatherPhone); }
+
 }

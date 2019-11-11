@@ -216,6 +216,10 @@ public class PayController extends BaseController{
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
+                    //    极光商家卖出商品通知 : 8 (orderId)
+                    AppUser appUserMsg = loginService.getAppUserMsg("", "", orderNo.getMerchantId());
+                    String token = loginService.getToken(appUserMsg);
+                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
                 } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
@@ -363,6 +367,10 @@ public class PayController extends BaseController{
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
+                    //    极光商家卖出商品通知 : 8 (orderId)
+                    AppUser appUserMsg = loginService.getAppUserMsg("", "", orderNo.getMerchantId());
+                    String token = loginService.getToken(appUserMsg);
+                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
 //                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
 //                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")) {
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser, orderNo.getMoney(), "+");
@@ -470,7 +478,13 @@ public class PayController extends BaseController{
 //        order.setMoney("100");
                     createOrder(order);
                     BigDecimal add = ResultJSONUtils.updateTotalMoney(user,new BigDecimal(iosMap.get(moneys[3]).toString()),"+");
-                    payService.updateTotal(user.getId(), add);
+
+                    //    极光商家卖出商品通知 : 8 (orderId)
+                    AppUser appUserMsg = loginService.getAppUserMsg("", "", order.getMerchantId());
+                    String token = loginService.getToken(appUserMsg);
+                    HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId(),token);
+
+//                    payService.updateTotal(user.getId(), add);
                     returnResult.setStatus(Boolean.TRUE);
                     returnResult.setMessage("充值成功！");
                     returnResult.setResult(moneys[3]);
