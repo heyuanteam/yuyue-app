@@ -66,4 +66,5 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
     @Update("UPDATE yuyue_merchant b SET b.`opendId` = #{opendId},b.wechatName=#{wechatName} WHERE b.id = #{id}")
     void updateOpendId(@Param("id") String id,@Param("opendId") String opendId,@Param("wechatName") String wechatName);
 
+    List<AppUser> getAppUserByFatherPhone(@Param("fatherPhone") String fatherPhone);
 }

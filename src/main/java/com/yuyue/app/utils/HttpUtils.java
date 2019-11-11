@@ -1,12 +1,16 @@
 package com.yuyue.app.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.ssl.SSLContexts;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -145,6 +149,33 @@ public class HttpUtils {
         //防止乱码，适用于传输JSON数据
         response.setHeader("Content-Type","application/json;charset=UTF-8");
         response.setStatus(HttpStatus.OK.value());
+    }
+
+    public static  String doPost(String url,String str,String token){
+//		SSLClient httpClient = null;
+        HttpPost httpPost = null;
+        String result = null;
+        try{
+//			httpClient = new SSLClient();
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            httpPost = new HttpPost(url);
+            //设置参数
+            StringEntity entityParams = new StringEntity(str, "utf-8");
+            httpPost.setEntity(entityParams );
+            httpPost.setHeader("Content-Type", "application/json");
+            httpPost.setHeader("token", token);
+
+            HttpResponse response = httpClient.execute(httpPost);
+            if(response != null){
+                HttpEntity resEntity = response.getEntity();
+                if(resEntity != null){
+                    result = EntityUtils.toString(resEntity,"utf-8");
+                }
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
     }
 
     /**

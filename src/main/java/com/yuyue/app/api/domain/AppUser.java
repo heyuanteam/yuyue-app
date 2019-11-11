@@ -77,6 +77,8 @@ public class AppUser implements Serializable {
     private String opendId;
 //    微信转账名称
     private String wechatName;
+//    上级手机号
+    private String fatherPhone;
 
     //艺人封面
     private String frontCover;
