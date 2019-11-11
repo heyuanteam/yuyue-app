@@ -77,6 +77,8 @@ public interface MallShopService {
 
     void deleteMallAddr(String addressId);
 
+    void changeDefaultAddr(String userId);
+
 
 
 }

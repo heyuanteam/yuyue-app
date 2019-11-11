@@ -194,11 +194,18 @@ public class SimpleTest {
 //        if (getFare.compareTo(new BigDecimal(-1)) == 0){
 //            System.out.println(true);
 //        }else System.out.println(false);
-        String s = "5FF99665F69C4CE7B33669876395BB7C:1;F2F6F78CE342413AA20C4968F1BCED0A:1;FBE391F5D4C04D5DB60F9ADF79F6AA94:1";
-        String[] commodityInfos = s.split(";");
-        for (int i =0 ;i < commodityInfos.length ;i++){
-            System.out.println(commodityInfos.length);
+//        String s = "5FF99665F69C4CE7B33669876395BB7C:1;F2F6F78CE342413AA20C4968F1BCED0A:1;FBE391F5D4C04D5DB60F9ADF79F6AA94:1";
+//        String[] commodityInfos = s.split(";");
+//        for (int i =0 ;i < commodityInfos.length ;i++){
+//            System.out.println(commodityInfos.length);
+//        }
+        String tradeType = "SCZFB";
+        if(!"SCWX".equals(tradeType) || !"SCZFB".equals(tradeType)){
+            System.out.println("false");
+        }else {
+            System.out.println("true");
         }
+
 
     }
 

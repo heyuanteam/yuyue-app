@@ -30,4 +30,10 @@ public interface MallAddressMapper extends MyBaseMapper<MallAddress> {
     @Transactional
     @Delete("DELETE FROM yuyue_mall_delivery_address WHERE address_id = #{addressId}")
     void deleteMallAddr(@Param(value = "addressId")String addressId);
+
+
+    @Transactional
+    @Delete("update  yuyue_mall_delivery_address set default_addr = '0' \n" +
+            "WHERE user_id = #{userId} and default_addr = '1'")
+    void changeDefaultAddr(@Param(value = "userId")String userId);
 }

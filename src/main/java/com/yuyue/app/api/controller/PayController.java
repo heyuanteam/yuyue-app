@@ -3,8 +3,6 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
@@ -17,7 +15,10 @@ import com.auth0.jwt.JWT;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
-import com.yuyue.app.api.domain.*;
+import com.yuyue.app.api.domain.AppUser;
+import com.yuyue.app.api.domain.ChangeMoney;
+import com.yuyue.app.api.domain.Order;
+import com.yuyue.app.api.domain.OutMoney;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.api.service.PayService;
@@ -25,11 +26,8 @@ import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.net.URL;
 import java.util.*;
 
 @Slf4j
@@ -139,6 +136,8 @@ public class PayController extends BaseController{
             map.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));
             if((order.getTradeType()).contains("GG")){
                 map.put("body", "yuyue-广告费用");
+            }else if((order.getTradeType()).contains("SC")){
+                map.put("body", "yuyue-商城支付");
             } else {
                 map.put("body", "yuyue-礼物充值");
             }
@@ -275,6 +274,9 @@ public class PayController extends BaseController{
             if((order.getTradeType()).contains("GG")){
                 model.setBody("yuyue-广告费用");
                 model.setSubject("yuyue-广告费用");
+            }else if((order.getTradeType()).contains("SC")){
+                model.setBody("yuyue-商城支付");
+                model.setSubject("yuyue-商城支付");
             } else {
                 model.setBody("yuyue-礼物充值");
                 model.setSubject("yuyue-礼物充值");

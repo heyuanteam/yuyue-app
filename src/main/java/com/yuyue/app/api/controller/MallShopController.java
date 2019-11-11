@@ -890,7 +890,14 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
-
+    /**
+     * 删除购物车
+     * @param cart
+     * @param appUser
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "deleteCart")
     @ResponseBody
     @LoginRequired
@@ -1012,7 +1019,13 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
-
+    /**
+     * 临时订单（老版）
+     * @param cartStr
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping(value = "oldTemporaryOrder")
     @ResponseBody
     public ReturnResult oldTemporaryOrder(String cartStr,
@@ -1422,28 +1435,6 @@ public class MallShopController extends BaseController{
     }
 
 
-    /**
-     *获取我的订单
-     * @param appUser
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping(value = "getOrder")
-    @ResponseBody
-    @LoginRequired
-    public ReturnResult getOrder(@CurrentUser  AppUser appUser,
-                                    HttpServletRequest request, HttpServletResponse response){
-
-        ReturnResult returnResult = new ReturnResult();
-        log.info("生成订单项------------->>/mallShop/createOrder");
-        getParameterMap(request, response);
-        String orderId = request.getParameter("orderId");
-        String status = request.getParameter("status");
-        List<OrderItem> mallOrderItems = mallShopService.getMallOrderItem(orderId,"",status);
-
-        return returnResult;
-    }
 
     /**
      *商户获取所有订单
@@ -1605,7 +1596,7 @@ public class MallShopController extends BaseController{
 
         String status = request.getParameter("status");
         String consumerId = appUser.getId();
-        List<Order> scOrder = payService.getSCOrder(appUser.getId(), status);
+        List<Order> scOrder = payService.getSCOrder(consumerId, status);
         List<ReturnOrderDetail> returnOrderDetailList = new ArrayList<>();
         if (StringUtils.isNull(scOrder)){
             returnResult.setMessage("暂无订单！");
@@ -1634,11 +1625,17 @@ public class MallShopController extends BaseController{
             Specification specificationById = null;
             for (OrderItem orderItem:orderItems
                  ) {
+
                 specificationById = mallShopService.getSpecificationById(orderItem.getCommodityId());
+                if ("10B".equals(order.getStatus()) && "10A".equals(orderItem.getStatus())){
+                    orderItem.setStatus("10B");
+                    mallShopService.editMallOrderItem(orderItem);
+                }
                 //设置规格购买数量
                 specificationById.setCommodityNum(orderItem.getCommodityNum());
                 //设置规格价格
                 specificationById.setCommodityPrice(orderItem.getCommodityPrice());
+                specificationById.setStatus(orderItem.getStatus());
                 commodities.add(specificationById);
             }
 
@@ -1649,6 +1646,7 @@ public class MallShopController extends BaseController{
             MallShop myMallShop = mallShopService.getMyMallShop(orderItems.get(0).getShopId());
             returnOrderDetail.setCommodities(commodities);
             returnOrderDetail.setFare(orderItems.get(0).getFare());
+            returnOrderDetail.setStatus(order.getStatus());
             returnOrderDetail.setTradeType(order.getTradeType());
             returnOrderDetail.setMerchantAddr(myMallShop.getMerchantAddr());
             returnOrderDetail.setMerchantPhone(myMallShop.getMerchantPhone());
@@ -1663,6 +1661,67 @@ public class MallShopController extends BaseController{
 
 
     }
+    /**
+     *消费者 再次支付
+     * @param appUser
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "againPay")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult againPay(@CurrentUser  AppUser appUser,
+                                             HttpServletRequest request, HttpServletResponse response){
+
+        ReturnResult returnResult = new ReturnResult();
+        log.info("消费者 再次支付------------->>/mallShop/againPay");
+        getParameterMap(request, response);
+
+        String orderId = request.getParameter("orderId");
+        String tradeType = request.getParameter("tradeType");
+        if ("SCZFB".equals(tradeType) || "SCWX".equals(tradeType)){
+
+        }else {
+            returnResult.setMessage("支付类型错误！");
+            return  returnResult;
+        }
+        Order order = payService.getOrderId(orderId);
+        if (StringUtils.isNull(order)){
+            returnResult.setMessage("为查询该订单！");
+            return returnResult;
+        }
+        JSONObject jsonObject = null;
+        if ("10A".equals(order.getStatus())){
+            if ("GGWX".equals(order.getTradeType())) {
+                try {
+                    jsonObject = payController.payWX(order);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if ("GGZFB".equals(order.getTradeType())) {
+                try {
+                    jsonObject = payController.payZFB(order);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if ("true".equals(jsonObject.getString("status"))){
+                orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                returnResult.setResult(jsonObject.get("result"));
+                returnResult.setStatus(Boolean.TRUE);
+                returnResult.setMessage("返回成功！");
+            }
+        }else if ("10B".equals(order.getStatus())){
+            returnResult.setMessage("该订单已支付！");
+            returnResult.setStatus(Boolean.TRUE);
+        }else {
+            returnResult.setMessage("该订单已失效！");
+            returnResult.setStatus(Boolean.TRUE);
+        }
+        return returnResult;
+    }
+
 
 
     /**
@@ -1866,7 +1925,7 @@ public class MallShopController extends BaseController{
 
 
     /**
-     *
+     *编辑我的地址（添加修改）
      * @param appUser
      * @param mallAddress
      * @param request
@@ -1880,19 +1939,58 @@ public class MallShopController extends BaseController{
                                      HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
-        log.info("获取我的收货地址------------->>/mallShop/editMyAddress");
+        log.info("编辑我的地址（添加修改）------------->>/mallShop/editMyAddress");
         getParameterMap(request, response);
+
         if (StringUtils.isEmpty(mallAddress.getAddressId())){
+            List<MallAddress> mallAddrByUserId = mallShopService.getMallAddrByUserId(appUser.getId());
+            if (StringUtils.isEmpty(mallAddrByUserId)){
+                mallAddress.setDefaultAddr("1");
+            }else {
+                mallAddress.setDefaultAddr("0");
+            }
+            if (StringUtils.isEmpty(mallAddress.getSpecificAddr())){
+                returnResult.setMessage("收货地址不可为空！");
+                return returnResult;
+            }else if (StringUtils.isEmpty(mallAddress.getPhone())){
+                returnResult.setMessage("手机号不可为空！");
+                return returnResult;
+            }else if (StringUtils.isEmpty(mallAddress.getReceiver())){
+                returnResult.setMessage("收货人不可为空！");
+                return returnResult;
+            }
             mallAddress.setAddressId(UUID.randomUUID().toString().replace("-","").toUpperCase());
             returnResult.setMessage("添加成功");
+            mallAddress.setUserId(appUser.getId());
+            mallShopService.editMallAddr(mallAddress);
+            returnResult.setStatus(Boolean.TRUE);
+            return returnResult;
 
         }else {
-            returnResult.setMessage("修改成功");
+            MallAddress myMallAddress = mallShopService.getMallAddress(mallAddress.getAddressId());
+            if (StringUtils.isNull(myMallAddress)){
+                returnResult.setMessage("未查询到该地址！");
+                return returnResult;
+            } if (StringUtils.isNotEmpty(mallAddress.getSpecificAddr())){
+                myMallAddress.setSpecificAddr(mallAddress.getSpecificAddr());
+            } if (StringUtils.isNotEmpty(mallAddress.getPhone())){
+                myMallAddress.setPhone(mallAddress.getPhone());
+            } if (StringUtils.isNotEmpty(mallAddress.getReceiver())){
+                myMallAddress.setReceiver(mallAddress.getReceiver());
+            } if (StringUtils.isNotEmpty(mallAddress.getZipCode())){
+                myMallAddress.setZipCode(mallAddress.getZipCode());
+            } if (StringUtils.isNotEmpty(mallAddress.getDefaultAddr())){
+                if ("1".equals(mallAddress.getDefaultAddr())){
+                    mallShopService.changeDefaultAddr(appUser.getId());
+                }
+                myMallAddress.setDefaultAddr(mallAddress.getDefaultAddr());
+            }
+            returnResult.setMessage("修改成功！");
+            mallShopService.editMallAddr(myMallAddress);
+            returnResult.setStatus(Boolean.TRUE);
+            return returnResult;
         }
-        mallAddress.setUserId(appUser.getId());
-        mallShopService.editMallAddr(mallAddress);
-        returnResult.setStatus(Boolean.TRUE);
-        return returnResult;
+
 
     }
 

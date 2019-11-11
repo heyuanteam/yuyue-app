@@ -165,4 +165,9 @@ public class MallShopServiceImpl implements MallShopService {
     public void deleteMallAddr(String addressId) {
         mallAddressMapper.deleteMallAddr(addressId);
     }
+
+    @Override
+    public void changeDefaultAddr(String userId) {
+        mallAddressMapper.changeDefaultAddr(userId);
+    }
 }
