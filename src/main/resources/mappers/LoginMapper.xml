@@ -103,6 +103,9 @@
             <if test="wechatName!=null and wechatName!=''">
                 b.`wechatName` = #{wechatName},
             </if>
+            <if test="userType!=null and userType!=''">
+                b.`USER_TYPE` = #{userType},
+            </if>
         </set>
          WHERE 1=1
         <if test="id!=null and id!=''">
