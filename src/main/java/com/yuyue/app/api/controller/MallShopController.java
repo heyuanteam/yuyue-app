@@ -1679,13 +1679,13 @@ public class MallShopController extends BaseController{
         getParameterMap(request, response);
 
         String orderId = request.getParameter("orderId");
-        String tradeType = request.getParameter("tradeType");
-        if ("SCZFB".equals(tradeType) || "SCWX".equals(tradeType)){
-
-        }else {
-            returnResult.setMessage("支付类型错误！");
-            return  returnResult;
-        }
+//        String tradeType = request.getParameter("tradeType");
+//        if ("SCZFB".equals(tradeType) || "SCWX".equals(tradeType)){
+//
+//        }else {
+//            returnResult.setMessage("支付类型错误！");
+//            return  returnResult;
+//        }
         Order order = payService.getOrderId(orderId);
         if (StringUtils.isNull(order)){
             returnResult.setMessage("为查询该订单！");
@@ -1693,13 +1693,13 @@ public class MallShopController extends BaseController{
         }
         JSONObject jsonObject = null;
         if ("10A".equals(order.getStatus())){
-            if ("GGWX".equals(order.getTradeType())) {
+            if ("SCWX".equals(order.getTradeType())) {
                 try {
                     jsonObject = payController.payWX(order);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if ("GGZFB".equals(order.getTradeType())) {
+            } else if ("SCZFB".equals(order.getTradeType())) {
                 try {
                     jsonObject = payController.payZFB(order);
                 } catch (Exception e) {
@@ -1856,6 +1856,9 @@ public class MallShopController extends BaseController{
             return new BigDecimal(0);
         }
         MallAddress mallAddress = mallShopService.getMallAddress(addressId);
+        if (StringUtils.isNull(mallAddress)){
+            return new BigDecimal(0);
+        }
         String specificAddr = mallAddress.getSpecificAddr();
         try{
             String substring = specificAddr.substring(0, specificAddr.indexOf("-"));
