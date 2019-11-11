@@ -81,6 +81,8 @@ public class AppUser implements Serializable {
     private String fatherPhone;
 //    申请推广员的状态，默认10A
     private String extensionStatus;
+//    是否奖励推广员的状态
+    private String rewardStatus;
 
     //艺人封面
     private String frontCover;

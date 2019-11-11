@@ -36,6 +36,8 @@
         <result column="opendId" property="opendId" jdbcType="VARCHAR"/>
         <result column="wechatName" property="wechatName" jdbcType="VARCHAR"/>
         <result column="fatherPhone" property="fatherPhone" jdbcType="VARCHAR"/>
+        <result column="extensionStatus" property="extensionStatus" jdbcType="VARCHAR"/>
+        <result column="rewardStatus" property="rewardStatus" jdbcType="VARCHAR"/>
     </resultMap>
 
     <update id="updateAppUser" parameterType="com.yuyue.app.api.domain.AppUser">
@@ -113,7 +115,7 @@
         SELECT id,user_no userNo,user_nick_name nickName,user_real_name realName,id_type idType,id_card idCard,phone,sex,city,jpushName,password,salt,
             user_status userStatus,total ,income,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,fatherPhone,
         ATTENTION_TOTAL attentionTotal,LIKE_TOTAL likeTotal,COMMENT_TOTAL commentTotal,education ,wechat ,signature,opendId,wechatName,extensionStatus,
-            DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover
+            DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover,rewardStatus
             FROM yuyue_merchant
             where 1=1
            <!-- <choose>-->
@@ -131,7 +133,7 @@
         SELECT id,user_no userNo,user_nick_name nickName,user_real_name realName,id_type idType,id_card idCard,phone,sex,city,jpushName,password,salt,
         user_status userStatus,total ,income,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,fatherPhone,
         ATTENTION_TOTAL attentionTotal,LIKE_TOTAL likeTotal,COMMENT_TOTAL commentTotal,education ,wechat ,signature,opendId,wechatName,extensionStatus,
-        DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover
+        DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover,rewardStatus
         FROM yuyue_merchant
         where 1=1
         <if test="fatherPhone!=null and fatherPhone!='' ">  and fatherPhone=#{fatherPhone}  </if>
@@ -171,6 +173,7 @@
         frontCover,
         fatherPhone,
         extensionStatus,
+        rewardStatus,
         DATE_FORMAT(
         create_time,
         '%Y-%m-%d %H:%i:%s'
