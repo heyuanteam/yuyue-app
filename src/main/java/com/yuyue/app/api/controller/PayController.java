@@ -549,12 +549,9 @@ public class PayController extends BaseController{
 
         changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
         changeMoney.setMerchantId(user.getId());
-        changeMoney.setRealName(user.getWechatName());
-        changeMoney.setMoneyNumber(user.getOpendId());
 //        changeMoney.setTradeType("TXZFB");
 //        changeMoney.setMoney(new BigDecimal("1"));
 
-        createShouMoney(changeMoney);
         if (StringUtils.isEmpty(changeMoney.getId())) {
             returnResult.setMessage("创建提现订单失败！缺少参数！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -565,6 +562,9 @@ public class PayController extends BaseController{
                 returnResult.setMessage("支付宝授权信息为空！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
+            changeMoney.setRealName(user.getZfbRealName());
+            changeMoney.setMoneyNumber(user.getZfbNumber());
+            createShouMoney(changeMoney);
             return outZFB(changeMoney,user);
         } else if ("TXWX".equals(changeMoney.getTradeType())) {
             if ( StringUtils.isEmpty(user.getOpendId())){
@@ -572,6 +572,9 @@ public class PayController extends BaseController{
                 returnResult.setMessage("openId为空！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
+            changeMoney.setRealName(user.getWechatName());
+            changeMoney.setMoneyNumber(user.getOpendId());
+            createShouMoney(changeMoney);
             return outWX(changeMoney,user);
         }
         returnResult.setMessage("提现正在进行中！！");
