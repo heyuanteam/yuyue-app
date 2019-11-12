@@ -951,6 +951,11 @@ public class MyController extends BaseController{
         log.info("申请为推广员-------------->>/myController/askExtension");
         ReturnResult returnResult=new ReturnResult();
         getParameterMap(request, response);
+        if(!"1".equals(user.getUserType())) {
+            returnResult.setMessage("您好！只有普通用户可以申请为推广员！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
         loginService.updateUserType(user.getId(),"6");
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setMessage("成功申请为推广员！");
