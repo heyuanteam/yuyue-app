@@ -107,8 +107,8 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
-    public void deleteCart(Cart cart) {
-        cartMapper.deleteCart(cart);
+    public void deleteCart(String cardId , String shopId) {
+        cartMapper.deleteCart(cardId,shopId);
     }
 
     @Override

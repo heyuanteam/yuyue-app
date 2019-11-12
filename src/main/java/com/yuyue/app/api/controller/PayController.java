@@ -81,8 +81,8 @@ public class PayController extends BaseController{
             order.setStatusCode("100001");
             order.setMobile(user.getPhone());
             order.setMerchantId(user.getId());
-//        order.setTradeType("CZWX");
-//        order.setMoney("100");
+//          order.setTradeType("CZWX");
+//          order.setMoney("100");
             createOrder(order);
             if (StringUtils.isEmpty(order.getId())) {
                 returnResult.setMessage("创建订单失败！缺少参数！");
