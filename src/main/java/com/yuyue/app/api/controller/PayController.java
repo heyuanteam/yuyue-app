@@ -544,7 +544,7 @@ public class PayController extends BaseController{
         } else if ("income".equals(changeMoney.getNote()) && user.getIncome().compareTo(changeMoney.getMoney()) == -1){
             returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("income".equals(changeMoney.getNote()) && user.getIncome().compareTo(changeMoney.getMoney()) == -1){
+        } else if ("mIncome".equals(changeMoney.getNote()) && user.getMIncome().compareTo(changeMoney.getMoney()) == -1){
             returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (changeMoney.getMoney().compareTo(new BigDecimal(5001))==1){
