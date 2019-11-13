@@ -788,10 +788,10 @@ public class MyController extends BaseController{
             returnResult.setMessage("您的金额不足，请去充值！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        BigDecimal subtract = ResultJSONUtils.updateTotalMoney(appUser,gift.getGiftValue(),"");
+        BigDecimal subtract = ResultJSONUtils.updateUserMoney(appUser.getTotal(),gift.getGiftValue(),"");
         payService.updateTotal(appUser.getId(),subtract);
         BigDecimal bigDecimal = gift.getGiftValue().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal add = ResultJSONUtils.updateOutIncome(user, bigDecimal, "+");
+        BigDecimal add = ResultJSONUtils.updateUserMoney(user.getIncome(), bigDecimal, "+");
         payService.updateOutIncome(user.getId(), add);
 //        消费者记录
         Order order = new Order();

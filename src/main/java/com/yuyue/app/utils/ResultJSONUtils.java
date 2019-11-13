@@ -181,43 +181,21 @@ public class ResultJSONUtils {
     }
 
     /**
-     * 加减钱，收益
-     * @param user
-     * @param money
+     * 加减钱
+     * @param userMoney 用户的钱
+     * @param money    加减的钱
      * @return
      */
-    public synchronized static BigDecimal updateOutIncome(AppUser user,BigDecimal money,String symbol){
-        if(StringUtils.isNull(user)){
-            throw MyExceptionUtils.mxe("加钱失败！用户为空！");
-        } else if (money == null){
-            throw MyExceptionUtils.mxe("钱为空！");
+    public synchronized static BigDecimal updateUserMoney(BigDecimal userMoney,BigDecimal money,String symbol){
+       if (userMoney.compareTo(BigDecimal.ZERO) == -1){
+            throw MyExceptionUtils.mxe("用户的钱不能为负！");
         } else if (money.compareTo(BigDecimal.ZERO) == -1){
-            throw MyExceptionUtils.mxe("钱不能为负！");
+            throw MyExceptionUtils.mxe("加减的钱不能为负！");
         }
         if("+".equals(symbol)){
-            return user.getIncome().add(money);
+            return userMoney.add(money);
         }
-        return user.getIncome().subtract(money);
-    }
-
-    /**
-     * 加减钱，余额
-     * @param user
-     * @param money
-     * @return
-     */
-    public synchronized static BigDecimal updateTotalMoney(AppUser user,BigDecimal money,String symbol){
-        if(StringUtils.isNull(user)){
-            throw MyExceptionUtils.mxe("加钱失败！用户为空！");
-        } else if (money == null){
-            throw MyExceptionUtils.mxe("钱为空！");
-        } else if (money.compareTo(BigDecimal.ZERO) == -1){
-            throw MyExceptionUtils.mxe("钱不能为负！");
-        }
-        if("+".equals(symbol)){
-            return user.getTotal().add(money);
-        }
-        return user.getTotal().subtract(money);
+        return userMoney.subtract(money);
     }
 
     public synchronized static BigDecimal updateMIncome(AppUser user,BigDecimal money,String symbol){
