@@ -542,9 +542,6 @@ public class PayController extends BaseController{
         } else if (changeMoney.getMoney().compareTo(new BigDecimal(1))==-1){
             returnResult.setMessage("提现不能低于1元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("6".equals(user.getUserType()) && changeMoney.getMoney().compareTo(new BigDecimal(301))==1) {
-            returnResult.setMessage("业务员一天提现不能高于300元！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
         changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
