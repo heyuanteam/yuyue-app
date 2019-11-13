@@ -1352,8 +1352,8 @@ public class MallShopController extends BaseController{
             return  returnResult;
         }
         //调用临时订单，获取交易总价
-        List<ResultCart> getTemporaryOrder = (List<ResultCart>) temporaryOrder(cartStr,addressId,request,response).getResult();
-        if (StringUtils.isEmpty(getTemporaryOrder)){
+        ReturnOrder returnOrder = (ReturnOrder) temporaryOrder(cartStr,addressId,request,response).getResult();
+        if (StringUtils.isNull(returnOrder)){
             returnResult.setMessage("生成订单异常");
             return  returnResult;
         }
@@ -1361,14 +1361,8 @@ public class MallShopController extends BaseController{
         //BigDecimal payTotal = new BigDecimal(0);
         String payTotal = "0";
         Map<String,BigDecimal> map = new HashMap<>();
-        for (ResultCart resultCart: getTemporaryOrder) {
-            System.out.println("单个商铺"+resultCart.getPayAmount());
-            map.put(resultCart.getShopId(),resultCart.getPayAmount());
-            payTotal = new BigDecimal(payTotal).add(resultCart.getPayAmount()).toString();
-        }
-        System.out.println("总金额"+new BigDecimal(payTotal));
         Order order =new Order();
-        order.setMoney(new BigDecimal(payTotal));
+        order.setMoney(returnOrder.getOrderTotal());
         order.setTradeType(payType);
         JSONObject jsonObject = null;
         try {
@@ -1782,12 +1776,14 @@ public class MallShopController extends BaseController{
         ReturnResult returnResult = new ReturnResult();
         log.info("临时订单（最新）------------->>/mallShop/temporaryOrder");
         getParameterMap(request, response);
+        ReturnOrder returnOrder = new ReturnOrder();
         List<ResultCart> resultCarts = new ArrayList<>();
         if (StringUtils.isEmpty(cartStr)){
             returnResult.setMessage("cartStr参数不能为空！");
             return returnResult;
         }if (StringUtils.isNotEmpty(addressId)){
             MallAddress mallAddress = mallShopService.getMallAddress(addressId);
+            returnOrder.setMallAddress(mallAddress);
             if (StringUtils.isNull(mallAddress)){
                 returnResult.setMessage("为查询该地址");
                 return returnResult;
@@ -1814,10 +1810,22 @@ public class MallShopController extends BaseController{
             }
             resultCarts.add(resultCart);
         }
-
+        returnOrder.setResultCarts(resultCarts);
+        //获取交易总额
+        //BigDecimal payTotal = new BigDecimal(0);
+        String payTotal = "0";
+        Map<String,BigDecimal> map = new HashMap<>();
+        for (ResultCart resultCart: resultCarts) {
+            System.out.println("单个商铺"+resultCart.getPayAmount());
+            map.put(resultCart.getShopId(),resultCart.getPayAmount());
+            payTotal = new BigDecimal(payTotal).add(resultCart.getPayAmount()).toString();
+        }
+        System.out.println("总金额"+new BigDecimal(payTotal));
+        returnOrder.setOrderTotal(new BigDecimal(payTotal));
         returnResult.setMessage("返回成功！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(resultCarts);
+
+        returnResult.setResult(returnOrder);
         return returnResult;
     }
 
@@ -1865,6 +1873,7 @@ public class MallShopController extends BaseController{
             //设置规格列表
             List<Specification> commodities = new ArrayList<>();
             if (cartStr.contains(";")){
+                //有多个商品
                 String[] commodityInfos = commodityIds.split(";");
                 String payTotal = "0";
                 for (String commodityInfo:commodityInfos
@@ -1877,15 +1886,22 @@ public class MallShopController extends BaseController{
                     payTotal = new BigDecimal(payTotal).add(specificationById.getCommodityPrice().multiply(new BigDecimal(commodityNum))).toString();
                 }
                 resultCart.setCommodities(commodities);
+                //商品总价
+                resultCart.setCommodityAmount(new BigDecimal(payTotal));
+                //商品总价加运费
                 resultCart.setPayAmount(new BigDecimal(payTotal).add(resultCart.getFare()));
             }else {
+                //仅有一个商品
                 String commodityId = commodityIds.split(":")[0];
                 String commodityNum = commodityIds.split(":")[1];
                 Specification specificationById = mallShopService.getSpecificationById(commodityId);
                 specificationById.setCommodityNum(Integer.parseInt(commodityNum));
                 commodities.add(specificationById);
-                BigDecimal payTotal = specificationById.getCommodityPrice().multiply(new BigDecimal(commodityNum)).add(resultCart.getFare());
-                resultCart.setPayAmount(payTotal);
+                BigDecimal payTotal = specificationById.getCommodityPrice().multiply(new BigDecimal(commodityNum));
+                //商品总价
+                resultCart.setCommodityAmount(payTotal);
+                //商品总价加运费
+                resultCart.setPayAmount(payTotal.add(resultCart.getFare()));
                 resultCart.setCommodities(commodities);
             }
         }catch (Exception e){
