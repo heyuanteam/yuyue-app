@@ -1,9 +1,6 @@
 package com.yuyue.app.api.service;
 
-import com.yuyue.app.api.domain.ChangeMoney;
-import com.yuyue.app.api.domain.Gift;
-import com.yuyue.app.api.domain.Order;
-import com.yuyue.app.api.domain.OutMoney;
+import com.yuyue.app.api.domain.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -38,4 +35,7 @@ public interface PayService {
     List<Order> findOrderList(String startTime);
 
     void updateChangeMoneyStatus(String responseCode, String responseMessage, String status, String id);
+
+    //商户店家ID
+    List<String> getShopUserList(String id);
 }

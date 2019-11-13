@@ -15,10 +15,7 @@ import com.auth0.jwt.JWT;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
-import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.ChangeMoney;
-import com.yuyue.app.api.domain.Order;
-import com.yuyue.app.api.domain.OutMoney;
+import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.api.service.PayService;
@@ -26,6 +23,7 @@ import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,9 +218,20 @@ public class PayController extends BaseController{
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
                     //    极光商家卖出商品通知 : 8 (orderId)
-                    AppUser appUserMsg = loginService.getAppUserMsg("", "", orderNo.getMerchantId());
-                    String token = loginService.getToken(appUserMsg);
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
+                    List<String> shopUserIdList = payService.getShopUserList(orderNo.getId());
+                    if (CollectionUtils.isNotEmpty(shopUserIdList)) {
+                        for (String shopUserId: shopUserIdList) {
+                            if (StringUtils.isNotEmpty(shopUserId)) {
+                                AppUser appUserMsg = loginService.getAppUserMsg("", "", shopUserId);
+                                String token = loginService.getToken(appUserMsg);
+                                HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
+                            }
+                        }
+                    } else {
+                        AppUser appUserMsg = loginService.getAppUserMsg("", "", orderNo.getMerchantId());
+                        String token = loginService.getToken(appUserMsg);
+                        HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
+                    }
                 } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
@@ -370,15 +379,26 @@ public class PayController extends BaseController{
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                    //    极光商家卖出商品通知 : 8 (orderId)
-                    AppUser appUserMsg = loginService.getAppUserMsg("", "", orderNo.getMerchantId());
-                    String token = loginService.getToken(appUserMsg);
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
 //                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
 //                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")) {
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser, orderNo.getMoney(), "+");
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
+                    //    极光商家卖出商品通知 : 8 (orderId)
+                    List<String> shopUserIdList = payService.getShopUserList(orderNo.getId());
+                    if (CollectionUtils.isNotEmpty(shopUserIdList)) {
+                        for (String shopUserId: shopUserIdList) {
+                            if (StringUtils.isNotEmpty(shopUserId)) {
+                                AppUser appUserMsg = loginService.getAppUserMsg("", "", shopUserId);
+                                String token = loginService.getToken(appUserMsg);
+                                HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
+                            }
+                        }
+                    } else {
+                        AppUser appUserMsg = loginService.getAppUserMsg("", "", orderNo.getMerchantId());
+                        String token = loginService.getToken(appUserMsg);
+                        HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
+                    }
                 } else if("10A".equals(orderNo.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
                     log.info("不加钱===================");
                     String trxNo = params.get("trade_status");
