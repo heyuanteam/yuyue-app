@@ -42,7 +42,7 @@ public interface MallShopService {
 
     void editCart (Cart cart);
 
-    void deleteCart (Cart cart);
+    void deleteCart (String cardId , String shopId);
 
 /*---------------------------------评价---------------------------------*/
     List<MallComment> getMallComments(String shopId);

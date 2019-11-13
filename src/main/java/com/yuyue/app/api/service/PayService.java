@@ -24,6 +24,8 @@ public interface PayService {
 
     void updateOutIncome(String merchantId, BigDecimal money);
 
+    void updateMIncome(String merchantId, BigDecimal money);
+
     List<OutMoney> getOutMoneyList(String id, int begin, int size);
 
     List<Gift> getGiftList();

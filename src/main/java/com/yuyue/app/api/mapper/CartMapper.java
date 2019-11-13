@@ -30,5 +30,5 @@ public interface CartMapper extends MyBaseMapper<Cart> {
     void addCart (Cart cart);
 
     @Delete("DELETE FROM yuyue_mall_cart where cart_id = #{cartId} or shop_id = #{shopId} ")
-    void deleteCart (Cart cart);
+    void deleteCart (@Param(value = "cartId") String cartId ,@Param(value = "shopId") String shopId);
 }

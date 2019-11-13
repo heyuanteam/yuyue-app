@@ -54,6 +54,11 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
+    public void updateMIncome(String merchantId, BigDecimal money) {
+        payMapper.updateMIncome(merchantId,money);
+    }
+
+    @Override
     public List<OutMoney> getOutMoneyList(String id,int begin, int size) { return payMapper.getOutMoneyList(id,begin,size); }
 
     @Override

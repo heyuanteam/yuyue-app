@@ -191,20 +191,33 @@ public class SimpleTest {
 //
 //        }
 //        BigDecimal getFare = new BigDecimal(0);
-//        if (getFare.compareTo(new BigDecimal(-1)) == 0){
+//        if (getFare.compareTo(new BigDecimal(-1)) > 0){
 //            System.out.println(true);
 //        }else System.out.println(false);
+//        int i = 0;
+//            if (i <= Integer.parseInt("0")){
+//            System.out.println("dui");
+//        }else{
+//                System.out.println("cuo");
+//            }
 //        String s = "5FF99665F69C4CE7B33669876395BB7C:1;F2F6F78CE342413AA20C4968F1BCED0A:1;FBE391F5D4C04D5DB60F9ADF79F6AA94:1";
 //        String[] commodityInfos = s.split(";");
 //        for (int i =0 ;i < commodityInfos.length ;i++){
 //            System.out.println(commodityInfos.length);
 //        }
-        String tradeType = "SCZFB";
-        if(!"SCWX".equals(tradeType) || !"SCZFB".equals(tradeType)){
-            System.out.println("false");
-        }else {
-            System.out.println("true");
-        }
+//        String tradeType = "SCZFB";
+//        if(!"SCWX".equals(tradeType) || !"SCZFB".equals(tradeType)){
+//            System.out.println("false");
+//        }else {
+//            System.out.println("true");
+//        }
+//        String cartStr = "A0E34543A9414EFDBEB63B6BDDB8156[5FF99665F69C4CE7B33669876395BB7C:1]";
+//        Map<String, String> stringStringMap = MallUtils.splitCartString(cartStr);
+//        for (String key:stringStringMap.keySet()
+//             ) {
+//            String s = stringStringMap.get(key);
+//            System.out.println(key+s);
+//        }
 
 
     }
