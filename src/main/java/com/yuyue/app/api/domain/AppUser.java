@@ -39,6 +39,8 @@ public class AppUser implements Serializable {
     private String salt;
     //余额
     private BigDecimal total;
+    //商户收益（商城）
+    private BigDecimal mIncome;
     //收益
     private BigDecimal income;
     //性别

@@ -219,4 +219,18 @@ public class ResultJSONUtils {
         }
         return user.getTotal().subtract(money);
     }
+
+    public synchronized static BigDecimal updateMIncome(AppUser user,BigDecimal money,String symbol){
+        if(StringUtils.isNull(user)){
+            throw MyExceptionUtils.mxe("加钱失败！用户为空！");
+        } else if (money == null){
+            throw MyExceptionUtils.mxe("钱为空！");
+        } else if (money.compareTo(BigDecimal.ZERO) == -1){
+            throw MyExceptionUtils.mxe("钱不能为负！");
+        }
+        if("+".equals(symbol)){
+            return user.getMIncome().add(money);
+        }
+        return user.getMIncome().subtract(money);
+    }
 }

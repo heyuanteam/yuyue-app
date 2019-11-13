@@ -41,6 +41,10 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Update("UPDATE yuyue_merchant b SET b.income = #{money} WHERE b.ID = #{merchantId}")
     void updateOutIncome(@Param("merchantId") String merchantId,@Param("money") BigDecimal money);
 
+    @Transactional
+    @Update("UPDATE yuyue_merchant b SET b.mIncome = #{money} WHERE b.ID = #{merchantId}")
+    void updateMIncome(@Param("merchantId") String merchantId,@Param("money") BigDecimal money);
+
     @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_order b " +
             " WHERE b.merchantId = #{id} AND b.`status` = '10B' order by b.COMPLETE_TIME desc LIMIT #{begin},#{size}")
     List<Order> getMoneyList(@Param("id") String id,@Param(value = "begin") int begin,@Param(value = "size")int size);

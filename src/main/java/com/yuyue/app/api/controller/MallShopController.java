@@ -14,6 +14,7 @@ import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.GouldUtils;
 import com.yuyue.app.utils.MallUtils;
+import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1351,18 +1352,19 @@ public class MallShopController extends BaseController{
             return  returnResult;
         }
         //调用临时订单，获取交易总价
-        List<ResultCart> getOrder = (List<ResultCart>) temporaryOrder(cartStr,addressId,request,response).getResult();
-        if (StringUtils.isEmpty(getOrder)){
+        List<ResultCart> getTemporaryOrder = (List<ResultCart>) temporaryOrder(cartStr,addressId,request,response).getResult();
+        if (StringUtils.isEmpty(getTemporaryOrder)){
             returnResult.setMessage("生成订单异常");
             return  returnResult;
         }
         //获取交易总额
         //BigDecimal payTotal = new BigDecimal(0);
         String payTotal = "0";
-        for (ResultCart resultCart: getOrder) {
+        Map<String,BigDecimal> map = new HashMap<>();
+        for (ResultCart resultCart: getTemporaryOrder) {
             System.out.println("单个商铺"+resultCart.getPayAmount());
+            map.put(resultCart.getShopId(),resultCart.getPayAmount());
             payTotal = new BigDecimal(payTotal).add(resultCart.getPayAmount()).toString();
-
         }
         System.out.println("总金额"+new BigDecimal(payTotal));
         Order order =new Order();
@@ -1381,7 +1383,8 @@ public class MallShopController extends BaseController{
             returnResult.setResult(jsonObject.get("result"));
         }
         //设置订单项状态
-        Order getPayStatus = payService.getOrderId(orderId);
+        Order getOrder = payService.getOrderId(orderId);
+        String getOrderStatus = getOrder.getStatus();
         /*634543A9414EFDBEB63B6BDDB8535D11[488DA0232479449D9FE0571FA4FFB984:2]-
         A0E34543A9414EFDBEB63B6BDDB8156[5FF99665F69C4CE7B33669876395BB7C:1;
         F2F6F78CE342413AA20C4968F1BCED0A:1;FBE391F5D4C04D5DB60F9ADF79F6AA94:1]*/
@@ -1396,9 +1399,24 @@ public class MallShopController extends BaseController{
             //订单id
             orderItem.setOrderId(orderId);
             //支付状态
-            orderItem.setStatus(getPayStatus.getStatus());
+            orderItem.setStatus(getOrderStatus);
 
             mallShopService.editMallOrderItem(orderItem);
+        }
+        //订单支付给商家加钱
+        if ("10B".equals(getOrderStatus)){
+            for (String shopId:map.keySet()
+                 ) {
+                MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+                //获取商家id
+                String merchantId = myMallShop.getMerchantId();
+                BigDecimal money = map.get(shopId);
+                AppUser appUserMsg = loginService.getAppUserMsg("", "", merchantId);
+                BigDecimal mIncome = ResultJSONUtils.updateMIncome(appUserMsg, money, "+");
+                payService.updateMIncome(merchantId,mIncome);
+            }
+
+
         }
 
         returnResult.setMessage("订单生成成功！");
