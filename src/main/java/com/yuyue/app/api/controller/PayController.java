@@ -658,9 +658,9 @@ public class PayController extends BaseController{
                     if (changeMoney.getNote().contains("income")) {
                         BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
                         payService.updateOutIncome(user.getId(),subtract);
-                    } else if (changeMoney.getNote().contains("income")) {
-                        BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
-                        payService.updateOutIncome(user.getId(),subtract);
+                    } else if (changeMoney.getNote().contains("mIncome")) {
+                        BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
+                        payService.updateMIncome(user.getId(),subtract);
                     }
                     payService.updateChangeMoneyStatus(transferMap.get("result_code"), "微信转账成功", "10B", changeMoney.getId());
                     returnResult.setMessage("微信提现成功！");
@@ -837,9 +837,9 @@ public class PayController extends BaseController{
                 if (changeMoney.getNote().contains("income")) {
                     BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
                     payService.updateOutIncome(user.getId(),subtract);
-                } else if (changeMoney.getNote().contains("income")) {
-                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
-                    payService.updateOutIncome(user.getId(),subtract);
+                } else if (changeMoney.getNote().contains("mIncome")) {
+                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
+                    payService.updateMIncome(user.getId(),subtract);
                 }
                 payService.updateOutStatus(code, msg, "10B", outNo);
                 returnResult.setMessage("支付宝提现成功！");
