@@ -35,10 +35,18 @@ public class ReturnOrder  implements Serializable {
 
     //商品列表
     private List<Specification> commodities;
-    //商品总额
-    private BigDecimal payAmount;
     //运费
     private BigDecimal fare;
+    //商品总额
+    private BigDecimal payAmount;
+    //订单总额
+    private BigDecimal orderTotal;
+    //订单地址
+    private MallAddress mallAddress;
+    //
+    private List<ResultCart> resultCarts;
+
+
 
     //发货状态
     private String status;

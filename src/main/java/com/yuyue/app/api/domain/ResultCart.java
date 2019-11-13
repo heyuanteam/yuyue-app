@@ -23,6 +23,8 @@ public class ResultCart implements Serializable {
     //商品列表
     private List<Specification> commodities;
     //商品总额
+    private BigDecimal commodityAmount;
+    //商品总额
     private BigDecimal payAmount;
     //运费
     private BigDecimal fare;
