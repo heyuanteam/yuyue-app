@@ -916,21 +916,20 @@ public class MyController extends BaseController{
         int sum2 = 0;//艺人
         int sum3 = 0;//商户
         int sum4 = 0;//合作人
-        if ("6".equals(user.getUserType())) {
-            List<AppUser> list = loginService.getAppUserByFatherPhone(user.getPhone());
-            if(CollectionUtils.isNotEmpty(list)){
-                sum = list.size();
-                for (AppUser appUser:list) {
-                    if ("2".equals(appUser.getUserType())) {
-                        sum2 += 1;
-                    } else if ("3".equals(appUser.getUserType())) {
-                        sum3 += 1;
-                    } else if ("4".equals(appUser.getUserType())) {
-                        sum4 += 1;
-                    }
+        List<AppUser> list = loginService.getAppUserByFatherPhone(user.getPhone());
+        if(CollectionUtils.isNotEmpty(list)){
+            sum = list.size();
+            for (AppUser appUser:list) {
+                if ("2".equals(appUser.getUserType())) {
+                    sum2 += 1;
+                } else if ("3".equals(appUser.getUserType())) {
+                    sum3 += 1;
+                } else if ("4".equals(appUser.getUserType())) {
+                    sum4 += 1;
                 }
             }
         }
+
         hashMap.put("sum",sum);
         hashMap.put("artist",sum2);
         hashMap.put("business",sum3);

@@ -83,6 +83,10 @@ public class AppUser implements Serializable {
     private String extensionStatus;
 //    是否奖励推广员的状态
     private String rewardStatus;
+//    支付宝账号
+    private String zfbNumber;
+//    支付宝真实姓名
+    private String zfbRealName;
 
     //艺人封面
     private String frontCover;

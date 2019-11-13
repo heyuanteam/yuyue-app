@@ -74,7 +74,8 @@ public class LoginServiceImpl implements LoginService {
                               String signature, String userUrl, String cardZUrl, String cardFUrl, String ciphertextPwd,
                               String city, String jpushName, String opendId, String wechatName,String frontCover) {
         loginMapper.updateAppUser(id,nickName,realName,idCard,phone,sex,headpUrl, userStatus, addrDetail, education,
-                wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,city,jpushName,opendId,wechatName,frontCover,"");
+                wechat,signature,userUrl,cardZUrl,cardFUrl,ciphertextPwd,city,jpushName,opendId,wechatName,frontCover,
+                "","","");
     }
 
     @Override
@@ -100,6 +101,17 @@ public class LoginServiceImpl implements LoginService {
     public void updateUserType(String id, String userType) {
         loginMapper.updateAppUser(id,"","","","","","", "", "",
                 "", "","","","","","","","","",
-                "","",userType); }
+                "","",userType,"",""); }
+
+    @Override
+    public void updateUserByZFB(String id, String zfbNumber, String zfbRealName) {
+        loginMapper.updateAppUser(id,"","","","","","", "", "",
+                "", "","","","","","","","","",
+                "","","",zfbNumber,zfbRealName); }
+
+    @Override
+    public void updateZFBMessage(String id, String zfbNumber, String zfbRealName) {
+        loginMapper.updateZFBMessage(id,zfbNumber,zfbRealName);
+    }
 
 }

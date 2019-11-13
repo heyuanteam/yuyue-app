@@ -35,7 +35,7 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
                        @Param("userUrl") String userUrl,@Param("cardZUrl") String cardZUrl,@Param("cardFUrl") String cardFUrl,
                        @Param("password") String password,@Param("city") String city,@Param("jpushName") String jpushName,
                        @Param("opendId") String opendId,@Param("wechatName") String wechatName,@Param("frontCover") String frontCover,
-                       @Param("userType") String userType);
+                       @Param("userType") String userType,@Param("zfbNumber") String zfbNumber,@Param("zfbRealName") String zfbRealName);
 
     /**
      * 模糊查询   用户关注搜索
@@ -63,9 +63,14 @@ public interface LoginMapper extends MyBaseMapper<AppUser> {
     void userAuthentication(@Param(value = "userId") String userId,@Param(value = "realName")String realName,
                             @Param(value = "idCard")String idCard,@Param(value = "userUrl")String userUrl,
                             @Param(value = "cardZUrl")String cardZUrl, @Param(value = "cardFUrl")String cardFUrl);
+
     @Transactional
     @Update("UPDATE yuyue_merchant b SET b.`opendId` = #{opendId},b.wechatName=#{wechatName} WHERE b.id = #{id}")
     void updateOpendId(@Param("id") String id,@Param("opendId") String opendId,@Param("wechatName") String wechatName);
 
     List<AppUser> getAppUserByFatherPhone(@Param("fatherPhone") String fatherPhone);
+
+    @Transactional
+    @Update("UPDATE yuyue_merchant b SET b.`zfbNumber` = #{zfbNumber},b.zfbRealName=#{zfbRealName} WHERE b.id = #{id}")
+    void updateZFBMessage(@Param("id") String id,@Param("zfbNumber") String zfbNumber,@Param("zfbRealName") String zfbRealName);
 }

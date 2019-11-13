@@ -536,36 +536,42 @@ public class PayController extends BaseController{
         } else if (user.getIncome().compareTo(changeMoney.getMoney()) == -1){
             returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (StringUtils.isEmpty(user.getOpendId())){
-            returnResult.setCode("02");
-            returnResult.setMessage("openId为空！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (changeMoney.getMoney().compareTo(new BigDecimal(5001))==1){
             returnResult.setMessage("提现不能高于5000元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (changeMoney.getMoney().compareTo(new BigDecimal(1))==-1){
             returnResult.setMessage("提现不能低于1元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("6".equals(user.getUserType()) && changeMoney.getMoney().compareTo(new BigDecimal(301))==1) {
-            returnResult.setMessage("业务员一天提现不能高于300元！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
         changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
         changeMoney.setMerchantId(user.getId());
-        changeMoney.setRealName(user.getWechatName());
-        changeMoney.setMoneyNumber(user.getOpendId());
 //        changeMoney.setTradeType("TXZFB");
 //        changeMoney.setMoney(new BigDecimal("1"));
 
-        createShouMoney(changeMoney);
         if (StringUtils.isEmpty(changeMoney.getId())) {
             returnResult.setMessage("创建提现订单失败！缺少参数！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         if ("TXZFB".equals(changeMoney.getTradeType())) {
-//            return outZFB(outMoney,user);
+            if (StringUtils.isEmpty(user.getZfbNumber()) && StringUtils.isEmpty(user.getZfbRealName())){
+                returnResult.setCode("03");
+                returnResult.setMessage("支付宝授权信息为空！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            changeMoney.setRealName(user.getZfbRealName());
+            changeMoney.setMoneyNumber(user.getZfbNumber());
+            createShouMoney(changeMoney);
+            return outZFB(changeMoney,user);
         } else if ("TXWX".equals(changeMoney.getTradeType())) {
+            if ( StringUtils.isEmpty(user.getOpendId())){
+                returnResult.setCode("02");
+                returnResult.setMessage("openId为空！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            changeMoney.setRealName(user.getWechatName());
+            changeMoney.setMoneyNumber(user.getOpendId());
+            createShouMoney(changeMoney);
             return outWX(changeMoney,user);
         }
         returnResult.setMessage("提现正在进行中！！");
@@ -656,7 +662,11 @@ public class PayController extends BaseController{
         }
 
         if("TXZFB".equals(tradeType)){
-
+            if (StringUtils.isEmpty(user.getZfbNumber()) && StringUtils.isEmpty(user.getZfbRealName())){
+                returnResult.setMessage("支付宝授权信息为空！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            loginService.updateUserByZFB(user.getId(),user.getZfbNumber(),user.getZfbRealName());
         } else if ("TXWX".equals(tradeType)) {
             String opendId = "";
             String wechatName = "";
@@ -694,7 +704,11 @@ public class PayController extends BaseController{
         }
 
         if("ZFB".equals(tradeType)){
-
+            if (StringUtils.isEmpty(user.getZfbNumber()) && StringUtils.isEmpty(user.getZfbRealName())){
+                returnResult.setMessage("支付宝授权信息为空！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            loginService.updateZFBMessage(user.getId(),user.getZfbNumber(),user.getZfbRealName());
         } else if ("WX".equals(tradeType)) {
             String opendId = "";
             String wechatName = "";
@@ -766,15 +780,16 @@ public class PayController extends BaseController{
      * 单笔提现到支付宝账户
      * https://doc.open.alipay.com/docs/doc.htm?spm=a219a.7629140.0.0.54Ty29&treeId=193&articleId=106236&docType=1
      */
-    public synchronized JSONObject outZFB(OutMoney outMoney,AppUser user) {
+    public synchronized JSONObject outZFB(ChangeMoney changeMoney,AppUser user) {
         ReturnResult returnResult = new ReturnResult();
         AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
-        model.setOutBizNo(outMoney.getId());//生成订单号
+        model.setOutBizNo(changeMoney.getId());//生成订单号
+//        (1、ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。2、ALIPAY_LOGONID：支付宝登录号，支持邮箱和手机号格式。)
         model.setPayeeType("ALIPAY_LOGONID");//固定值
-        model.setPayeeAccount(outMoney.getMoneyNumber());
-        model.setAmount(outMoney.getMoney().toString());//金额
-        model.setPayerShowName("艺人收益");
-        model.setPayerRealName(outMoney.getRealName());
+        model.setPayeeAccount(changeMoney.getMoneyNumber());//支付宝账号
+        model.setAmount(changeMoney.getMoney().toString());//金额
+        model.setPayerShowName("杭州和元网络科技有限公司");//转款账号
+        model.setPayerRealName(changeMoney.getRealName());//支付宝真实姓名
         model.setRemark("单笔转账到支付宝");
         try {
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
@@ -788,8 +803,8 @@ public class PayController extends BaseController{
                 String outNo = jsonObject.getString("out_biz_no");
 
                 payService.updateOutStatus(code, msg, "10B", outNo);
-                BigDecimal subtract = ResultJSONUtils.updateOutIncome(user, outMoney.getMoney(), "");
-                payService.updateOutIncome(outMoney.getMerchantId(), subtract);
+                BigDecimal subtract = ResultJSONUtils.updateOutIncome(user, changeMoney.getMoney(), "");
+                payService.updateOutIncome(changeMoney.getMerchantId(), subtract);
                 returnResult.setMessage("支付宝转账成功！");
                 returnResult.setStatus(Boolean.TRUE);
                 returnResult.setResult(JSONObject.parseObject(response.getBody()));

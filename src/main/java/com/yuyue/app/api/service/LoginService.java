@@ -35,4 +35,8 @@ public interface LoginService {
     List<AppUser> getAppUserByFatherPhone(String fatherPhone);
 
     void updateUserType(String id, String userType);
+
+    void updateUserByZFB(String id, String zfbNumber, String zfbRealName);
+
+    void updateZFBMessage(String id, String zfbNumber, String zfbRealName);
 }
