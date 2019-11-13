@@ -15,10 +15,7 @@ import com.auth0.jwt.JWT;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
-import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.ChangeMoney;
-import com.yuyue.app.api.domain.Order;
-import com.yuyue.app.api.domain.OutMoney;
+import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.api.service.PayService;
@@ -26,6 +23,7 @@ import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,9 +218,7 @@ public class PayController extends BaseController{
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
                     //    极光商家卖出商品通知 : 8 (orderId)
-                    AppUser appUserMsg = loginService.getAppUserMsg("", "", orderNo.getMerchantId());
-                    String token = loginService.getToken(appUserMsg);
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
+                    sendClotheSoldUrl(orderNo);
                 } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
@@ -370,15 +366,13 @@ public class PayController extends BaseController{
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                    //    极光商家卖出商品通知 : 8 (orderId)
-                    AppUser appUserMsg = loginService.getAppUserMsg("", "", orderNo.getMerchantId());
-                    String token = loginService.getToken(appUserMsg);
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId(),token);
 //                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
 //                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")) {
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser, orderNo.getMoney(), "+");
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
+                    //    极光商家卖出商品通知 : 8 (orderId)
+                    sendClotheSoldUrl(orderNo);
                 } else if("10A".equals(orderNo.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
                     log.info("不加钱===================");
                     String trxNo = params.get("trade_status");
@@ -475,16 +469,12 @@ public class PayController extends BaseController{
                     order.setMoney(new BigDecimal(iosMap.get(moneys[3]).toString()));
                     order.setTradeType("CZIOS");
                     order.setNote(moneys[3]);
-//        order.setMoney("100");
+//                  order.setMoney("100");
                     createOrder(order);
 //                    BigDecimal add = ResultJSONUtils.updateUserMoney(user.getTotal(),new BigDecimal(iosMap.get(moneys[3]).toString()),"+");
-
-                    //    极光商家卖出商品通知 : 8 (orderId)
-                    AppUser appUserMsg = loginService.getAppUserMsg("", "", order.getMerchantId());
-                    String token = loginService.getToken(appUserMsg);
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId(),token);
-
 //                    payService.updateTotal(user.getId(), add);
+//                    极光商家卖出商品通知 : 8 (orderId)
+                    sendClotheSoldUrl(order);
                     returnResult.setStatus(Boolean.TRUE);
                     returnResult.setMessage("充值成功！");
                     returnResult.setResult(moneys[3]);
@@ -495,6 +485,24 @@ public class PayController extends BaseController{
             }
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    //极光商家卖出商品通知 : 8 (orderId)
+    public void sendClotheSoldUrl(Order order) {
+        List<String> shopUserIdList = payService.getShopUserList(order.getId());
+        if (CollectionUtils.isNotEmpty(shopUserIdList)) {
+            for (String shopUserId: shopUserIdList) {
+                if (StringUtils.isNotEmpty(shopUserId)) {
+                    AppUser appUserMsg = loginService.getAppUserMsg("", "", shopUserId);
+                    String token = loginService.getToken(appUserMsg);
+                    HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId(),token);
+                }
+            }
+        } else {
+            AppUser appUserMsg = loginService.getAppUserMsg("", "", order.getMerchantId());
+            String token = loginService.getToken(appUserMsg);
+            HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId(),token);
+        }
     }
 
     //创建充值订单
@@ -638,9 +646,9 @@ public class PayController extends BaseController{
                     if (changeMoney.getNote().contains("income")) {
                         BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
                         payService.updateOutIncome(user.getId(),subtract);
-                    } else if (changeMoney.getNote().contains("income")) {
-                        BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
-                        payService.updateOutIncome(user.getId(),subtract);
+                    } else if (changeMoney.getNote().contains("mIncome")) {
+                        BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
+                        payService.updateMIncome(user.getId(),subtract);
                     }
                     payService.updateChangeMoneyStatus(transferMap.get("result_code"), "微信转账成功", "10B", changeMoney.getId());
                     returnResult.setMessage("微信提现成功！");
@@ -817,9 +825,9 @@ public class PayController extends BaseController{
                 if (changeMoney.getNote().contains("income")) {
                     BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
                     payService.updateOutIncome(user.getId(),subtract);
-                } else if (changeMoney.getNote().contains("income")) {
-                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
-                    payService.updateOutIncome(user.getId(),subtract);
+                } else if (changeMoney.getNote().contains("mIncome")) {
+                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
+                    payService.updateMIncome(user.getId(),subtract);
                 }
                 payService.updateOutStatus(code, msg, "10B", outNo);
                 returnResult.setMessage("支付宝提现成功！");

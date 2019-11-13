@@ -88,4 +88,6 @@ public interface PayMapper extends MyBaseMapper<Order> {
 
     void updateChangeMoneyStatus(@Param(value = "responseCode")String responseCode,@Param(value = "responseMessage") String responseMessage,
                                  @Param(value = "status")String status,@Param(value = "id") String id);
+
+    List<String> getShopUserList(@Param(value = "id")String id);
 }

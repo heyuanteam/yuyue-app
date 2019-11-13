@@ -41,7 +41,7 @@ public class AppUser implements Serializable {
     private BigDecimal total;
     //商户收益（商城）
     private BigDecimal mIncome;
-    //收益
+    //收益（艺人和推广的奖励金）
     private BigDecimal income;
     //性别
     private String sex;

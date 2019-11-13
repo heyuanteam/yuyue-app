@@ -77,4 +77,9 @@ public class PayServiceImpl implements PayService {
     public void updateChangeMoneyStatus(String responseCode, String responseMessage, String status, String id) {
         payMapper.updateChangeMoneyStatus(responseCode,responseMessage,status,id);}
 
+    @Override
+    public List<String> getShopUserList(String id) {
+        return payMapper.getShopUserList(id);
+    }
+
 }

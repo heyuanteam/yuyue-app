@@ -40,4 +40,14 @@
             and id = #{id}
         </if>
     </update>
+
+    <!-- 查询商户店家ID -->
+    <select id="getShopUserList" parameterType="String" resultType="String">
+        SELECT d.merchant_id merchantId FROM yuyue_order b,yuyue_mall_order_item c,yuyue_mall_shop d
+        WHERE 1=1 AND c.shop_id = d.shop_id
+            <if test="id!=null and id!=''">
+                and b.id = #{id} and c.order_id = #{id}
+            </if>
+        GROUP BY d.merchant_id order by d.create_time desc
+    </select>
 </mapper>
