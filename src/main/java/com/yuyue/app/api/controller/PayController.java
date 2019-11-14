@@ -69,7 +69,7 @@ public class PayController extends BaseController{
     @ResponseBody
     @RequestMapping("/payYuYue")
     @LoginRequired
-    public JSONObject payYuYue(Order order, @CurrentUser AppUser user) throws Exception {
+    public JSONObject payYuYue(String videoId,Order order, @CurrentUser AppUser user) throws Exception {
         ReturnResult returnResult = new ReturnResult();
         log.info("-------创建充值订单-----------");
         if (StringUtils.isEmpty(order.getTradeType())) {
@@ -109,6 +109,7 @@ public class PayController extends BaseController{
             xfMoney.setNote("用户消费");
             xfMoney.setTradeType(order.getTradeType());
             xfMoney.setMoney(order.getMoney());
+            xfMoney.setVideoId(videoId);
             createShouMoney(xfMoney);
 
             order.setId(xfMoney.getId());
@@ -567,7 +568,7 @@ public class PayController extends BaseController{
         } else if ("income".equals(changeMoney.getNote()) && user.getIncome().compareTo(changeMoney.getMoney()) == -1){
             returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("income".equals(changeMoney.getNote()) && user.getIncome().compareTo(changeMoney.getMoney()) == -1){
+        } else if ("mIncome".equals(changeMoney.getNote()) && user.getMIncome().compareTo(changeMoney.getMoney()) == -1){
             returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (changeMoney.getMoney().compareTo(new BigDecimal(5001))==1){
@@ -580,6 +581,8 @@ public class PayController extends BaseController{
 
         changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
         changeMoney.setMerchantId(user.getId());
+        //提现是艺人和推荐奖励金的收益，商城收益
+//        changeMoney.setNote();
 //        changeMoney.setTradeType("TXZFB");
 //        changeMoney.setMoney(new BigDecimal("1"));
 
