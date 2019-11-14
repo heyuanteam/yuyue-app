@@ -50,4 +50,14 @@
             </if>
         GROUP BY d.merchant_id order by d.create_time desc
     </select>
+
+    <!-- 查询订单状态 -->
+    <select id="getMoneyStatus" parameterType="String" resultType="String">
+        SELECT b.status FROM yuyue_order b
+        WHERE 1=1
+            <if test="orderId!=null and orderId!=''">
+                and b.id = #{orderId}
+            </if>
+        order by b.create_time desc limit 1
+    </select>
 </mapper>

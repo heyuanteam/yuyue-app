@@ -95,12 +95,16 @@ public class PayController extends BaseController{
                 return payZFB(order);
             }
         } else if (order.getTradeType().contains("XF")) {
+            if (StringUtils.isEmpty(order.getVideoId())) {
+                returnResult.setMessage("视频ID不可以为空！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            } else if (StringUtils.isEmpty(order.getSourceId())) {
+                returnResult.setMessage("艺人ID不可以为空！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
             AppUser appUser = loginService.getAppUserMsg("","",order.getSourceId());
             if(StringUtils.isNull(appUser)){
                 returnResult.setMessage("您想送礼的用户，不存在！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            } else if (StringUtils.isEmpty(order.getVideoId())) {
-                returnResult.setMessage("视频ID不可以为空！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             ChangeMoney xfMoney = new ChangeMoney();
@@ -214,7 +218,7 @@ public class PayController extends BaseController{
             //送礼
             ChangeMoney changeMoney = myService.getChangeMoney(orderId);
             if (StringUtils.isNotNull(orderNo)) {
-                if (!"10B".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS")) {
+                if ("10A".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS")) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
                     orderNo.setStatus("10B");
@@ -266,7 +270,7 @@ public class PayController extends BaseController{
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
                 }
             } else if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
-                if (!"10B".equals(changeMoney.getStatus()) && returnCode.equals("SUCCESS")) {
+                if ("10A".equals(changeMoney.getStatus()) && returnCode.equals("SUCCESS")) {
                     changeMoney.setResponseCode(returnCode);
                     changeMoney.setResponseMessage(object.get("result_code").toString());
                     changeMoney.setStatus("10B");
@@ -398,7 +402,7 @@ public class PayController extends BaseController{
             ChangeMoney changeMoney = myService.getChangeMoney(orderId);
             if (StringUtils.isNotNull(orderNo)) {
                 // 有可能出现多次回调，只有在该状态下的回调才是支付成功下的回调
-                if (!"10B".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
+                if ("10A".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
                     log.info("加钱===================");
                     String trxNo = params.get("trade_status");
                     //加钱
@@ -423,7 +427,7 @@ public class PayController extends BaseController{
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
                 }
             } else if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
-                if (!"10B".equals(changeMoney.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
+                if ("10A".equals(changeMoney.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
                     changeMoney.setResponseCode(params.get("trade_status"));
                     changeMoney.setResponseMessage(params.get("trade_status"));
                     changeMoney.setStatus("10B");
@@ -933,11 +937,12 @@ public class PayController extends BaseController{
         getParameterMap(request, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl(Variables.AliPayReturnUrl);//同步通知页面
+//        alipayRequest.setReturnUrl(Variables.AliPayReturnUrl);//同步通知页面
+        alipayRequest.setReturnUrl(Variables.AliPayNotifyUrl);//同步通知页面
         alipayRequest.setNotifyUrl(Variables.AliPayNotifyUrl);//在公共参数中设置回跳和通知地址
         String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-        String body = "扫码支付宝充值";
-        String subject = "扫码充值礼物";
+        String body = "商城支付";
+        String subject = "商城支付";
         alipayRequest.setBizContent("{\"out_trade_no\":\""+ order.getId() +"\","
                 +"\"total_amount\":\""+ moneyD +"\","
                 +"\"subject\":\""+ subject +"\","
@@ -967,7 +972,7 @@ public class PayController extends BaseController{
             returnResult.setMessage("未成功获取支付宝付款界面！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        returnResult.setMessage("调用扫码支付宝成功！！");
+        returnResult.setMessage(order.getId());
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -978,7 +983,7 @@ public class PayController extends BaseController{
             paramMap.put("trade_type", "NATIVE"); //交易类型
             paramMap.put("spbill_create_ip",HttpUtils.localIp()); //本机的Ip
             paramMap.put("product_id", "WX"+RandomSaltUtil.generetRandomSaltCode(30));  // 商户根据自己业务传递的参数 必填
-            paramMap.put("body", "扫码充值");         //描述
+            paramMap.put("body", "商城支付");         //描述
             paramMap.put("out_trade_no", order.getId()); //商户 后台的贸易单号
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
                     .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
@@ -997,6 +1002,7 @@ public class PayController extends BaseController{
             String resXml = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), Variables.CHARSET, "application/json");
             log.info("返回的数据为--------------------------+++++++" + resXml);
             Map ValidCard = XMLUtils.xmlString2Map(resXml);
+            ValidCard.put("out_trade_no",order.getId());
             Map maps = new HashMap();
             String timestamp = String.valueOf((new Date()).getTime() / 1000L);
             maps.put("appid", ValidCard.get("appid").toString());
