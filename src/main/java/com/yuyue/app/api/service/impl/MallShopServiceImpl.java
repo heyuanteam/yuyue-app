@@ -3,9 +3,12 @@ package com.yuyue.app.api.service.impl;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.mapper.*;
 import com.yuyue.app.api.service.MallShopService;
+import com.yuyue.app.api.service.PayService;
+import com.yuyue.app.utils.ResultJSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service(value = "mallShopServiceImpl")
@@ -25,6 +28,10 @@ public class MallShopServiceImpl implements MallShopService {
     private MallOrderItemMapper mallOrderItemMapper;
     @Autowired
     private MallAddressMapper mallAddressMapper;
+    @Autowired
+    private LoginMapper loginMapper;
+    @Autowired
+    private PayService payService;
 
     @Override
     public MallShop getMyMallShop(String shopId) {
@@ -154,6 +161,36 @@ public class MallShopServiceImpl implements MallShopService {
     @Override
     public void updateOrderItemsStatus(String orderId, String status) {
         mallOrderItemMapper.updateOrderItemsStatus(orderId,status);
+    }
+    //减库存及给商家们加钱的方法及修改订单项状态
+    @Override
+    public void mallPaySuccess(String orderId) {
+
+        //给商家们加钱的方法
+        List<String> shopIds = mallOrderItemMapper.getShopIds(orderId);
+        for (String shopId:shopIds
+             ) {
+            List<OrderItem> mallOrderItems = getMallOrderItem(orderId, shopId, "");
+            String money = null;
+            for (OrderItem orderItem:mallOrderItems
+                 ) {
+                //减库存操作
+                Specification specification = new Specification();
+                specification.setCommodityId(orderItem.getCommodityId());
+                specification.setCommodityNum(orderItem.getCommodityNum());
+                updateSpecification(specification);
+                money = orderItem.getShopIncome().toString();
+                updateOrderItemsStatus(orderId,"10B");
+            }
+            //给商家加钱
+            MallShop myMallShop = getMyMallShop(shopId);
+            String merchantId = myMallShop.getMerchantId();
+            AppUser appUserMsg = loginMapper.getAppUserMsg("", "", merchantId,"");
+            BigDecimal mIncome = ResultJSONUtils.updateMIncome(appUserMsg, new BigDecimal(money), "+");
+            //修改订单项状态
+            payService.updateMIncome(merchantId,mIncome);
+        }
+
     }
 
     @Override

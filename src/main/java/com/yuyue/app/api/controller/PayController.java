@@ -215,8 +215,6 @@ public class PayController extends BaseController{
         if (StringUtils.isNotEmpty(orderId)) {
             //卖出商品
             Order orderNo = payService.getOrderId(orderId);
-            //送礼
-            ChangeMoney changeMoney = myService.getChangeMoney(orderId);
             if (StringUtils.isNotNull(orderNo)) {
                 if ("10A".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS")) {
                     orderNo.setResponseCode(returnCode);
@@ -230,37 +228,8 @@ public class PayController extends BaseController{
 //                    }
                     log.info("给商户价钱之前----------------:");
                     if (orderNo.getTradeType().contains("SC")){
-                        //Map<String,BigDecimal> map = new HashMap<>();
-                        Map<String,BigDecimal> map = MallShopController.addMoneyToMerchantMap;
-                        log.info("给商户价钱之后-----------------map:"+map);
-                        if (StringUtils.isNotEmpty(map) ){
-                            for (String shopId:map.keySet()
-                                 ) {
-                                BigDecimal money = map.get(shopId);
-                                MallShop myMallShop = mallShopService.getMyMallShop(shopId);
-                                //获取商家id
-                                String merchantId = myMallShop.getMerchantId();
-                                log.info("给商户id:"+merchantId+"加的钱："+money);
-                                AppUser appUserMsg = loginService.getAppUserMsg("", "", merchantId);
-                                BigDecimal mIncome = ResultJSONUtils.updateMIncome(appUserMsg, money, "+");
-                                payService.updateMIncome(merchantId,mIncome);
-                            }
-                        }
-                        map.clear();
-                        //修改订单项中的状态
-                        mallShopService.updateOrderItemsStatus(orderId,"10B");
-                        //减库存
-                        Map<String, String> reserveMap= MallShopController.stringStringMap;
-                        for (String commodityId:reserveMap.keySet()
-                             ) {
-                            Specification specification = new Specification();
-                            specification.setCommodityId(commodityId);
-                            specification.setCommodityNum(Integer.valueOf(reserveMap.get(commodityId)));
-                            mallShopService.updateSpecification(specification);
-                        }
-
+                        mallShopService.mallPaySuccess(orderId);
                     }
-
                     //    极光商家卖出商品通知 : 8 (orderId)
                     sendClotheSoldUrl(orderNo);
                 } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
@@ -269,7 +238,10 @@ public class PayController extends BaseController{
                     orderNo.setStatus("10C");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
                 }
-            } else if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
+            }
+            //送礼
+            ChangeMoney changeMoney = myService.getChangeMoney(orderId);
+            if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
                 if ("10A".equals(changeMoney.getStatus()) && returnCode.equals("SUCCESS")) {
                     changeMoney.setResponseCode(returnCode);
                     changeMoney.setResponseMessage(object.get("result_code").toString());
@@ -398,8 +370,6 @@ public class PayController extends BaseController{
             log.info("支付宝验签成功+++++++++++++++++++++++++++++++++");
             //卖出商品
             Order orderNo = payService.getOrderId(orderId);
-            //送礼
-            ChangeMoney changeMoney = myService.getChangeMoney(orderId);
             if (StringUtils.isNotNull(orderNo)) {
                 // 有可能出现多次回调，只有在该状态下的回调才是支付成功下的回调
                 if ("10A".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
@@ -426,7 +396,10 @@ public class PayController extends BaseController{
                     orderNo.setStatus("10C");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
                 }
-            } else if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
+            }
+            //送礼
+            ChangeMoney changeMoney = myService.getChangeMoney(orderId);
+            if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
                 if ("10A".equals(changeMoney.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
                     changeMoney.setResponseCode(params.get("trade_status"));
                     changeMoney.setResponseMessage(params.get("trade_status"));

@@ -37,7 +37,7 @@ public class MallShopController extends BaseController{
     //public static Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
     //
     public static Map<String, String> stringStringMap = null;
-    protected  static Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
+
     @Autowired
     private MallShopService mallShopService;
     @Autowired
@@ -1359,7 +1359,13 @@ public class MallShopController extends BaseController{
         }
 
         //BigDecimal payTotal = new BigDecimal(0);
+        //该订单项总金额
+        //BigDecimal payAmount = commodityPrice.multiply(new BigDecimal(commodityNum)).add(fare);
+        //System.out.println("该订单项总金额:"+payAmount);
+        //orderItem.setShopIncome(payAmount);
         List<ResultCart> resultCarts= returnOrderSuccess.getResultCarts();
+        //获取商铺id ，商铺收益
+        Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
         if (StringUtils.isNotEmpty(resultCarts)){
             for (ResultCart resultCart:resultCarts
             ) {
@@ -1383,14 +1389,15 @@ public class MallShopController extends BaseController{
             returnResult.setResult(jsonObject.get("result"));
         }
         //设置订单项状态
-        Order getOrder = payService.getOrderId(orderId);
-        String getOrderStatus = getOrder.getStatus();
+        //Order getOrder = payService.getOrderId(orderId);
+        //String getOrderStatus = getOrder.getStatus();
         /*634543A9414EFDBEB63B6BDDB8535D11[488DA0232479449D9FE0571FA4FFB984:2]-
         A0E34543A9414EFDBEB63B6BDDB8156[5FF99665F69C4CE7B33669876395BB7C:1;
         F2F6F78CE342413AA20C4968F1BCED0A:1;FBE391F5D4C04D5DB60F9ADF79F6AA94:1]*/
         //生成订单项
         for (String specificationId:stringStringMap.keySet()
         ) {
+
             orderItem = addOrderItem(specificationId, Integer.parseInt(stringStringMap.get(specificationId)),addressId);
             //设置地址id
             orderItem.setAddressId(addressId);
@@ -1399,7 +1406,10 @@ public class MallShopController extends BaseController{
             //订单id
             orderItem.setOrderId(orderId);
             //支付状态
-            orderItem.setStatus(getOrderStatus);
+            //orderItem.setStatus(getOrderStatus);
+            //商铺收益
+            BigDecimal shopIncome = addMoneyToMerchantMap.get(orderItem.getShopId());
+            orderItem.setShopIncome(shopIncome);
 
             mallShopService.editMallOrderItem(orderItem);
             mallShopService.deletePayCart(appUser.getId(),specificationId);
@@ -1429,7 +1439,6 @@ public class MallShopController extends BaseController{
      */
     public OrderItem addOrderItem(String commodityId,int commodityNum,String  addressId){
         OrderItem orderItem = new OrderItem();
-
         //获取规格
         Specification specification = mallShopService.getSpecificationById(commodityId);
         //获取规格价格
@@ -1441,9 +1450,7 @@ public class MallShopController extends BaseController{
         //获取运费
         //BigDecimal fare = myMallShop.getFare();
 
-        //该订单项总金额
-        //BigDecimal payAmount = commodityPrice.multiply(new BigDecimal(commodityNum)).add(fare);
-        //System.out.println(payAmount);
+
         //生成订单项id
         orderItem.setOrderItemId(UUID.randomUUID().toString().replace("-","").toUpperCase());
 

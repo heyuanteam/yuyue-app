@@ -73,6 +73,9 @@ public interface MallShopService {
     //修改订单项中的支付状态
     void updateOrderItemsStatus(String orderId,String status);
 
+    //减库存及给商家们加钱的方法
+    void mallPaySuccess(String orderId);
+
 /*---------------------------------地址---------------------------------*/
     List<MallAddress> getMallAddrByUserId(String userId);
 
