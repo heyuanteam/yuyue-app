@@ -17,6 +17,7 @@
         <result column="SALT" property="salt" jdbcType="VARCHAR"/>
         <result column="USER_STATUS" property="userStatus" jdbcType="VARCHAR"/>
         <result column="TOTAL" property="total" jdbcType="DECIMAL"/>
+        <result column="mIncome" property="mIncome" jdbcType="DECIMAL"/>
         <result column="income" property="income" jdbcType="DECIMAL"/>
         <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
@@ -124,7 +125,7 @@
 
     <select id="getAppUserMsg" resultType="com.yuyue.app.api.domain.AppUser" parameterType="String">
         SELECT id,user_no userNo,user_nick_name nickName,user_real_name realName,id_type idType,id_card idCard,phone,sex,city,jpushName,password,salt,
-            user_status userStatus,total ,income,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,fatherPhone,
+            user_status userStatus,total ,mIncome,income,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,fatherPhone,
         ATTENTION_TOTAL attentionTotal,LIKE_TOTAL likeTotal,COMMENT_TOTAL commentTotal,education ,wechat ,signature,opendId,wechatName,extensionStatus,
             DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover,rewardStatus,
         zfbNumber,zfbRealName
@@ -143,7 +144,7 @@
 
     <select id="getAppUserByFatherPhone" resultType="com.yuyue.app.api.domain.AppUser" parameterType="String">
         SELECT id,user_no userNo,user_nick_name nickName,user_real_name realName,id_type idType,id_card idCard,phone,sex,city,jpushName,password,salt,
-        user_status userStatus,total ,income,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,fatherPhone,
+        user_status userStatus,total , mIncome,income,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,fatherPhone,
         ATTENTION_TOTAL attentionTotal,LIKE_TOTAL likeTotal,COMMENT_TOTAL commentTotal,education ,wechat ,signature,opendId,wechatName,extensionStatus,
         DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover,rewardStatus,
         zfbNumber,zfbRealName
@@ -170,6 +171,7 @@
         salt,
         user_status userStatus,
         total,
+        mIncome,
         income,
         ADDR_DETAIL addrDetail,
         HEADP_URL headpUrl,
