@@ -30,7 +30,7 @@ public class Specification implements Serializable {
     private String imagePath;
     //  商品规格    状态（是否上架）
     private String status;
-    //
+    //购买的数量
     private Integer commodityNum;
     //创建时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")

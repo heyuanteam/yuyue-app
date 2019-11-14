@@ -26,13 +26,7 @@ public interface SpecificationMapper extends MyBaseMapper<Specification> {
     @Delete("DELETE FROM yuyue_mall_shop_commodity WHERE commodity_id = #{specificationId}")
     void deleteSpecification(String specificationId);
 
-    @Update("update yuyue_mall_shop_commodity   set " +
-            "commodity_detail = #{commodityDetail} ," +
-            "commodity_size = #{commoditySize} ," +
-            "commodity_price = #{commodityPrice}  , " +
-            "commodity_reserve = #{commodityReserve} ," +
-            "image_path = #{imagePath}," +
-            "status = #{status}  where commodity_id = #{commodityId} " )
+
     void updateSpecification(Specification specification);
 
 }

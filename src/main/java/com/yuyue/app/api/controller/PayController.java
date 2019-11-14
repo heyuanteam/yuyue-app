@@ -246,6 +246,14 @@ public class PayController extends BaseController{
                         //修改订单项中的状态
                         mallShopService.updateOrderItemsStatus(orderId,"10B");
                         //减库存
+                        Map<String, String> reserveMap= MallShopController.stringStringMap;
+                        for (String commodityId:reserveMap.keySet()
+                             ) {
+                            Specification specification = new Specification();
+                            specification.setCommodityId(commodityId);
+                            specification.setCommodityNum(Integer.valueOf(reserveMap.get(commodityId)));
+                            mallShopService.updateSpecification(specification);
+                        }
 
                     }
 
