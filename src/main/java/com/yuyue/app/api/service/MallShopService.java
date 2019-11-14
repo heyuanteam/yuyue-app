@@ -44,6 +44,8 @@ public interface MallShopService {
 
     void deleteCart (String cardId , String shopId);
 
+    void deletePayCart (String consumerId ,String commodityId);
+
 /*---------------------------------评价---------------------------------*/
     List<MallComment> getMallComments(String shopId);
 

@@ -112,6 +112,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public void deletePayCart(String consumerId, String commodityId) {
+        cartMapper.deletePayCart(consumerId,commodityId);
+    }
+
+    @Override
     public List<MallComment> getMallComments(String shopId) {
         return commentMapper.getMallComments(shopId);
     }

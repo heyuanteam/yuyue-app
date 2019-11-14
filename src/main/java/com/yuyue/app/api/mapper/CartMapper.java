@@ -29,6 +29,12 @@ public interface CartMapper extends MyBaseMapper<Cart> {
             "(#{cartId},#{consumerId},#{commodityId},#{shopId},#{commodityNum});")
     void addCart (Cart cart);
 
+    @Transactional
     @Delete("DELETE FROM yuyue_mall_cart where cart_id = #{cartId} or shop_id = #{shopId} ")
     void deleteCart (@Param(value = "cartId") String cartId ,@Param(value = "shopId") String shopId);
+
+    //在订单完成后，通过用户id 和商品id 删除购物车
+    @Transactional
+    @Delete("DELETE FROM yuyue_mall_cart where consumer_id = #{consumerId} and commodity_id = #{commodityId} ")
+    void deletePayCart (@Param(value = "consumerId") String consumerId ,@Param(value = "commodityId") String commodityId);
 }

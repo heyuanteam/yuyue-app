@@ -14,7 +14,6 @@ import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.utils.GouldUtils;
 import com.yuyue.app.utils.MallUtils;
-import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,8 @@ import java.util.*;
 public class MallShopController extends BaseController{
 
     private static  final  java.util.regex.Pattern pattern=java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$");
-
+    //public static Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
+    protected static ReturnOrder returnOrderSuccess = null;
 
     @Autowired
     private MallShopService mallShopService;
@@ -1326,7 +1326,7 @@ public class MallShopController extends BaseController{
                 returnResult.setMessage("cartStr不可为空！");
                 return  returnResult;
             }
-            //解决库存问题
+            //解决库存问题  key 为规格id specificationById
             for (String key:stringStringMap.keySet()
             ) {
                 Specification specificationById = mallShopService.getSpecificationById(key);
@@ -1352,17 +1352,16 @@ public class MallShopController extends BaseController{
             return  returnResult;
         }
         //调用临时订单，获取交易总价
-        ReturnOrder returnOrder = (ReturnOrder) temporaryOrder(cartStr,addressId,request,response).getResult();
-        if (StringUtils.isNull(returnOrder)){
+        returnOrderSuccess = (ReturnOrder) temporaryOrder(cartStr,addressId,request,response).getResult();
+        if (StringUtils.isNull(returnOrderSuccess)){
             returnResult.setMessage("生成订单异常");
             return  returnResult;
         }
         //获取交易总额
         //BigDecimal payTotal = new BigDecimal(0);
-        String payTotal = "0";
-        Map<String,BigDecimal> map = new HashMap<>();
+
         Order order =new Order();
-        order.setMoney(returnOrder.getOrderTotal());
+        order.setMoney(returnOrderSuccess.getOrderTotal());
         order.setTradeType(payType);
         JSONObject jsonObject = null;
         try {
@@ -1396,22 +1395,22 @@ public class MallShopController extends BaseController{
             orderItem.setStatus(getOrderStatus);
 
             mallShopService.editMallOrderItem(orderItem);
+            mallShopService.deletePayCart(appUser.getId(),specificationId);
         }
         //订单支付给商家加钱
-        if ("10B".equals(getOrderStatus)){
-            for (String shopId:map.keySet()
-                 ) {
-                MallShop myMallShop = mallShopService.getMyMallShop(shopId);
-                //获取商家id
-                String merchantId = myMallShop.getMerchantId();
-                BigDecimal money = map.get(shopId);
-                AppUser appUserMsg = loginService.getAppUserMsg("", "", merchantId);
-                BigDecimal mIncome = ResultJSONUtils.updateMIncome(appUserMsg, money, "+");
-                payService.updateMIncome(merchantId,mIncome);
-            }
-
-
-        }
+        // Map<String,BigDecimal> map = new HashMap<>();
+//        if ("10B".equals(getOrderStatus)){
+//            for (String shopId:map.keySet()
+//                 ) {
+//                MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+//                //获取商家id
+//                String merchantId = myMallShop.getMerchantId();
+//                BigDecimal money = map.get(shopId);
+//                AppUser appUserMsg = loginService.getAppUserMsg("", "", merchantId);
+//                BigDecimal mIncome = ResultJSONUtils.updateMIncome(appUserMsg, money, "+");
+//                payService.updateMIncome(merchantId,mIncome);
+//            }
+//        }
 
         returnResult.setMessage("订单生成成功！");
         returnResult.setStatus(Boolean.TRUE);

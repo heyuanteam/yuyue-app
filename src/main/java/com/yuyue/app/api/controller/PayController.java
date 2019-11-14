@@ -17,6 +17,7 @@ import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
+import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.enums.ReturnResult;
@@ -49,6 +50,8 @@ public class PayController extends BaseController{
     private LoginService loginService;
     @Autowired
     private MyService myService;
+    @Autowired
+    private MallShopService mallShopService;
 
     // 构造签名的map
     private SortedMap<Object, Object> parameters = new TreeMap<>();
@@ -217,8 +220,30 @@ public class PayController extends BaseController{
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
+
+                    if (orderNo.getTradeType().contains("SC")){
+                        //Map<String,BigDecimal> map = new HashMap<>();
+                        ReturnOrder returnOrder = MallShopController.returnOrderSuccess;
+                        List<ResultCart> resultCarts= MallShopController.returnOrderSuccess.getResultCarts();
+                        if (StringUtils.isNotNull(returnOrder) && StringUtils.isNotNull(resultCarts) ){
+                            for (ResultCart resultCart:resultCarts
+                                 ) {
+                                String shopId = resultCart.getShopId();
+                                BigDecimal money = resultCart.getPayAmount();
+                                MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+                                //获取商家id
+                                String merchantId = myMallShop.getMerchantId();
+                                AppUser appUserMsg = loginService.getAppUserMsg("", "", merchantId);
+                                BigDecimal mIncome = ResultJSONUtils.updateMIncome(appUserMsg, money, "+");
+                                payService.updateMIncome(merchantId,mIncome);
+                            }
+
+                        }
+                        MallShopController.returnOrderSuccess = null;
+                    }
+
                     //    极光商家卖出商品通知 : 8 (orderId)
-                    sendClotheSoldUrl(orderNo);
+
                 } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
@@ -488,7 +513,8 @@ public class PayController extends BaseController{
     }
 
     //极光商家卖出商品通知 : 8 (orderId)
-    public void sendClotheSoldUrl(Order order) {
+    public List<String> sendClotheSoldUrl(Order order) {
+        //获取卖家ids
         List<String> shopUserIdList = payService.getShopUserList(order.getId());
         if (CollectionUtils.isNotEmpty(shopUserIdList)) {
             for (String shopUserId: shopUserIdList) {
@@ -498,11 +524,8 @@ public class PayController extends BaseController{
                     HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId(),token);
                 }
             }
-        } else {
-            AppUser appUserMsg = loginService.getAppUserMsg("", "", order.getMerchantId());
-            String token = loginService.getToken(appUserMsg);
-            HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId(),token);
         }
+        return shopUserIdList;
     }
 
     //创建充值订单
