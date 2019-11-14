@@ -331,7 +331,8 @@ public class PayController extends BaseController{
             // 将分制金额换成元制金额保留两位小数
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
             model.setTotalAmount(moneyD);
-            model.setProductCode("QUICK_MSECURITY_PAY");// 固定值
+//            model.setProductCode("QUICK_MSECURITY_PAY");// 固定值
+            model.setProductCode("FAST_INSTANT_TRADE_PAY");// 固定值
             request.setBizModel(model);
             request.setNotifyUrl(Variables.AliPayNotifyUrl);// 商户外网可以访问的异步地址
             try {
