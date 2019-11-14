@@ -42,5 +42,7 @@ public class ChangeMoney implements Serializable {
     private String note;
 //    收礼物的那个人
     private String sourceId;
+//    视频打赏ID
+    private String videoId;
 
 }

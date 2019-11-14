@@ -71,8 +71,9 @@ public interface PayMapper extends MyBaseMapper<Order> {
     Gift getGift(@Param("id") String id);
 
     @Transactional
-    @Insert("INSERT into yuyue_change_money (id,changeNo,tradeType,money,merchantId,mobile,note,sourceId)  values  " +
-            " (#{id},#{changeNo},#{tradeType},#{money},#{merchantId},#{mobile},#{note},#{sourceId})")
+    @Insert("INSERT into yuyue_change_money (id,changeNo,tradeType,money,merchantId,mobile,note,sourceId,videoId)  values  " +
+            " (#{id},#{changeNo},#{tradeType},#{money},#{merchantId},#{mobile},#{note},#{sourceId},#{videoId})")
+    @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createShouMoney(ChangeMoney changeMoney);
 
     @Select("SELECT (SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.merchantId) yiName," +
@@ -86,6 +87,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
 
     ChangeMoney getChangeMoney(@Param(value = "id")String id);
 
+    @Transactional
     void updateChangeMoneyStatus(@Param(value = "responseCode")String responseCode,@Param(value = "responseMessage") String responseMessage,
                                  @Param(value = "status")String status,@Param(value = "id") String id);
 
