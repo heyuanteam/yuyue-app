@@ -78,7 +78,7 @@ public class MyServiceImpl implements MyService {
     }
 
     @Override
-    public List<ChangeMoneyVo> changeMoneyList(String id,int begin, int size) { return payMapper.changeMoneyList(id,begin,size); }
+    public List<ChangeMoneyVo> changeMoneyList(String id,String videoId,int begin, int size) { return payMapper.changeMoneyList(id,videoId,begin,size); }
 
     @Override
     public Feedback getFeedback(String details, String contact) { return feedbackMapper.getFeedback(details,contact); }

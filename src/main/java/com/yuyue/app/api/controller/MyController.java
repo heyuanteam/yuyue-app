@@ -116,23 +116,23 @@ public class MyController extends BaseController{
     }
 
     /**
-     * 收益记录
+     * 打赏记录
      * @return
      */
     @RequestMapping("/changeMoneyList")
     @ResponseBody
     @LoginRequired
     public JSONObject changeMoneyList(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response) {
-        log.info("收益记录-------------->>/myController/changeMoneyList");
+        log.info("打赏记录-------------->>/myController/changeMoneyList");
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> parameterMap = getParameterMap(request, response);
         String page = parameterMap.get("page");
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
-        List<ChangeMoneyVo> list = myService.changeMoneyList(user.getId(),begin,limit);
+        List<ChangeMoneyVo> list = myService.changeMoneyList(user.getId(),parameterMap.get("videoId"),begin,limit);
         if(CollectionUtils.isEmpty(list)){
-            returnResult.setMessage("暂无收益记录！");
+            returnResult.setMessage("暂无打赏记录！");
         } else {
             returnResult.setMessage("查询成功！");
         }
