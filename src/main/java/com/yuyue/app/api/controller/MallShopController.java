@@ -36,7 +36,7 @@ public class MallShopController extends BaseController{
     private static  final  java.util.regex.Pattern pattern=java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$");
     //public static Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
     protected static ReturnOrder returnOrderSuccess = null;
-
+    protected  static Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
     @Autowired
     private MallShopService mallShopService;
     @Autowired
@@ -1351,7 +1351,7 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("cartStr格式错误！");
             return  returnResult;
         }
-        //调用临时订单，获取交易总价
+        //调用临时订单，获取交易总价，商铺收益
         returnOrderSuccess = (ReturnOrder) temporaryOrder(cartStr,addressId,request,response).getResult();
         if (StringUtils.isNull(returnOrderSuccess)){
             returnResult.setMessage("生成订单异常");
@@ -1359,7 +1359,13 @@ public class MallShopController extends BaseController{
         }
         //获取交易总额
         //BigDecimal payTotal = new BigDecimal(0);
-
+        List<ResultCart> resultCarts= MallShopController.returnOrderSuccess.getResultCarts();
+        if (StringUtils.isNotEmpty(resultCarts)){
+            for (ResultCart resultCart:resultCarts
+            ) {
+                addMoneyToMerchantMap.put(resultCart.getShopId(),resultCart.getPayAmount());
+            }
+        }
         Order order =new Order();
         order.setMoney(returnOrderSuccess.getOrderTotal());
         order.setTradeType(payType);

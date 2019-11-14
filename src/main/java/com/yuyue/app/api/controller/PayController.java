@@ -221,16 +221,15 @@ public class PayController extends BaseController{
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
-
+                    log.info("给商户价钱之前----------------:");
                     if (orderNo.getTradeType().contains("SC")){
                         //Map<String,BigDecimal> map = new HashMap<>();
-                        ReturnOrder returnOrder = MallShopController.returnOrderSuccess;
-                        List<ResultCart> resultCarts= MallShopController.returnOrderSuccess.getResultCarts();
-                        if (StringUtils.isNotNull(returnOrder) && StringUtils.isNotNull(resultCarts) ){
-                            for (ResultCart resultCart:resultCarts
+                        Map<String,BigDecimal> map = MallShopController.addMoneyToMerchantMap;
+                        log.info("给商户价钱之后-----------------map:"+map);
+                        if (StringUtils.isNotEmpty(map) ){
+                            for (String shopId:map.keySet()
                                  ) {
-                                String shopId = resultCart.getShopId();
-                                BigDecimal money = resultCart.getPayAmount();
+                                BigDecimal money = map.get(shopId);
                                 MallShop myMallShop = mallShopService.getMyMallShop(shopId);
                                 //获取商家id
                                 String merchantId = myMallShop.getMerchantId();
@@ -238,9 +237,8 @@ public class PayController extends BaseController{
                                 BigDecimal mIncome = ResultJSONUtils.updateMIncome(appUserMsg, money, "+");
                                 payService.updateMIncome(merchantId,mIncome);
                             }
-
                         }
-                        MallShopController.returnOrderSuccess = null;
+                        map.clear();
                     }
 
                     //    极光商家卖出商品通知 : 8 (orderId)
