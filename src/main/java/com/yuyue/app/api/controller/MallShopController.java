@@ -35,7 +35,8 @@ public class MallShopController extends BaseController{
 
     private static  final  java.util.regex.Pattern pattern=java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$");
     //public static Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
-    protected static ReturnOrder returnOrderSuccess = null;
+    //
+    public static Map<String, String> stringStringMap = null;
     protected  static Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
     @Autowired
     private MallShopService mallShopService;
@@ -1319,7 +1320,6 @@ public class MallShopController extends BaseController{
             return  returnResult;
         }
         //判断库存问题
-        Map<String, String> stringStringMap = null;
         try {
              stringStringMap = MallUtils.splitCartString(cartStr);
             if(StringUtils.isEmpty(stringStringMap)){
@@ -1352,14 +1352,14 @@ public class MallShopController extends BaseController{
             return  returnResult;
         }
         //调用临时订单，获取交易总价，商铺收益
-        returnOrderSuccess = (ReturnOrder) temporaryOrder(cartStr,addressId,request,response).getResult();
+        ReturnOrder returnOrderSuccess  = (ReturnOrder) temporaryOrder(cartStr,addressId,request,response).getResult();
         if (StringUtils.isNull(returnOrderSuccess)){
             returnResult.setMessage("生成订单异常");
             return  returnResult;
         }
 
         //BigDecimal payTotal = new BigDecimal(0);
-        List<ResultCart> resultCarts= MallShopController.returnOrderSuccess.getResultCarts();
+        List<ResultCart> resultCarts= returnOrderSuccess.getResultCarts();
         if (StringUtils.isNotEmpty(resultCarts)){
             for (ResultCart resultCart:resultCarts
             ) {
@@ -2092,7 +2092,6 @@ public class MallShopController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;
     }
-
 
 
 }

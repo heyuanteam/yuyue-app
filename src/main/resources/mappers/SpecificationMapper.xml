@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuyue.app.api.mapper.SpecificationMapper">
+
+    <!-- 查询单条记录 -->
+    <select id="updateSpecification"  parameterType="com.yuyue.app.api.domain.Specification" >
+        update yuyue_mall_shop_commodity
+         <set>
+            <if test="commodityDetail != null and commodityDetail != ''">
+                commodity_detail = #{commodityDetail} ,
+            </if>
+            <if test="commoditySize != null and commoditySize != ''">
+                commodity_size = #{commoditySize} ,
+            </if>
+            <if test="commodityPrice != null and commodityPrice != ''">
+                commodity_price = #{commodityPrice}  ,
+            </if>
+            <if test="commodityNum != null and commodityNum != ''">
+                 commodity_reserve = commodity_reserve - #{commodityNum} ,
+            </if>
+            <if test="commodityReserve != null and commodityReserve != ''">
+                 commodity_reserve = #{commodityReserve} ,
+            </if>
+            <if test="imagePath != null and imagePath != ''">
+                 image_path = #{imagePath},
+            </if>
+            <if test="status != null and status != ''">
+                 status = #{status}
+            </if>
+         </set>
+         where commodity_id = #{commodityId}
+
+
+    </select>
+</mapper>
