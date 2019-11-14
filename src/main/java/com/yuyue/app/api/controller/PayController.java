@@ -244,7 +244,7 @@ public class PayController extends BaseController{
                     }
 
                     //    极光商家卖出商品通知 : 8 (orderId)
-
+                    sendClotheSoldUrl(orderNo);
                 } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
