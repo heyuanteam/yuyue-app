@@ -10,9 +10,11 @@ import java.io.Serializable;
 public class ChangeMoneyVo extends ChangeMoney implements Serializable {
     private static final long serialVersionUID = 1L;
 
-//    送礼物的名称
-    private String sourceName;
 //    艺人名称
+    private String sourceName;
+//    送礼物的名称
     private String yiName;
+//    送礼物的头像
+    private String headpUrl;
 
 }
