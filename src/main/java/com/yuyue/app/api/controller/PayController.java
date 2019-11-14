@@ -721,9 +721,6 @@ public class PayController extends BaseController{
         if (StringUtils.isEmpty(tradeType)) {
             returnResult.setMessage("提现类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (StringUtils.isEmpty(code)){
-            returnResult.setMessage("code不能为空！！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
         if("TXZFB".equals(tradeType)){
@@ -733,6 +730,10 @@ public class PayController extends BaseController{
             }
             loginService.updateUserByZFB(user.getId(),user.getZfbNumber(),user.getZfbRealName());
         } else if ("TXWX".equals(tradeType)) {
+            if (StringUtils.isEmpty(code)){
+                returnResult.setMessage("code不能为空！！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
             String opendId = "";
             String wechatName = "";
             JSONObject userInfo = new JSONObject();
