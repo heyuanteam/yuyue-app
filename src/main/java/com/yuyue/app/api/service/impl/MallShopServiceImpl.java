@@ -152,6 +152,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public void updateOrderItemsStatus(String orderId, String status) {
+        mallOrderItemMapper.updateOrderItemsStatus(orderId,status);
+    }
+
+    @Override
     public List<MallAddress> getMallAddrByUserId(String userId) {
         return mallAddressMapper.getMallAddrByUserId(userId);
     }

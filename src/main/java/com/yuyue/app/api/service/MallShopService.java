@@ -70,6 +70,9 @@ public interface MallShopService {
 
     void editMallOrderItem(OrderItem orderItem);
 
+    //修改订单项中的支付状态
+    void updateOrderItemsStatus(String orderId,String status);
+
 /*---------------------------------地址---------------------------------*/
     List<MallAddress> getMallAddrByUserId(String userId);
 
