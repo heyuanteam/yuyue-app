@@ -46,7 +46,7 @@ public interface MyService {
                         String categoryId, String address, String phone,
                         String videoAddress,String imageAddress, String mail, String weChat);
 
-    List<ChangeMoneyVo> changeMoneyList(String id,String videoId, int begin, int size);
+    List<ChangeMoneyVo> changeMoneyList(String videoId, int begin, int size);
 
     Feedback getFeedback(String details, String contact);
 
@@ -55,4 +55,6 @@ public interface MyService {
     Advertisement findAdvertisement(String agencyCode, String produceAddr, String phone);
 
     ChangeMoney getChangeMoney(String orderId);
+
+    String getMoneyStatus(String orderId);
 }

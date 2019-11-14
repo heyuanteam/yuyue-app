@@ -116,6 +116,22 @@ public class MyController extends BaseController{
     }
 
     /**
+     * PC端支付通知
+     * @return
+     */
+    @RequestMapping("/getMoneyStatus")
+    @ResponseBody
+    public JSONObject getMoneyStatus(HttpServletRequest request, HttpServletResponse response) {
+        log.info("PC端支付通知-------------->>/myController/getMoneyStatus");
+        ReturnResult returnResult=new ReturnResult();
+        Map<String, String> parameterMap = getParameterMap(request, response);
+        String moneyStatus = myService.getMoneyStatus(parameterMap.get("orderId"));
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(moneyStatus);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
      * 打赏记录
      * @return
      */
@@ -130,7 +146,7 @@ public class MyController extends BaseController{
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
-        List<ChangeMoneyVo> list = myService.changeMoneyList(user.getId(),parameterMap.get("videoId"),begin,limit);
+        List<ChangeMoneyVo> list = myService.changeMoneyList(parameterMap.get("videoId"),begin,limit);
         if(CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无打赏记录！");
         } else {

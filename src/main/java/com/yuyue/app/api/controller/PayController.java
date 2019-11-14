@@ -920,11 +920,12 @@ public class PayController extends BaseController{
         getParameterMap(request, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl(Variables.AliPayReturnUrl);//同步通知页面
+//        alipayRequest.setReturnUrl(Variables.AliPayReturnUrl);//同步通知页面
+        alipayRequest.setReturnUrl(Variables.AliPayNotifyUrl);//同步通知页面
         alipayRequest.setNotifyUrl(Variables.AliPayNotifyUrl);//在公共参数中设置回跳和通知地址
         String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-        String body = "扫码支付宝充值";
-        String subject = "扫码充值礼物";
+        String body = "商城支付";
+        String subject = "商城支付";
         alipayRequest.setBizContent("{\"out_trade_no\":\""+ order.getId() +"\","
                 +"\"total_amount\":\""+ moneyD +"\","
                 +"\"subject\":\""+ subject +"\","
@@ -954,7 +955,7 @@ public class PayController extends BaseController{
             returnResult.setMessage("未成功获取支付宝付款界面！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        returnResult.setMessage("调用扫码支付宝成功！！");
+        returnResult.setMessage(order.getId());
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -965,7 +966,7 @@ public class PayController extends BaseController{
             paramMap.put("trade_type", "NATIVE"); //交易类型
             paramMap.put("spbill_create_ip",HttpUtils.localIp()); //本机的Ip
             paramMap.put("product_id", "WX"+RandomSaltUtil.generetRandomSaltCode(30));  // 商户根据自己业务传递的参数 必填
-            paramMap.put("body", "扫码充值");         //描述
+            paramMap.put("body", "商城支付");         //描述
             paramMap.put("out_trade_no", order.getId()); //商户 后台的贸易单号
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
                     .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
@@ -984,6 +985,7 @@ public class PayController extends BaseController{
             String resXml = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), Variables.CHARSET, "application/json");
             log.info("返回的数据为--------------------------+++++++" + resXml);
             Map ValidCard = XMLUtils.xmlString2Map(resXml);
+            ValidCard.put("out_trade_no",order.getId());
             Map maps = new HashMap();
             String timestamp = String.valueOf((new Date()).getTime() / 1000L);
             maps.put("appid", ValidCard.get("appid").toString());
