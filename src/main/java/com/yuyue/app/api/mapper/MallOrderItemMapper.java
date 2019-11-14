@@ -3,6 +3,7 @@ package com.yuyue.app.api.mapper;
 import com.yuyue.app.api.domain.OrderItem;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,4 +32,8 @@ public interface MallOrderItemMapper extends MyBaseMapper<OrderItem> {
             "(#{orderItemId},#{orderId},#{shopId},#{addressId},#{commodityId},#{consumerId}, \n" +
             "#{fare},#{commodityPrice},#{commodityNum},#{status})")
     void editMallOrderItem(OrderItem orderItem);
+
+    @Transactional
+    @Update("update yuyue_mall_order_item  set status= #{status} WHERE order_id = #{orderId}")
+    void updateOrderItemsStatus(@Param(value = "orderId") String orderId,@Param(value = "status") String status);
 }

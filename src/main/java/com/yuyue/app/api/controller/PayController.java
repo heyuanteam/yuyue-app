@@ -236,12 +236,17 @@ public class PayController extends BaseController{
                                 MallShop myMallShop = mallShopService.getMyMallShop(shopId);
                                 //获取商家id
                                 String merchantId = myMallShop.getMerchantId();
+                                log.info("给商户id:"+merchantId+"加的钱："+money);
                                 AppUser appUserMsg = loginService.getAppUserMsg("", "", merchantId);
                                 BigDecimal mIncome = ResultJSONUtils.updateMIncome(appUserMsg, money, "+");
                                 payService.updateMIncome(merchantId,mIncome);
                             }
                         }
                         map.clear();
+                        //修改订单项中的状态
+                        mallShopService.updateOrderItemsStatus(orderId,"10B");
+                        //减库存
+
                     }
 
                     //    极光商家卖出商品通知 : 8 (orderId)

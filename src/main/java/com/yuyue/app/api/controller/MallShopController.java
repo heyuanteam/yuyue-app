@@ -1357,7 +1357,7 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("生成订单异常");
             return  returnResult;
         }
-        //获取交易总额
+
         //BigDecimal payTotal = new BigDecimal(0);
         List<ResultCart> resultCarts= MallShopController.returnOrderSuccess.getResultCarts();
         if (StringUtils.isNotEmpty(resultCarts)){
@@ -1367,6 +1367,7 @@ public class MallShopController extends BaseController{
             }
         }
         Order order =new Order();
+        //获取交易总额
         order.setMoney(returnOrderSuccess.getOrderTotal());
         order.setTradeType(payType);
         JSONObject jsonObject = null;
@@ -1488,12 +1489,17 @@ public class MallShopController extends BaseController{
         //String orderId = request.getParameter("orderId");
         //订单状态
         String status = request.getParameter("status");
+        String orderNo = request.getParameter("orderId");
         //获取我的商铺id
         MallShop mallShop = mallShopService.myMallShopInfo(appUser.getId());
-
+        List<String> orderByShopId = null;
         String shopId = mallShop.getShopId();
         //获取商铺订单列表
-        List<String> orderByShopId = mallShopService.getOrderToItem(shopId,"",status);
+        if (StringUtils.isEmpty(orderNo)){
+             orderByShopId = mallShopService.getOrderToItem(shopId,"",status);
+        }else {
+            orderByShopId.add(orderNo);
+        }
         List<ReturnOrder> returnOrders = new ArrayList<>();
         if (StringUtils.isEmpty(orderByShopId)){
             returnResult.setMessage("暂无订单！");
@@ -1540,7 +1546,6 @@ public class MallShopController extends BaseController{
                 returnOrder.setCreateTime(mallOrderItems.get(0).getCreateTime());
                 //支付类型
                 returnOrder.setTradeType(order.getTradeType());
-
                 returnOrder.setStatus(order.getStatus());
                 returnOrders.add(returnOrder);
             }
