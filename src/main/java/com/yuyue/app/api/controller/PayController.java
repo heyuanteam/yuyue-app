@@ -141,7 +141,7 @@ public class PayController extends BaseController{
             }else if((order.getTradeType()).contains("SC")){
                 map.put("body", "yuyue-商城支付");
             } else {
-                map.put("body", "yuyue-礼物充值");
+                map.put("body", "yuyue-视频打赏");
             }
             map.put("out_trade_no", order.getId());
             map.put("total_fee", moneyD);
@@ -302,8 +302,8 @@ public class PayController extends BaseController{
                 model.setBody("yuyue-商城支付");
                 model.setSubject("yuyue-商城支付");
             } else {
-                model.setBody("yuyue-礼物充值");
-                model.setSubject("yuyue-礼物充值");
+                model.setBody("yuyue-视频打赏");
+                model.setSubject("yuyue-视频打赏");
             }
             model.setOutTradeNo(order.getId());
             model.setTimeoutExpress("30m");
