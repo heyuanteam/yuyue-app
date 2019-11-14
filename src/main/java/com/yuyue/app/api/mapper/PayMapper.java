@@ -71,8 +71,8 @@ public interface PayMapper extends MyBaseMapper<Order> {
     Gift getGift(@Param("id") String id);
 
     @Transactional
-    @Insert("INSERT into yuyue_change_money (id,changeNo,tradeType,money,merchantId,mobile,note,sourceId,videoId)  values  " +
-            " (#{id},#{changeNo},#{tradeType},#{money},#{merchantId},#{mobile},#{note},#{sourceId},#{videoId})")
+    @Insert("INSERT into yuyue_change_money (id,changeNo,tradeType,money,merchantId,mobile,note,sourceId,videoId,status)  values  " +
+            " (#{id},#{changeNo},#{tradeType},#{money},#{merchantId},#{mobile},#{note},#{sourceId},#{videoId},#{status})")
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createShouMoney(ChangeMoney changeMoney);
 

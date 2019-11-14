@@ -303,7 +303,8 @@ public class PayController extends BaseController{
             // 将分制金额换成元制金额保留两位小数
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
             model.setTotalAmount(moneyD);
-            model.setProductCode("QUICK_MSECURITY_PAY");// 固定值
+//            model.setProductCode("QUICK_MSECURITY_PAY");// 固定值
+            model.setProductCode("FAST_INSTANT_TRADE_PAY");// 固定值
             request.setBizModel(model);
             request.setNotifyUrl(Variables.AliPayNotifyUrl);// 商户外网可以访问的异步地址
             try {
@@ -693,9 +694,6 @@ public class PayController extends BaseController{
         if (StringUtils.isEmpty(tradeType)) {
             returnResult.setMessage("提现类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (StringUtils.isEmpty(code)){
-            returnResult.setMessage("code不能为空！！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
         if("TXZFB".equals(tradeType)){
@@ -705,6 +703,10 @@ public class PayController extends BaseController{
             }
             loginService.updateUserByZFB(user.getId(),user.getZfbNumber(),user.getZfbRealName());
         } else if ("TXWX".equals(tradeType)) {
+            if (StringUtils.isEmpty(code)){
+                returnResult.setMessage("code不能为空！！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
             String opendId = "";
             String wechatName = "";
             JSONObject userInfo = new JSONObject();
