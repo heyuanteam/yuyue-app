@@ -40,5 +40,7 @@ public class Order implements Serializable {
     private String merchantId;
 //    收礼物的那个人
     private String sourceId;
+//    视频ID
+    private String videoId;
 
 }
