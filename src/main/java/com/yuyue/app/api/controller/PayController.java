@@ -99,6 +99,9 @@ public class PayController extends BaseController{
             if(StringUtils.isNull(appUser)){
                 returnResult.setMessage("您想送礼的用户，不存在！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
+            } else if (StringUtils.isEmpty(order.getVideoId())) {
+                returnResult.setMessage("视频ID不可以为空！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             ChangeMoney xfMoney = new ChangeMoney();
             xfMoney.setChangeNo("YY"+order.getTradeType() + RandomSaltUtil.randomNumber(14));
