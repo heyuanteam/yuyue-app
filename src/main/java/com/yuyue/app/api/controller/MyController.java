@@ -137,8 +137,7 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/changeMoneyList")
     @ResponseBody
-    @LoginRequired
-    public JSONObject changeMoneyList(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject changeMoneyList(HttpServletRequest request, HttpServletResponse response) {
         log.info("打赏记录-------------->>/myController/changeMoneyList");
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> parameterMap = getParameterMap(request, response);
