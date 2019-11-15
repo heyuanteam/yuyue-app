@@ -609,6 +609,11 @@ public class PayController extends BaseController{
             returnResult.setMessage("创建提现订单失败！缺少参数！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
+        //手续费0.75%
+        BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal money = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
+        changeMoney.setMoney(money);
+
         if ("TXZFB".equals(changeMoney.getTradeType())) {
             if (StringUtils.isEmpty(user.getZfbNumber()) && StringUtils.isEmpty(user.getZfbRealName())){
                 returnResult.setCode("03");
