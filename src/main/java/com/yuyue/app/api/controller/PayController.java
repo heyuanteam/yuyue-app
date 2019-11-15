@@ -230,7 +230,8 @@ public class PayController extends BaseController{
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
                     log.info("----------------给商户加钱----------------");
-                    if (orderNo.getTradeType().contains("SC")){
+                    if (orderNo.getTradeType().contains("SC") || orderNo.getTradeType().contains("WAP")
+                            || orderNo.getTradeType().contains("SM")){
                         mallShopService.mallPaySuccess(orderId);
                     }
                     //    极光商家卖出商品通知 : 8 (orderId)
@@ -385,7 +386,8 @@ public class PayController extends BaseController{
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
                     log.info("----------------给商户加钱----------------");
-                    if (orderNo.getTradeType().contains("SC")){
+                    if (orderNo.getTradeType().contains("SC")|| orderNo.getTradeType().contains("WAP")
+                            || orderNo.getTradeType().contains("SM")){
                         mallShopService.mallPaySuccess(orderId);
                     }
 //                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
