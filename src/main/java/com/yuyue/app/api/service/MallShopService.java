@@ -10,7 +10,11 @@ public interface MallShopService {
 /*---------------------------------商铺接口---------------------------------*/
     MallShop getMyMallShop(String shopId);
 
-    MallShop myMallShopInfo(String merchantId);
+    List<MallShop> getMyMallShops(String merchantId);
+
+    //MallShop myMallShopInfo(String merchantId);
+    //
+    List<MallShop> myMallShopInfo(String merchantId);
 
     List<MallShop> getAllMallShop(String myArea,String content);
 
@@ -73,8 +77,13 @@ public interface MallShopService {
     //修改订单项中的支付状态
     void updateOrderItemsStatus(String orderId,String status);
 
+    //减库存及给商家们加钱的方法
+    void mallPaySuccess(String orderId);
+
 /*---------------------------------地址---------------------------------*/
     List<MallAddress> getMallAddrByUserId(String userId);
+
+    MallAddress getDefaultAddress(String userId);
 
     MallAddress getMallAddress(String addressId);
 

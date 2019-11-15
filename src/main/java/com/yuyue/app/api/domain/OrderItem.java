@@ -34,6 +34,8 @@ public class OrderItem implements Serializable {
     private BigDecimal commodityPrice;
     //      商品数量
     private int commodityNum;
+    //商铺收益
+    private BigDecimal shopIncome;
 
     //      支付类型及配送状态
     private String status;
