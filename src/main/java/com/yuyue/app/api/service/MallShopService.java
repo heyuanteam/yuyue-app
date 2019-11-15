@@ -12,7 +12,9 @@ public interface MallShopService {
 
     List<MallShop> getMyMallShops(String merchantId);
 
-    MallShop myMallShopInfo(String merchantId);
+    //MallShop myMallShopInfo(String merchantId);
+    //
+    List<MallShop> myMallShopInfo(String merchantId);
 
     List<MallShop> getAllMallShop(String myArea,String content);
 

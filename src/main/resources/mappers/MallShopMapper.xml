@@ -118,7 +118,13 @@
             <if test=" score != null and score != ''">
                 score = #{score}
             </if>
-            is_revise = 'Y'
+            <if test=" status != null and status != ''">
+                status = #{status}
+            </if>
+            <if test=" isRevise != null and isRevise != ''">
+                is_revise = 'Y'
+            </if>
+
 
 
         </set>

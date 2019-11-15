@@ -44,7 +44,7 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
-    public MallShop myMallShopInfo(String merchantId) {
+    public List<MallShop> myMallShopInfo(String merchantId) {
         return mallShopMapper.myMallShopInfo(merchantId);
     }
 
