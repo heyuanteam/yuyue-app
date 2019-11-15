@@ -69,6 +69,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public void updateMyMallShopStatus(String businessStatus, String shopId) {
+        mallShopMapper.updateMyMallShopStatus(businessStatus,shopId);
+    }
+
+    @Override
     public List<ShopImage> getShopImage(String shopId) {
         return shopImageMapper.getShopImage(shopId);
     }
