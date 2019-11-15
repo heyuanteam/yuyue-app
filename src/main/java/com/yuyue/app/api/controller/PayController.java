@@ -614,6 +614,10 @@ public class PayController extends BaseController{
             changeMoney.setRealName(user.getWechatName());
             changeMoney.setMoneyNumber(user.getOpendId());
             createShouMoney(changeMoney);
+            if (StringUtils.isEmpty(changeMoney.getId())) {
+                returnResult.setMessage("创建提现订单失败！缺少参数！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
             return outWX(changeMoney,user);
         }
         returnResult.setMessage("提现正在进行中！！");
