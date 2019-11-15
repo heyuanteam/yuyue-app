@@ -844,18 +844,18 @@ public class PayController extends BaseController{
      */
     public synchronized JSONObject outZFB(ChangeMoney changeMoney,AppUser user) {
         ReturnResult returnResult = new ReturnResult();
-        AlipayFundTransToaccountTransferModel model = new AlipayFundTransToaccountTransferModel();
-        model.setOutBizNo(changeMoney.getId());//生成订单号
 //        (1、ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。2、ALIPAY_LOGONID：支付宝登录号，支持邮箱和手机号格式。)
-        model.setPayeeType("ALIPAY_LOGONID");//固定值
-        model.setPayeeAccount(changeMoney.getMoneyNumber());//支付宝账号
-        model.setAmount(changeMoney.getMoney().toString());//金额
-        model.setPayerShowName("杭州和元网络科技有限公司");//转款账号
-        model.setPayerRealName(changeMoney.getRealName());//支付宝真实姓名
-        model.setRemark("单笔转账到支付宝");
+        String payerShowName = "杭州和元网络科技有限公司";
+        String remark = "单笔转账到支付宝";
         try {
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
-            request.setBizModel(model);
+            request.setBizContent("{\"out_biz_no\":\""+ changeMoney.getId() +"\","
+                    +"\"remark\":\""+ remark +"\","    //备注
+                    +"\"payee_account\":\""+ changeMoney.getMoneyNumber() +"\","//支付宝账号
+                    +"\"amount\":\""+ changeMoney.getMoney().toString() +"\"," //金额
+                    +"\"payer_show_name\":\""+ payerShowName +"\","   //转款账号
+                    +"\"payee_real_name\":\""+ changeMoney.getRealName() +"\"," //支付宝真实姓名
+                    + "\"payee_type\":\"ALIPAY_LOGONID\"}");
             AlipayFundTransToaccountTransferResponse response = Variables.alipayClient.execute(request);
             log.info("转账信息=======>"+response.getBody());
             if (response.isSuccess()) {
