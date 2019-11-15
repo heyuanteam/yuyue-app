@@ -716,6 +716,9 @@ public class PayController extends BaseController{
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             loginService.updateUserByZFB(user.getId(),zfbNumber,zfbRealName);
+            returnResult.setMessage("绑定支付宝信息成功！");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if ("TXWX".equals(tradeType)) {
             if (StringUtils.isEmpty(code)){
                 returnResult.setMessage("code不能为空！！");
