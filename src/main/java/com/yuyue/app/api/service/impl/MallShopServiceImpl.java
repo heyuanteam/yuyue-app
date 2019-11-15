@@ -199,6 +199,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public MallAddress getDefaultAddress(String userId) {
+        return mallAddressMapper.getDefaultAddress(userId);
+    }
+
+    @Override
     public MallAddress getMallAddress(String addressId) {
         return mallAddressMapper.getMallAddress(addressId);
     }

@@ -79,6 +79,8 @@ public interface MallShopService {
 /*---------------------------------地址---------------------------------*/
     List<MallAddress> getMallAddrByUserId(String userId);
 
+    MallAddress getDefaultAddress(String userId);
+
     MallAddress getMallAddress(String addressId);
 
     void editMallAddr(MallAddress mallAddress);

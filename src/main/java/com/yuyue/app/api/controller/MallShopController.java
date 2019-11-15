@@ -2,6 +2,7 @@ package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yuyue.app.annotation.CurrentUser;
@@ -35,8 +36,7 @@ public class MallShopController extends BaseController{
 
     private static  final  java.util.regex.Pattern pattern=java.util.regex.Pattern.compile("^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$");
     //public static Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
-    //
-    public static Map<String, String> stringStringMap = null;
+
 
     @Autowired
     private MallShopService mallShopService;
@@ -1320,6 +1320,7 @@ public class MallShopController extends BaseController{
             return  returnResult;
         }
         //判断库存问题
+        Map<String, String> stringStringMap = null;
         try {
              stringStringMap = MallUtils.splitCartString(cartStr);
             if(StringUtils.isEmpty(stringStringMap)){
@@ -1370,6 +1371,7 @@ public class MallShopController extends BaseController{
             for (ResultCart resultCart:resultCarts
             ) {
                 addMoneyToMerchantMap.put(resultCart.getShopId(),resultCart.getPayAmount());
+                System.out.println(addMoneyToMerchantMap);
             }
         }
         Order order =new Order();
@@ -1406,8 +1408,9 @@ public class MallShopController extends BaseController{
             //订单id
             orderItem.setOrderId(orderId);
             //支付状态
-            //orderItem.setStatus(getOrderStatus);
+            orderItem.setStatus("10A");
             //商铺收益
+            System.out.println();
             BigDecimal shopIncome = addMoneyToMerchantMap.get(orderItem.getShopId());
             orderItem.setShopIncome(shopIncome);
 
@@ -1793,19 +1796,29 @@ public class MallShopController extends BaseController{
         ReturnResult returnResult = new ReturnResult();
         log.info("临时订单（最新）------------->>/mallShop/temporaryOrder");
         getParameterMap(request, response);
+        String token = request.getHeader("token");
+        String userId="";
+        if(StringUtils.isNotEmpty(token)) {
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+        }
         ReturnOrder returnOrder = new ReturnOrder();
         List<ResultCart> resultCarts = new ArrayList<>();
         if (StringUtils.isEmpty(cartStr)){
             returnResult.setMessage("cartStr参数不能为空！");
             return returnResult;
-        }if (StringUtils.isNotEmpty(addressId)){
-            MallAddress mallAddress = mallShopService.getMallAddress(addressId);
-            returnOrder.setMallAddress(mallAddress);
+        }
+        MallAddress mallAddress = null;
+        if (StringUtils.isEmpty(addressId)){
+            mallAddress = mallShopService.getDefaultAddress(userId);
+        }
+        if (StringUtils.isNotEmpty(addressId)){
+            mallAddress = mallShopService.getMallAddress(addressId);
             if (StringUtils.isNull(mallAddress)){
-                returnResult.setMessage("为查询该地址");
+                returnResult.setMessage("未查询该地址！");
                 return returnResult;
             }
         }
+        returnOrder.setMallAddress(mallAddress);
         if (cartStr.contains("-")) {
 
             String[] cartStrings = cartStr.split("-");
