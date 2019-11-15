@@ -586,11 +586,6 @@ public class PayController extends BaseController{
 //        changeMoney.setNote();
 //        changeMoney.setTradeType("TXZFB");
 //        changeMoney.setMoney(new BigDecimal("1"));
-        //手续费0.75%
-        BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal money = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
-        changeMoney.setMoney(money);
-
         if ("TXZFB".equals(changeMoney.getTradeType())) {
             if (StringUtils.isEmpty(user.getZfbNumber()) && StringUtils.isEmpty(user.getZfbRealName())){
                 returnResult.setCode("03");
@@ -599,9 +594,14 @@ public class PayController extends BaseController{
             }
             changeMoney.setRealName(user.getZfbRealName());
             changeMoney.setMoneyNumber(user.getZfbNumber());
+            changeMoney.setMobile(user.getPhone());
+            changeMoney.setStatus("10A");
             createShouMoney(changeMoney);
             if (StringUtils.isEmpty(changeMoney.getId())) {
                 returnResult.setMessage("创建提现订单失败！缺少参数！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            } else if ("10B".equals(changeMoney.getStatus())) {
+                returnResult.setMessage("请勿重复提交！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             return outZFB(changeMoney,user);
@@ -613,9 +613,14 @@ public class PayController extends BaseController{
             }
             changeMoney.setRealName(user.getWechatName());
             changeMoney.setMoneyNumber(user.getOpendId());
+            changeMoney.setMobile(user.getPhone());
+            changeMoney.setStatus("10A");
             createShouMoney(changeMoney);
             if (StringUtils.isEmpty(changeMoney.getId())) {
                 returnResult.setMessage("创建提现订单失败！缺少参数！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            } else if ("10B".equals(changeMoney.getStatus())) {
+                returnResult.setMessage("请勿重复提交！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             return outWX(changeMoney,user);
@@ -633,9 +638,11 @@ public class PayController extends BaseController{
         String partner_trade_no = RandomSaltUtil.generetRandomSaltCode(32);
         //描述
         log.info("金额==========>>>"+changeMoney.getMoney());
-        String moneyD = changeMoney.getMoney()
-                .setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
-                .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
+        //手续费0.75%
+        BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal rateMoney = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
+        String moneyD = rateMoney.multiply(new BigDecimal(100)).setScale(0,BigDecimal.ROUND_HALF_UP).toString();
+
         log.info("金额==========>>>"+moneyD);
         String desc = "娱悦APP提现"+changeMoney.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"元";
         // 参数：开始生成第一次签名
@@ -848,11 +855,15 @@ public class PayController extends BaseController{
         String payerShowName = "杭州和元网络科技有限公司";
         String remark = "单笔转账到支付宝";
         try {
+            //手续费0.75%
+            BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
+            BigDecimal rateMoney = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
+
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
             request.setBizContent("{\"out_biz_no\":\""+ changeMoney.getId() +"\","
                     +"\"remark\":\""+ remark +"\","    //备注
                     +"\"payee_account\":\""+ changeMoney.getMoneyNumber() +"\","//支付宝账号
-                    +"\"amount\":\""+ changeMoney.getMoney().toString() +"\"," //金额
+                    +"\"amount\":\""+ rateMoney.toString() +"\"," //金额
                     +"\"payer_show_name\":\""+ payerShowName +"\","   //转款账号
                     +"\"payee_real_name\":\""+ changeMoney.getRealName() +"\"," //支付宝真实姓名
                     + "\"payee_type\":\"ALIPAY_LOGONID\"}");
