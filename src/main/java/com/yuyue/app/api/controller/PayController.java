@@ -580,6 +580,11 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
+        if ("10B".equals(changeMoney.getStatus())) {
+            returnResult.setMessage("请勿重复提交！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
         changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
         changeMoney.setMerchantId(user.getId());
         //提现是艺人和推荐奖励金的收益，商城收益
@@ -595,13 +600,10 @@ public class PayController extends BaseController{
             changeMoney.setRealName(user.getZfbRealName());
             changeMoney.setMoneyNumber(user.getZfbNumber());
             changeMoney.setMobile(user.getPhone());
-            changeMoney.setStatus("10A");
+            changeMoney.setStatus("10B");
             createShouMoney(changeMoney);
             if (StringUtils.isEmpty(changeMoney.getId())) {
                 returnResult.setMessage("创建提现订单失败！缺少参数！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            } else if ("10B".equals(changeMoney.getStatus())) {
-                returnResult.setMessage("请勿重复提交！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             return outZFB(changeMoney,user);
@@ -614,13 +616,10 @@ public class PayController extends BaseController{
             changeMoney.setRealName(user.getWechatName());
             changeMoney.setMoneyNumber(user.getOpendId());
             changeMoney.setMobile(user.getPhone());
-            changeMoney.setStatus("10A");
+            changeMoney.setStatus("10B");
             createShouMoney(changeMoney);
             if (StringUtils.isEmpty(changeMoney.getId())) {
                 returnResult.setMessage("创建提现订单失败！缺少参数！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            } else if ("10B".equals(changeMoney.getStatus())) {
-                returnResult.setMessage("请勿重复提交！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             return outWX(changeMoney,user);
