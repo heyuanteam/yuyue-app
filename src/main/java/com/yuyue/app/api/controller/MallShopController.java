@@ -87,6 +87,40 @@ public class MallShopController extends BaseController{
 
 
     /**
+     * 查询我的商铺
+     * @param
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "getMyMallShops")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult getMyMallShops(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("查询我的所有商铺-------------->>/mallShop/getMyMallShops");
+        getParameterMap(request, response);
+
+        List<MallShop> myMallShops = mallShopService.getMyMallShops(user.getId());
+        if (StringUtils.isEmpty(myMallShops)){
+            returnResult.setMessage("未查询到商铺");
+            return returnResult;
+        }
+        //获取商铺图片信息
+        for (MallShop myShop:myMallShops
+             ) {
+            List<Specification> specification = mallShopService.getSpecification(myShop.getShopId());
+            if (StringUtils.isEmpty(specification)){
+                specification = new ArrayList<>();
+            }
+            myShop.setSpecifications(specification);
+        }
+        returnResult.setMessage("返回成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(myMallShops);
+        return returnResult;
+    }
+
+    /**
      * 查询所有符合条件的商铺
      * @param request
      * @param response
@@ -1716,8 +1750,6 @@ public class MallShopController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(returnOrderDetailList);
         return returnResult;
-
-
 
     }
     /**

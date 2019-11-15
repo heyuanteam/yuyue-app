@@ -39,6 +39,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public List<MallShop> getMyMallShops(String merchantId) {
+        return mallShopMapper.getMyMallShops(merchantId);
+    }
+
+    @Override
     public MallShop myMallShopInfo(String merchantId) {
         return mallShopMapper.myMallShopInfo(merchantId);
     }

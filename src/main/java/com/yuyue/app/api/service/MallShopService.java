@@ -10,6 +10,8 @@ public interface MallShopService {
 /*---------------------------------商铺接口---------------------------------*/
     MallShop getMyMallShop(String shopId);
 
+    List<MallShop> getMyMallShops(String merchantId);
+
     MallShop myMallShopInfo(String merchantId);
 
     List<MallShop> getAllMallShop(String myArea,String content);

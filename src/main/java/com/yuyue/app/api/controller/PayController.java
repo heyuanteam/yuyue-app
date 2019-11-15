@@ -226,7 +226,7 @@ public class PayController extends BaseController{
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
-                    log.info("给商户价钱之前----------------:");
+                    log.info("----------------给商户加钱----------------");
                     if (orderNo.getTradeType().contains("SC")){
                         mallShopService.mallPaySuccess(orderId);
                     }
@@ -381,6 +381,10 @@ public class PayController extends BaseController{
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
+                    log.info("----------------给商户加钱----------------");
+                    if (orderNo.getTradeType().contains("SC")){
+                        mallShopService.mallPaySuccess(orderId);
+                    }
 //                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
 //                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")) {
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser, orderNo.getMoney(), "+");
