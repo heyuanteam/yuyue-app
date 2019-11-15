@@ -232,13 +232,12 @@ public class PayController extends BaseController{
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
                     log.info("给商户价钱之前----------------:");
-                    if (orderNo.getTradeType().contains("SC")){
+                    if (orderNo.getTradeType().contains("SC") || orderNo.getTradeType().contains("WAP")){
                         //Map<String,BigDecimal> map = new HashMap<>();
                         Map<String,BigDecimal> map = MallShopController.addMoneyToMerchantMap;
                         log.info("给商户价钱之后-----------------map:"+map);
                         if (StringUtils.isNotEmpty(map) ){
-                            for (String shopId:map.keySet()
-                                 ) {
+                            for (String shopId:map.keySet()) {
                                 BigDecimal money = map.get(shopId);
                                 MallShop myMallShop = mallShopService.getMyMallShop(shopId);
                                 //获取商家id
@@ -254,8 +253,7 @@ public class PayController extends BaseController{
                         mallShopService.updateOrderItemsStatus(orderId,"10B");
                         //减库存
                         Map<String, String> reserveMap= MallShopController.stringStringMap;
-                        for (String commodityId:reserveMap.keySet()
-                             ) {
+                        for (String commodityId:reserveMap.keySet()) {
                             Specification specification = new Specification();
                             specification.setCommodityId(commodityId);
                             specification.setCommodityNum(Integer.valueOf(reserveMap.get(commodityId)));
