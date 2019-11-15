@@ -563,7 +563,7 @@ public class PayController extends BaseController{
         if (StringUtils.isEmpty(tradeType)) {
             returnResult.setMessage("提现类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (StringUtils.isNotEmpty(money.toString()) || money.compareTo(BigDecimal.ZERO)==0){
+        } else if (money == null || money.compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("提现不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if ("income".equals(note) && user.getIncome().compareTo(money) == -1){
