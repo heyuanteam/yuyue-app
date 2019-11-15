@@ -57,7 +57,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
 
     @Transactional
     @Update("UPDATE yuyue_out_money b SET b.`status`=#{status},b.responseCode=#{responseCode},b.responseMessage=#{responseMessage} "
-            +" WHERE b.outNo = #{outNo} ")
+            +" WHERE b.id = #{outNo} ")
     void updateOutStatus(@Param("responseCode") String responseCode,@Param("responseMessage") String responseMessage,
                          @Param("status") String status,@Param("outNo") String outNo);
 

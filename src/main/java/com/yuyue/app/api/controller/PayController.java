@@ -557,51 +557,62 @@ public class PayController extends BaseController{
     @ResponseBody
     @RequestMapping("/outMoney")
     @LoginRequired
-    public JSONObject outMoney(ChangeMoney changeMoney, @CurrentUser AppUser user) throws Exception {
+    public JSONObject outMoney(String tradeType,BigDecimal money,String note,@CurrentUser AppUser user) throws Exception {
         ReturnResult returnResult = new ReturnResult();
         log.info("-------提现订单-----------");
-        if (StringUtils.isEmpty(changeMoney.getTradeType())) {
+        if (StringUtils.isEmpty(tradeType)) {
             returnResult.setMessage("提现类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (changeMoney.getMoney() == null|| changeMoney.getMoney().compareTo(BigDecimal.ZERO)==0){
+        } else if (money == null || money.compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("提现不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("income".equals(changeMoney.getNote()) && user.getIncome().compareTo(changeMoney.getMoney()) == -1){
+        } else if ("income".equals(note) && user.getIncome().compareTo(money) == -1){
             returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("mIncome".equals(changeMoney.getNote()) && user.getMIncome().compareTo(changeMoney.getMoney()) == -1){
+        } else if ("mIncome".equals(note) && user.getMIncome().compareTo(money) == -1){
             returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (changeMoney.getMoney().compareTo(new BigDecimal(5001))==1){
+        } else if (money.compareTo(new BigDecimal(5001))==1){
             returnResult.setMessage("提现不能高于5000元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (changeMoney.getMoney().compareTo(new BigDecimal(1))==-1){
+        } else if (money.compareTo(new BigDecimal(1))==-1){
             returnResult.setMessage("提现不能低于1元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
-        changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
+        ChangeMoney changeMoney = new ChangeMoney();
+        changeMoney.setNote(note);
+        changeMoney.setMoney(money);
+        changeMoney.setTradeType(tradeType);
         changeMoney.setMerchantId(user.getId());
+        changeMoney.setMobile(user.getPhone());
+        changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
+        if (StringUtils.isNotEmpty(user.getZfbNumber()) && StringUtils.isNotEmpty(user.getZfbRealName())) {
+            changeMoney.setRealName(user.getZfbRealName());
+            changeMoney.setMoneyNumber(user.getZfbNumber());
+        } else {
+            changeMoney.setRealName(user.getWechatName());
+            changeMoney.setMoneyNumber(user.getOpendId());
+        }
+        if ("10B".equals(changeMoney.getStatus())) {
+            returnResult.setMessage("请勿重复点击！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        changeMoney.setStatus("10B");
+        createShouMoney(changeMoney);
+        if (StringUtils.isEmpty(changeMoney.getId())) {
+            returnResult.setMessage("创建提现订单失败！缺少参数！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
         //提现是艺人和推荐奖励金的收益，商城收益
 //        changeMoney.setNote();
 //        changeMoney.setTradeType("TXZFB");
 //        changeMoney.setMoney(new BigDecimal("1"));
-        //手续费0.75%
-        BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal money = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
-        changeMoney.setMoney(money);
-
         if ("TXZFB".equals(changeMoney.getTradeType())) {
             if (StringUtils.isEmpty(user.getZfbNumber()) && StringUtils.isEmpty(user.getZfbRealName())){
                 returnResult.setCode("03");
                 returnResult.setMessage("支付宝授权信息为空！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
-            changeMoney.setRealName(user.getZfbRealName());
-            changeMoney.setMoneyNumber(user.getZfbNumber());
-            createShouMoney(changeMoney);
-            if (StringUtils.isEmpty(changeMoney.getId())) {
-                returnResult.setMessage("创建提现订单失败！缺少参数！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             return outZFB(changeMoney,user);
@@ -609,13 +620,6 @@ public class PayController extends BaseController{
             if ( StringUtils.isEmpty(user.getOpendId())){
                 returnResult.setCode("02");
                 returnResult.setMessage("openId为空！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
-            changeMoney.setRealName(user.getWechatName());
-            changeMoney.setMoneyNumber(user.getOpendId());
-            createShouMoney(changeMoney);
-            if (StringUtils.isEmpty(changeMoney.getId())) {
-                returnResult.setMessage("创建提现订单失败！缺少参数！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             return outWX(changeMoney,user);
@@ -633,9 +637,11 @@ public class PayController extends BaseController{
         String partner_trade_no = RandomSaltUtil.generetRandomSaltCode(32);
         //描述
         log.info("金额==========>>>"+changeMoney.getMoney());
-        String moneyD = changeMoney.getMoney()
-                .setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
-                .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
+        //手续费0.75%
+        BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal rateMoney = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
+        String moneyD = rateMoney.multiply(new BigDecimal(100)).setScale(0,BigDecimal.ROUND_HALF_UP).toString();
+
         log.info("金额==========>>>"+moneyD);
         String desc = "娱悦APP提现"+changeMoney.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString()+"元";
         // 参数：开始生成第一次签名
@@ -848,11 +854,15 @@ public class PayController extends BaseController{
         String payerShowName = "杭州和元网络科技有限公司";
         String remark = "单笔转账到支付宝";
         try {
+            //手续费0.75%
+            BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
+            BigDecimal rateMoney = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
+
             AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
             request.setBizContent("{\"out_biz_no\":\""+ changeMoney.getId() +"\","
                     +"\"remark\":\""+ remark +"\","    //备注
                     +"\"payee_account\":\""+ changeMoney.getMoneyNumber() +"\","//支付宝账号
-                    +"\"amount\":\""+ changeMoney.getMoney().toString() +"\"," //金额
+                    +"\"amount\":\""+ rateMoney.toString() +"\"," //金额
                     +"\"payer_show_name\":\""+ payerShowName +"\","   //转款账号
                     +"\"payee_real_name\":\""+ changeMoney.getRealName() +"\"," //支付宝真实姓名
                     + "\"payee_type\":\"ALIPAY_LOGONID\"}");
@@ -871,11 +881,12 @@ public class PayController extends BaseController{
                     BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
                     payService.updateMIncome(user.getId(),subtract);
                 }
-                payService.updateOutStatus(code, msg, "10B", outNo);
+                payService.updateOutStatus(msg, "支付宝提现成功！", "10B", changeMoney.getId());
                 returnResult.setMessage("支付宝提现成功！");
                 returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             } else {
+                payService.updateOutStatus("ERROR", "支付宝提现失败！", "10C", changeMoney.getId());
                 returnResult.setResult(response.getBody());
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
