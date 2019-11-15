@@ -887,6 +887,7 @@ public class PayController extends BaseController{
                 returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             } else {
+                payService.updateOutStatus("ERROR", "支付宝提现失败！", "10C", changeMoney.getId());
                 returnResult.setResult(response.getBody());
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
