@@ -765,6 +765,9 @@ public class PayController extends BaseController{
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             loginService.updateZFBMessage(user.getId(),user.getZfbNumber(),user.getZfbRealName());
+            returnResult.setMessage("解绑成功！");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if ("WX".equals(tradeType)) {
             String opendId = "";
             String wechatName = "";

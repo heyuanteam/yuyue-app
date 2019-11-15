@@ -141,11 +141,18 @@ public class MyController extends BaseController{
         log.info("打赏记录-------------->>/myController/changeMoneyList");
         ReturnResult returnResult=new ReturnResult();
         Map<String, String> parameterMap = getParameterMap(request, response);
+
+        String token = request.getHeader("token");
+        String userId = "";
+        if(StringUtils.isNotEmpty(token)){
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+        }
+
         String page = parameterMap.get("page");
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
-        List<ChangeMoneyVo> list = myService.changeMoneyList(parameterMap.get("videoId"),parameterMap.get("tradeType"),begin,limit);
+        List<ChangeMoneyVo> list = myService.changeMoneyList(userId,parameterMap.get("videoId"),parameterMap.get("tradeType"),begin,limit);
         if(CollectionUtils.isEmpty(list)){
             returnResult.setMessage("暂无记录！");
         } else {

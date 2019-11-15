@@ -76,6 +76,9 @@
         <if test="tradeType!=null and tradeType!=''">
             and b.tradeType like concat('%', #{tradeType}, '%')
         </if>
+        <if test="userId!=null and userId!=''">
+            and b.merchantId = #{userId}
+        </if>
         order by b.COMPLETE_TIME desc LIMIT #{begin},#{size}
     </select>
 </mapper>

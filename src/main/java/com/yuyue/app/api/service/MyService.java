@@ -46,7 +46,7 @@ public interface MyService {
                         String categoryId, String address, String phone,
                         String videoAddress,String imageAddress, String mail, String weChat);
 
-    List<ChangeMoneyVo> changeMoneyList(String videoId,String tradeType, int begin, int size);
+    List<ChangeMoneyVo> changeMoneyList(String userId,String videoId,String tradeType, int begin, int size);
 
     Feedback getFeedback(String details, String contact);
 
