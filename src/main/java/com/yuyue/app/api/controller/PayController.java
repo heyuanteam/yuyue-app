@@ -9,6 +9,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.auth0.jwt.JWT;
@@ -32,9 +33,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.*;
@@ -1033,6 +1036,80 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         returnResult.setMessage("调用扫码微信成功！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * APP浏览器支付
+     * @param order
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping("/payWapAPP")
+    public JSONObject payWapAPP(Order order,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        getParameterMap(request, response);
+        ReturnResult returnResult = new ReturnResult();
+        String token = request.getHeader("token");
+        if(StringUtils.isEmpty(token)) {
+            returnResult.setMessage("缺少token！请去登录");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        String userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+        AppUser user = loginService.getAppUserMsg("","",userId);
+
+        log.info("-------创建APP浏览器支付订单-----------");
+        if (StringUtils.isEmpty(order.getTradeType())) {
+            returnResult.setMessage("充值类型不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        order.setOrderNo("YYWAP" + RandomSaltUtil.randomNumber(14));
+        order.setStatus("10A");
+        order.setMobile(user.getPhone());
+        order.setMerchantId(user.getId());
+//        order.setTradeType("SMWX");
+//        order.setMoney("100");
+        createOrder(order);
+        if (StringUtils.isEmpty(order.getId())) {
+            returnResult.setMessage("创建订单失败！缺少参数！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        if ("WAPWX".equals(order.getTradeType())) {
+//            return payWapWX(order);
+        } else if ("WAPZFB".equals(order.getTradeType())) {
+            return payWapZFB(order,request,response);
+        }
+        returnResult.setMessage("充值类型选择错误！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    public JSONObject payWapZFB(Order order,HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+        getParameterMap(httpRequest, httpResponse);
+        ReturnResult returnResult = new ReturnResult();
+        AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
+        alipayRequest.setReturnUrl(Variables.AliPayNotifyUrl);//同步通知页面
+        alipayRequest.setNotifyUrl(Variables.AliPayNotifyUrl);//同步通知页面
+        String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        String subject = "商城支付";
+        alipayRequest.setBizContent("{\"out_trade_no\":\""+ order.getId() +"\","
+                +" \"total_amount\":\""+moneyD+"\","
+                +" \"subject\":\""+subject+"\","
+                +" \"product_code\":\"QUICK_WAP_PAY\"}");//填充业务参数
+        String form="";
+        try {
+            form = Variables.alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
+            log.info("支付宝APP浏览器返回结果====>>>>>"+form);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(form);
+        if (form == null) {
+            log.error("订单" + order.getId() + "未成功获取支付宝付款界面！");
+            returnResult.setMessage("未成功获取支付宝付款界面！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        returnResult.setMessage(order.getId());
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 }
