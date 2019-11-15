@@ -10,6 +10,10 @@ import java.util.List;
 
 @Repository
 public interface MallShopMapper extends MyBaseMapper<MallShop> {
+
+
+    List<MallShop> getMallShopByVideoId(@Param(value = "videoId")String videoId);
+
     //获取商铺列表
     List<MallShop> getAllMallShop(@Param(value = "myArea") String myArea,@Param(value = "content") String content);
 

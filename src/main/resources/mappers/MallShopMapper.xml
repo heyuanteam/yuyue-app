@@ -31,6 +31,18 @@
         </collection>
     </resultMap>
 
+
+    <select id="getMallShopByVideoId"  parameterType="String" resultMap="MallShop">
+
+       SELECT * FROM yuyue_mall_shop s
+        left join  yuyue_mall_shop_images i
+        on   s.shop_id = i.shop_id
+        where s.shop_id  in
+        (SELECT shop_id FROM yuyue_mall_shop WHERE video_id = #{videoId})
+        order by i.image_sort
+
+    </select>
+
     <select id="getMyMallShop"  parameterType="String" resultMap="MallShop">
 
        SELECT * FROM yuyue_mall_shop s
@@ -116,13 +128,13 @@
                 remark = #{remark},
             </if>
             <if test=" score != null and score != ''">
-                score = #{score}
+                score = #{score},
             </if>
             <if test=" status != null and status != ''">
-                status = #{status}
+                status = #{status},
             </if>
             <if test=" isRevise != null and isRevise != ''">
-                is_revise = 'Y'
+                is_revise = 'Y',
             </if>
 
 

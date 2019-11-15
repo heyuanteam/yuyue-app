@@ -34,6 +34,11 @@ public class MallShopServiceImpl implements MallShopService {
     private PayService payService;
 
     @Override
+    public List<MallShop> getMallShopByVideoId(String videoId) {
+        return mallShopMapper.getMallShopByVideoId(videoId);
+    }
+
+    @Override
     public MallShop getMyMallShop(String shopId) {
         return mallShopMapper.getMyMallShop(shopId);
     }
@@ -64,7 +69,7 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
-    public ShopImage getShopImage(String shopId) {
+    public List<ShopImage> getShopImage(String shopId) {
         return shopImageMapper.getShopImage(shopId);
     }
 
