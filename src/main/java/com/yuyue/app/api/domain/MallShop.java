@@ -58,6 +58,8 @@ public class MallShop implements Serializable {
     private Date createTime;
     //    商铺状态
     private String status;
+    //是否修改
+    private String isRevise;
     //    推广开始时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;

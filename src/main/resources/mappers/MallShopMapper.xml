@@ -67,6 +67,7 @@
     <update id="updateMyMallShopInfo" parameterType="com.yuyue.app.api.domain.MallShop">
         update  yuyue_mall_shop
         <set>
+
             <if test=" category != null and category != ''">
                 category = #{category},
             </if>
@@ -117,6 +118,7 @@
             <if test=" score != null and score != ''">
                 score = #{score}
             </if>
+            is_revise = #{}
 
 
         </set>

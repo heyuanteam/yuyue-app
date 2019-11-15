@@ -1652,6 +1652,7 @@ public class MallShopController extends BaseController{
 
         String status = request.getParameter("status");
         String consumerId = appUser.getId();
+        //获取商城中我的订单列表
         List<Order> scOrder = payService.getSCOrder(consumerId, status);
         List<ReturnOrderDetail> returnOrderDetailList = new ArrayList<>();
         if (StringUtils.isNull(scOrder)){
@@ -1660,7 +1661,7 @@ public class MallShopController extends BaseController{
             returnResult.setResult(scOrder);
             return returnResult;
         }
-
+        //订单
         for (Order order:scOrder
              ) {
             String orderId = order.getId();
@@ -1677,6 +1678,7 @@ public class MallShopController extends BaseController{
                 }
             }
             List<Specification> commodities = new ArrayList<>();
+            //获取订单中每个订单项
             List<OrderItem> orderItems= mallShopService.getMallOrderItem(orderId,"","");
             Specification specificationById = null;
             for (OrderItem orderItem:orderItems
@@ -1691,7 +1693,8 @@ public class MallShopController extends BaseController{
                 specificationById.setCommodityNum(orderItem.getCommodityNum());
                 //设置规格价格
                 specificationById.setCommodityPrice(orderItem.getCommodityPrice());
-                specificationById.setStatus(orderItem.getStatus());
+                //设置订单的状态
+                specificationById.setStatus(order.getStatus());
                 commodities.add(specificationById);
             }
 
@@ -1702,7 +1705,7 @@ public class MallShopController extends BaseController{
             MallShop myMallShop = mallShopService.getMyMallShop(orderItems.get(0).getShopId());
             returnOrderDetail.setCommodities(commodities);
             returnOrderDetail.setFare(orderItems.get(0).getFare());
-            returnOrderDetail.setStatus(order.getStatus());
+            returnOrderDetail.setStatus(orderItems.get(0).getStatus());
             returnOrderDetail.setTradeType(order.getTradeType());
             returnOrderDetail.setMerchantAddr(myMallShop.getMerchantAddr());
             returnOrderDetail.setMerchantPhone(myMallShop.getMerchantPhone());
