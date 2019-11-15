@@ -232,7 +232,8 @@ public class PayController extends BaseController{
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
                     log.info("给商户价钱之前----------------:");
-                    if (orderNo.getTradeType().contains("SC") || orderNo.getTradeType().contains("WAP")){
+                    if (orderNo.getTradeType().contains("SC") || orderNo.getTradeType().contains("WAP")
+                            || orderNo.getTradeType().contains("SM")){
                         //Map<String,BigDecimal> map = new HashMap<>();
                         Map<String,BigDecimal> map = MallShopController.addMoneyToMerchantMap;
                         log.info("给商户价钱之后-----------------map:"+map);
