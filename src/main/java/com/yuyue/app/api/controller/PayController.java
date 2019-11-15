@@ -586,11 +586,6 @@ public class PayController extends BaseController{
 //        changeMoney.setNote();
 //        changeMoney.setTradeType("TXZFB");
 //        changeMoney.setMoney(new BigDecimal("1"));
-
-        if (StringUtils.isEmpty(changeMoney.getId())) {
-            returnResult.setMessage("创建提现订单失败！缺少参数！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
         //手续费0.75%
         BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
         BigDecimal money = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -605,6 +600,10 @@ public class PayController extends BaseController{
             changeMoney.setRealName(user.getZfbRealName());
             changeMoney.setMoneyNumber(user.getZfbNumber());
             createShouMoney(changeMoney);
+            if (StringUtils.isEmpty(changeMoney.getId())) {
+                returnResult.setMessage("创建提现订单失败！缺少参数！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
             return outZFB(changeMoney,user);
         } else if ("TXWX".equals(changeMoney.getTradeType())) {
             if ( StringUtils.isEmpty(user.getOpendId())){
@@ -615,6 +614,10 @@ public class PayController extends BaseController{
             changeMoney.setRealName(user.getWechatName());
             changeMoney.setMoneyNumber(user.getOpendId());
             createShouMoney(changeMoney);
+            if (StringUtils.isEmpty(changeMoney.getId())) {
+                returnResult.setMessage("创建提现订单失败！缺少参数！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
             return outWX(changeMoney,user);
         }
         returnResult.setMessage("提现正在进行中！！");
@@ -716,6 +719,9 @@ public class PayController extends BaseController{
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             loginService.updateUserByZFB(user.getId(),zfbNumber,zfbRealName);
+            returnResult.setMessage("绑定支付宝信息成功！");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if ("TXWX".equals(tradeType)) {
             if (StringUtils.isEmpty(code)){
                 returnResult.setMessage("code不能为空！！");
@@ -762,6 +768,9 @@ public class PayController extends BaseController{
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             loginService.updateZFBMessage(user.getId(),user.getZfbNumber(),user.getZfbRealName());
+            returnResult.setMessage("解绑成功！");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if ("WX".equals(tradeType)) {
             String opendId = "";
             String wechatName = "";

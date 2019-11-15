@@ -76,7 +76,8 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createShouMoney(ChangeMoney changeMoney);
 
-    List<ChangeMoneyVo> changeMoneyList(@Param(value = "videoId")String videoId,@Param(value = "tradeType")String tradeType,
+    List<ChangeMoneyVo> changeMoneyList(@Param(value = "userId")String userId,@Param(value = "videoId")String videoId,
+                                        @Param(value = "tradeType")String tradeType,
                                         @Param(value = "begin") int begin,@Param(value = "size")int size);
 
     @Select("SELECT * FROM yuyue_order b where DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') < #{startTime} AND b.`status` = '10A'")
