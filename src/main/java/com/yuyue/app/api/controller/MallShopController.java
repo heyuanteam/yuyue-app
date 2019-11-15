@@ -226,6 +226,7 @@ public class MallShopController extends BaseController{
         JSONObject jsonObject = null;
         /*---------------------------------生成订单结束-------------------------------*/
         MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+        //商铺已存在情况下重新支付，---------> 未支付状态或是 支付超时状态
         System.out.println(StringUtils.isNull(myMallShop));
         if (StringUtils.isNotNull(myMallShop) && StringUtils.isNotEmpty(myMallShop.getStatus())){
             //商铺未支付状态或是 支付超时状态
@@ -314,7 +315,9 @@ public class MallShopController extends BaseController{
                 returnResult.setStatus(Boolean.TRUE);
             }
             return returnResult;
-        }else {
+        }
+        /*---------------------------------------------新的商铺申请--------------------------------------------*/
+        else {
             //新的商铺申请
             if (StringUtils.isEmpty(shopId)){
                 returnResult.setMessage("商铺id不能为空！");
@@ -494,6 +497,37 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
+
+    /**
+     * 修改我的商铺状态
+     * @param mallShop
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "updateMyMallShopStatus")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult updateMyMallShopStatus(MallShop mallShop,HttpServletRequest request, HttpServletResponse response){
+        log.info("修改我的商铺状态------------->>/mallShop/updateMyMallShopStatus");
+        getParameterMap(request, response);
+        ReturnResult returnResult = new ReturnResult();
+        String businessStatus = request.getParameter("businessStatus");
+        String shopId = request.getParameter("shopId");
+        if ("rest".equals(businessStatus) || "open".equals(businessStatus)){
+            mallShopService.updateMyMallShopStatus(businessStatus,shopId);
+            returnResult.setMessage("修改成功！");
+        }else {
+            returnResult.setMessage("状态错误！");
+        }
+
+
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+    }
+
+
+
     /**
      * 修改商铺图片
      * @param request
@@ -556,7 +590,6 @@ public class MallShopController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;
     }
-
 
 
     /**
@@ -895,7 +928,7 @@ public class MallShopController extends BaseController{
         cart.setConsumerId(appUser.getId());
         //java.util.regex.Matcher match=pattern.matcher(commodityPrice);
         if (StringUtils.isEmpty(commodityId)){
-            returnResult.setMessage("商品id为空！");
+            returnResult.setMessage("规格id为空！");
             return returnResult;
         }else{
             cart.setCommodityId(commodityId);

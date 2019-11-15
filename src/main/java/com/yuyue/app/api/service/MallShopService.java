@@ -24,6 +24,8 @@ public interface MallShopService {
 
     void updateMyMallShopInfo(MallShop mallShop);
 
+    void updateMyMallShopStatus(String businessStatus, String shopId);
+
     List<ShopImage> getShopImage(String shopId);
 
     void insertShopImage(ShopImage shopImage);

@@ -3,6 +3,7 @@ package com.yuyue.app.api.mapper;
 import com.yuyue.app.api.domain.MallShop;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,4 +36,8 @@ public interface MallShopMapper extends MyBaseMapper<MallShop> {
 
     @Transactional
     void updateMyMallShopInfo(MallShop mallShop);
+
+    @Transactional
+    @Update("update yuyue_mall_shop set `business_status` = #{businessStatus} where shop_id = #{shopId} ")
+    void updateMyMallShopStatus(@Param(value = "businessStatus")String businessStatus,@Param(value = "shopId") String shopId);
 }
