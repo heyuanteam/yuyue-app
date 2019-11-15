@@ -87,7 +87,7 @@ public class MallShopController extends BaseController{
 
 
     /**
-     * 查询我的商铺
+     * 查询我的商铺（我的广告 ）
      * @param
      * @param response
      * @return
@@ -97,7 +97,7 @@ public class MallShopController extends BaseController{
     @LoginRequired
     public ReturnResult getMyMallShops(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response){
         ReturnResult returnResult = new ReturnResult();
-        log.info("查询我的所有商铺-------------->>/mallShop/getMyMallShops");
+        log.info("查询我的商铺（我的广告）-------------->>/mallShop/getMyMallShops");
         getParameterMap(request, response);
 
         List<MallShop> myMallShops = mallShopService.getMyMallShops(user.getId());
@@ -115,11 +115,10 @@ public class MallShopController extends BaseController{
                     mallShopService.updateMyMallShopInfo(myShop);
                 }
             }
-            //获取商铺图片信息
+            //规格
+            myShop.setImages(mallShopService.getShopImage(myShop.getShopId()));
+            myShop.setAdPrice(myService.getAdvertisementFeeInfo(myShop.getPriceId()).get(0));
             List<Specification> specification = mallShopService.getSpecification(myShop.getShopId());
-            if (StringUtils.isEmpty(specification)){
-                specification = new ArrayList<>();
-            }
             myShop.setSpecifications(specification);
         }
         returnResult.setMessage("返回成功！");
@@ -163,8 +162,31 @@ public class MallShopController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;
     }
-    
-    
+
+
+    /**
+     * 获取爆款
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "getMallShopByVideo")
+    @ResponseBody
+    public ReturnResult getMallShopByVideo(HttpServletRequest request, HttpServletResponse response){
+        log.info("获取爆款------------->>/mallShop/getMallShopByVideo");
+        getParameterMap(request, response);
+        ReturnResult returnResult = new ReturnResult();
+        String videoId = request.getParameter("videoId");
+        if (StringUtils.isEmpty(videoId)){
+            returnResult.setMessage("视频id不可为空！");
+            return returnResult;
+        }
+        List<MallShop> mallShopByVideoId = mallShopService.getMallShopByVideoId(videoId);
+        returnResult.setMessage("返回成功！");
+        returnResult.setResult(mallShopByVideoId);
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+    }
 
     /**
      * 添加商铺

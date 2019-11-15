@@ -68,6 +68,12 @@ public class MallShop implements Serializable {
     private Date endTime;
     //    订单id
     private String orderId;
+    //视频id
+    private String videoId;
+    //广告对象
+    private AdPrice adPrice;
+    //支付的广告费id
+    private String priceId;
 
     //经纬度
     private BigDecimal gdLon;

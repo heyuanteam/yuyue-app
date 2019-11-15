@@ -8,6 +8,8 @@ public interface MallShopService {
 
 
 /*---------------------------------商铺接口---------------------------------*/
+    List<MallShop> getMallShopByVideoId(String videoId);
+
     MallShop getMyMallShop(String shopId);
 
     List<MallShop> getMyMallShops(String merchantId);
@@ -22,7 +24,7 @@ public interface MallShopService {
 
     void updateMyMallShopInfo(MallShop mallShop);
 
-    ShopImage getShopImage(String shopId);
+    List<ShopImage> getShopImage(String shopId);
 
     void insertShopImage(ShopImage shopImage);
 
