@@ -586,11 +586,6 @@ public class PayController extends BaseController{
 //        changeMoney.setNote();
 //        changeMoney.setTradeType("TXZFB");
 //        changeMoney.setMoney(new BigDecimal("1"));
-
-        if (StringUtils.isEmpty(changeMoney.getId())) {
-            returnResult.setMessage("创建提现订单失败！缺少参数！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
         //手续费0.75%
         BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
         BigDecimal money = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -605,6 +600,10 @@ public class PayController extends BaseController{
             changeMoney.setRealName(user.getZfbRealName());
             changeMoney.setMoneyNumber(user.getZfbNumber());
             createShouMoney(changeMoney);
+            if (StringUtils.isEmpty(changeMoney.getId())) {
+                returnResult.setMessage("创建提现订单失败！缺少参数！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
             return outZFB(changeMoney,user);
         } else if ("TXWX".equals(changeMoney.getTradeType())) {
             if ( StringUtils.isEmpty(user.getOpendId())){
