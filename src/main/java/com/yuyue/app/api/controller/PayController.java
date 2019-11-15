@@ -557,36 +557,54 @@ public class PayController extends BaseController{
     @ResponseBody
     @RequestMapping("/outMoney")
     @LoginRequired
-    public JSONObject outMoney(ChangeMoney changeMoney, @CurrentUser AppUser user) throws Exception {
+    public JSONObject outMoney(String tradeType,BigDecimal money,String note,@CurrentUser AppUser user) throws Exception {
         ReturnResult returnResult = new ReturnResult();
         log.info("-------提现订单-----------");
-        if (StringUtils.isEmpty(changeMoney.getTradeType())) {
+        if (StringUtils.isEmpty(tradeType)) {
             returnResult.setMessage("提现类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (changeMoney.getMoney() == null|| changeMoney.getMoney().compareTo(BigDecimal.ZERO)==0){
+        } else if (StringUtils.isNotEmpty(money.toString()) || money.compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("提现不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("income".equals(changeMoney.getNote()) && user.getIncome().compareTo(changeMoney.getMoney()) == -1){
+        } else if ("income".equals(note) && user.getIncome().compareTo(money) == -1){
             returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("mIncome".equals(changeMoney.getNote()) && user.getMIncome().compareTo(changeMoney.getMoney()) == -1){
+        } else if ("mIncome".equals(note) && user.getMIncome().compareTo(money) == -1){
             returnResult.setMessage("提现不能高于收益！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (changeMoney.getMoney().compareTo(new BigDecimal(5001))==1){
+        } else if (money.compareTo(new BigDecimal(5001))==1){
             returnResult.setMessage("提现不能高于5000元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (changeMoney.getMoney().compareTo(new BigDecimal(1))==-1){
+        } else if (money.compareTo(new BigDecimal(1))==-1){
             returnResult.setMessage("提现不能低于1元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
+        ChangeMoney changeMoney = new ChangeMoney();
+        changeMoney.setNote(note);
+        changeMoney.setMoney(money);
+        changeMoney.setTradeType(tradeType);
+        changeMoney.setMerchantId(user.getId());
+        changeMoney.setMobile(user.getPhone());
+        changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
+        if (StringUtils.isNotEmpty(user.getZfbNumber()) && StringUtils.isNotEmpty(user.getZfbRealName())) {
+            changeMoney.setRealName(user.getZfbRealName());
+            changeMoney.setMoneyNumber(user.getZfbNumber());
+        } else {
+            changeMoney.setRealName(user.getWechatName());
+            changeMoney.setMoneyNumber(user.getOpendId());
+        }
         if ("10B".equals(changeMoney.getStatus())) {
-            returnResult.setMessage("请勿重复提交！");
+            returnResult.setMessage("请勿重复点击！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        changeMoney.setStatus("10B");
+        createShouMoney(changeMoney);
+        if (StringUtils.isEmpty(changeMoney.getId())) {
+            returnResult.setMessage("创建提现订单失败！缺少参数！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
-        changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
-        changeMoney.setMerchantId(user.getId());
         //提现是艺人和推荐奖励金的收益，商城收益
 //        changeMoney.setNote();
 //        changeMoney.setTradeType("TXZFB");
@@ -597,29 +615,11 @@ public class PayController extends BaseController{
                 returnResult.setMessage("支付宝授权信息为空！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-            changeMoney.setRealName(user.getZfbRealName());
-            changeMoney.setMoneyNumber(user.getZfbNumber());
-            changeMoney.setMobile(user.getPhone());
-            changeMoney.setStatus("10B");
-            createShouMoney(changeMoney);
-            if (StringUtils.isEmpty(changeMoney.getId())) {
-                returnResult.setMessage("创建提现订单失败！缺少参数！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
             return outZFB(changeMoney,user);
         } else if ("TXWX".equals(changeMoney.getTradeType())) {
             if ( StringUtils.isEmpty(user.getOpendId())){
                 returnResult.setCode("02");
                 returnResult.setMessage("openId为空！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
-            changeMoney.setRealName(user.getWechatName());
-            changeMoney.setMoneyNumber(user.getOpendId());
-            changeMoney.setMobile(user.getPhone());
-            changeMoney.setStatus("10B");
-            createShouMoney(changeMoney);
-            if (StringUtils.isEmpty(changeMoney.getId())) {
-                returnResult.setMessage("创建提现订单失败！缺少参数！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
             return outWX(changeMoney,user);
