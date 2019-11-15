@@ -132,7 +132,7 @@ public class MyController extends BaseController{
     }
 
     /**
-     * 打赏记录
+     * 打赏、提现记录
      * @return
      */
     @RequestMapping("/changeMoneyList")
@@ -145,9 +145,9 @@ public class MyController extends BaseController{
         if (StringUtils.isEmpty(page))  page = "1";
         int limit = 10;
         int begin = (Integer.parseInt(page) - 1) * limit;
-        List<ChangeMoneyVo> list = myService.changeMoneyList(parameterMap.get("videoId"),begin,limit);
+        List<ChangeMoneyVo> list = myService.changeMoneyList(parameterMap.get("videoId"),parameterMap.get("tradeType"),begin,limit);
         if(CollectionUtils.isEmpty(list)){
-            returnResult.setMessage("暂无打赏记录！");
+            returnResult.setMessage("暂无记录！");
         } else {
             returnResult.setMessage("查询成功！");
         }

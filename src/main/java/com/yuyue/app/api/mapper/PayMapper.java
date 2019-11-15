@@ -76,12 +76,8 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     void createShouMoney(ChangeMoney changeMoney);
 
-    @Select("SELECT (SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.merchantId) yiName," +
-            "(SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.sourceId) sourceName," +
-            "(SELECT c.HEADP_URL FROM yuyue_merchant c WHERE c.ID = b.merchantId) headpUrl," +
-            "b.merchantId,b.changeNo,b.tradeType,b.money,b.`status`,b.note,DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime " +
-            "FROM yuyue_change_money b where b.videoId = #{videoId} order by b.COMPLETE_TIME desc LIMIT #{begin},#{size} ")
-    List<ChangeMoneyVo> changeMoneyList(@Param(value = "videoId")String videoId, @Param(value = "begin") int begin,@Param(value = "size")int size);
+    List<ChangeMoneyVo> changeMoneyList(@Param(value = "videoId")String videoId,@Param(value = "tradeType")String tradeType,
+                                        @Param(value = "begin") int begin,@Param(value = "size")int size);
 
     @Select("SELECT * FROM yuyue_order b where DATE_FORMAT(b.COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') < #{startTime} AND b.`status` = '10A'")
     List<Order> findOrderList(@Param(value = "startTime") String startTime);

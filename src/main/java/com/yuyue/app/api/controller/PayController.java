@@ -703,7 +703,7 @@ public class PayController extends BaseController{
     @ResponseBody
     @RequestMapping("/saveUserInfo")
     @LoginRequired
-    public JSONObject saveUserInfo(@CurrentUser AppUser user,String tradeType,String code) {
+    public JSONObject saveUserInfo(@CurrentUser AppUser user,String tradeType,String zfbNumber,String zfbRealName,String code) {
         ReturnResult returnResult = new ReturnResult();
         if (StringUtils.isEmpty(tradeType)) {
             returnResult.setMessage("提现类型不能为空！！");
@@ -711,11 +711,11 @@ public class PayController extends BaseController{
         }
 
         if("TXZFB".equals(tradeType)){
-            if (StringUtils.isEmpty(user.getZfbNumber()) && StringUtils.isEmpty(user.getZfbRealName())){
+            if (StringUtils.isEmpty(zfbNumber) && StringUtils.isEmpty(zfbRealName)){
                 returnResult.setMessage("支付宝授权信息为空！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-            loginService.updateUserByZFB(user.getId(),user.getZfbNumber(),user.getZfbRealName());
+            loginService.updateUserByZFB(user.getId(),zfbNumber,zfbRealName);
         } else if ("TXWX".equals(tradeType)) {
             if (StringUtils.isEmpty(code)){
                 returnResult.setMessage("code不能为空！！");
