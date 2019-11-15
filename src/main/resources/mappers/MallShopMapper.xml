@@ -46,7 +46,7 @@
 
         SELECT * FROM yuyue_mall_shop s,yuyue_mall_shop_images images
             where s.shop_id = images.shop_id and images.image_sort = '0'
-              and s.status  = '10B' and s.business_status = 'open'
+              and s.status  = '10B' and s.business_status = 'open'  and is_revise = 'N'
             <if test="content != null and content != '' ">
                 and CONCAT(IFNULL(s.category,''),IFNULL(s.commodity_name,''),IFNULL(s.detail,''))  LIKE  concat('%', #{content}, '%')
             </if>
@@ -118,7 +118,7 @@
             <if test=" score != null and score != ''">
                 score = #{score}
             </if>
-            is_revise = #{}
+            is_revise = 'Y'
 
 
         </set>
