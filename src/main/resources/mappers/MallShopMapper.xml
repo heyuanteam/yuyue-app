@@ -116,13 +116,13 @@
                 remark = #{remark},
             </if>
             <if test=" score != null and score != ''">
-                score = #{score}
+                score = #{score},
             </if>
             <if test=" status != null and status != ''">
-                status = #{status}
+                status = #{status},
             </if>
             <if test=" isRevise != null and isRevise != ''">
-                is_revise = 'Y'
+                is_revise = 'Y',
             </if>
 
 
