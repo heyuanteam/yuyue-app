@@ -882,7 +882,7 @@ public class PayController extends BaseController{
                     BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
                     payService.updateMIncome(user.getId(),subtract);
                 }
-                payService.updateOutStatus(code, msg, "10B", outNo);
+                payService.updateOutStatus(msg, "支付宝提现成功！", "10B", changeMoney.getId());
                 returnResult.setMessage("支付宝提现成功！");
                 returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
