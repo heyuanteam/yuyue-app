@@ -148,10 +148,10 @@ public class PayController extends BaseController{
             map.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));
             if((order.getTradeType()).contains("GG")){
                 map.put("body", "yuyue-广告费用");
-            }else if((order.getTradeType()).contains("SC")){
-                map.put("body", "yuyue-商城支付");
-            } else {
+            }else if((order.getTradeType()).contains("XF")){
                 map.put("body", "yuyue-视频打赏");
+            } else {
+                map.put("body", "yuyue-商城支付");
             }
             map.put("out_trade_no", order.getId());
             map.put("total_fee", moneyD);
@@ -320,12 +320,12 @@ public class PayController extends BaseController{
             if((order.getTradeType()).contains("GG")){
                 model.setBody("yuyue-广告费用");
                 model.setSubject("yuyue-广告费用");
-            }else if((order.getTradeType()).contains("SC")){
-                model.setBody("yuyue-商城支付");
-                model.setSubject("yuyue-商城支付");
-            } else {
+            }else if((order.getTradeType()).contains("XF")){
                 model.setBody("yuyue-视频打赏");
                 model.setSubject("yuyue-视频打赏");
+            } else {
+                model.setBody("yuyue-商城支付");
+                model.setSubject("yuyue-商城支付");
             }
             model.setOutTradeNo(order.getId());
             model.setTimeoutExpress("30m");
