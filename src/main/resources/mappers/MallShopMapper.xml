@@ -81,10 +81,10 @@
     </select>
 
     <insert id="insertMyMallShop" parameterType="com.yuyue.app.api.domain.MallShop">
-         replace into yuyue_mall_shop (shop_id,merchant_id,category,commodity_name,detail,service_type,fare,
+         replace into yuyue_mall_shop (shop_id,merchant_id,category,commodity_name,detail,service_type,fare,commodity_price,
          business_time,business_status,merchant_addr,merchant_phone,service_area,fee_area,video_path,remark,order_id,status)
          VALUES
-         (#{shopId},#{merchantId},#{category},#{commodityName},#{detail},#{serviceType},#{fare},
+         (#{shopId},#{merchantId},#{category},#{commodityName},#{detail},#{serviceType},#{fare},#{commodityPrice},
          #{businessTime},#{businessStatus},#{merchantAddr},#{merchantPhone},#{serviceArea},#{feeArea},#{videoPath},#{remark},#{orderId},#{status})
     </insert>
 
