@@ -18,16 +18,14 @@ public class Variables {
     public static final String bossPort = ":28088";
     // 编码集，支持 GBK/UTF-8
     public static final String CHARSET = "utf-8";
-    //    返回值类型
     public static final String OUTPUT = "JSON";
     public static final String info = "杭州和元网络科技有限公司";
     public static final String subject = "商城支付";
 
     public static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/pay";
-    public static final String wapUrl = "http://www.heyuannetwork.com/isLogin/shop/makeSure";
-
     public static final String wxNotifyUrl = "http://"+ip+appPort+"/yuyue-app/pay/wxpayNotify";
     public static final String AliPayNotifyUrl = "http://"+ip+appPort+"/yuyue-app/pay/alipayNotify";
+
     //    极光库存通知 : 7 (merchantId,shopid)
     public static final String sendStockJPushUrl = "http://"+ip+bossPort+"/yuyue-boss/send/sendStockJPush";
     //    极光商家卖出商品通知 : 8 (orderId)

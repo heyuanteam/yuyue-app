@@ -1092,16 +1092,16 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         if ("WAPWX".equals(order.getTradeType())) {
-            if (StringUtils.isEmpty(code)) {
-                returnResult.setMessage("code不可以为空！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
-            String opendId = getOpenId(code).getString("openid");
-            if (StringUtils.isEmpty(opendId)) {
-                returnResult.setMessage("code错误！");
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
-            order.setNote(opendId);
+//            if (StringUtils.isEmpty(code)) {
+//                returnResult.setMessage("code不可以为空！");
+//                return ResultJSONUtils.getJSONObjectBean(returnResult);
+//            }
+//            String opendId = getOpenId(code).getString("openid");
+//            if (StringUtils.isEmpty(opendId)) {
+//                returnResult.setMessage("code错误！");
+//                return ResultJSONUtils.getJSONObjectBean(returnResult);
+//            }
+//            order.setNote(opendId);
             return payWapWX(order);
         } else if ("WAPZFB".equals(order.getTradeType())) {
             return payWapZFB(order,request,response);
@@ -1125,9 +1125,16 @@ public class PayController extends BaseController{
             paramMap.put("appid", Variables.wxAppId); //appid
             paramMap.put("mch_id", Variables.wxMchID); //商户号
             paramMap.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));  //随机数
-            String sceneInfo =
-                    "{\"h5_info\": {\"type\":\"Wap\",\"wap_url\":\""+Variables.wapUrl+"\",\"wap_name\":\""+Variables.info+"\"}}";
-            paramMap.put("scene_info", sceneInfo);  //场景信息
+            String sceneInfo = "{\"h5_info\": {\"type\":\"Wap\","
+                    +"\"wap_url\":\"" +Variables.ip_home
+                    +"\",\"wap_name\":\""+Variables.info+"\"}}";
+            paramMap.put("scene_info", sceneInfo);
+
+//            &redirect_url=http://www.heyuannetwork.com/isLogin/shop/makeSure
+            //场景信息
+//            paramMap.put("scene_info", "{\"h5_info\": {\"type\":\"Wap\","
+//                    +"\"wap_url\": \"http://www.heyuannetwork.com\","
+//                    +"\"wap_name\": \"杭州和元网络科技有限公司\"}}");
             String sign = MD5Utils.signDatashwx(paramMap, Variables.wxKEY);
             paramMap.put("sign",sign);//根据微信签名规则，生成签名
             StringBuffer sb = new StringBuffer();
