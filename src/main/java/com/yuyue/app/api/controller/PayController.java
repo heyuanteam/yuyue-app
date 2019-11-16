@@ -588,12 +588,13 @@ public class PayController extends BaseController{
         //上次提现时间
         Date parse = dateFormat.parse(changeTime.getCreateTime());
         long goTime = parse.getTime();
-        long second = goTime % 86400;
+        int second = (int)goTime / 1000;
         log.info("上次提现时间====>>>>"+dateFormat.format(parse)+"秒数====>>>>"+second);
         //当前系统时间
-        Date date = new Date();
-        Long toTime = date.getTime() % 86400;
-        log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+toTime);
+        Date date = dateFormat.parse(dateFormat.format(new Date()));
+        Long toTime = date.getTime();
+        int systemTime =toTime.intValue() / 1000;
+        log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+systemTime);
 
         if ((toTime - second) < 60 ) {
             returnResult.setMessage("请勿重复点击！");
