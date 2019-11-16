@@ -1126,14 +1126,11 @@ public class PayController extends BaseController{
             paramMap.put("appid", Variables.wxAppId); //appid
             paramMap.put("mch_id", Variables.wxMchID); //商户号
             paramMap.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));  //随机数
+            //场景信息
             String sceneInfo = "{\"h5_info\": {\"type\":\"Wap\","
                     +"\"wap_url\":\"" +Variables.ip_home
                     +"\",\"wap_name\":\""+Variables.info+"\"}}";
             paramMap.put("scene_info", sceneInfo);
-            //场景信息
-//            paramMap.put("scene_info", "{\"h5_info\": {\"type\":\"Wap\","
-//                    +"\"wap_url\": \"http://www.heyuannetwork.com\","
-//                    +"\"wap_name\": \"杭州和元网络科技有限公司\"}}");
             String sign = MD5Utils.signDatashwx(paramMap, Variables.wxKEY);
             paramMap.put("sign",sign);//根据微信签名规则，生成签名
             StringBuffer sb = new StringBuffer();
@@ -1159,7 +1156,7 @@ public class PayController extends BaseController{
             //        return JSONObject.toJSONString(maps);
 
             //确认支付过后跳的地址,需要经过urlencode处理
-            String urlString = URLEncoder.encode("http://www.heyuannetwork.com/isLogin/shop/complete", "GBK");
+            String urlString = URLEncoder.encode("http://www.heyuannetwork.com/isLogin/personalCenter/myConsumption", "GBK");
             String mweb_url = ValidCard.get("mweb_url")+"&redirect_url="+urlString;
             ValidCard.put("mweb_url",mweb_url);
 
