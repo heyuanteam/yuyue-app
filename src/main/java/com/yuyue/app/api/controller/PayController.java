@@ -1067,7 +1067,7 @@ public class PayController extends BaseController{
      */
     @ResponseBody
     @RequestMapping("/payWapAPP")
-    public JSONObject payWapAPP(Order order,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public JSONObject payWapAPP(Order order,String code,HttpServletRequest request, HttpServletResponse response) throws Exception {
         getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
         String token = request.getHeader("token");
@@ -1095,6 +1095,16 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         if ("WAPWX".equals(order.getTradeType())) {
+            if (StringUtils.isEmpty(code)) {
+                returnResult.setMessage("code不可以为空！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            String opendId = getOpenId(code).getString("openid");
+            if (StringUtils.isEmpty(opendId)) {
+                returnResult.setMessage("code错误！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+            order.setNote(opendId);
             return payWapWX(order);
         } else if ("WAPZFB".equals(order.getTradeType())) {
             return payWapZFB(order,request,response);
@@ -1109,7 +1119,7 @@ public class PayController extends BaseController{
         try {
             paramMap.put("trade_type", "JSAPI"); //交易类型
             paramMap.put("spbill_create_ip",Variables.ip); //本机的Ip
-            paramMap.put("product_id", "WX"+RandomSaltUtil.generetRandomSaltCode(30));  // 商户根据自己业务传递的参数 必填
+            paramMap.put("openid", order.getNote());  // 标识
             paramMap.put("body", "商城支付");         //描述
             paramMap.put("out_trade_no", order.getId()); //商户 后台的贸易单号
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
