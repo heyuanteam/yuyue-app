@@ -146,7 +146,7 @@
                 status = #{status},
             </if>
             <if test=" isRevise != null and isRevise != ''">
-                is_revise = 'Y',
+                is_revise = #{isRevise},
             </if>
 
 
