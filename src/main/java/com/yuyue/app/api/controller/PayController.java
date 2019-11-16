@@ -155,7 +155,7 @@ public class PayController extends BaseController{
             }else if((order.getTradeType()).contains("XF")){
                 map.put("body", "yuyue-视频打赏");
             } else {
-                map.put("body", "yuyue-商城支付");
+                map.put("body", "yuyue-"+Variables.subject);
             }
             map.put("out_trade_no", order.getId());
             map.put("total_fee", moneyD);
@@ -302,8 +302,8 @@ public class PayController extends BaseController{
                 model.setBody("yuyue-视频打赏");
                 model.setSubject("yuyue-视频打赏");
             } else {
-                model.setBody("yuyue-商城支付");
-                model.setSubject("yuyue-商城支付");
+                model.setBody("yuyue-"+Variables.subject);
+                model.setSubject("yuyue-"+Variables.subject);
             }
             model.setOutTradeNo(order.getId());
             model.setTimeoutExpress("30m");
@@ -872,7 +872,6 @@ public class PayController extends BaseController{
     public synchronized JSONObject outZFB(ChangeMoney changeMoney,AppUser user) {
         ReturnResult returnResult = new ReturnResult();
 //        (1、ALIPAY_USERID：支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。2、ALIPAY_LOGONID：支付宝登录号，支持邮箱和手机号格式。)
-        String payerShowName = "杭州和元网络科技有限公司";
         String remark = "单笔转账到支付宝";
         try {
             //手续费0.75%
@@ -884,7 +883,7 @@ public class PayController extends BaseController{
                     +"\"remark\":\""+ remark +"\","    //备注
                     +"\"payee_account\":\""+ changeMoney.getMoneyNumber() +"\","//支付宝账号
                     +"\"amount\":\""+ rateMoney.toString() +"\"," //金额
-                    +"\"payer_show_name\":\""+ payerShowName +"\","   //转款账号
+                    +"\"payer_show_name\":\""+ Variables.info +"\","   //转款账号
                     +"\"payee_real_name\":\""+ changeMoney.getRealName() +"\"," //支付宝真实姓名
                     + "\"payee_type\":\"ALIPAY_LOGONID\"}");
             AlipayFundTransToaccountTransferResponse response = Variables.alipayClient.execute(request);
@@ -971,12 +970,10 @@ public class PayController extends BaseController{
         alipayRequest.setReturnUrl(Variables.AliPayNotifyUrl);//同步通知页面
         alipayRequest.setNotifyUrl(Variables.AliPayNotifyUrl);//在公共参数中设置回跳和通知地址
         String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-        String body = "商城支付";
-        String subject = "商城支付";
         alipayRequest.setBizContent("{\"out_trade_no\":\""+ order.getId() +"\","
                 +"\"total_amount\":\""+ moneyD +"\","
-                +"\"subject\":\""+ subject +"\","
-                +"\"body\":\""+ body +"\","
+                +"\"subject\":\""+ Variables.subject +"\","
+                +"\"body\":\""+ Variables.subject +"\","
                 +"\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");//填充业务参数
         String form="";
         try {
@@ -1013,7 +1010,7 @@ public class PayController extends BaseController{
             paramMap.put("trade_type", "NATIVE"); //交易类型
             paramMap.put("spbill_create_ip",Variables.ip); //本机的Ip
             paramMap.put("product_id", "WX"+RandomSaltUtil.generetRandomSaltCode(30));  // 商户根据自己业务传递的参数 必填
-            paramMap.put("body", "商城支付");         //描述
+            paramMap.put("body", Variables.subject);         //描述
             paramMap.put("out_trade_no", order.getId()); //商户 后台的贸易单号
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
                     .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
@@ -1117,10 +1114,9 @@ public class PayController extends BaseController{
         ReturnResult returnResult = new ReturnResult();
         HashMap<String, String> paramMap = Maps.newHashMap();
         try {
-            paramMap.put("trade_type", "JSAPI"); //交易类型
+            paramMap.put("trade_type", "MWEB"); //交易类型
             paramMap.put("spbill_create_ip",Variables.ip); //本机的Ip
-            paramMap.put("openid", order.getNote());  // 标识
-            paramMap.put("body", "商城支付");         //描述
+            paramMap.put("body", Variables.subject);         //描述
             paramMap.put("out_trade_no", order.getId()); //商户 后台的贸易单号
             String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
                     .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
@@ -1129,6 +1125,9 @@ public class PayController extends BaseController{
             paramMap.put("appid", Variables.wxAppId); //appid
             paramMap.put("mch_id", Variables.wxMchID); //商户号
             paramMap.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));  //随机数
+            String sceneInfo =
+                    "{\"h5_info\": {\"type\":\"Wap\",\"wap_url\":\""+Variables.wapUrl+"\",\"wap_name\":\""+Variables.info+"\"}}";
+            paramMap.put("scene_info", sceneInfo);  //场景信息
             String sign = MD5Utils.signDatashwx(paramMap, Variables.wxKEY);
             paramMap.put("sign",sign);//根据微信签名规则，生成签名
             StringBuffer sb = new StringBuffer();
@@ -1173,10 +1172,9 @@ public class PayController extends BaseController{
         alipayRequest.setReturnUrl(Variables.AliPayNotifyUrl);//同步通知页面
         alipayRequest.setNotifyUrl(Variables.AliPayNotifyUrl);//同步通知页面
         String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-        String subject = "商城支付";
         alipayRequest.setBizContent("{\"out_trade_no\":\""+ order.getId() +"\","
                 +" \"total_amount\":\""+moneyD+"\","
-                +" \"subject\":\""+subject+"\","
+                +" \"subject\":\""+Variables.subject+"\","
                 +" \"product_code\":\"QUICK_WAP_PAY\"}");//填充业务参数
         String form="";
         try {
