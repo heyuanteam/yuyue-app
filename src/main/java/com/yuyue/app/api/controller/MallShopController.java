@@ -396,6 +396,7 @@ public class MallShopController extends BaseController{
 
             mallShop.setServiceType(request.getParameter("serviceType"));
             mallShop.setFare(new BigDecimal(request.getParameter("fare")));
+            mallShop.setCommodityPrice(new BigDecimal(request.getParameter("commodityPrice")));
             mallShop.setVideoPath(request.getParameter("remark"));
             mallShop.setBusinessTime(request.getParameter("businessTime"));
             mallShop.setBusinessStatus(request.getParameter("businessStatus"));
@@ -405,6 +406,7 @@ public class MallShopController extends BaseController{
             mallShop.setFeeArea(request.getParameter("feeArea"));
             mallShop.setVideoPath(request.getParameter("videoPath"));
             mallShop.setRemark(request.getParameter("remark"));
+            mallShop.setRemark("N");
             mallShopService.insertMyMallShop(mallShop);
             /*----------------------------------------接支付------------------------------------------------*/
             //新的商品推广申请
