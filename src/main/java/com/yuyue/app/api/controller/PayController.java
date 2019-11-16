@@ -1095,11 +1095,64 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         if ("WAPWX".equals(order.getTradeType())) {
-//            return payWapWX(order);
+            return payWapWX(order);
         } else if ("WAPZFB".equals(order.getTradeType())) {
             return payWapZFB(order,request,response);
         }
         returnResult.setMessage("充值类型选择错误！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    private JSONObject payWapWX(Order order) {
+        ReturnResult returnResult = new ReturnResult();
+        HashMap<String, String> paramMap = Maps.newHashMap();
+        try {
+            paramMap.put("trade_type", "JSAPI"); //交易类型
+            paramMap.put("spbill_create_ip",Variables.ip); //本机的Ip
+            paramMap.put("product_id", "WX"+RandomSaltUtil.generetRandomSaltCode(30));  // 商户根据自己业务传递的参数 必填
+            paramMap.put("body", "商城支付");         //描述
+            paramMap.put("out_trade_no", order.getId()); //商户 后台的贸易单号
+            String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100))
+                    .setScale(0,BigDecimal.ROUND_HALF_UP).toString();
+            paramMap.put("total_fee", moneyD); //金额必须为整数  单位为分
+            paramMap.put("notify_url", Variables.wxNotifyUrl); //支付成功后，回调地址
+            paramMap.put("appid", Variables.wxAppId); //appid
+            paramMap.put("mch_id", Variables.wxMchID); //商户号
+            paramMap.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));  //随机数
+            String sign = MD5Utils.signDatashwx(paramMap, Variables.wxKEY);
+            paramMap.put("sign",sign);//根据微信签名规则，生成签名
+            StringBuffer sb = new StringBuffer();
+            sb.append("<xml>");
+            XMLUtils.mapToXMLTest2(paramMap, sb);
+            sb.append("</xml>");
+            log.info((new StringBuilder()).append("上送的数据为+++++++").append(sb.toString()).toString());
+            String resXml = XMLUtils.doPost("https://api.mch.weixin.qq.com/pay/unifiedorder", sb.toString(), Variables.CHARSET, "application/json");
+            log.info("返回的数据为--------------------------+++++++" + resXml);
+            Map ValidCard = XMLUtils.xmlString2Map(resXml);
+            ValidCard.put("out_trade_no",order.getId());
+            Map maps = new HashMap();
+            String timestamp = String.valueOf((new Date()).getTime() / 1000L);
+            maps.put("appid", ValidCard.get("appid").toString());
+            maps.put("mch_id", Variables.wxMchID);
+            maps.put("prepayid", ValidCard.get("prepay_id"));
+            maps.put("package", "Sign=WXPay");
+            maps.put("noncestr", ValidCard.get("nonce_str"));
+            maps.put("timestamp", timestamp);
+            //maps.put("signType", "MD5");
+            String signs = MD5Utils.signDatashwx(maps, Variables.wxKEY);
+            maps.put("sign", signs);
+            //        return JSONObject.toJSONString(maps);
+            returnResult.setMessage("返回成功！");
+            returnResult.setStatus(Boolean.TRUE);
+            returnResult.setResult(JSONObject.toJSON(ValidCard));
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("支付失败！参数不对！");
+            returnResult.setMessage("支付失败！参数不对！");
+            payService.updateStatus(order.getId(), "10C");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        returnResult.setMessage("调用APP浏览器微信成功！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
