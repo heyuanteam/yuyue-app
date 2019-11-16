@@ -40,4 +40,6 @@ public interface PayService {
 
     //商户店家ID
     List<String> getShopUserList(String id);
+
+    ChangeMoney getChangeMoneyByTime(String userId);
 }

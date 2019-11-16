@@ -82,4 +82,9 @@ public class PayServiceImpl implements PayService {
         return payMapper.getShopUserList(id);
     }
 
+    @Override
+    public ChangeMoney getChangeMoneyByTime(String userId) {
+        return payMapper.getChangeMoneyByTime(userId);
+    }
+
 }

@@ -81,4 +81,17 @@
         </if>
         order by b.COMPLETE_TIME desc LIMIT #{begin},#{size}
     </select>
+
+    <!-- 提现最后一条记录 -->
+    <select id="getChangeMoneyByTime" parameterType="String" resultType="com.yuyue.app.api.domain.ChangeMoney">
+        SELECT
+            b.merchantId,b.changeNo,b.tradeType,b.money,b.`status`,b.note,
+            DATE_FORMAT(b.CREATE_TIME ,'%Y-%m-%d %H:%i:%s') createTime
+            FROM yuyue_change_money b
+            WHERE 1=1
+            <if test="userId!=null and userId!=''">
+                and b.merchantId = #{userId}
+            </if>
+        order by b.CREATE_TIME desc LIMIT 1
+    </select>
 </mapper>

@@ -144,7 +144,7 @@ public class MyController extends BaseController{
 
         String token = request.getHeader("token");
         String userId = "";
-        if(StringUtils.isNotEmpty(token)){
+        if(StringUtils.isNotEmpty(token) && StringUtils.isEmpty(parameterMap.get("videoId"))){
             userId = String.valueOf(JWT.decode(token).getAudience().get(0));
         }
 

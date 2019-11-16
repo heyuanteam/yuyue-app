@@ -40,12 +40,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/pay", produces = "application/json; charset=UTF-8")
 public class PayController extends BaseController{
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     private PayService payService;
@@ -580,6 +582,19 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
+        ChangeMoney changeTime = payService.getChangeMoneyByTime(user.getId());
+        //上次提现时间
+        long goTime = dateFormat.parse(changeTime.getCreateTime()).getTime();
+        long second = goTime % 86400;
+        //当前系统时间
+        Date date = new Date();
+        Long toTime = date.getTime() % 86400;
+
+        if ((toTime - second) < 60 ) {
+            returnResult.setMessage("请勿重复点击！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
         ChangeMoney changeMoney = new ChangeMoney();
         changeMoney.setNote(note);
         changeMoney.setMoney(money);
@@ -881,12 +896,12 @@ public class PayController extends BaseController{
                     BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
                     payService.updateMIncome(user.getId(),subtract);
                 }
-                payService.updateOutStatus(msg, "支付宝提现成功！", "10B", changeMoney.getId());
+                payService.updateChangeMoneyStatus(msg, "支付宝提现成功！", "10B", changeMoney.getId());
                 returnResult.setMessage("支付宝提现成功！");
                 returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             } else {
-                payService.updateOutStatus("ERROR", "支付宝提现失败！", "10C", changeMoney.getId());
+                payService.updateChangeMoneyStatus("ERROR", "支付宝提现失败！", "10C", changeMoney.getId());
                 returnResult.setResult(response.getBody());
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }

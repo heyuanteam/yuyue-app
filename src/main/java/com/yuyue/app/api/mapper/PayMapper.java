@@ -57,7 +57,7 @@ public interface PayMapper extends MyBaseMapper<Order> {
 
     @Transactional
     @Update("UPDATE yuyue_out_money b SET b.`status`=#{status},b.responseCode=#{responseCode},b.responseMessage=#{responseMessage} "
-            +" WHERE b.id = #{outNo} ")
+            +" WHERE b.outNo = #{outNo} ")
     void updateOutStatus(@Param("responseCode") String responseCode,@Param("responseMessage") String responseMessage,
                          @Param("status") String status,@Param("outNo") String outNo);
 
@@ -92,4 +92,6 @@ public interface PayMapper extends MyBaseMapper<Order> {
     List<String> getShopUserList(@Param(value = "id")String id);
 
     String getMoneyStatus(@Param(value = "orderId") String orderId);
+
+    ChangeMoney getChangeMoneyByTime(@Param(value = "userId") String userId);
 }
