@@ -40,6 +40,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -1129,8 +1130,6 @@ public class PayController extends BaseController{
                     +"\"wap_url\":\"" +Variables.ip_home
                     +"\",\"wap_name\":\""+Variables.info+"\"}}";
             paramMap.put("scene_info", sceneInfo);
-
-//            &redirect_url=http://www.heyuannetwork.com/isLogin/shop/makeSure
             //场景信息
 //            paramMap.put("scene_info", "{\"h5_info\": {\"type\":\"Wap\","
 //                    +"\"wap_url\": \"http://www.heyuannetwork.com\","
@@ -1158,6 +1157,12 @@ public class PayController extends BaseController{
             String signs = MD5Utils.signDatashwx(maps, Variables.wxKEY);
             maps.put("sign", signs);
             //        return JSONObject.toJSONString(maps);
+
+            //确认支付过后跳的地址,需要经过urlencode处理
+            String urlString = URLEncoder.encode("http://www.heyuannetwork.com/isLogin/shop/complete", "GBK");
+            String mweb_url = ValidCard.get("mweb_url")+"&redirect_url="+urlString;
+            ValidCard.put("mweb_url",mweb_url);
+
             returnResult.setMessage("返回成功！");
             returnResult.setStatus(Boolean.TRUE);
             returnResult.setResult(JSONObject.toJSON(ValidCard));
