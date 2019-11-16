@@ -596,7 +596,7 @@ public class PayController extends BaseController{
         int systemTime =toTime.intValue() / 1000;
         log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+systemTime);
 
-        if ((toTime - second) < 60 ) {
+        if ((systemTime - second) < 60 ) {
             returnResult.setMessage("请勿重复点击！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
