@@ -43,6 +43,8 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.aspectj.bridge.Version.getTime;
+
 @Slf4j
 @RestController
 @RequestMapping(value = "/pay", produces = "application/json; charset=UTF-8")
@@ -584,11 +586,14 @@ public class PayController extends BaseController{
 
         ChangeMoney changeTime = payService.getChangeMoneyByTime(user.getId());
         //上次提现时间
-        long goTime = dateFormat.parse(changeTime.getCreateTime()).getTime();
+        Date parse = dateFormat.parse(changeTime.getCreateTime());
+        long goTime = parse.getTime();
         long second = goTime % 86400;
+        log.info("上次提现时间====>>>>"+dateFormat.format(parse)+"秒数====>>>>"+second);
         //当前系统时间
         Date date = new Date();
         Long toTime = date.getTime() % 86400;
+        log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+toTime);
 
         if ((toTime - second) < 60 ) {
             returnResult.setMessage("请勿重复点击！");
