@@ -38,6 +38,8 @@ public class ChangeMoney implements Serializable {
     private String moneyNumber;
 //    账户真实名称
     private String realName;
+//    上次的钱
+    private BigDecimal historyMoney;
 //    备注
     private String note;
 //    收礼物的那个人

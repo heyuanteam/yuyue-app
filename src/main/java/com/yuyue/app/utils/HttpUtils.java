@@ -151,7 +151,7 @@ public class HttpUtils {
         response.setStatus(HttpStatus.OK.value());
     }
 
-    public static  String doPost(String url,String str,String token){
+    public static  String doPost(String url,String str){
 //		SSLClient httpClient = null;
         HttpPost httpPost = null;
         String result = null;
@@ -163,7 +163,6 @@ public class HttpUtils {
             StringEntity entityParams = new StringEntity(str, "utf-8");
             httpPost.setEntity(entityParams );
             httpPost.setHeader("Content-Type", "application/json");
-            httpPost.setHeader("token", token);
 
             HttpResponse response = httpClient.execute(httpPost);
             if(response != null){
