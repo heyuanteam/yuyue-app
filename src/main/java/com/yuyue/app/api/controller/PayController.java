@@ -604,7 +604,7 @@ public class PayController extends BaseController{
         log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+systemTime);
 
         if ((systemTime - second) < 60 ) {
-            returnResult.setMessage("请勿重复点击！");
+            returnResult.setMessage("您好！一分钟之内，只能提现一次！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
