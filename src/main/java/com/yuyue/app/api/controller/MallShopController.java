@@ -1408,6 +1408,50 @@ public class MallShopController extends BaseController{
 
     }
 
+    /**
+     * 修改订单状态
+     * @param appUser
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "updateOrderItemsStatus")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult updateOrderItemsStatus(@CurrentUser  AppUser appUser,
+                                    HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("修改订单状态------------->>/mallShop/updateOrderItemsStatus");
+        getParameterMap(request, response);
+        String orderId = request.getParameter("orderId");
+        String status = request.getParameter("status");
+        if (StringUtils.isEmpty(orderId)){
+            returnResult.setMessage("订单id为空！");
+            return returnResult;
+        }if (StringUtils.isEmpty(status)){
+            returnResult.setMessage("状态为空！");
+            return returnResult;
+        }else {
+            if ("10A".equals(status) ||"10B".equals(status) ||"10B".equals(status) ||
+                    "10D".equals(status) ||"10E".equals(status) ){
+                Order order = payService.getOrderId(orderId);
+                if (StringUtils.isNull(order)){
+                    returnResult.setMessage("未查询该订单！");
+                    return returnResult;
+                }else {
+                    mallShopService.updateOrderItemsStatus(orderId,status);
+                    returnResult.setMessage("修改成功！");
+                    returnResult.setStatus(Boolean.TRUE);
+                    return returnResult;
+                }
+            }else {
+                returnResult.setMessage("订单状态错误！");
+                return returnResult;
+            }
+
+        }
+    }
+
 
     /**
      * 生成订单项(最新)
