@@ -30,6 +30,8 @@ public class MallAddress implements Serializable {
     private Date createTime;
     //地址id
     private String defaultAddr;
+    //
+    private String status;
 
 
 

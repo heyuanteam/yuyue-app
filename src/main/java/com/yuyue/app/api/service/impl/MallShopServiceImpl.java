@@ -93,6 +93,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public void deleteImageByShopId(String shopId) {
+        shopImageMapper.deleteImageByShopId(shopId);
+    }
+
+    @Override
     public List<Specification> getSpecification(String shopId) {
         return specificationMapper.getSpecification(shopId);
     }
@@ -192,9 +197,16 @@ public class MallShopServiceImpl implements MallShopService {
             String money = null;
             for (OrderItem orderItem:mallOrderItems) {
                 //减库存操作
+                Specification specificationById = specificationMapper.getSpecificationById(orderItem.getCommodityId());
                 Specification specification = new Specification();
                 specification.setCommodityId(orderItem.getCommodityId());
-                specification.setCommodityNum(orderItem.getCommodityNum());
+                //specification.setCommodityNum(orderItem.getCommodityNum());
+                int i = specificationById.getCommodityReserve() - orderItem.getCommodityNum();
+                if (i == 0){
+                    //库存未0，极光推送
+
+                }
+                specification.setCommodityReserve(i);
                 updateSpecification(specification);
                 money = orderItem.getShopIncome().toString();
                 updateOrderItemsStatus(orderId,"10B");
@@ -234,6 +246,16 @@ public class MallShopServiceImpl implements MallShopService {
     @Override
     public MallAddress getMallAddress(String addressId) {
         return mallAddressMapper.getMallAddress(addressId);
+    }
+
+    @Override
+    public MallAddress getMallAddressByStatus(String addressId) {
+        return mallAddressMapper.getMallAddressByStatus(addressId);
+    }
+
+    @Override
+    public List<MallAddress> getMallAddrByStatus(String userId) {
+        return mallAddressMapper.getMallAddrByStatus(userId);
     }
 
     @Override

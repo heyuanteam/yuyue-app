@@ -32,6 +32,8 @@ public interface MallShopService {
 
     void deleteShopImage(String imagePath);
 
+    void deleteImageByShopId(String shopId);
+
 /*---------------------------------商品(规格)接口---------------------------------*/
     List<Specification> getSpecification(String shopId);
 
@@ -90,6 +92,10 @@ public interface MallShopService {
     MallAddress getDefaultAddress(String userId);
 
     MallAddress getMallAddress(String addressId);
+
+    MallAddress getMallAddressByStatus(String addressId);
+
+    List<MallAddress> getMallAddrByStatus(String userId);
 
     void editMallAddr(MallAddress mallAddress);
 

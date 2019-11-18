@@ -26,5 +26,9 @@ public interface ShopImageMapper extends MyBaseMapper<ShopImage> {
     @Delete("DELETE FROM  yuyue_mall_shop_images  WHERE  image_path = #{imagePath} " )
     void deleteShopImage(@Param(value = "imagePath")String imagePath);
 
+    @Transactional
+    @Delete("DELETE FROM  yuyue_mall_shop_images  WHERE  shop_id = #{shopId} " )
+    void deleteImageByShopId(@Param(value = "shopId")String shopId);
+
 
 }

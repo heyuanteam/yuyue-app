@@ -113,6 +113,8 @@ public class MallShopController extends BaseController{
                 if ("10B".equals(order.getStatus())){
                     myShop.setStatus("10B");
                     mallShopService.updateMyMallShopInfo(myShop);
+                }else {
+                    continue;
                 }
             }
             //规格
@@ -467,9 +469,6 @@ public class MallShopController extends BaseController{
         }else if (StringUtils.isEmpty(mallShop.getDetail())){
             returnResult.setMessage("商品/服务介绍不能为空！");
             return returnResult;
-        }else if (StringUtils.isEmpty(mallShop.getServiceType())){
-            returnResult.setMessage("服务方式不能为空！");
-            return returnResult;
         }
         else if (StringUtils.isEmpty(mallShop.getFare().toString())){
             returnResult.setMessage("运费不能为空！");
@@ -494,6 +493,7 @@ public class MallShopController extends BaseController{
         mallShop.setIsRevise("Y");
         mallShopService.updateMyMallShopInfo(mallShop);
         if (StringUtils.isNotEmpty(imageStr)){
+            mallShopService.deleteImageByShopId(mallShop.getShopId());
             if (imageStr.contains(";")){
                 String[] images = imageStr.split(";");
                 for ( Byte i = 0 ; i < images.length ; i++) {
@@ -1756,7 +1756,8 @@ public class MallShopController extends BaseController{
                     specificationById.setCommodityNum(orderItem.getCommodityNum());
                     commodities.add(specificationById);
                 }
-
+        returnOrderDetail.setStatus(mallOrderItems.get(0).getStatus());
+        returnOrderDetail.setPayAmount(mallOrderItems.get(0).getCommodityPrice());
         returnOrderDetail.setCommodities(commodities);
         returnResult.setMessage("查询成功！");
         returnResult.setStatus(Boolean.TRUE);
@@ -1797,7 +1798,7 @@ public class MallShopController extends BaseController{
         for (Order order:scOrder
              ) {
             //订单状态为10A的不展示了（老板不要）
-            if ("10A".equals(order.getStatus())){
+            if ("10A".equals(order.getStatus()) || "10C".equals(order.getStatus()) ||"10D".equals(order.getStatus())){
                 continue;
             }
             String orderId = order.getId();
@@ -2144,10 +2145,10 @@ public class MallShopController extends BaseController{
         log.info("获取我的收货地址------------->>/mallShop/getMyAddress");
         getParameterMap(request, response);
         if (StringUtils.isNotEmpty(addressId)){
-            MallAddress mallAddress = mallShopService.getMallAddress(addressId);
+            MallAddress mallAddress = mallShopService.getMallAddressByStatus(addressId);
             returnResult.setResult(mallAddress);
         }else {
-            List<MallAddress> mallAddrByUserId = mallShopService.getMallAddrByUserId(appUser.getId());
+            List<MallAddress> mallAddrByUserId = mallShopService.getMallAddrByStatus(appUser.getId());
             returnResult.setResult(mallAddrByUserId);
         }
         returnResult.setMessage("返回成功");
@@ -2173,7 +2174,7 @@ public class MallShopController extends BaseController{
         ReturnResult returnResult = new ReturnResult();
         log.info("编辑我的地址（添加修改）------------->>/mallShop/editMyAddress");
         getParameterMap(request, response);
-
+        //添加
         if (StringUtils.isEmpty(mallAddress.getAddressId())){
             List<MallAddress> mallAddrByUserId = mallShopService.getMallAddrByUserId(appUser.getId());
             if (StringUtils.isEmpty(mallAddrByUserId)){
@@ -2199,6 +2200,7 @@ public class MallShopController extends BaseController{
             return returnResult;
 
         }else {
+            //修改地址
             MallAddress myMallAddress = mallShopService.getMallAddress(mallAddress.getAddressId());
             if (StringUtils.isNull(myMallAddress)){
                 returnResult.setMessage("未查询到该地址！");
@@ -2217,6 +2219,7 @@ public class MallShopController extends BaseController{
                 }
                 myMallAddress.setDefaultAddr(mallAddress.getDefaultAddr());
             }
+            myMallAddress.setStatus("Y");
             returnResult.setMessage("修改成功！");
             mallShopService.editMallAddr(myMallAddress);
             returnResult.setStatus(Boolean.TRUE);

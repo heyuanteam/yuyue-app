@@ -113,9 +113,18 @@
                 fare = #{fare},
             </if>
 
+            <if test=" commodityPrice != null and commodityPrice != ''">
+                commodity_price = #{commodityPrice},
+            </if>
+
             <if test=" businessTime != null and businessTime != ''">
                 business_time = #{businessTime},
             </if>
+
+            <if test=" businessStatus != null and businessStatus != ''">
+                business_status = #{businessStatus},
+            </if>
+
 
             <if test=" merchantAddr != null and merchantAddr != ''">
                 merchant_addr = #{merchantAddr},

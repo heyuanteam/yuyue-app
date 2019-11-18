@@ -15,9 +15,10 @@
             <if test="commodityPrice != null and commodityPrice != ''">
                 commodity_price = #{commodityPrice}  ,
             </if>
-            <if test="commodityNum != null and commodityNum != ''">
-                 commodity_reserve = commodity_reserve - #{commodityNum} ,
-            </if>
+
+             <if test="commodityReserve != null and commodityReserve != ''">
+                 commodity_reserve = #{commodityReserve}  ,
+             </if>
             <if test="commodityReserve != null and commodityReserve != ''">
                  commodity_reserve = #{commodityReserve} ,
             </if>
