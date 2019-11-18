@@ -1,9 +1,11 @@
 package com.yuyue.app.api.service.impl;
 
+import com.yuyue.app.api.controller.PayController;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.mapper.*;
 import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.PayService;
+import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ public class MallShopServiceImpl implements MallShopService {
     private LoginMapper loginMapper;
     @Autowired
     private PayService payService;
+    @Autowired
+    private PayController payController;
 
     @Override
     public List<MallShop> getMallShopByVideoId(String videoId) {
@@ -183,12 +187,10 @@ public class MallShopServiceImpl implements MallShopService {
 
         //给商家们加钱的方法
         List<String> shopIds = mallOrderItemMapper.getShopIds(orderId);
-        for (String shopId:shopIds
-             ) {
+        for (String shopId:shopIds) {
             List<OrderItem> mallOrderItems = getMallOrderItem(orderId, shopId, "");
             String money = null;
-            for (OrderItem orderItem:mallOrderItems
-                 ) {
+            for (OrderItem orderItem:mallOrderItems) {
                 //减库存操作
                 Specification specification = new Specification();
                 specification.setCommodityId(orderItem.getCommodityId());
@@ -202,6 +204,17 @@ public class MallShopServiceImpl implements MallShopService {
             String merchantId = myMallShop.getMerchantId();
             AppUser appUserMsg = loginMapper.getAppUserMsg("", "", merchantId,"");
             BigDecimal mIncome = ResultJSONUtils.updateMIncome(appUserMsg, new BigDecimal(money), "+");
+            //商家收益记录
+            ChangeMoney syMoney = new ChangeMoney();
+            syMoney.setChangeNo("YYSY" + RandomSaltUtil.randomNumber(14));
+            syMoney.setStatus("10B");
+            syMoney.setMobile(appUserMsg.getPhone());
+            syMoney.setMerchantId(appUserMsg.getId());
+            syMoney.setMoney(mIncome);
+            syMoney.setNote("商城收益");
+            syMoney.setTradeType("SC");
+            syMoney.setHistoryMoney(appUserMsg.getMIncome());
+            payController.createShouMoney(syMoney);
             //修改订单项状态
             payService.updateMIncome(merchantId,mIncome);
         }

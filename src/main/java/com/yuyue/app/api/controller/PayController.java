@@ -268,6 +268,7 @@ public class PayController extends BaseController{
                     syMoney.setMoney(bigDecimal);
                     syMoney.setNote("用户收益");
                     syMoney.setTradeType("SY");
+                    syMoney.setHistoryMoney(appUser.getIncome());
                     createShouMoney(syMoney);
 
                     BigDecimal subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
@@ -435,6 +436,7 @@ public class PayController extends BaseController{
                     syMoney.setMoney(bigDecimal);
                     syMoney.setNote("用户收益");
                     syMoney.setTradeType("SY");
+                    syMoney.setHistoryMoney(appUser.getIncome());
                     createShouMoney(syMoney);
 
                     BigDecimal subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
@@ -532,9 +534,7 @@ public class PayController extends BaseController{
         if (CollectionUtils.isNotEmpty(shopUserIdList)) {
             for (String shopUserId: shopUserIdList) {
                 if (StringUtils.isNotEmpty(shopUserId)) {
-                    AppUser appUserMsg = loginService.getAppUserMsg("", "", shopUserId);
-                    String token = loginService.getToken(appUserMsg);
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId(),token);
+                    HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId());
                 }
             }
         }
@@ -615,6 +615,11 @@ public class PayController extends BaseController{
         changeMoney.setMerchantId(user.getId());
         changeMoney.setMobile(user.getPhone());
         changeMoney.setChangeNo("YYTX" + RandomSaltUtil.randomNumber(14));
+        if ("mIncome".equals(note)) {
+            changeMoney.setHistoryMoney(user.getMIncome());
+        } else {
+            changeMoney.setHistoryMoney(user.getIncome());
+        }
         if (StringUtils.isNotEmpty(user.getZfbNumber()) && StringUtils.isNotEmpty(user.getZfbRealName())) {
             changeMoney.setRealName(user.getZfbRealName());
             changeMoney.setMoneyNumber(user.getZfbNumber());
