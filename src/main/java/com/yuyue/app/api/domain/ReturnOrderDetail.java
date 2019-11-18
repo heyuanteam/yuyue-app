@@ -41,7 +41,7 @@ public class ReturnOrderDetail  implements Serializable {
     private BigDecimal payAmount;
     //运费
     private BigDecimal fare;
-    //发货状态
+    //发货状态（订单状态）
     private String status;
 
 
