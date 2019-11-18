@@ -257,18 +257,21 @@ public class PayController extends BaseController{
                     changeMoney.setStatus("10B");
                     payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
 
-                    AppUser appUser = loginService.getAppUserMsg("","",changeMoney.getMerchantId());
+                    AppUser appUser = loginService.getAppUserMsg("","",changeMoney.getSourceId());
                     BigDecimal bigDecimal = changeMoney.getMoney().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
                     ChangeMoney syMoney = new ChangeMoney();
                     syMoney.setChangeNo("YYSY" + RandomSaltUtil.randomNumber(14));
                     syMoney.setStatus("10B");
                     syMoney.setMobile(appUser.getPhone());
                     syMoney.setMerchantId(appUser.getId());
-                    syMoney.setSourceId(changeMoney.getId());
+                    syMoney.setSourceId(changeMoney.getMerchantId());
                     syMoney.setMoney(bigDecimal);
                     syMoney.setNote("用户收益");
                     syMoney.setTradeType("SY");
                     createShouMoney(syMoney);
+
+                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
+                    payService.updateOutIncome(appUser.getId(),subtract);
 
                     syMoney.setResponseCode(returnCode);
                     syMoney.setResponseMessage(object.get("result_code").toString());
@@ -421,18 +424,21 @@ public class PayController extends BaseController{
                     changeMoney.setStatus("10B");
                     payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
 
-                    AppUser appUser = loginService.getAppUserMsg("","",changeMoney.getMerchantId());
+                    AppUser appUser = loginService.getAppUserMsg("","",changeMoney.getSourceId());
                     BigDecimal bigDecimal = changeMoney.getMoney().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
                     ChangeMoney syMoney = new ChangeMoney();
                     syMoney.setChangeNo("YYSY" + RandomSaltUtil.randomNumber(14));
                     syMoney.setStatus("10B");
                     syMoney.setMobile(appUser.getPhone());
                     syMoney.setMerchantId(appUser.getId());
-                    syMoney.setSourceId(changeMoney.getId());
+                    syMoney.setSourceId(changeMoney.getMerchantId());
                     syMoney.setMoney(bigDecimal);
                     syMoney.setNote("用户收益");
                     syMoney.setTradeType("SY");
                     createShouMoney(syMoney);
+
+                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
+                    payService.updateOutIncome(appUser.getId(),subtract);
 
                     syMoney.setResponseCode(params.get("trade_status"));
                     syMoney.setResponseMessage(params.get("trade_status"));
