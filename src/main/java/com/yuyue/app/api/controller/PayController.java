@@ -240,7 +240,7 @@ public class PayController extends BaseController{
                         mallShopService.mallPaySuccess(orderId);
                     }
                     //    极光商家卖出商品通知 : 8 (orderId)
-                    sendClotheSoldUrl(orderNo);
+                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId());
                 } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
@@ -405,7 +405,7 @@ public class PayController extends BaseController{
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
                     //    极光商家卖出商品通知 : 8 (orderId)
-                    sendClotheSoldUrl(orderNo);
+                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId());
                 } else if("10A".equals(orderNo.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
                     log.info("不加钱===================");
                     String trxNo = params.get("trade_status");
@@ -514,7 +514,7 @@ public class PayController extends BaseController{
 //                    BigDecimal add = ResultJSONUtils.updateUserMoney(user.getTotal(),new BigDecimal(iosMap.get(moneys[3]).toString()),"+");
 //                    payService.updateTotal(user.getId(), add);
 //                    极光商家卖出商品通知 : 8 (orderId)
-                    sendClotheSoldUrl(order);
+                    HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId());
                     returnResult.setStatus(Boolean.TRUE);
                     returnResult.setMessage("充值成功！");
                     returnResult.setResult(moneys[3]);
@@ -604,7 +604,7 @@ public class PayController extends BaseController{
         log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+systemTime);
 
         if ((systemTime - second) < 60 ) {
-            returnResult.setMessage("请勿重复点击！");
+            returnResult.setMessage("您好！一分钟之内，只能提现一次！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
