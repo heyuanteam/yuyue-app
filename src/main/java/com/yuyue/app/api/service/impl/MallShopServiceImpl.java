@@ -5,6 +5,8 @@ import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.mapper.*;
 import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.PayService;
+import com.yuyue.app.enums.Variables;
+import com.yuyue.app.utils.HttpUtils;
 import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,8 +205,10 @@ public class MallShopServiceImpl implements MallShopService {
                 //specification.setCommodityNum(orderItem.getCommodityNum());
                 int i = specificationById.getCommodityReserve() - orderItem.getCommodityNum();
                 if (i == 0){
-                    //库存未0，极光推送
-
+                    //    极光库存通知 : 7 (merchantId,shopid)
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(orderItem.getCommodityId()).append("&").append(orderItem.getShopId());
+                    HttpUtils.doPost(Variables.sendStockJPushUrl,sb.toString());
                 }
                 specification.setCommodityReserve(i);
                 updateSpecification(specification);
