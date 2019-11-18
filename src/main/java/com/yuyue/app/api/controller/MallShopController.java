@@ -393,7 +393,7 @@ public class MallShopController extends BaseController{
 //
 //                }
 //            }
-
+            mallShop.setPriceId(priceId);
             mallShop.setServiceType(request.getParameter("serviceType"));
             mallShop.setFare(new BigDecimal(request.getParameter("fare")));
             mallShop.setCommodityPrice(new BigDecimal(request.getParameter("commodityPrice")));
@@ -451,7 +451,7 @@ public class MallShopController extends BaseController{
     @RequestMapping(value = "updateMyMallShopInfo")
     @ResponseBody
     @LoginRequired
-    public ReturnResult updateMyMallShopInfo(MallShop mallShop,HttpServletRequest request, HttpServletResponse response){
+    public ReturnResult updateMyMallShopInfo(MallShop mallShop,String  imageStr,HttpServletRequest request, HttpServletResponse response){
         log.info("修改商铺信息------------->>/mallShop/updateMyMallShopInfo");
         getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
@@ -493,6 +493,26 @@ public class MallShopController extends BaseController{
         }
         mallShop.setIsRevise("Y");
         mallShopService.updateMyMallShopInfo(mallShop);
+        if (StringUtils.isNotEmpty(imageStr)){
+            if (imageStr.contains(";")){
+                String[] images = imageStr.split(";");
+                for ( Byte i = 0 ; i < images.length ; i++) {
+                    ShopImage shopImage = new ShopImage();
+                    shopImage.setImagePath(images[i]);
+                    shopImage.setImageSort(i);
+                    shopImage.setShopId(mallShop.getShopId());
+                    System.out.println(images[i]);
+                    mallShopService.insertShopImage(shopImage);
+                }
+            }else {
+                ShopImage shopImage = new ShopImage();
+                shopImage.setImagePath(imageStr);
+                shopImage.setShopId(mallShop.getShopId());
+                mallShopService.insertShopImage(shopImage);
+            }
+
+        }
+
 
         returnResult.setMessage("修改成功！");
         returnResult.setStatus(Boolean.TRUE);
@@ -1799,7 +1819,6 @@ public class MallShopController extends BaseController{
             Specification specificationById = null;
             for (OrderItem orderItem:orderItems
                  ) {
-
                 specificationById = mallShopService.getSpecificationById(orderItem.getCommodityId());
                 if ("10B".equals(order.getStatus()) && "10A".equals(orderItem.getStatus())){
                     orderItem.setStatus("10B");

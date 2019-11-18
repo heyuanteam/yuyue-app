@@ -25,6 +25,8 @@ public class MallShop implements Serializable {
     private String commodityName;
     //    上传图片
     private List<ShopImage> images;
+    //接受图片
+    private String  imageStr;
     //    商品/服务介绍
     private String detail;
     //    规格
