@@ -10,6 +10,8 @@ public interface PayService {
 
     Order getOrderId(String orderId);
 
+    List<Order> getGGOrder(String consumerId,String status);
+
     List<Order> getSCOrder(String consumerId,String status);
 
     void updateStatus(String id,String status);

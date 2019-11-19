@@ -40,7 +40,7 @@ public interface MyService {
      * @param
      * @return
      */
-    List<AdPrice> getAdvertisementFeeInfo(String priceId);
+    List<AdPrice> getAdvertisementFeeInfo(String priceId,String isFirstTime);
 
     void insertShowName(String id, String userId, String teamName, String description, String size,
                         String categoryId, String address, String phone,

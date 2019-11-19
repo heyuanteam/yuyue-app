@@ -482,7 +482,7 @@ public class MyController extends BaseController{
             returnResult.setMessage("金额输入错误！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else {
-            List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(commodity.getPriceId());
+            List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(commodity.getPriceId(),"Y");
             if (StringUtils.isEmpty(advertisementFeeInfo)){
                 returnResult.setMessage("价格id传入错误！！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -725,11 +725,18 @@ public class MyController extends BaseController{
      */
     @RequestMapping(value = "/getAdvertisementFeeInfo")
     @ResponseBody
-    public JSONObject getAdvertisementFeeInfo(String priceId,HttpServletRequest request, HttpServletResponse response){
+    @LoginRequired
+    public JSONObject getAdvertisementFeeInfo(@CurrentUser AppUser appUser,String priceId,HttpServletRequest request, HttpServletResponse response){
         log.info("获取广告费用信息-------------->>/myController/getAdvertisementFeeInfo");
         getParameterMap(request, response);
         ReturnResult returnResult =new ReturnResult();
-        List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(priceId);
+        List<Order> ggOrder = payService.getGGOrder(appUser.getId(), "10B");
+        List<AdPrice> advertisementFeeInfo = null ;
+        if (StringUtils.isEmpty(ggOrder)){
+            advertisementFeeInfo = myService.getAdvertisementFeeInfo(priceId,"Y");
+        }else {
+            advertisementFeeInfo = myService.getAdvertisementFeeInfo(priceId,"N");
+        }
 //        System.out.println(advertisementFeeInfo);
 
         returnResult.setResult(advertisementFeeInfo);

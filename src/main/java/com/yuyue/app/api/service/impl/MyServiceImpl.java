@@ -66,8 +66,9 @@ public class MyServiceImpl implements MyService {
         commodityMapper.updateCommodityStatus(commodityId,status);
     }
     @Override
-    public List<AdPrice> getAdvertisementFeeInfo(String priceId) {
-        return adPriceMapper.getAdvertisementFeeInfo(priceId);
+    public List<AdPrice> getAdvertisementFeeInfo(String priceId,String isFirstTime) {
+
+        return adPriceMapper.getAdvertisementFeeInfo(priceId,isFirstTime);
     }
 
     @Override

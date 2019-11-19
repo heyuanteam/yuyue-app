@@ -30,6 +30,12 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
+    public List<Order> getGGOrder(String consumerId,String status) {
+        return payMapper.getGGOrder(consumerId,status);
+    }
+
+
+    @Override
     public void updateStatus(String id,String status) {payMapper.updateStatus(id,status);}
 
     @Override

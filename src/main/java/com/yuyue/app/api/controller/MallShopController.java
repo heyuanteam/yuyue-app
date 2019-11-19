@@ -119,7 +119,7 @@ public class MallShopController extends BaseController{
             }
             //规格
             myShop.setImages(mallShopService.getShopImage(myShop.getShopId()));
-            myShop.setAdPrice(myService.getAdvertisementFeeInfo(myShop.getPriceId()).get(0));
+            myShop.setAdPrice(myService.getAdvertisementFeeInfo(myShop.getPriceId(),"").get(0));
             List<Specification> specification = mallShopService.getSpecification(myShop.getShopId());
             myShop.setSpecifications(specification);
         }
@@ -212,12 +212,18 @@ public class MallShopController extends BaseController{
         /*---------------------------------生成订单-------------------------------*/
         String priceId = request.getParameter("priceId");
         String tradeType = request.getParameter("tradeType");
-        List<AdPrice> advertisementFeeInfo = myService.getAdvertisementFeeInfo(priceId);
+        if ("GGZFB".equals(tradeType) || "GGWX".equals(tradeType)){
+
+        }else{
+            returnResult.setMessage("交易类型错误！");
+            return returnResult;
+        }
+        List<AdPrice> advertisementFeeInfo =  myService.getAdvertisementFeeInfo(priceId,"");
+
         if (StringUtils.isEmpty(advertisementFeeInfo)){
             returnResult.setMessage("价格id传入错误！！");
             return returnResult;
         }
-
         AdPrice adPrice = advertisementFeeInfo.get(0);
         BigDecimal bigDecimal = new BigDecimal(adPrice.getAdTotalPrice()).multiply(new BigDecimal(adPrice.getAdDiscount()))
                 .setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -231,8 +237,8 @@ public class MallShopController extends BaseController{
         //商铺已存在情况下重新支付，---------> 未支付状态或是 支付超时状态
         System.out.println(StringUtils.isNull(myMallShop));
         if (StringUtils.isNotNull(myMallShop) && StringUtils.isNotEmpty(myMallShop.getStatus())){
-            //商铺未支付状态或是 支付超时状态
-            if ("10A".equals(myMallShop.getStatus())  || "10D".equals(myMallShop.getStatus())){
+            //商铺未支付状态或是 发布已过期状态
+            if ("10A".equals(myMallShop.getStatus())  || "10E".equals(myMallShop.getStatus())){
                 if(StringUtils.isNotEmpty(myMallShop.getOrderId())){
                     Order getOrder = payService.getOrderId(myMallShop.getOrderId());
                     if (StringUtils.isNull(getOrder)){
@@ -270,7 +276,7 @@ public class MallShopController extends BaseController{
                         return returnResult;
                     }
                     //支付超时状态    支付失败   商铺到期   -->重新生成新的订单
-                    else if ("10D".equals(myMallShop.getStatus())  ||
+                    else if ("10E".equals(myMallShop.getStatus())  ||
                                  "10C".equals(getOrder.getStatus()) ||
                                      "10D".equals(getOrder.getStatus())){
 
@@ -293,7 +299,8 @@ public class MallShopController extends BaseController{
                                 //returnResult.setResult(jsonObject.get("result"));
                                 returnResult.setMessage("订单重新生成，等待审核！！");
                                 returnResult.setStatus(Boolean.TRUE);
-                                mallShopService.insertMyMallShop(myMallShop);
+                                returnResult.setResult(jsonObject.get("result"));
+                                mallShopService.updateMyMallShopInfo(myMallShop);
                                 return returnResult;
                             }else {
                                 returnResult.setMessage("订单生成失败！！");
@@ -373,16 +380,25 @@ public class MallShopController extends BaseController{
             mallShop.setCommodityName(request.getParameter("commodityName"));
             String commodityImage = request.getParameter("images");
             if (StringUtils.isNotEmpty(commodityImage)){
-                String[] images = commodityImage.split(";");
+                if (commodityImage.contains(";")){
+                    String[] images = commodityImage.split(";");
 
-                for ( Byte i = 0 ; i < images.length ; i++) {
+                    for ( Byte i = 0 ; i < images.length ; i++) {
+                        ShopImage shopImage = new ShopImage();
+                        shopImage.setImagePath(images[i]);
+                        shopImage.setImageSort(i);
+                        shopImage.setShopId(shopId);
+                        System.out.println(images[i]);
+                        mallShopService.insertShopImage(shopImage);
+                    }
+                }else {
                     ShopImage shopImage = new ShopImage();
-                    shopImage.setImagePath(images[i]);
-                    shopImage.setImageSort(i);
+                    shopImage.setImagePath(commodityImage);
+                    shopImage.setImageSort((byte) 0);
                     shopImage.setShopId(shopId);
-                    System.out.println(images[i]);
                     mallShopService.insertShopImage(shopImage);
                 }
+
             }
 
             mallShop.setDetail(request.getParameter("detail"));
@@ -507,6 +523,7 @@ public class MallShopController extends BaseController{
             }else {
                 ShopImage shopImage = new ShopImage();
                 shopImage.setImagePath(imageStr);
+                shopImage.setImageSort((byte)0);
                 shopImage.setShopId(mallShop.getShopId());
                 mallShopService.insertShopImage(shopImage);
             }
@@ -2174,7 +2191,7 @@ public class MallShopController extends BaseController{
     /**
      *获取我的收货地址
      * @param appUser
-     * @param addressId
+     * @param
      * @param request
      * @param response
      * @return
@@ -2182,12 +2199,13 @@ public class MallShopController extends BaseController{
     @RequestMapping(value = "getMyAddress")
     @ResponseBody
     @LoginRequired
-    public ReturnResult getMyAddress(@CurrentUser  AppUser appUser,String addressId,
+    public ReturnResult getMyAddress(@CurrentUser  AppUser appUser,
                                     HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
 
         log.info("获取我的收货地址------------->>/mallShop/getMyAddress");
+        String addressId = request.getParameter("addressId");
         getParameterMap(request, response);
         if (StringUtils.isNotEmpty(addressId)){
             MallAddress mallAddress = mallShopService.getMallAddressByStatus(addressId);

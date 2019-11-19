@@ -13,12 +13,11 @@ import java.util.List;
 @Repository
 public interface MallAddressMapper extends MyBaseMapper<MallAddress> {
 /*-------------------------------------获取启用状态下的地址--------------------------------------*/
-    @Select("SELECT * FROM yuyue_mall_delivery_address WHERE user_id = #{userId} and status = 'Y' \n" +
-            "ORDER BY default_addr DESC ")
+    @Select("SELECT * FROM yuyue_mall_delivery_address WHERE address_id = #{addressId}  and status = 'Y' limit 1 \n")
     MallAddress getMallAddressByStatus(@Param(value = "addressId")String addressId);
 
-    @Select("SELECT * FROM yuyue_mall_delivery_address WHERE address_id = #{addressId} and status = 'Y'  limit 1")
-    List<MallAddress> getMallAddrByStatus(@Param(value = "userId")String userId);
+    @Select("SELECT * FROM yuyue_mall_delivery_address WHERE user_id = #{userId}  and status = 'Y' ORDER BY default_addr DESC  ")
+    List<MallAddress> getAllMallAddrByStatus(@Param(value = "userId")String userId);
 /*-------------------------------------获取不限制状态下的地址--------------------------------------*/
     @Select("SELECT * FROM yuyue_mall_delivery_address WHERE user_id = #{userId} ORDER BY default_addr DESC ")
     List<MallAddress> getMallAddrByUserId(@Param(value = "userId") String userId);

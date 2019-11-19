@@ -28,7 +28,7 @@ public interface MallOrderItemMapper extends MyBaseMapper<OrderItem> {
 
 
     @Transactional
-    @Insert("REPLACE INTO yuyue_mall_order_item (order_item_id,order_id,shop_id,\n" +
+    @Insert("REPLACE INTO yuyue_mall_order_item (order_item_id,order_id,shop_id, \n" +
             "address_id,commodity_id,consumer_id,fare,commodity_price,shop_income,commodity_num,status) \n" +
             "VALUES \n" +
             "(#{orderItemId},#{orderId},#{shopId},#{addressId},#{commodityId},#{consumerId}, \n" +
