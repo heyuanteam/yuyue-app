@@ -281,6 +281,7 @@ public class MallShopController extends BaseController{
                                      "10D".equals(getOrder.getStatus())){
 
                         try {
+
                             jsonObject = payController.payYuYue(order, user);
                             //生成订单
                             if ("true".equals(jsonObject.getString("status"))){
@@ -291,6 +292,7 @@ public class MallShopController extends BaseController{
                                     return returnResult;
                                 }
                                 myMallShop.setOrderId(orderId);
+                                myMallShop.setPriceId(adPrice.getPriceId());
                                 Order newOrder = payService.getOrderId(orderId);
                                 if ("10B".equals(newOrder.getStatus()))
                                     myMallShop.setStatus("10B");
