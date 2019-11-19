@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
@@ -935,17 +936,29 @@ public class MyController extends BaseController{
      */
     @RequestMapping("/getExtension")
     @ResponseBody
-    @LoginRequired
-    public JSONObject getExtension(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response) {
+    public JSONObject getExtension(String phone,HttpServletRequest request, HttpServletResponse response) {
         log.info("我的推广-------------->>/myController/getExtension");
         ReturnResult returnResult=new ReturnResult();
         getParameterMap(request, response);
+        String token = request.getHeader("token");
+        String userId = "";
+        List<AppUser> list = Lists.newArrayList();
+        //手机端请求
+        if(StringUtils.isNotEmpty(token)){
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+            AppUser user = loginService.getAppUserMsg("","",userId);
+            list = loginService.getAppUserByFatherPhone(user.getPhone());
+        }
+        //后台web请求
+        if (StringUtils.isNotEmpty(phone)) {
+            list = loginService.getAppUserByFatherPhone(phone);
+        }
+
         HashMap<String, Object> hashMap = Maps.newHashMap();
         int sum = 0;//总数
         int sum2 = 0;//艺人
         int sum3 = 0;//商户
         int sum4 = 0;//合作人
-        List<AppUser> list = loginService.getAppUserByFatherPhone(user.getPhone());
         if(CollectionUtils.isNotEmpty(list)){
             sum = list.size();
             for (AppUser appUser:list) {
@@ -958,7 +971,6 @@ public class MyController extends BaseController{
                 }
             }
         }
-
         hashMap.put("sum",sum);
         hashMap.put("artist",sum2);
         hashMap.put("business",sum3);
