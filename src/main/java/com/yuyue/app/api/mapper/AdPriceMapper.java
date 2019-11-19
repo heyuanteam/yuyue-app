@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface AdPriceMapper extends MyBaseMapper<AdPrice> {
 
-    List<AdPrice> getAdvertisementFeeInfo(@Param(value = "priceId") String priceId);
+    List<AdPrice> getAdvertisementFeeInfo(@Param(value = "priceId") String priceId,
+                                          @Param(value = "isFirstTime") String isFirstTime);
 
 }

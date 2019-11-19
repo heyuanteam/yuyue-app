@@ -20,6 +20,8 @@ public interface PayMapper extends MyBaseMapper<Order> {
     @Select("SELECT *,DATE_FORMAT(COMPLETE_TIME ,'%Y-%m-%d %H:%i:%s') completeTime FROM yuyue_order b WHERE b.id = #{orderId} limit 1")
     Order getOrderId(String orderId);
 
+    List<Order> getGGOrder(@Param(value = "consumerId") String consumerId,@Param(value = "status") String status);
+
 
     List<Order> getSCOrder(@Param(value = "consumerId") String consumerId,@Param(value = "status") String status);
 

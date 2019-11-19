@@ -1,5 +1,9 @@
 package com.yuyue.app.test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class SimpleTest {
 
 
@@ -218,6 +222,29 @@ public class SimpleTest {
 //            String s = stringStringMap.get(key);
 //            System.out.println(key+s);
 //        }
+
+
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
+//        String time1 = "08:00";
+//        String time2 = "18:00";
+
+        System.out.println("----------");
+        Date startDate = null;
+        Date endDate = null;
+        try {
+            startDate = new SimpleDateFormat("hh:mm:ss").parse("13:37:00");
+            endDate = new SimpleDateFormat("hh:mm:ss").parse("23:37:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        boolean isStart = new Date().after(startDate);
+        boolean notEnd = new Date().before(endDate);
+        if (isStart &&  notEnd){
+            System.out.println("发布中");
+        }
+        else if (notEnd ==false || isStart ==false) {
+            System.out.println("已过期");
+        }
 
 
     }
