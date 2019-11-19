@@ -806,7 +806,9 @@ public class PayController extends BaseController{
                 returnResult.setMessage("支付宝授权信息为空！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
-            loginService.updateZFBMessage(user.getId(),user.getZfbNumber(),user.getZfbRealName());
+            String zfbNumber = "";
+            String zfbRealName = "";
+            loginService.updateZFBMessage(user.getId(),zfbNumber,zfbRealName);
             returnResult.setMessage("解绑成功！");
             returnResult.setStatus(Boolean.TRUE);
             return ResultJSONUtils.getJSONObjectBean(returnResult);
