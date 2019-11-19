@@ -17,7 +17,7 @@
                 commodity_price = #{commodityPrice}  ,
             </if>
 
-             <if test="commodityReserve != null and commodityReserve != ''">
+             <if test=" commodityReserve >=0">
                  commodity_reserve = #{commodityReserve}  ,
              </if>
             <if test="commodityReserve != null and commodityReserve != ''">
