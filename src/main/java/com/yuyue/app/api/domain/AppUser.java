@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -81,7 +82,7 @@ public class AppUser implements Serializable {
     private String wechatName;
 //    上级手机号
     private String fatherPhone;
-//    申请推广员的状态，默认10A
+//    作废字段
     private String extensionStatus;
 //    是否奖励推广员的状态
     private String rewardStatus;
@@ -89,6 +90,8 @@ public class AppUser implements Serializable {
     private String zfbNumber;
 //    支付宝真实姓名
     private String zfbRealName;
+//    推广数量
+    private BigInteger rewardSize;
 
     //艺人封面
     private String frontCover;
