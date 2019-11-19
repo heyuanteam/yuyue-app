@@ -34,6 +34,7 @@
             <if test="responseCode != null and responseCode != ''"> responseCode= #{responseCode},</if>
             <if test="responseMessage != null and responseMessage != ''"> responseMessage= #{responseMessage},</if>
             <if test="status != null and status != ''"> status= #{status}, </if>
+            <if test="subtract != null and subtract != ''"> historyMoney = #{subtract}, </if>
         </set>
         WHERE 1=1
         <if test="id!=null and id!=''">

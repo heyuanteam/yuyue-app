@@ -223,6 +223,7 @@ public class PayController extends BaseController{
         if (StringUtils.isNotEmpty(orderId)) {
             //卖出商品
             Order orderNo = payService.getOrderId(orderId);
+            BigDecimal subtract = BigDecimal.ZERO;
             if (StringUtils.isNotNull(orderNo)) {
                 if ("10A".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS")) {
                     orderNo.setResponseCode(returnCode);
@@ -255,10 +256,13 @@ public class PayController extends BaseController{
                     changeMoney.setResponseCode(returnCode);
                     changeMoney.setResponseMessage(object.get("result_code").toString());
                     changeMoney.setStatus("10B");
-                    payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
+                    payService.updateChangeMoneyStatus(subtract,changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
 
                     AppUser appUser = loginService.getAppUserMsg("","",changeMoney.getSourceId());
                     BigDecimal bigDecimal = changeMoney.getMoney().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
+                    payService.updateOutIncome(appUser.getId(),subtract);
+
                     ChangeMoney syMoney = new ChangeMoney();
                     syMoney.setChangeNo("YYSY" + RandomSaltUtil.randomNumber(14));
                     syMoney.setStatus("10B");
@@ -268,20 +272,17 @@ public class PayController extends BaseController{
                     syMoney.setMoney(bigDecimal);
                     syMoney.setNote("用户收益");
                     syMoney.setTradeType("SY");
-                    syMoney.setHistoryMoney(appUser.getIncome());
+                    syMoney.setHistoryMoney(subtract);
                     createShouMoney(syMoney);
-
-                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
-                    payService.updateOutIncome(appUser.getId(),subtract);
 
                     syMoney.setResponseCode(returnCode);
                     syMoney.setResponseMessage(object.get("result_code").toString());
-                    payService.updateChangeMoneyStatus(syMoney.getResponseCode(), syMoney.getResponseMessage(), syMoney.getStatus(), syMoney.getId());
+                    payService.updateChangeMoneyStatus(subtract,syMoney.getResponseCode(), syMoney.getResponseMessage(), syMoney.getStatus(), syMoney.getId());
                 } else if ("10A".equals(changeMoney.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     changeMoney.setResponseCode(returnCode);
                     changeMoney.setResponseMessage(object.get("result_code").toString());
                     changeMoney.setStatus("10C");
-                    payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
+                    payService.updateChangeMoneyStatus(subtract,changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
                 }
             }
         }
@@ -384,6 +385,7 @@ public class PayController extends BaseController{
             log.info("支付宝验签成功+++++++++++++++++++++++++++++++++");
             //卖出商品
             Order orderNo = payService.getOrderId(orderId);
+            BigDecimal subtract = BigDecimal.ZERO;
             if (StringUtils.isNotNull(orderNo)) {
                 // 有可能出现多次回调，只有在该状态下的回调才是支付成功下的回调
                 if ("10A".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
@@ -423,10 +425,13 @@ public class PayController extends BaseController{
                     changeMoney.setResponseCode(params.get("trade_status"));
                     changeMoney.setResponseMessage(params.get("trade_status"));
                     changeMoney.setStatus("10B");
-                    payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
+                    payService.updateChangeMoneyStatus(subtract,changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
 
                     AppUser appUser = loginService.getAppUserMsg("","",changeMoney.getSourceId());
                     BigDecimal bigDecimal = changeMoney.getMoney().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
+                    payService.updateOutIncome(appUser.getId(),subtract);
+
                     ChangeMoney syMoney = new ChangeMoney();
                     syMoney.setChangeNo("YYSY" + RandomSaltUtil.randomNumber(14));
                     syMoney.setStatus("10B");
@@ -436,20 +441,17 @@ public class PayController extends BaseController{
                     syMoney.setMoney(bigDecimal);
                     syMoney.setNote("用户收益");
                     syMoney.setTradeType("SY");
-                    syMoney.setHistoryMoney(appUser.getIncome());
+                    syMoney.setHistoryMoney(subtract);
                     createShouMoney(syMoney);
-
-                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
-                    payService.updateOutIncome(appUser.getId(),subtract);
 
                     syMoney.setResponseCode(params.get("trade_status"));
                     syMoney.setResponseMessage(params.get("trade_status"));
-                    payService.updateChangeMoneyStatus(syMoney.getResponseCode(), syMoney.getResponseMessage(), syMoney.getStatus(), syMoney.getId());
+                    payService.updateChangeMoneyStatus(subtract,syMoney.getResponseCode(), syMoney.getResponseMessage(), syMoney.getStatus(), syMoney.getId());
                 } else if("10A".equals(changeMoney.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
                     changeMoney.setResponseCode(params.get("trade_status"));
                     changeMoney.setResponseMessage(params.get("trade_status"));
                     changeMoney.setStatus("10C");
-                    payService.updateChangeMoneyStatus(changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
+                    payService.updateChangeMoneyStatus(subtract,changeMoney.getResponseCode(), changeMoney.getResponseMessage(), changeMoney.getStatus(), changeMoney.getId());
                 }
             }
             log.info("支付宝平台回调结束+++++++++++++++++++++++++++++++++");
@@ -527,20 +529,6 @@ public class PayController extends BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
-    //极光商家卖出商品通知 : 8 (orderId)
-    public List<String> sendClotheSoldUrl(Order order) {
-        //获取卖家ids
-        List<String> shopUserIdList = payService.getShopUserList(order.getId());
-        if (CollectionUtils.isNotEmpty(shopUserIdList)) {
-            for (String shopUserId: shopUserIdList) {
-                if (StringUtils.isNotEmpty(shopUserId)) {
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId());
-                }
-            }
-        }
-        return shopUserIdList;
-    }
-
     //创建充值订单
     public void createOrder(Order order) {
         order.setId(RandomSaltUtil.generetRandomSaltCode(32));
@@ -592,22 +580,23 @@ public class PayController extends BaseController{
         }
 
         ChangeMoney changeTime = payService.getChangeMoneyByTime(user.getId());
-        //上次提现时间
-        Date parse = dateFormat.parse(changeTime.getCreateTime());
-        long goTime = parse.getTime();
-        int second = (int)goTime / 1000;
-        log.info("上次提现时间====>>>>"+dateFormat.format(parse)+"秒数====>>>>"+second);
-        //当前系统时间
-        Date date = dateFormat.parse(dateFormat.format(new Date()));
-        Long toTime = date.getTime();
-        int systemTime =toTime.intValue() / 1000;
-        log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+systemTime);
+        if (StringUtils.isNotNull(changeTime)) {
+            //上次提时间
+            Date parse = dateFormat.parse(changeTime.getCreateTime());
+            long goTime = parse.getTime();
+            int second = (int)goTime / 1000;
+            log.info("上次提现时间====>>>>"+dateFormat.format(parse)+"秒数====>>>>"+second);
+            //当前系统时间
+            Date date = dateFormat.parse(dateFormat.format(new Date()));
+            Long toTime = date.getTime();
+            int systemTime =toTime.intValue() / 1000;
+            log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+systemTime);
 
-        if ((systemTime - second) < 60 ) {
-            returnResult.setMessage("您好！一分钟之内，只能提现一次！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
+            if ((systemTime - second) < 60 ) {
+                returnResult.setMessage("您好！一分钟之内，只能提现一次！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
         }
-
         ChangeMoney changeMoney = new ChangeMoney();
         changeMoney.setNote(note);
         changeMoney.setMoney(money);
@@ -711,27 +700,27 @@ public class PayController extends BaseController{
             String transfersXml = EntityUtils.toString(response.getEntity(), Variables.CHARSET);
             Map<String, String> transferMap = XMLUtils.xmlString2Map(transfersXml);
             log.info("微信转账回返信息=============>>>>>>"+transferMap.toString());
+            BigDecimal subtract = BigDecimal.ZERO;
             if (transferMap.size()>0) {
                 if (transferMap.get("result_code").equals("SUCCESS") && transferMap.get("return_code").equals("SUCCESS")) {
                     //成功需要进行的逻辑操作，
                     returnResult.setMessage("企业转账成功");
                     returnResult.setStatus(Boolean.TRUE);
-
                     if (changeMoney.getNote().contains("income")) {
-                        BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
+                        subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
                         payService.updateOutIncome(user.getId(),subtract);
                     } else if (changeMoney.getNote().contains("mIncome")) {
-                        BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
+                        subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
                         payService.updateMIncome(user.getId(),subtract);
                     }
-                    payService.updateChangeMoneyStatus(transferMap.get("result_code"), "微信转账成功", "10B", changeMoney.getId());
+                    payService.updateChangeMoneyStatus(subtract,transferMap.get("result_code"), "微信转账成功", "10B", changeMoney.getId());
                     returnResult.setMessage("微信提现成功！");
                     returnResult.setStatus(Boolean.TRUE);
                     return ResultJSONUtils.getJSONObjectBean(returnResult);
                 } else {
                     //失败原因
                     returnResult.setMessage("企业转账失败");
-                    payService.updateChangeMoneyStatus(transferMap.get("err_code_des"), transferMap.get("return_msg"), "10C", changeMoney.getId());
+                    payService.updateChangeMoneyStatus(subtract,transferMap.get("err_code_des"), transferMap.get("return_msg"), "10C", changeMoney.getId());
                 }
             }
         } catch (Exception e) {
@@ -902,6 +891,7 @@ public class PayController extends BaseController{
                     + "\"payee_type\":\"ALIPAY_LOGONID\"}");
             AlipayFundTransToaccountTransferResponse response = Variables.alipayClient.execute(request);
             log.info("转账信息=======>"+response.getBody());
+            BigDecimal subtract = BigDecimal.ZERO;
             if (response.isSuccess()) {
                 JSONObject jsonObject = JSONObject.parseObject(response.getBody()).getJSONObject("alipay_fund_trans_toaccount_transfer_response");
                 String msg = jsonObject.getString("msg");
@@ -909,18 +899,18 @@ public class PayController extends BaseController{
                 String outNo = jsonObject.getString("out_biz_no");
 
                 if (changeMoney.getNote().contains("income")) {
-                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
+                    subtract = ResultJSONUtils.updateUserMoney(user.getIncome(), changeMoney.getMoney(), "");
                     payService.updateOutIncome(user.getId(),subtract);
                 } else if (changeMoney.getNote().contains("mIncome")) {
-                    BigDecimal subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
+                    subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
                     payService.updateMIncome(user.getId(),subtract);
                 }
-                payService.updateChangeMoneyStatus(msg, "支付宝提现成功！", "10B", changeMoney.getId());
+                payService.updateChangeMoneyStatus(subtract,msg, "支付宝提现成功！", "10B", changeMoney.getId());
                 returnResult.setMessage("支付宝提现成功！");
                 returnResult.setStatus(Boolean.TRUE);
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             } else {
-                payService.updateChangeMoneyStatus("ERROR", "支付宝提现失败！", "10C", changeMoney.getId());
+                payService.updateChangeMoneyStatus(subtract,"ERROR", "支付宝提现失败！", "10C", changeMoney.getId());
                 returnResult.setResult(response.getBody());
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }

@@ -226,10 +226,10 @@ public class MallShopServiceImpl implements MallShopService {
             syMoney.setStatus("10B");
             syMoney.setMobile(appUserMsg.getPhone());
             syMoney.setMerchantId(appUserMsg.getId());
-            syMoney.setMoney(mIncome);
+            syMoney.setMoney(new BigDecimal(money));
             syMoney.setNote("商城收益");
             syMoney.setTradeType("SC");
-            syMoney.setHistoryMoney(appUserMsg.getMIncome());
+            syMoney.setHistoryMoney(mIncome);
             payController.createShouMoney(syMoney);
             //修改订单项状态
             payService.updateMIncome(merchantId,mIncome);
