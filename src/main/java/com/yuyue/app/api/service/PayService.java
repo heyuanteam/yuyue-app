@@ -36,7 +36,7 @@ public interface PayService {
 
     List<Order> findOrderList(String startTime);
 
-    void updateChangeMoneyStatus(String responseCode, String responseMessage, String status, String id);
+    void updateChangeMoneyStatus(BigDecimal subtract,String responseCode, String responseMessage, String status, String id);
 
     //商户店家ID
     List<String> getShopUserList(String id);
