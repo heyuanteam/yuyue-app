@@ -2174,7 +2174,7 @@ public class MallShopController extends BaseController{
     /**
      *获取我的收货地址
      * @param appUser
-     * @param addressId
+     * @param
      * @param request
      * @param response
      * @return
@@ -2182,12 +2182,13 @@ public class MallShopController extends BaseController{
     @RequestMapping(value = "getMyAddress")
     @ResponseBody
     @LoginRequired
-    public ReturnResult getMyAddress(@CurrentUser  AppUser appUser,String addressId,
+    public ReturnResult getMyAddress(@CurrentUser  AppUser appUser,
                                     HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
 
         log.info("获取我的收货地址------------->>/mallShop/getMyAddress");
+        String addressId = request.getParameter("addressId");
         getParameterMap(request, response);
         if (StringUtils.isNotEmpty(addressId)){
             MallAddress mallAddress = mallShopService.getMallAddressByStatus(addressId);
