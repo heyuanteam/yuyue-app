@@ -94,7 +94,7 @@
             b.merchantId,b.changeNo,b.tradeType,b.money,b.`status`,b.note,
             DATE_FORMAT(b.CREATE_TIME ,'%Y-%m-%d %H:%i:%s') createTime
             FROM yuyue_change_money b
-            WHERE 1=1
+            WHERE 1=1 and tradeType like  'TX%'
             <if test="userId!=null and userId!=''">
                 and b.merchantId = #{userId}
             </if>
