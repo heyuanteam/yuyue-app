@@ -1432,7 +1432,7 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("状态为空！");
             return returnResult;
         }else {
-            if ("10A".equals(status) ||"10B".equals(status) ||"10B".equals(status) ||
+            if ("10A".equals(status) ||"10B".equals(status) ||"10C".equals(status) ||
                     "10D".equals(status) ||"10E".equals(status) ){
                 Order order = payService.getOrderId(orderId);
                 if (StringUtils.isNull(order)){
