@@ -892,7 +892,7 @@ public class MallShopController extends BaseController{
              ) {
 
             MallShop myMallShop = mallShopService.getMyMallShop(cart.getShopId());
-            System.out.println(myMallShop);
+            //第一次
             if (StringUtils.isEmpty(resultCarts)) {
 
                 cart.setSpecification(mallShopService.getSpecificationById(cart.getCommodityId()));
@@ -907,9 +907,10 @@ public class MallShopController extends BaseController{
                 continue;
             }
             Boolean status = false;
+            //第二次及多次
             for (ResultCart resultCart : resultCarts
             ) {
-
+                //如果有已存在相同商铺的商品，仅将商品添加到List
                 if (resultCart.getShopId().equals(myMallShop.getShopId())) {
                     cart.setSpecification(mallShopService.getSpecificationById(cart.getCommodityId()));
                     List<Cart> addCarts = resultCart.getCommodityList();
@@ -925,6 +926,7 @@ public class MallShopController extends BaseController{
                 ResultCart resultCart1 = new ResultCart();
                 resultCart1.setShopId(myMallShop.getShopId());
                 resultCart1.setCommodityName(myMallShop.getCommodityName());
+                resultCart1.setBusinessStatus(myMallShop.getBusinessStatus());
                 List<Cart> newCarts = new ArrayList<>();
                 newCarts.add(cart);
                 resultCart1.setCommodityList(newCarts);
