@@ -18,6 +18,8 @@ public class ResultCart implements Serializable {
     private String shopId;
     //商品名
     private String commodityName;
+    //商铺营业状态（营业，打烊）
+    private String businessStatus;
     //订单列表
     private List<Cart> commodityList;
     //商品列表

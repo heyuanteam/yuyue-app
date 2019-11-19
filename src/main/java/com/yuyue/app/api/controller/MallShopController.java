@@ -882,6 +882,7 @@ public class MallShopController extends BaseController{
                 ResultCart resultCart = new ResultCart();
                 resultCart.setShopId(myMallShop.getShopId());
                 resultCart.setCommodityName(myMallShop.getCommodityName());
+                resultCart.setBusinessStatus(myMallShop.getBusinessStatus());
                 List<Cart> newCarts = new ArrayList<>();
                 newCarts.add(cart);
                 resultCart.setCommodityList(newCarts);
@@ -1708,8 +1709,8 @@ public class MallShopController extends BaseController{
                         specificationById.setCommodityPrice(orderItem.getCommodityPrice());
                         //设置规格购买数量
                         specificationById.setCommodityNum(orderItem.getCommodityNum());
-                        //设置订单状态
-                        specificationById.setStatus(orderItem.getStatus());
+                        //设置支付状态
+                        specificationById.setStatus(order.getStatus());
                         payAmount = orderItem.getCommodityPrice().multiply(BigDecimal.valueOf(orderItem.getCommodityNum())).toString();
                         commodities.add(specificationById);
                     }
@@ -1728,7 +1729,7 @@ public class MallShopController extends BaseController{
                     returnOrder.setCreateTime(mallOrderItems.get(0).getCreateTime());
                     //支付类型
                     returnOrder.setTradeType(order.getTradeType());
-                    returnOrder.setStatus(order.getStatus());
+                    returnOrder.setStatus(mallOrderItems.get(0).getStatus());
                     returnOrders.add(returnOrder);
                 }
             }
