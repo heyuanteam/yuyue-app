@@ -6,7 +6,7 @@
     <select id="updateSpecification"  parameterType="com.yuyue.app.api.domain.Specification" >
         update yuyue_mall_shop_commodity
          <set>
-         1= 1,
+
             <if test="commodityDetail != null and commodityDetail != ''">
                 commodity_detail = #{commodityDetail} ,
             </if>

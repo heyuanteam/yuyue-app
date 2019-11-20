@@ -247,7 +247,7 @@ public class MallShopController extends BaseController{
                     }else if("10B".equals(getOrder.getStatus()) && "10A".equals(myMallShop.getStatus()) ){
                         //修改商铺状态
                         myMallShop.setStatus("10B");
-                        mallShopService.insertMyMallShop(myMallShop);
+                        mallShopService.updateMyMallShopInfo(myMallShop);
                         return returnResult;
                     }
                     //订单未支付状态     --->  去支付
@@ -1823,7 +1823,7 @@ public class MallShopController extends BaseController{
                     commodities.add(specificationById);
                 }
         returnOrderDetail.setStatus(mallOrderItems.get(0).getStatus());
-        returnOrderDetail.setPayAmount(mallOrderItems.get(0).getCommodityPrice());
+        returnOrderDetail.setPayAmount(mallOrderItems.get(0).getShopIncome());
         returnOrderDetail.setCommodities(commodities);
         returnResult.setMessage("查询成功！");
         returnResult.setStatus(Boolean.TRUE);
