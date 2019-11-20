@@ -25,7 +25,7 @@ public interface MallOrderItemMapper extends MyBaseMapper<OrderItem> {
     List<String> getOrderToItem(@Param(value = "shopId") String shopId,@Param(value = "consumerId") String consumerId,
                                   @Param(value = "status") String status);
 
-
+    String getNoPayOrderItem(@Param(value = "merchantId") String merchantId);
 
     @Transactional
     @Insert("REPLACE INTO yuyue_mall_order_item (order_item_id,order_id,shop_id, \n" +

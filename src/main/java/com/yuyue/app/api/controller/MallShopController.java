@@ -1772,6 +1772,31 @@ public class MallShopController extends BaseController{
 
     }
 
+    /**
+     * 获取未发货的订单
+     * @param appUser
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "getNoPayOrderItem")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult  getNoPayOrderItem(@CurrentUser  AppUser appUser,
+                                           HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("商户获取所有订单------------->>/mallShop/getNoPayOrderItem");
+        getParameterMap(request, response);
+
+
+
+        String noPayOrderItem = mallShopService.getNoPayOrderItem(appUser.getId());
+        returnResult.setResult(noPayOrderItem);
+        returnResult.setMessage("返回成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+
+    }
 
     /**
      *商户 获取 订单详情

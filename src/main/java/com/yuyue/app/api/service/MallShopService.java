@@ -80,6 +80,9 @@ public interface MallShopService {
     List<String> getOrderToItem(String shopId,String consumerId,String status);
 
 
+    String getNoPayOrderItem(String merchantId);
+
+
     void editMallOrderItem(OrderItem orderItem);
 
     //修改订单项中的支付状态

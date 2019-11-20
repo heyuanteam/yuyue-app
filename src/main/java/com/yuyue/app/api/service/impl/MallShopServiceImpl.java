@@ -189,6 +189,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public String getNoPayOrderItem(String merchantId) {
+        return mallOrderItemMapper.getNoPayOrderItem(merchantId);
+    }
+
+    @Override
     public void editMallOrderItem(OrderItem orderItem) {
         mallOrderItemMapper.editMallOrderItem(orderItem);
     }

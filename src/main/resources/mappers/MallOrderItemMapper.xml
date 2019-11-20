@@ -33,5 +33,12 @@
         ORDER BY create_time DESC
     </select>
 
+    <select id="getNoPayOrderItem"  parameterType="String" resultType="String">
+        SELECT COUNT(*) FROM yuyue_mall_order_item WHERE `status` = '10B' and
+            shop_id
+        in (SELECT shop_id FROM yuyue_mall_shop where merchant_id  = #{merchantId})
+    </select>
+
+
 
 </mapper>
