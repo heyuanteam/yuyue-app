@@ -237,8 +237,6 @@ public class PayController extends BaseController{
                             || orderNo.getTradeType().contains("SM")){
                         mallShopService.mallPaySuccess(orderId);
                     }
-                    //    极光商家卖出商品通知 : 8 (orderId)
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId());
                 } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
@@ -407,8 +405,6 @@ public class PayController extends BaseController{
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser, orderNo.getMoney(), "+");
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
-                    //    极光商家卖出商品通知 : 8 (orderId)
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,orderNo.getId());
                 } else if("10A".equals(orderNo.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
                     log.info("不加钱===================");
                     String trxNo = params.get("trade_status");

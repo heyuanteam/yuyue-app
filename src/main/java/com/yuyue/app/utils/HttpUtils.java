@@ -161,7 +161,7 @@ public class HttpUtils {
             httpPost = new HttpPost(url);
             //设置参数
             StringEntity entityParams = new StringEntity(str, "utf-8");
-            httpPost.setEntity(entityParams );
+            httpPost.setEntity(entityParams);
             httpPost.setHeader("Content-Type", "application/json");
 
             HttpResponse response = httpClient.execute(httpPost);
