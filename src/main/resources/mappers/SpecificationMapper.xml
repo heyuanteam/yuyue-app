@@ -20,9 +20,7 @@
              <if test=" commodityReserve >=0">
                  commodity_reserve = #{commodityReserve}  ,
              </if>
-            <if test="commodityReserve != null and commodityReserve != ''">
-                 commodity_reserve = #{commodityReserve} ,
-            </if>
+
             <if test="imagePath != null and imagePath != ''">
                  image_path = #{imagePath},
             </if>
