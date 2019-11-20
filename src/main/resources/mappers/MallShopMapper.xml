@@ -57,25 +57,23 @@
     <select id="getAllMallShop"  parameterType="String" resultMap="MallShop">
 
         SELECT * FROM (
-        SELECT * FROM yuyue_mall_shop s
-        where 1=1
-            <if test="content != null and content != '' ">
-                and CONCAT(IFNULL(s.category,''),IFNULL(s.commodity_name,''),IFNULL(s.detail,''))  LIKE  concat('%', #{content}, '%')
-            </if>
-            <if test="myArea != null and myArea != '' ">
-                and CONCAT(s.service_area) like concat('%', #{myArea}, '%')
-            </if>
-        and s.status  = '10C' and s.business_status = 'open'  and s.is_revise = 'N'
-        UNION
-            SELECT * FROM yuyue_mall_shop s1 where 1 = 1
-        <if test="content != null and content != '' ">
-          and  s1.shop_id in (SELECT shop_id FROM yuyue_mall_shop_commodity where
-                CONCAT(IFNULL(commodity_size,''),IFNULL(commodity_detail,''))LIKE  concat('%', #{content}, '%') )
-            </if>
-            <if test="myArea != null and myArea != '' ">
-                and CONCAT(s1.service_area) like concat('%', #{myArea}, '%')
-            </if>
-        and s1.status  = '10C' and s1.business_status = 'open'  and s1.is_revise = 'N'
+            SELECT * FROM yuyue_mall_shop s
+            where 1=1
+                <if test="content != null and content != '' ">
+                    and CONCAT(IFNULL(s.category,''),IFNULL(s.commodity_name,''),IFNULL(s.detail,''))  LIKE  concat('%', #{content}, '%')
+                </if>
+                <if test="myArea != null and myArea != '' ">
+                    and CONCAT(s.service_area) like concat('%', #{myArea}, '%')
+                </if>
+            and s.status  = '10C' and s.business_status = 'open'  and s.is_revise = 'N'
+            UNION
+                SELECT * FROM yuyue_mall_shop s1 where 1 = 1
+                <if test="content != null and content != '' ">
+                    and  s1.shop_id in (SELECT shop_id FROM yuyue_mall_shop_commodity where
+                    CONCAT(IFNULL(commodity_size,''),IFNULL(commodity_detail,''))LIKE  concat('%', #{content}, '%') )
+                </if>
+                <if test="myArea != null and myArea != '' ">  and CONCAT(s1.service_area) like concat('%', #{myArea}, '%')</if>
+            and s1.status  = '10C' and s1.business_status = 'open'  and s1.is_revise = 'N'
         ) ss ,yuyue_mall_shop_images images
         where ss.shop_id = images.shop_id and images.image_sort = '0'
         order by ss.create_time desc
