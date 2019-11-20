@@ -1,11 +1,13 @@
 package com.yuyue.app.api.service.impl;
 
+import com.google.common.collect.Maps;
 import com.yuyue.app.api.controller.PayController;
 import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.mapper.*;
 import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.enums.Variables;
+import com.yuyue.app.utils.GouldUtils;
 import com.yuyue.app.utils.HttpUtils;
 import com.yuyue.app.utils.RandomSaltUtil;
 import com.yuyue.app.utils.ResultJSONUtils;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 
 @Service(value = "mallShopServiceImpl")
@@ -235,7 +238,10 @@ public class MallShopServiceImpl implements MallShopService {
             //修改订单项状态
             payService.updateMIncome(merchantId,mIncome);
         }
-
+        //    极光商家卖出商品通知 : 8 (orderId)
+        HashMap<String,String> map = Maps.newHashMap();
+        map.put("orderId",orderId);
+        GouldUtils.doPost(Variables.sendClotheSoldUrl,map);
     }
 
     @Override
