@@ -99,7 +99,13 @@ public class MallShopController extends BaseController{
         ReturnResult returnResult = new ReturnResult();
         log.info("查询我的商铺（我的广告）-------------->>/mallShop/getMyMallShops");
         getParameterMap(request, response);
-
+        String page = request.getParameter("page");
+        String pageSize = request.getParameter("pageSize");
+        if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))
+            page = "1";
+        if (StringUtils.isEmpty(pageSize) || !pageSize.matches("[0-9]+"))
+            pageSize = "10";
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(pageSize));
         List<MallShop> myMallShops = mallShopService.getMyMallShops(user.getId());
         if (StringUtils.isEmpty(myMallShops)){
             returnResult.setMessage("未查询到商铺");
@@ -1833,7 +1839,7 @@ public class MallShopController extends BaseController{
     }
 
     /**
-     *消费者 获取 订单列表
+     *消费者 获取 订单列表(我的消费)
      * @param appUser
      * @param request
      * @param response
@@ -1852,6 +1858,13 @@ public class MallShopController extends BaseController{
         String status = request.getParameter("status");
         String consumerId = appUser.getId();
         //获取商城中我的订单列表
+        String page = request.getParameter("page");
+        String pageSize = request.getParameter("pageSize");
+        if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))
+            page = "1";
+        if (StringUtils.isEmpty(pageSize) || !pageSize.matches("[0-9]+"))
+            pageSize = "10";
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(pageSize));
         List<Order> scOrder = payService.getSCOrder(consumerId, status);
         List<ReturnOrderDetail> returnOrderDetailList = new ArrayList<>();
         if (StringUtils.isNull(scOrder)){

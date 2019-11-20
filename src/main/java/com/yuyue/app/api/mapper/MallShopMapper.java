@@ -12,6 +12,12 @@ import java.util.List;
 @Repository
 public interface MallShopMapper extends MyBaseMapper<MallShop> {
 
+    @Select("SELECT shop_id FROM yuyue_mall_shop WHERE order_id = #{orderId} limit 1  ")
+    String getMyMallShopByOrderId(@Param(value = "orderId") String orderId);
+
+    @Update("UPDATE yuyue_mall_shop SET `status` = '10B' WHERE shop_id =  #{shopId}")
+    void updateMallShop(String shopId);
+
 
     List<MallShop> getMallShopByVideoId(@Param(value = "videoId")String videoId);
 
@@ -21,6 +27,7 @@ public interface MallShopMapper extends MyBaseMapper<MallShop> {
     //获取我的商铺包括图片
     MallShop getMyMallShop(@Param(value = "shopId") String shopId);
 
+    //我的广告
     @Select("SELECT * FROM yuyue_mall_shop WHERE merchant_id = #{merchantId} ORDER BY `status`  ")
     List<MallShop> getMyMallShops(@Param(value = "merchantId")String merchantId);
 

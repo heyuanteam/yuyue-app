@@ -40,6 +40,12 @@ public class MallShopServiceImpl implements MallShopService {
     private PayController payController;
 
     @Override
+    public void getMyMallShopByOrderId(String orderId) {
+        String shopId = mallShopMapper.getMyMallShopByOrderId(orderId);
+        mallShopMapper.updateMallShop(shopId);
+    }
+
+    @Override
     public List<MallShop> getMallShopByVideoId(String videoId) {
         return mallShopMapper.getMallShopByVideoId(videoId);
     }

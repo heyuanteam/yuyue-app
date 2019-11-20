@@ -8,6 +8,8 @@ public interface MallShopService {
 
 
 /*---------------------------------商铺接口---------------------------------*/
+    void getMyMallShopByOrderId(String orderId);
+
     List<MallShop> getMallShopByVideoId(String videoId);
 
     MallShop getMyMallShop(String shopId);

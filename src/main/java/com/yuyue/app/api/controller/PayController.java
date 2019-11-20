@@ -3,7 +3,6 @@ package com.yuyue.app.api.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
-import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
@@ -16,7 +15,10 @@ import com.auth0.jwt.JWT;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
-import com.yuyue.app.api.domain.*;
+import com.yuyue.app.api.domain.AppUser;
+import com.yuyue.app.api.domain.ChangeMoney;
+import com.yuyue.app.api.domain.Order;
+import com.yuyue.app.api.domain.OutMoney;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.MyService;
@@ -25,7 +27,6 @@ import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +34,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static org.aspectj.bridge.Version.getTime;
 
 @Slf4j
 @RestController
@@ -396,10 +393,14 @@ public class PayController extends BaseController{
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
-                    log.info("----------------给商户加钱----------------");
+
                     if (orderNo.getTradeType().contains("SC")|| orderNo.getTradeType().contains("WAP")
                             || orderNo.getTradeType().contains("SM")){
+                        log.info("----------------给商户加钱----------------");
                         mallShopService.mallPaySuccess(orderId);
+                    }else if(orderNo.getTradeType().contains("GG")){
+                        log.info("----------------商户申请，支付成功----------------");
+                        mallShopService.getMyMallShopByOrderId(orderId);
                     }
 //                    AppUser appUser = loginService.getAppUserMsg("","",orderNo.getMerchantId());
 //                    if(orderNo.getTradeType().contains("CZ") || orderNo.getTradeType().contains("SM")) {
