@@ -63,8 +63,7 @@
                     and CONCAT(IFNULL(s.category,''),IFNULL(s.commodity_name,''),IFNULL(s.detail,''))  LIKE  concat('%', #{content}, '%')
                 </if>
                 <if test="myArea != null and myArea != '' ">
-                    and concat('%', #{myArea}, '%') like CONCAT(s.service_area)
-                    or CONCAT(s.service_area) like concat('%全国%')
+                    and CONCAT(s.service_area) like concat('%', #{myArea}, '%')
                 </if>
             and s.status  = '10C' and s.business_status = 'open'  and s.is_revise = 'N'
             UNION
