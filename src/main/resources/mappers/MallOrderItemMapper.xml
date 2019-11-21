@@ -47,7 +47,8 @@
     </select>
 
     <select id="getMallOrderItemById"  parameterType="String" resultMap="OrderItemVo">
-        SELECT * FROM yuyue_mall_order_item where order_item_id = #{orderItemId}
+        SELECT * FROM yuyue_mall_order_item o,yuyue_mall_shop_commodity c
+         where order_item_id = #{orderItemId}  AND o.commodity_id = c.commodity_id
     </select>
 
 
