@@ -83,7 +83,7 @@ public interface MallShopService {
     String getNoPayOrderItem(String merchantId);
 
     //获取顾客订单
-    List<OrderItem> getMerchantOrder(String merchantId);
+    List<OrderItemVo> getMerchantOrder(String merchantId);
 
 
     void editMallOrderItem(OrderItem orderItem);

@@ -1,6 +1,7 @@
 package com.yuyue.app.api.mapper;
 
 import com.yuyue.app.api.domain.OrderItem;
+import com.yuyue.app.api.domain.OrderItemVo;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -39,5 +40,5 @@ public interface MallOrderItemMapper extends MyBaseMapper<OrderItem> {
     @Update("update yuyue_mall_order_item  set status= #{status} WHERE order_id = #{orderId}")
     void updateOrderItemsStatus(@Param(value = "orderId") String orderId,@Param(value = "status") String status);
 
-    List<OrderItem> getMerchantOrder(@Param(value = "merchantId")String merchantId);
+    List<OrderItemVo> getMerchantOrder(@Param(value = "merchantId")String merchantId);
 }

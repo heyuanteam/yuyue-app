@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Ordering;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.*;
@@ -1701,7 +1702,20 @@ public class MallShopController extends BaseController{
         if (StringUtils.isEmpty(pageSize) || !pageSize.matches("[0-9]+"))
             pageSize = "10";
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(pageSize));
-        List<OrderItem> merchantOrder = mallShopService.getMerchantOrder(appUser.getId());
+        List<OrderItemVo> merchantOrder = mallShopService.getMerchantOrder(appUser.getId());
+        if (StringUtils.isNotEmpty(merchantOrder)){
+            for (OrderItemVo orderItemVo: merchantOrder
+                 ) {
+                Order order = payService.getOrderId(orderItemVo.getOrderId());
+                AppUser appUserMsg = loginService.getAppUserMsg("", "", orderItemVo.getConsumerId());
+                MallAddress mallAddress = mallShopService.getMallAddress(orderItemVo.getAddressId());
+                orderItemVo.setConsumerName(appUserMsg.getNickName());
+                orderItemVo.setConsumerPhone(appUserMsg.getPhone());
+                orderItemVo.setOrderNo(order.getOrderNo());
+                orderItemVo.setTradeType(order.getTradeType());
+                orderItemVo.setMallAddress(mallAddress);
+            }
+        }
 
         returnResult.setMessage("查询成功！");
         returnResult.setStatus(Boolean.TRUE);

@@ -195,7 +195,7 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
-    public List<OrderItem> getMerchantOrder(String merchantId) {
+    public List<OrderItemVo> getMerchantOrder(String merchantId) {
         return mallOrderItemMapper.getMerchantOrder(merchantId);
     }
 

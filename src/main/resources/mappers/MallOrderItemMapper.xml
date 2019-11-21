@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yuyue.app.api.mapper.MallOrderItemMapper">
-    <resultMap type="com.yuyue.app.api.domain.OrderItem" id="OrderItem">
+    <resultMap type="com.yuyue.app.api.domain.OrderItemVo" id="OrderItemVo">
         <id column="order_item_id" property="orderItemId"/>
         <result column="merchant_id" property="merchantId"/>
         <result column="order_id" property="orderId"/>
@@ -67,7 +67,7 @@
         in (SELECT shop_id FROM yuyue_mall_shop where merchant_id  = #{merchantId})
     </select>
 
-    <select id="getMerchantOrder" parameterType="String" resultMap="OrderItem">
+    <select id="getMerchantOrder" parameterType="String" resultMap="OrderItemVo">
         SELECT * FROM yuyue_mall_order_item a,yuyue_mall_shop_commodity c
             WHERE merchant_id = #{merchantId}
                 AND a.commodity_id = c.commodity_id
