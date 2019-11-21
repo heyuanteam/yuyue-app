@@ -46,6 +46,11 @@
             order  by create_time desc
     </select>
 
+    <select id="getMallOrderItemById"  parameterType="String" resultMap="OrderItemVo">
+        SELECT * FROM yuyue_mall_order_item where order_item_id = #{orderItemId}
+    </select>
+
+
     <select id="getOrderToItem"  parameterType="String" resultType="String">
         SELECT DISTINCT order_id FROM yuyue_mall_order_item
         WHERE 1=1
@@ -71,6 +76,7 @@
         SELECT * FROM yuyue_mall_order_item a,yuyue_mall_shop_commodity c
             WHERE merchant_id = #{merchantId}
                 AND a.commodity_id = c.commodity_id
+                AND a.`status`  !='10A'
                 ORDER BY a.`status`
     </select>
 

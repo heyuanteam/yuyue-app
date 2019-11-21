@@ -185,6 +185,11 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
+    public OrderItemVo getMallOrderItemById(String orderItemId) {
+        return mallOrderItemMapper.getMallOrderItemById(orderItemId);
+    }
+
+    @Override
     public List<String> getOrderToItem(String shopId,String consumerId,String status) {
         return mallOrderItemMapper.getOrderToItem(shopId,consumerId,status);
     }
@@ -204,10 +209,18 @@ public class MallShopServiceImpl implements MallShopService {
         mallOrderItemMapper.editMallOrderItem(orderItem);
     }
 
+//    @Override
+//    public void updateOrderItemsStatus(String orderId, String status) {
+//        mallOrderItemMapper.updateOrderItemsStatus(orderId,status);
+//    }
+
+    //修改单个订单项中的支付状态
     @Override
-    public void updateOrderItemsStatus(String orderId, String status) {
-        mallOrderItemMapper.updateOrderItemsStatus(orderId,status);
+    public void updateOrderItemsStatus(String orderItemId,String status){
+        mallOrderItemMapper.updateOrderItemsStatus(orderItemId,status);
     }
+
+
     //减库存及给商家们加钱的方法及修改订单项状态
     @Override
     public void mallPaySuccess(String orderId) {

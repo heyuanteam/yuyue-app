@@ -1437,8 +1437,9 @@ public class MallShopController extends BaseController{
 
     }
 
+
     /**
-     * 修改订单状态
+     * 第二版 修改订单状态
      * @param appUser
      * @param request
      * @param response
@@ -1448,27 +1449,38 @@ public class MallShopController extends BaseController{
     @ResponseBody
     @LoginRequired
     public ReturnResult updateOrderItemsStatus(@CurrentUser  AppUser appUser,
-                                    HttpServletRequest request, HttpServletResponse response){
+                                               HttpServletRequest request, HttpServletResponse response){
         ReturnResult returnResult = new ReturnResult();
-        log.info("修改订单状态------------->>/mallShop/updateOrderItemsStatus");
+        log.info("第二版 修改订单状态------------->>/mallShop/updateOrderItemsStatus");
         getParameterMap(request, response);
-        String orderId = request.getParameter("orderId");
+        String orderItemId = request.getParameter("orderItemId");
         String status = request.getParameter("status");
-        if (StringUtils.isEmpty(orderId)){
+        if (StringUtils.isEmpty(orderItemId)){
             returnResult.setMessage("订单id为空！");
             return returnResult;
         }if (StringUtils.isEmpty(status)){
             returnResult.setMessage("状态为空！");
             return returnResult;
         }else {
-            if ("10A".equals(status) ||"10B".equals(status) ||"10C".equals(status) ||
-                    "10D".equals(status) ||"10E".equals(status) ){
-                Order order = payService.getOrderId(orderId);
-                if (StringUtils.isNull(order)){
+            if ("10A".equals(status) ||"10B".equals(status)  ||
+                   "10C".equals(status) || "10D".equals(status) ){
+
+                OrderItemVo orderItemVo = mallShopService.getMallOrderItemById(orderItemId);
+                if (StringUtils.isNull(orderItemVo)){
                     returnResult.setMessage("未查询该订单！");
                     return returnResult;
                 }else {
-                    mallShopService.updateOrderItemsStatus(orderId,status);
+                    if ("10B".equals(orderItemVo.getStatus())  && "10C".equals(status)  ){
+                        mallShopService.updateOrderItemsStatus(orderItemVo.getOrderItemId(),status);
+                    }else if ("10B".equals(orderItemVo.getStatus())  && "10D".equals(status)){
+                        mallShopService.updateOrderItemsStatus(orderItemVo.getOrderItemId(),status);
+                    }else if ("10C".equals(orderItemVo.getStatus())  && "10D".equals(status)){
+                        mallShopService.updateOrderItemsStatus(orderItemVo.getOrderItemId(),status);
+                    }else {
+                        returnResult.setMessage("修改状态的流程错误！");
+                        return returnResult;
+                    }
+
                     returnResult.setMessage("修改成功！");
                     returnResult.setStatus(Boolean.TRUE);
                     return returnResult;
@@ -1480,6 +1492,52 @@ public class MallShopController extends BaseController{
 
         }
     }
+
+
+    /**
+     * 修改订单状态
+     * @param appUser
+     * @param request
+     * @param response
+     * @return
+     */
+//    @RequestMapping(value = "updateOrderItemsStatus")
+//    @ResponseBody
+//    @LoginRequired
+//    public ReturnResult updateOrderItemsStatus(@CurrentUser  AppUser appUser,
+//                                    HttpServletRequest request, HttpServletResponse response){
+//        ReturnResult returnResult = new ReturnResult();
+//        log.info("修改订单状态------------->>/mallShop/updateOrderItemsStatus");
+//        getParameterMap(request, response);
+//        String orderId = request.getParameter("orderId");
+//        String status = request.getParameter("status");
+//        if (StringUtils.isEmpty(orderId)){
+//            returnResult.setMessage("订单id为空！");
+//            return returnResult;
+//        }if (StringUtils.isEmpty(status)){
+//            returnResult.setMessage("状态为空！");
+//            return returnResult;
+//        }else {
+//            if ("10A".equals(status) ||"10B".equals(status) ||"10C".equals(status) ||
+//                    "10D".equals(status) ||"10E".equals(status) ){
+//                Order order = payService.getOrderId(orderId);
+//                if (StringUtils.isNull(order)){
+//                    returnResult.setMessage("未查询该订单！");
+//                    return returnResult;
+//                }else {
+//                    mallShopService.updateOrderItemsStatus(orderId,status);
+//                    returnResult.setMessage("修改成功！");
+//                    returnResult.setStatus(Boolean.TRUE);
+//                    return returnResult;
+//                }
+//            }else {
+//                returnResult.setMessage("订单状态错误！");
+//                return returnResult;
+//            }
+//
+//        }
+//    }
+
 
 
     /**
@@ -1847,7 +1905,7 @@ public class MallShopController extends BaseController{
     }
 
     /**
-     *商户 获取 订单详情
+     *第二版商户 获取 订单详情
      * @param appUser
      * @param request
      * @param response
@@ -1857,59 +1915,98 @@ public class MallShopController extends BaseController{
     @ResponseBody
     @LoginRequired
     public ReturnResult getOrderDetailByOrderId(@CurrentUser  AppUser appUser,
-                                         HttpServletRequest request, HttpServletResponse response){
+                                                HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
-        log.info("商户 获取 订单详情------------->>/mallShop/getOrderDetailByOrderId");
+        log.info("第二版 商户获取订单详情------------->>/mallShop/getOrderDetailByOrderId");
         getParameterMap(request, response);
-        String orderId = request.getParameter("orderId");
-        Order order = payService.getOrderId(orderId);
-        if (StringUtils.isNull(order)){
+        String orderItemId = request.getParameter("orderItemId");
+        OrderItemVo orderItemVo = mallShopService.getMallOrderItemById(orderItemId);
+        if (StringUtils.isNull(orderItemVo)){
             returnResult.setMessage("查无该订单！");
             return returnResult;
         }
-        //获取商铺订单列表
-        ReturnOrderDetail returnOrderDetail=new  ReturnOrderDetail();
 
-        returnOrderDetail.setOrderId(orderId);
-        returnOrderDetail.setOrderNo(order.getOrderNo());
-        String createTime = order.getCreateTime();
-        System.out.println(createTime);
-        if (StringUtils.isNotNull(createTime)){
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Order order = payService.getOrderId(orderItemVo.getOrderId());
+        AppUser appUserMsg = loginService.getAppUserMsg("", "", orderItemVo.getConsumerId());
+        MallAddress mallAddress = mallShopService.getMallAddress(orderItemVo.getAddressId());
+        orderItemVo.setConsumerName(appUserMsg.getNickName());
+        orderItemVo.setConsumerPhone(appUserMsg.getPhone());
+        orderItemVo.setOrderNo(order.getOrderNo());
+        orderItemVo.setTradeType(order.getTradeType());
+        orderItemVo.setMallAddress(mallAddress);
 
-            Date date= null;
-            try {
-                date = formatter.parse(createTime);
-                returnOrderDetail.setCreateTime(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-        }
-        List<Specification> commodities = new ArrayList<>();
-        List<OrderItem> mallOrderItems = mallShopService.getMallOrderItem(orderId, "","");
-        String addressId = mallOrderItems.get(0).getAddressId();
-        MallAddress mallAddress = mallShopService.getMallAddress(addressId);
-        returnOrderDetail.setMallAddress(mallAddress);
-        for (OrderItem orderItem:mallOrderItems
-                ) {
-                    Specification specificationById = mallShopService.getSpecificationById(orderItem.getCommodityId());
-                    //设置规格价格
-                    specificationById.setCommodityPrice(orderItem.getCommodityPrice());
-                    //设置规格购买数量
-                    specificationById.setCommodityNum(orderItem.getCommodityNum());
-                    commodities.add(specificationById);
-                }
-        returnOrderDetail.setStatus(mallOrderItems.get(0).getStatus());
-        returnOrderDetail.setPayAmount(mallOrderItems.get(0).getShopIncome());
-        returnOrderDetail.setCommodities(commodities);
         returnResult.setMessage("查询成功！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(returnOrderDetail);
+        returnResult.setResult(orderItemVo);
         return returnResult;
 
     }
+
+    /**
+     *商户 获取 订单详情
+     * @param appUser
+     * @param request
+     * @param response
+     * @return
+     */
+//   /* @RequestMapping(value = "getOrderDetailByOrderId")
+//    @ResponseBody
+//    @LoginRequired
+//    public ReturnResult getOrderDetailByOrderId(@CurrentUser  AppUser appUser,
+//                                         HttpServletRequest request, HttpServletResponse response){
+//
+//        ReturnResult returnResult = new ReturnResult();
+//        log.info("商户 获取 订单详情------------->>/mallShop/getOrderDetailByOrderId");
+//        getParameterMap(request, response);
+//        String orderId = request.getParameter("orderId");
+//        Order order = payService.getOrderId(orderId);
+//        if (StringUtils.isNull(order)){
+//            returnResult.setMessage("查无该订单！");
+//            return returnResult;
+//        }
+//        //获取商铺订单列表
+//        ReturnOrderDetail returnOrderDetail=new  ReturnOrderDetail();
+//
+//        returnOrderDetail.setOrderId(orderId);
+//        returnOrderDetail.setOrderNo(order.getOrderNo());
+//        String createTime = order.getCreateTime();
+//        System.out.println(createTime);
+//        if (StringUtils.isNotNull(createTime)){
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//            Date date= null;
+//            try {
+//                date = formatter.parse(createTime);
+//                returnOrderDetail.setCreateTime(date);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//        List<Specification> commodities = new ArrayList<>();
+//        List<OrderItem> mallOrderItems = mallShopService.getMallOrderItem(orderId, "","");
+//        String addressId = mallOrderItems.get(0).getAddressId();
+//        MallAddress mallAddress = mallShopService.getMallAddress(addressId);
+//        returnOrderDetail.setMallAddress(mallAddress);
+//        for (OrderItem orderItem:mallOrderItems
+//                ) {
+//                    Specification specificationById = mallShopService.getSpecificationById(orderItem.getCommodityId());
+//                    //设置规格价格
+//                    specificationById.setCommodityPrice(orderItem.getCommodityPrice());
+//                    //设置规格购买数量
+//                    specificationById.setCommodityNum(orderItem.getCommodityNum());
+//                    commodities.add(specificationById);
+//                }
+//        returnOrderDetail.setStatus(mallOrderItems.get(0).getStatus());
+//        returnOrderDetail.setPayAmount(mallOrderItems.get(0).getShopIncome());
+//        returnOrderDetail.setCommodities(commodities);
+//        returnResult.setMessage("查询成功！");
+//        returnResult.setStatus(Boolean.TRUE);
+//        returnResult.setResult(returnOrderDetail);
+//        return returnResult;
+//
+//    }*/
 
     /**
      *消费者 获取 订单列表(我的消费)
