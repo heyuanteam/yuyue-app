@@ -63,7 +63,7 @@
                     and CONCAT(IFNULL(s.category,''),IFNULL(s.commodity_name,''),IFNULL(s.detail,''))  LIKE  concat('%', #{content}, '%')
                 </if>
                 <if test="myArea != null and myArea != '' ">
-                    and CONCAT(s.service_area) like concat('%', #{myArea}, '%')
+                    and CONCAT(s.merchant_addr) like concat('%', #{myArea}, '%')
                 </if>
             and s.status  = '10C' and s.business_status = 'open'  and s.is_revise = 'N'
             UNION
@@ -72,7 +72,9 @@
                     and  s1.shop_id in (SELECT shop_id FROM yuyue_mall_shop_commodity where
                     CONCAT(IFNULL(commodity_size,''),IFNULL(commodity_detail,''))LIKE  concat('%', #{content}, '%') )
                 </if>
-                <if test="myArea != null and myArea != '' ">  and CONCAT(s1.service_area) like concat('%', #{myArea}, '%')</if>
+                <if test="myArea != null and myArea != '' ">
+                  and CONCAT(s1.merchant_addr) like concat('%', #{myArea}, '%')
+                </if>
             and s1.status  = '10C' and s1.business_status = 'open'  and s1.is_revise = 'N'
         ) ss ,yuyue_mall_shop_images images
         where ss.shop_id = images.shop_id and images.image_sort = '0'
