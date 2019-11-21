@@ -108,9 +108,10 @@ public class MallShopServiceImpl implements MallShopService {
         shopImageMapper.deleteImageByShopId(shopId);
     }
 
+    //仅获取10B状态下的规格
     @Override
     public List<Specification> getSpecification(String shopId) {
-        return specificationMapper.getSpecification(shopId);
+        return specificationMapper.getSpecificationByStatus(shopId);
     }
 
     @Override
@@ -191,6 +192,11 @@ public class MallShopServiceImpl implements MallShopService {
     @Override
     public String getNoPayOrderItem(String merchantId) {
         return mallOrderItemMapper.getNoPayOrderItem(merchantId);
+    }
+
+    @Override
+    public List<OrderItem> getMerchantOrder(String merchantId) {
+        return mallOrderItemMapper.getMerchantOrder(merchantId);
     }
 
     @Override

@@ -29,13 +29,15 @@ public interface MallOrderItemMapper extends MyBaseMapper<OrderItem> {
 
     @Transactional
     @Insert("REPLACE INTO yuyue_mall_order_item (order_item_id,order_id,shop_id, \n" +
-            "address_id,commodity_id,consumer_id,fare,commodity_price,shop_income,commodity_num,status) \n" +
+            "address_id,commodity_id,consumer_id,merchant_id,fare,commodity_price,shop_income,commodity_num,status) \n" +
             "VALUES \n" +
-            "(#{orderItemId},#{orderId},#{shopId},#{addressId},#{commodityId},#{consumerId}, \n" +
+            "(#{orderItemId},#{orderId},#{shopId},#{addressId},#{commodityId},#{consumerId}, #{merchantId},\n" +
             "#{fare},#{commodityPrice},#{shopIncome},#{commodityNum},#{status})")
     void editMallOrderItem(OrderItem orderItem);
 
     @Transactional
     @Update("update yuyue_mall_order_item  set status= #{status} WHERE order_id = #{orderId}")
     void updateOrderItemsStatus(@Param(value = "orderId") String orderId,@Param(value = "status") String status);
+
+    List<OrderItem> getMerchantOrder(@Param(value = "merchantId")String merchantId);
 }

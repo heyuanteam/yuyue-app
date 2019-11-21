@@ -1,5 +1,9 @@
 server:
   port: 8080
+  max-http-header-size: 10240000
+  tomcat:
+    uri-encoding: utf-8
+
 
 spring:
   thymeleaf:

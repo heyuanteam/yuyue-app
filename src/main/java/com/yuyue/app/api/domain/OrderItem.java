@@ -23,6 +23,8 @@ public class OrderItem implements Serializable {
     private String addressId;
     //      商铺id
     private String shopId;
+    //      商户id
+    private String merchantId;
     //      规格id
     private String commodityId;
     //      消费者id
@@ -42,5 +44,7 @@ public class OrderItem implements Serializable {
     //      创建时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+    //订单项与商品一对一
+    private Specification specification;
 
 }

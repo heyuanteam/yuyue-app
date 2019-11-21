@@ -1651,7 +1651,7 @@ public class MallShopController extends BaseController{
 
         //生成订单项id
         orderItem.setOrderItemId(UUID.randomUUID().toString().replace("-","").toUpperCase());
-
+        orderItem.setMerchantId(myMallShop.getMerchantId());
         orderItem.setShopId(shopId);
         //规格id
         orderItem.setCommodityId(commodityId);
@@ -1676,20 +1676,56 @@ public class MallShopController extends BaseController{
 
 
     /**
+     *商户获取所有订单(顾客订单)
+     * @param appUser
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "getMerchantOrder")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult getMerchantOrder(@CurrentUser  AppUser appUser,
+                                  HttpServletRequest request, HttpServletResponse response){
+
+        ReturnResult returnResult = new ReturnResult();
+        log.info("商户获取所有订单(顾客订单)------------->>/mallShop/getMerchantOrder");
+        getParameterMap(request, response);
+        //String orderId = request.getParameter("orderId");
+        //订单状态（做筛选用）
+        String status = request.getParameter("status");
+        String page = request.getParameter("page");
+        String pageSize = request.getParameter("pageSize");
+        if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))
+            page = "1";
+        if (StringUtils.isEmpty(pageSize) || !pageSize.matches("[0-9]+"))
+            pageSize = "10";
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(pageSize));
+        List<OrderItem> merchantOrder = mallShopService.getMerchantOrder(appUser.getId());
+
+        returnResult.setMessage("查询成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(merchantOrder);
+        return returnResult;
+
+    }
+
+
+    /**
      *商户获取所有订单
      * @param appUser
      * @param request
      * @param response
      * @return
      */
-    @RequestMapping(value = "getOrderByShopId")
+    @RequestMapping(value = "getOrderByMerchantId")
     @ResponseBody
     @LoginRequired
-    public ReturnResult getOrderByShopId(@CurrentUser  AppUser appUser,
-                                  HttpServletRequest request, HttpServletResponse response){
+    public ReturnResult getOrderByMerchantId(@CurrentUser  AppUser appUser,
+                                         HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
-        log.info("商户获取所有订单------------->>/mallShop/getOrderByShopId");
+        log.info("商户获取所有订单------------->>/mallShop/getOrderByMerchantId");
         getParameterMap(request, response);
         //String orderId = request.getParameter("orderId");
         //订单状态
@@ -1708,7 +1744,7 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
         for (MallShop mallShop:mallShops
-             ) {
+        ) {
             String shopId = mallShop.getShopId();
             //获取商铺订单列表
             if (StringUtils.isEmpty(orderNo)){
@@ -1769,9 +1805,7 @@ public class MallShopController extends BaseController{
         returnResult.setResult(returnOrders);
         return returnResult;
 
-
     }
-
     /**
      * 获取未发货的订单
      * @param appUser
