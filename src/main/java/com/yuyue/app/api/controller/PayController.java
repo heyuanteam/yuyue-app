@@ -236,6 +236,9 @@ public class PayController extends BaseController{
                     if (orderNo.getTradeType().contains("SC") || orderNo.getTradeType().contains("WAP")
                             || orderNo.getTradeType().contains("SM")){
                         mallShopService.mallPaySuccess(orderId);
+                    }else if(orderNo.getTradeType().contains("GG")){
+                        log.info("----------------商户申请，支付成功----------------");
+                        mallShopService.getMyMallShopByOrderId(orderId);
                     }
                 } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     orderNo.setResponseCode(returnCode);

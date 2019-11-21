@@ -1462,25 +1462,14 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("状态为空！");
             return returnResult;
         }else {
-            if ("10A".equals(status) ||"10B".equals(status)  ||
-                   "10C".equals(status) || "10D".equals(status) ){
+            if ("10B".equals(status)  ||  "10C".equals(status) || "10D".equals(status) ){
 
                 OrderItemVo orderItemVo = mallShopService.getMallOrderItemById(orderItemId);
                 if (StringUtils.isNull(orderItemVo)){
                     returnResult.setMessage("未查询该订单！");
                     return returnResult;
                 }else {
-                    if ("10B".equals(orderItemVo.getStatus())  && "10C".equals(status)  ){
-                        mallShopService.updateOrderItemsStatus(orderItemVo.getOrderItemId(),status);
-                    }else if ("10B".equals(orderItemVo.getStatus())  && "10D".equals(status)){
-                        mallShopService.updateOrderItemsStatus(orderItemVo.getOrderItemId(),status);
-                    }else if ("10C".equals(orderItemVo.getStatus())  && "10D".equals(status)){
-                        mallShopService.updateOrderItemsStatus(orderItemVo.getOrderItemId(),status);
-                    }else {
-                        returnResult.setMessage("修改状态的流程错误！");
-                        return returnResult;
-                    }
-
+                    mallShopService.updateOrderItemsStatus(orderItemVo.getOrderItemId(),status);
                     returnResult.setMessage("修改成功！");
                     returnResult.setStatus(Boolean.TRUE);
                     return returnResult;
