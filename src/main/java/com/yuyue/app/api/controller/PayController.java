@@ -222,7 +222,7 @@ public class PayController extends BaseController{
             Order orderNo = payService.getOrderId(orderId);
             BigDecimal subtract = BigDecimal.ZERO;
             if (StringUtils.isNotNull(orderNo)) {
-                if ("10A".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS")) {
+                if (!"10B".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS")) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
                     orderNo.setStatus("10B");
@@ -240,7 +240,7 @@ public class PayController extends BaseController{
                         log.info("----------------商户申请，支付成功----------------");
                         mallShopService.getMyMallShopByOrderId(orderId);
                     }
-                } else if ("10A".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
+                } else if (!"10B".equals(orderNo.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     orderNo.setResponseCode(returnCode);
                     orderNo.setResponseMessage(object.get("result_code").toString());
                     orderNo.setStatus("10C");
@@ -250,7 +250,7 @@ public class PayController extends BaseController{
             //送礼
             ChangeMoney changeMoney = myService.getChangeMoney(orderId);
             if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
-                if ("10A".equals(changeMoney.getStatus()) && returnCode.equals("SUCCESS")) {
+                if (!"10B".equals(changeMoney.getStatus()) && returnCode.equals("SUCCESS")) {
                     changeMoney.setResponseCode(returnCode);
                     changeMoney.setResponseMessage(object.get("result_code").toString());
                     changeMoney.setStatus("10B");
@@ -276,7 +276,7 @@ public class PayController extends BaseController{
                     syMoney.setResponseCode(returnCode);
                     syMoney.setResponseMessage(object.get("result_code").toString());
                     payService.updateChangeMoneyStatus(subtract,syMoney.getResponseCode(), syMoney.getResponseMessage(), syMoney.getStatus(), syMoney.getId());
-                } else if ("10A".equals(changeMoney.getStatus()) && !"SUCCESS".equals(returnCode)) {
+                } else if (!"10B".equals(changeMoney.getStatus()) && !"SUCCESS".equals(returnCode)) {
                     changeMoney.setResponseCode(returnCode);
                     changeMoney.setResponseMessage(object.get("result_code").toString());
                     changeMoney.setStatus("10C");
@@ -386,7 +386,7 @@ public class PayController extends BaseController{
             BigDecimal subtract = BigDecimal.ZERO;
             if (StringUtils.isNotNull(orderNo)) {
                 // 有可能出现多次回调，只有在该状态下的回调才是支付成功下的回调
-                if ("10A".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
+                if (!"10B".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
                     log.info("加钱===================");
                     String trxNo = params.get("trade_status");
                     //加钱
@@ -408,7 +408,7 @@ public class PayController extends BaseController{
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser, orderNo.getMoney(), "+");
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
-                } else if("10A".equals(orderNo.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
+                } else if (!"10B".equals(orderNo.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
                     log.info("不加钱===================");
                     String trxNo = params.get("trade_status");
                     //加钱
@@ -421,7 +421,7 @@ public class PayController extends BaseController{
             //送礼
             ChangeMoney changeMoney = myService.getChangeMoney(orderId);
             if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
-                if ("10A".equals(changeMoney.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
+                if (!"10B".equals(changeMoney.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
                     changeMoney.setResponseCode(params.get("trade_status"));
                     changeMoney.setResponseMessage(params.get("trade_status"));
                     changeMoney.setStatus("10B");
@@ -447,7 +447,7 @@ public class PayController extends BaseController{
                     syMoney.setResponseCode(params.get("trade_status"));
                     syMoney.setResponseMessage(params.get("trade_status"));
                     payService.updateChangeMoneyStatus(subtract,syMoney.getResponseCode(), syMoney.getResponseMessage(), syMoney.getStatus(), syMoney.getId());
-                } else if("10A".equals(changeMoney.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
+                } else if (!"10B".equals(changeMoney.getStatus()) && (!params.get("trade_status").equals("TRADE_SUCCESS") && !params.get("trade_status").equals("TRADE_FINISHED"))){
                     changeMoney.setResponseCode(params.get("trade_status"));
                     changeMoney.setResponseMessage(params.get("trade_status"));
                     changeMoney.setStatus("10C");
