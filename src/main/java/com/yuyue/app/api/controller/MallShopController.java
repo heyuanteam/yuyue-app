@@ -212,6 +212,7 @@ public class MallShopController extends BaseController{
         log.info("添加商铺-------------->>/mallShop/insertMyMallShop");
         getParameterMap(request, response);
         String shopId = request.getParameter("shopId");
+        String sourcePay = request.getParameter("sourcePay");
         if (StringUtils.isEmpty(shopId)){
             returnResult.setMessage("商铺id为空");
             return returnResult;
@@ -244,7 +245,7 @@ public class MallShopController extends BaseController{
         //商铺已存在情况下重新支付，---------> 未支付状态或是 支付超时状态
         System.out.println(StringUtils.isNull(myMallShop));
         if (StringUtils.isNotNull(myMallShop) && StringUtils.isNotEmpty(myMallShop.getStatus())){
-            //商铺未支付状态或是 发布已过期状态
+            //商铺已存在   且未支付状态或是 发布已过期状态
             if ("10A".equals(myMallShop.getStatus())  || "10E".equals(myMallShop.getStatus())){
                 if(StringUtils.isNotEmpty(myMallShop.getOrderId())){
                     Order getOrder = payService.getOrderId(myMallShop.getOrderId());
@@ -289,7 +290,13 @@ public class MallShopController extends BaseController{
 
                         try {
 
-                            jsonObject = payController.payYuYue(order, user);
+
+                            if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                                jsonObject = payController.payNative(order, request, response);
+                            }else {
+                                jsonObject = payController.payYuYue(order, user);
+                            }
+
                             //生成订单
                             if ("true".equals(jsonObject.getString("status"))){
                                 //成功生成新的订单，获取订单ID
@@ -345,9 +352,6 @@ public class MallShopController extends BaseController{
                 return returnResult;
             }else if (StringUtils.isEmpty(request.getParameter("commodityName"))){
                 returnResult.setMessage("商品/服务名称不能为空！");
-                return returnResult;
-            }else if (StringUtils.isEmpty(request.getParameter("detail"))){
-                returnResult.setMessage("商品/服务介绍不能为空！");
                 return returnResult;
             }else if (StringUtils.isEmpty(request.getParameter("serviceType"))){
                 returnResult.setMessage("服务方式不能为空！");
