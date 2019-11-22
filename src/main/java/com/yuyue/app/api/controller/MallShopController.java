@@ -213,6 +213,7 @@ public class MallShopController extends BaseController{
         getParameterMap(request, response);
         String shopId = request.getParameter("shopId");
         String sourcePay = request.getParameter("sourcePay");
+
         if (StringUtils.isEmpty(shopId)){
             returnResult.setMessage("商铺id为空");
             return returnResult;
@@ -289,18 +290,23 @@ public class MallShopController extends BaseController{
                                      "10D".equals(getOrder.getStatus())){
 
                         try {
-
-
+                            String orderId = null;
                             if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                                log.info("扫码支付");
                                 jsonObject = payController.payNative(order, request, response);
+                                orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
+                                returnResult.setMessage(orderId);
                             }else {
+                                log.info("手机支付");
                                 jsonObject = payController.payYuYue(order, user);
+                                //成功生成新的订单，获取订单ID
+                                orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                                //returnResult.setMessage(orderId);
                             }
 
                             //生成订单
                             if ("true".equals(jsonObject.getString("status"))){
-                                //成功生成新的订单，获取订单ID
-                                String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+
                                 if (StringUtils.isEmpty(orderId)){
                                     returnResult.setMessage("订单Id为空！！");
                                     return returnResult;
@@ -312,7 +318,7 @@ public class MallShopController extends BaseController{
                                     myMallShop.setStatus("10B");
                                 else
                                     myMallShop.setStatus("10A");
-                                //returnResult.setResult(jsonObject.get("result"));
+                                returnResult.setResult(jsonObject.get("result"));
                                 returnResult.setMessage("订单重新生成，等待审核！！");
                                 returnResult.setStatus(Boolean.TRUE);
                                 returnResult.setResult(jsonObject.get("result"));
@@ -441,11 +447,26 @@ public class MallShopController extends BaseController{
             mallShopService.insertMyMallShop(mallShop);
             /*----------------------------------------接支付------------------------------------------------*/
             //新的商品推广申请
+            System.out.println(sourcePay);
                try {
                   jsonObject = payController.payYuYue(order, user);
                   //生成订单
+                   String orderId = null;
+                   if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                       log.info("扫码支付");
+                       jsonObject = payController.payNative(order, request, response);
+                       orderId = jsonObject.getString("message");
+                       returnResult.setMessage(orderId);
+                   }else {
+                       log.info("手机支付");
+                       jsonObject = payController.payYuYue(order, user);
+                       //成功生成新的订单，获取订单ID
+                       orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                       //returnResult.setMessage(orderId);
+                       returnResult.setMessage("订单生成，等待审核！！");
+                   }
                    if ("true".equals(jsonObject.getString("status"))){
-                       String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                       //String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
                        if (StringUtils.isEmpty(orderId)){
                            returnResult.setMessage("订单Id为空！！");
                            return returnResult;
@@ -456,7 +477,6 @@ public class MallShopController extends BaseController{
                                 mallShop.setStatus("10B");
                             else
                                 mallShop.setStatus("10A");
-                            returnResult.setMessage("订单生成，等待审核！！");
                             returnResult.setStatus(Boolean.TRUE);
                             returnResult.setResult(jsonObject.get("result"));
                             mallShopService.insertMyMallShop(mallShop);
