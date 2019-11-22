@@ -2434,6 +2434,7 @@ public class MallShopController extends BaseController{
             mallAddress.setAddressId(UUID.randomUUID().toString().replace("-","").toUpperCase());
             returnResult.setMessage("添加成功");
             mallAddress.setUserId(appUser.getId());
+            mallAddress.setStatus("Y");
             mallShopService.editMallAddr(mallAddress);
             returnResult.setStatus(Boolean.TRUE);
             return returnResult;
