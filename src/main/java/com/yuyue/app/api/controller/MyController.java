@@ -251,6 +251,9 @@ public class MyController extends BaseController{
                 returnResult.setMessage("请勿重复添加！");
             } else {
                 myService.addAdvertisemenInfo(advertisement);
+                if ("1".equals(user.getUserType())) loginService.updateUserType(user.getId(),"3");
+                else if ("2".equals(user.getUserType())) loginService.updateUserType(user.getId(),"4");
+                else loginService.updateUserType(user.getId(),"3");
                 returnResult.setMessage("信息插入成功");
                 returnResult.setStatus(Boolean.TRUE);
             }
