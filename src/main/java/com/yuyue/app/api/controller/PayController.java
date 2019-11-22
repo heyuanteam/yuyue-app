@@ -957,9 +957,9 @@ public class PayController extends BaseController{
             returnResult.setMessage("创建订单失败！缺少参数！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        if ("SMWX".equals(order.getTradeType())) {
+        if (order.getTradeType().contains("WX")) {
             return payNativeWX(order);
-        } else if ("SMZFB".equals(order.getTradeType())) {
+        } else if (order.getTradeType().contains("ZFB")) {
             return payNativeZFB(order,request,response);
         }
         returnResult.setMessage("充值类型选择错误！！");
@@ -1095,7 +1095,7 @@ public class PayController extends BaseController{
             returnResult.setMessage("创建订单失败！缺少参数！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        if ("WAPWX".equals(order.getTradeType())) {
+        if (order.getTradeType().contains("WX")) {
 //            if (StringUtils.isEmpty(code)) {
 //                returnResult.setMessage("code不可以为空！");
 //                return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -1107,7 +1107,7 @@ public class PayController extends BaseController{
 //            }
 //            order.setNote(opendId);
             return payWapWX(order);
-        } else if ("WAPZFB".equals(order.getTradeType())) {
+        } else if (order.getTradeType().contains("ZFB")) {
             return payWapZFB(order,request,response);
         }
         returnResult.setMessage("充值类型选择错误！！");
