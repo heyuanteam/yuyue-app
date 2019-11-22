@@ -232,9 +232,9 @@ public class PayController extends BaseController{
 //                        BigDecimal add = ResultJSONUtils.updateTotalMoney(appUser,orderNo.getMoney(),"+");
 //                        payService.updateTotal(appUser.getId(), add);
 //                    }
-                    log.info("----------------给商户加钱----------------");
                     if (orderNo.getTradeType().contains("SC") || orderNo.getTradeType().contains("WAP")
                             || orderNo.getTradeType().contains("SM")){
+                        log.info("----------------给商户加钱----------------");
                         mallShopService.mallPaySuccess(orderId);
                     }else if(orderNo.getTradeType().contains("GG")){
                         log.info("----------------商户申请，支付成功----------------");
