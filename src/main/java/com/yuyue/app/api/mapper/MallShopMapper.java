@@ -28,7 +28,7 @@ public interface MallShopMapper extends MyBaseMapper<MallShop> {
     MallShop getMyMallShop(@Param(value = "shopId") String shopId);
 
     //我的广告
-    @Select("SELECT * FROM yuyue_mall_shop WHERE merchant_id = #{merchantId} ORDER BY `status`  ")
+    @Select("SELECT * FROM yuyue_mall_shop WHERE merchant_id = #{merchantId} AND status != '10A' ORDER BY `status`  ")
     List<MallShop> getMyMallShops(@Param(value = "merchantId")String merchantId);
 
 //    @Select("SELECT * FROM yuyue_mall_shop WHERE merchant_id = #{merchantId} LIMIT 1 ")
