@@ -13,6 +13,9 @@ public interface SpecificationMapper extends MyBaseMapper<Specification> {
     @Select("SELECT * FROM yuyue_mall_shop_commodity WHERE shop_id = #{shopId}  ORDER BY create_time DESC")
     List<Specification> getSpecification(@Param(value = "shopId") String shopId);
 
+    @Select("SELECT * FROM yuyue_mall_shop_commodity WHERE shop_id = #{shopId} and status = '10B' ORDER BY create_time DESC")
+    List<Specification> getSpecificationByStatus(@Param(value = "shopId") String shopId);
+
     @Select("SELECT * FROM yuyue_mall_shop_commodity WHERE commodity_id = #{specificationId}  limit 1")
     Specification getSpecificationById(@Param(value = "specificationId") String specificationId);
 

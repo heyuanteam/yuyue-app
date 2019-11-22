@@ -77,16 +77,24 @@ public interface MallShopService {
     List<OrderItem> getMallOrderItem(String orderId,String shopId,String status);
 
 
+    OrderItemVo getMallOrderItemById(String orderItemId);
+
     List<String> getOrderToItem(String shopId,String consumerId,String status);
 
 
     String getNoPayOrderItem(String merchantId);
 
+    //获取顾客订单
+    List<OrderItemVo> getMerchantOrder(String merchantId);
+
 
     void editMallOrderItem(OrderItem orderItem);
 
-    //修改订单项中的支付状态
-    void updateOrderItemsStatus(String orderId,String status);
+    //修改该订单下的所有订单项中的支付状态
+    //void updateOrderItemsStatus(String orderId,String status);
+
+    //修改单个订单项中的支付状态
+    void updateOrderItemsStatus(String orderItemId,String status);
 
     //减库存及给商家们加钱的方法
     void mallPaySuccess(String orderId);
