@@ -169,7 +169,7 @@ public class MallShopController extends BaseController{
         Integer pageNum = Integer.valueOf(page);
         Integer pageSum = Integer.valueOf(pageSize);
         JSONObject jsonObject = new JSONObject();
-        if (redisUtil.existsKey("getAllMallShop") && "1".equals(page)) {
+        if (redisUtil.existsKey("getAllMallShop") && "1".equals(page) && StringUtils.isEmpty(sortType)) {
             jsonObject =JSON.parseObject((String)redisUtil.getString("getAllMallShop"));
             log.info("------redis缓存中取出数据-------");
         } else {
@@ -192,7 +192,7 @@ public class MallShopController extends BaseController{
                 }
             }
             jsonObject.put("list",batchSubList);
-            if ("1".equals(page)) {
+            if ("1".equals(page) && StringUtils.isEmpty(sortType)) {
                 redisUtil.setString("getAllMallShop", jsonObject.toJSONString(),600);
                 log.info("------redis存入数据-------");
             }
