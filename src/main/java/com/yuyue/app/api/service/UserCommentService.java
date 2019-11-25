@@ -11,6 +11,7 @@ public interface UserCommentService {
 
     List<UserCommentVo> getAllComment(String videoId ,String userId,int begin,int limit);
 
+    UserComment getUserCommentById(String commentId);
 
     void addComment(UserComment comment);
 
@@ -75,11 +76,11 @@ public interface UserCommentService {
     String getLikeStatus(String userId,String videoId);
 
     /**
-     * 用户添加视频点赞
+     * 用户点赞视频
      * @param
      * @param videoId
      */
-    void insertToLikeList( String userId,String authirId, String videoId);
+    void insertToLikeList( String userId,String authorId, String videoId);
 
     /**
      *作者查看点赞列表信息

@@ -348,12 +348,12 @@ public class UploadFileServiceImpl implements UploadFileService {
      * @return
      */
     @Override
-    public JSONObject allRoleCommentAmount(String authorId,String videoId,String userId) {
+    public JSONObject allRoleCommentAmount(String authorId,String videoId) {
         ReturnResult returnResult=new ReturnResult();
+        //视频表中评论 +1
         uploadFileMapper.commentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
+        //用户表中评论 +1
         uploadFileMapper.userCommentAmount(authorId);
-        if (StringUtils.isNotNull(userId))
-        uploadFileMapper.userCommentAmount(userId);
         returnResult.setMessage("评论成功!");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -361,17 +361,16 @@ public class UploadFileServiceImpl implements UploadFileService {
 
 
     /**
-     * 删除评论， 评论量 -1
+     * 删除评论接口中的 评论量 -1
      * @param authorId
      * @param videoId
      */
     @Override
-    public void reduceCommentAmount(String authorId,String videoId,String userId){
+    public void reduceCommentAmount(String authorId,String videoId){
+        //删除评论接口中的 评论量 -1（视频表评论量）
         uploadFileMapper.delCommentAmount(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), videoId);
-
+        //删除评论接口中的 评论量 -1（用户表评论量）
         uploadFileMapper.delUserCommentAmount(authorId);
-        if (StringUtils.isNotNull(userId))
-            uploadFileMapper.delUserCommentAmount(userId);
 
     }
 

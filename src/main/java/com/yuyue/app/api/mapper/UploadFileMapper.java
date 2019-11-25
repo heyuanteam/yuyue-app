@@ -131,7 +131,7 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
 
 
     /**
-     * 删除评论  视频表 通过视频id  评论量-1
+     * 删除评论接口中的 评论量 -1（视频表评论量）
      * @param tableName
      * @param id
      */
@@ -144,7 +144,7 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
 
 
     /**
-     * 删除评论  用户表  通过用户id  评论量-1
+     * 删除评论接口中的 评论量 -1（用户表评论量）
      * @param authorId
      */
     @Transactional

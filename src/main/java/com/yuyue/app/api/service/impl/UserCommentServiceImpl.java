@@ -40,6 +40,12 @@ public class UserCommentServiceImpl implements UserCommentService{
     public List<UserCommentVo> getAllComment(String videoId,String userId,int begin,int limit) {
         return userCommentMapper.getAllComment(videoId,userId,begin,limit);
     }
+
+    @Override
+    public UserComment getUserCommentById(String commentId) {
+        return userCommentMapper.getUserCommentById(commentId);
+    }
+
     /**
      * 获取分页所有评论
      * @param videoId
@@ -111,14 +117,16 @@ public class UserCommentServiceImpl implements UserCommentService{
 
 
     @Override
-    public void insertToLikeList(String userId,String authirId, String videoId) {
+    public void insertToLikeList(String userId,String authorId, String videoId) {
 
-        UploadFile uploadFile = uploadFileService.fileDetail(authirId,videoId);
+        UploadFile uploadFile = uploadFileService.fileDetail(authorId,videoId);
+        //获取用户信息
         AppUser appUserMsg = loginService.getAppUserMsg("", "", userId);
         Like like=new Like();
         like.setAuthorId(uploadFile.getAuthorId());
         like.setVideoTittle(uploadFile.getFilesName());
         like.setVideoId(videoId);
+        //将用户的头像，昵称存入
         like.setHeadUrl(appUserMsg.getHeadpUrl());
         like.setUserId(userId);
         like.setUserName(appUserMsg.getNickName());

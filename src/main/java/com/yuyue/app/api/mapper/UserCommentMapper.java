@@ -46,6 +46,9 @@ public interface UserCommentMapper extends MyBaseMapper<UserComment> {
             "where VIDEO_ID = #{videoId}  ORDER BY comment.CREATE_TIME desc limit #{pageSize},5")
     List<UserCommentVo> getCommentByPage(@Param(value = "videoId") String videoId,@Param(value = "pageSize") int pageSize);
 
+    @Select("SELECT * FROM yuyue_user_comment WHERE ID = #{commentId} LIMIT 1")
+    UserComment getUserCommentById(@Param(value = "commentId")String commentId);
+
     @Select("SELECT COUNT(*)\n" +
             "FROM yuyue_user_comment  \n" +
             "where VIDEO_ID = #{videoId}  ")
