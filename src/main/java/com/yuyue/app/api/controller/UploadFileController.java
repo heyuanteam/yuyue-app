@@ -220,4 +220,38 @@ public class UploadFileController extends  BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
+    /**
+     * 获取下一个视频
+     * @param page
+     * @param videoId
+     * @param
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getNextVideo")
+    public JSONObject getNextVideo(String page,String authorId,String videoId,HttpServletRequest request, HttpServletResponse response){
+        log.info("获取下一个视频列表---->>/uploadFile/getNextVideo");
+        getParameterMap(request, response);
+        ReturnResult returnResult=new ReturnResult();
+        if (authorId.isEmpty() ){
+            returnResult.setMessage("作者id不可为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (videoId.isEmpty()){
+            returnResult.setMessage("视频id不可为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
+        String uploadTime  = uploadFile.getUploadTime();
+        if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
+        PageHelper.startPage(Integer.parseInt(page), 10);
+        List<UploadFile> uploadFileList = uploadFileService.getNextVideo(uploadTime);
+
+        returnResult.setResult(uploadFileList);
+        returnResult.setMessage("返回成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+
+    }
 }

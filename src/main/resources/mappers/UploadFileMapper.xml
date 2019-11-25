@@ -103,5 +103,19 @@
 
     </select>
 
+    <select id="getNextVideo" resultMap="myUploadFile" parameterType="String">
+        SELECT
+            total.id ,DATE_FORMAT(total.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,total.filesName,total.filesPath,
+            total.filesType,total.fileSize,total.authorId,total.description,total.playAmount,total.commentAmount,total.likeAmount,
+            total.attentionAmount,total.duration,total.title,total.videoAddress,total.categoryId,total.status,
+            m.ID "userId",m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL
+        FROM
+            (SELECT * FROM yuyue_upload_file_0 WHERE UPLOAD_TIME &lt; #{uploadTime} and status ='10B' and filesType = 'video'
+            UNION
+            SELECT * FROM yuyue_upload_file_1 WHERE UPLOAD_TIME &lt; #{uploadTime} and status ='10B' and filesType = 'video')total
+            left join yuyue_merchant  m on total.authorId = m.ID
+                ORDER BY UPLOAD_TIME DESC
+    </select>
+
 
 </mapper>

@@ -84,6 +84,13 @@ public interface UploadFileService {
      * @return
      */
     List<UploadFile> getVideoToHomePage();
+
+    /**
+     * 获取下一个视频
+     * @param uploadTime
+     * @return
+     */
+    List<UploadFile> getNextVideo(String uploadTime);
     /**
      * 我的发布
      * @param categoryId

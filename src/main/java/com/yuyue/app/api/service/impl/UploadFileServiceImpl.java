@@ -199,6 +199,12 @@ public class UploadFileServiceImpl implements UploadFileService {
     public List<UploadFile> getVideoToHomePage(){
         return uploadFileMapper.getVideoToHomePage();
     }
+
+    @Override
+    public List<UploadFile> getNextVideo(String uploadTime) {
+        return uploadFileMapper.getNextVideo(uploadTime);
+    }
+
     /**
      *视频发布
      * @param categoryId

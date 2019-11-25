@@ -35,6 +35,9 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
     List<UploadFile> getVideoToHomePage();
 
 
+    List<UploadFile> getNextVideo(@Param(value = "uploadTime") String uploadTime);
+
+
     /**
      * 删除视频
      * @param tableName
