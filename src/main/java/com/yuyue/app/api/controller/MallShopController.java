@@ -2,9 +2,11 @@ package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
@@ -14,9 +16,7 @@ import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.enums.ReturnResult;
-import com.yuyue.app.utils.GouldUtils;
-import com.yuyue.app.utils.MallUtils;
-import com.yuyue.app.utils.StringUtils;
+import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +49,8 @@ public class MallShopController extends BaseController{
     private PayController payController;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private RedisUtil redisUtil;
 
 
 
@@ -163,11 +165,39 @@ public class MallShopController extends BaseController{
             page = "1";
         if (StringUtils.isEmpty(pageSize) || !pageSize.matches("[0-9]+"))
             pageSize = "10";
-        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(pageSize));
-        List<MallShop> allMallShop = mallShopService.getAllMallShop(myArea,content);
 
-        List<MallShopVo> list = GouldUtils.getNearbyStoreByDistinceAsc(sortType, new BigDecimal(gdLon), new BigDecimal(gdLat), allMallShop);
-        returnResult.setResult(list);
+        Integer pageNum = Integer.valueOf(page);
+        Integer pageSum = Integer.valueOf(pageSize);
+        JSONObject jsonObject = new JSONObject();
+        if (redisUtil.existsKey("getAllMallShop") && "1".equals(page)) {
+            jsonObject =JSON.parseObject((String)redisUtil.getString("getAllMallShop"));
+            log.info("------redis缓存中取出数据-------");
+        } else {
+            List<MallShop> allMallShop = mallShopService.getAllMallShop(myArea,content);
+            List<MallShopVo> list = GouldUtils.getNearbyStoreByDistinceAsc(sortType, new BigDecimal(gdLon), new BigDecimal(gdLat), allMallShop);
+            jsonObject.put("total",allMallShop.size());
+            jsonObject.put("pageNum",pageNum);
+            jsonObject.put("pageSize",pageSum);
+            jsonObject.put("pages", (allMallShop.size()+ pageSum-1) / pageSum);
+            // 构建分割
+            List<MallShopVo> batchSubList = Lists.newArrayList();
+            PageUtil<MallShopVo> batchListSplitIterator = new PageUtil<>(list, pageNum);
+            // 迭代每一批数据
+            while (batchListSplitIterator.hasNext()){
+                log.info("position====>>>"+batchListSplitIterator.position());
+                log.info("page====>>>"+page);
+                batchSubList = batchListSplitIterator.next();
+                if (batchListSplitIterator.position() == (Long.valueOf(pageNum * pageSum))) {
+                    break;
+                }
+            }
+            jsonObject.put("list",batchSubList);
+            if ("1".equals(page)) {
+                redisUtil.setString("getAllMallShop", jsonObject.toJSONString(),600);
+                log.info("------redis存入数据-------");
+            }
+        }
+        returnResult.setResult(jsonObject);
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;
     }
