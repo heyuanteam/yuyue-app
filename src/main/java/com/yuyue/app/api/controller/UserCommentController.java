@@ -161,6 +161,11 @@ public class UserCommentController extends BaseController{
         String commentId=mapValue.get("id");
         String videoId=mapValue.get("videoId");
         String authorId=mapValue.get("authorId");
+        if(StringUtils.isEmpty(videoId) ){
+            returnResult.setMessage("videoId不可为空!!");
+        }else if (StringUtils.isEmpty(authorId)){
+            returnResult.setMessage("authorId不可为空!!");
+        }
         UserComment userCommentById = userCommentService.getUserCommentById(commentId);
         if(StringUtils.isNull(userCommentById) ){
             returnResult.setMessage("未查询到该评论!!");
