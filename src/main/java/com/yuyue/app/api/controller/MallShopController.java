@@ -455,8 +455,14 @@ public class MallShopController extends BaseController{
                    if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
                        log.info("扫码支付");
                        jsonObject = payController.payNative(order, request, response);
-                       orderId = jsonObject.getString("message");
-                       returnResult.setMessage(orderId);
+                       if (tradeType.contains("ZFB")){
+                           orderId = jsonObject.getString("message");
+                           returnResult.setMessage(orderId);
+                       }else {
+                           orderId = JSON.parseObject(jsonObject.getString("result")).getString("out_trade_no");
+                           returnResult.setMessage("订单生成，等待审核！！");
+                       }
+
                    }else {
                        log.info("手机支付");
                        jsonObject = payController.payYuYue(order, user);
