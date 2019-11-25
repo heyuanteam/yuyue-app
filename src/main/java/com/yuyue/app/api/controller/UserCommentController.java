@@ -134,15 +134,8 @@ public class UserCommentController extends BaseController{
             comment.setText(mapValue.get("text"));
             //数据插入到Comment表中
             userCommentService.addComment(comment);
-            //普通用户，商人  评论
-            if (!"2".equals(user.getUserType()) && !"4".equals(user.getUserType())){
-                uploadFileService.allRoleCommentAmount(authorId,videoId,user.getId());
-            }
             //艺人评论   用户表，视频表评论数+1
-            else {
-                uploadFileService.allRoleCommentAmount(authorId,videoId,"");
-            }
-
+            uploadFileService.allRoleCommentAmount(authorId,videoId);
             //获取所有评论
            /* List<UserCommentVo> allComment = userCommentService.getAllComment(videoId, "",1,10);*/
             //获取评论数
@@ -168,17 +161,12 @@ public class UserCommentController extends BaseController{
         String commentId=mapValue.get("id");
         String videoId=mapValue.get("videoId");
         String authorId=mapValue.get("authorId");
-        if(authorId.isEmpty() || videoId.isEmpty() || user.getId().isEmpty()){
-            returnResult.setMessage("作者id或视频id不能为空!!");
+        UserComment userCommentById = userCommentService.getUserCommentById(commentId);
+        if(StringUtils.isNull(userCommentById) ){
+            returnResult.setMessage("未查询到该评论!!");
         }else {
-            if (!"2".equals(user.getUserType()) && !"4".equals(user.getUserType())){
-                uploadFileService.reduceCommentAmount(authorId,videoId,user.getId());
-            }
-            //艺人评论   用户表，视频表评论数+1
-            else {
-                uploadFileService.reduceCommentAmount(authorId,videoId,"");
-            }
-            //通过评论id查询是否存在此评论
+            uploadFileService.reduceCommentAmount(authorId,videoId);
+            //通过评论id删除评论表中该评论
             userCommentService.deleteComment(commentId,videoId);
 
             returnResult.setMessage("删除成功！");
@@ -287,15 +275,12 @@ public class UserCommentController extends BaseController{
             returnResult.setMessage("不能关注自己！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        List<Attention> userAttention = userCommentService.getUserAttention(user.getId(),1,10);
-        for (Attention attertion:userAttention) {
-            if (attertion.getAuthorId().equals(authorId)){
-                returnResult.setMessage("用户已关注！！");
-                returnResult.setStatus(Boolean.TRUE);
-                return ResultJSONUtils.getJSONObjectBean(returnResult);
-            }
+        String attentionStatus = userCommentService.getAttentionStatus(user.getId(), authorId);
+        if ("1".equals(attentionStatus)){
+            returnResult.setMessage("用户已关注！！");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-
         //用户表中的关注数据+1  ;  数据添加至Attention表中
         String id =UUID.randomUUID().toString().replace("-","").toUpperCase();
         userCommentService.addAttention(id,user.getId(),authorId);
@@ -367,8 +352,11 @@ public class UserCommentController extends BaseController{
         log.info("用户添加视频点赞-------------->>/userComment/insertToLikeList");
         getParameterMap(request, response);
         ReturnResult returnResult =new ReturnResult();
-        if(authorId.isEmpty() || videoId.isEmpty() ){
-            returnResult.setMessage("作者id或视频id不能为空!!");
+        if(authorId.isEmpty()  ){
+            returnResult.setMessage("作者id不能为空!!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (videoId.isEmpty() ){
+            returnResult.setMessage("视频id不能为空!!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         String likeStatus = userCommentService.getLikeStatus(user.getId(), videoId);

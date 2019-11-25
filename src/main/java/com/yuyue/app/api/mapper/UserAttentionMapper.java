@@ -51,12 +51,12 @@ public interface UserAttentionMapper extends MyBaseMapper<Attention> {
      * @param authorId
      */
     @Transactional
-    @Update("UPDATE yuyue_merchant  SET ATTENTION_TOTAL =ATTENTION_TOTAL -1  WHERE id =  #{authorId}")
+    @Update("UPDATE yuyue_merchant  SET ATTENTION_TOTAL = ATTENTION_TOTAL -1  WHERE id =  #{authorId}")
     void reduceAttentionAmount(String authorId);
 
     @Select("SELECT COUNT(userId) from yuyue_attention where authorId = #{ authorId }")
     int getFansSum(String authorId);
 
-    @Select("SELECT STATUS FROM yuyue_attention WHERE userId = #{userId}  AND  authorId = #{authorId}")
+    @Select("SELECT STATUS FROM yuyue_attention WHERE userId = #{userId}  AND  authorId = #{authorId} limit 1")
     String getAttentionStatus(@Param("userId") String userId,@Param("authorId") String authorId);
 }

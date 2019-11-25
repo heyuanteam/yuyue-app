@@ -59,7 +59,7 @@ public interface UploadFileService {
      * 视频表,用户表 评论量 +1
      * @param
      */
-     JSONObject allRoleCommentAmount(String authorId,String videoId,String userId);
+     JSONObject allRoleCommentAmount(String authorId,String videoId);
 
 
 
@@ -68,7 +68,7 @@ public interface UploadFileService {
      * @param authorId
      * @param videoId
      */
-    void reduceCommentAmount(String authorId,String videoId,String userId);
+    void reduceCommentAmount(String authorId,String videoId);
     /**
      * 视频页 获取视频列表 ； 视频种类 ； 视频搜索  并分页
      * @param
