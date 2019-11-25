@@ -103,8 +103,6 @@ public class UploadFileController extends  BaseController{
 //        System.out.println(map);
         returnResult.setMessage("返回成功!!");
         returnResult.setStatus(Boolean.TRUE);
-        log.info("====videoId===="+videoId);
-        log.info("====authorId===="+authorId);
         returnResult.setResult(uploadFileService.fileDetail(authorId,videoId));
         returnResult.setResult(map);
         uploadFileService.playAmount(authorId,videoId);
@@ -235,6 +233,11 @@ public class UploadFileController extends  BaseController{
         log.info("获取下一个视频列表---->>/uploadFile/getNextVideo");
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
+        String token = request.getHeader("token");
+        String userId = "";
+        if(StringUtils.isNotEmpty(token)){
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+        }
         if (authorId.isEmpty() ){
             returnResult.setMessage("作者id不可为空！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -247,6 +250,36 @@ public class UploadFileController extends  BaseController{
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
         PageHelper.startPage(Integer.parseInt(page), 10);
         List<UploadFile> uploadFileList = uploadFileService.getNextVideo(uploadTime);
+        for (UploadFile nextUploadFile:uploadFileList
+             ) {
+            System.out.println("----------");
+            if (userId.isEmpty()){
+                //用户没有登录情况下，显示视频点赞量，作者关注量
+                nextUploadFile.setLikeStatus("0");
+                nextUploadFile.setAttentionStatus("0");
+                System.out.println("----------++++++++++");
+            }else {
+                System.out.println("----------");
+                String likeStatus=userCommentService.getLikeStatus(userId, nextUploadFile.getId());
+                //用户未点赞该视频
+                if(StringUtils.isEmpty(likeStatus) || "0".equals(likeStatus)){
+                    nextUploadFile.setLikeStatus("0");
+                }else{
+                    //已点赞
+                    nextUploadFile.setLikeStatus("1");
+                }
+
+                String attentionStatus = userCommentService.getAttentionStatus(userId, nextUploadFile.getAuthorId());
+//            System.out.println(likeStatus+"-----"+attentionStatus);
+                //用户关注该视频作者状态
+                if (StringUtils.isEmpty(attentionStatus) || "0".equals(attentionStatus))
+                    nextUploadFile.setAttentionStatus("0");
+                else{
+                    nextUploadFile.setAttentionStatus("1");
+                }
+
+            }
+        }
 
         returnResult.setResult(uploadFileList);
         returnResult.setMessage("返回成功！");

@@ -51,4 +51,8 @@ public class UploadFile implements Serializable {
     private String status;
 //用户信息
     private AppUser appUser;
+    //点赞状态
+    private String likeStatus;
+    //关注状态
+    private String attentionStatus;
 }
