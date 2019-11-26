@@ -169,10 +169,10 @@ public class MallShopController extends BaseController{
         Integer pageNum = Integer.valueOf(page);
         Integer pageSum = Integer.valueOf(pageSize);
         JSONObject jsonObject = new JSONObject();
-        if (redisUtil.existsKey("getAllMallShop") && "1".equals(page) && StringUtils.isEmpty(sortType)) {
-            jsonObject =JSON.parseObject((String)redisUtil.getString("getAllMallShop"));
-            log.info("------redis缓存中取出数据-------");
-        } else {
+//        if (redisUtil.existsKey("getAllMallShop") && "1".equals(page) && StringUtils.isEmpty(sortType)) {
+//            jsonObject =JSON.parseObject((String)redisUtil.getString("getAllMallShop"));
+//            log.info("------redis缓存中取出数据-------");
+//        } else {
             List<MallShop> allMallShop = mallShopService.getAllMallShop(myArea,content);
             List<MallShopVo> list = GouldUtils.getNearbyStoreByDistinceAsc(sortType, new BigDecimal(gdLon), new BigDecimal(gdLat), allMallShop);
             jsonObject.put("total",allMallShop.size());
@@ -181,7 +181,7 @@ public class MallShopController extends BaseController{
             jsonObject.put("pages", (allMallShop.size()+ pageSum-1) / pageSum);
             // 构建分割
             List<MallShopVo> batchSubList = Lists.newArrayList();
-            PageUtil<MallShopVo> batchListSplitIterator = new PageUtil<>(list, pageNum);
+            PageUtil<MallShopVo> batchListSplitIterator = new PageUtil<>(list, pageNum,pageSum);
             // 迭代每一批数据
             while (batchListSplitIterator.hasNext()){
                 log.info("position====>>>"+batchListSplitIterator.position());
@@ -192,11 +192,11 @@ public class MallShopController extends BaseController{
                 }
             }
             jsonObject.put("list",batchSubList);
-            if ("1".equals(page) && StringUtils.isEmpty(sortType)) {
-                redisUtil.setString("getAllMallShop", jsonObject.toJSONString(),600);
-                log.info("------redis存入数据-------");
-            }
-        }
+//            if ("1".equals(page) && StringUtils.isEmpty(sortType)) {
+//                redisUtil.setString("getAllMallShop", jsonObject.toJSONString(),600);
+//                log.info("------redis存入数据-------");
+//            }
+//        }
         returnResult.setResult(jsonObject);
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;

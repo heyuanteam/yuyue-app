@@ -25,12 +25,13 @@ public class PageUtil<T> implements Iterator<List<T>> {
 //    //总条数
 //    private long total = 0L;
 
-    public PageUtil(List<T> originData,int pages){
+    public PageUtil(List<T> originData,int pages,int pageSize){
         if (StringUtils.isEmpty(originData)) {
             return;
         }
         this.list = originData;
         position = 0;       //初始化位置为 0
+        this.pageSize = pageSize;
     }
 
 //    public PageUtil(List<T> originData, int pageSize) {
