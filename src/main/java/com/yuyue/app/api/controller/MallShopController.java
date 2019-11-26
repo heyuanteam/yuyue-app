@@ -520,11 +520,7 @@ public class MallShopController extends BaseController{
             }else if (StringUtils.isEmpty(request.getParameter("commodityName"))){
                 returnResult.setMessage("商品/服务名称不能为空！");
                 return returnResult;
-            }else if (StringUtils.isEmpty(request.getParameter("serviceType"))){
-                returnResult.setMessage("服务方式不能为空！");
-                return returnResult;
-            }
-            else if (StringUtils.isEmpty(request.getParameter("fare"))){
+            }else if (StringUtils.isEmpty(request.getParameter("fare"))){
                 returnResult.setMessage("运费不能为空！");
                 return returnResult;
             }
