@@ -161,6 +161,9 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("经纬度不可以为空！");
             return returnResult;
         }
+        if (StringUtils.isEmpty(sortType)){
+            sortType = "distance";
+        }
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))
             page = "1";
         if (StringUtils.isEmpty(pageSize) || !pageSize.matches("[0-9]+"))
