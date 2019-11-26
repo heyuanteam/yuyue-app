@@ -98,9 +98,17 @@ public class MallShopController extends BaseController{
         getParameterMap(request, response);
 
         List<ShopAttention> shopAttentions = mallShopService.getShopAttentions(user.getId(), "");
+        List<MallShop> mallShops =  new ArrayList<>();
+        if(StringUtils.isNotEmpty(shopAttentions)){
+            for (ShopAttention shopAttention:shopAttentions
+                 ) {
+                MallShop myMallShop = mallShopService.getMyMallShop(shopAttention.getShopId());
+                mallShops.add(myMallShop);
+            }
+        }
         returnResult.setMessage("返回成功！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(shopAttentions);
+        returnResult.setResult(mallShops);
 
         return returnResult;
     }
@@ -187,6 +195,19 @@ public class MallShopController extends BaseController{
             specification = new ArrayList<>();
         }
         myMallShop.setSpecifications(specification);
+        String token = request.getHeader("token");
+        String userId="";
+        if(StringUtils.isNotEmpty(token)) {
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+            List<ShopAttention> shopAttentions = mallShopService.getShopAttentions(userId, shopId);
+            if (StringUtils.isNotEmpty(shopAttentions)){
+                myMallShop.setIsAttention(true);
+            }else {
+                myMallShop.setIsAttention(false);
+            }
+        }else {
+            myMallShop.setIsAttention(false);
+        }
         returnResult.setMessage("返回成功！");
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(myMallShop);

@@ -76,6 +76,8 @@ public class MallShop implements Serializable {
     private AdPrice adPrice;
     //支付的广告费id
     private String priceId;
+    //用户是否关注
+    private Boolean isAttention;
 
     //经纬度
     private BigDecimal gdLon;
