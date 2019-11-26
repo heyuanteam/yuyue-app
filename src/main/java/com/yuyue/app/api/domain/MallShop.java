@@ -78,6 +78,8 @@ public class MallShop implements Serializable {
     private String priceId;
     //用户是否关注
     private Boolean isAttention;
+    //商家头像
+    private String headUrl;
 
     //经纬度
     private BigDecimal gdLon;

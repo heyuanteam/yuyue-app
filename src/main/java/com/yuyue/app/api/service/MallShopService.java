@@ -43,7 +43,10 @@ public interface MallShopService {
     void deleteImageByShopId(String shopId);
 
 /*---------------------------------商品(规格)接口---------------------------------*/
+    //仅获取10B状态下的规格
     List<Specification> getSpecification(String shopId);
+
+    List<Specification> getAllSpecification(String shopId);
 
     Specification getSpecificationById(String specificationId);
 

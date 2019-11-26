@@ -103,6 +103,8 @@ public class MallShopController extends BaseController{
             for (ShopAttention shopAttention:shopAttentions
                  ) {
                 MallShop myMallShop = mallShopService.getMyMallShop(shopAttention.getShopId());
+                AppUser appUserMsg = loginService.getAppUserMsg("", "", myMallShop.getMerchantId());
+                myMallShop.setHeadUrl(appUserMsg.getHeadpUrl());
                 mallShops.add(myMallShop);
             }
         }
@@ -846,7 +848,7 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("商品id不能为空！！");
             return returnResult;
         }
-        List<Specification> specification = mallShopService.getSpecification(shopId);
+        List<Specification> specification = mallShopService.getAllSpecification(shopId);
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(specification);
         returnResult.setMessage("返回成功");

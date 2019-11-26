@@ -131,6 +131,11 @@ public class MallShopServiceImpl implements MallShopService {
     public List<Specification> getSpecification(String shopId) {
         return specificationMapper.getSpecificationByStatus(shopId);
     }
+    //获取所有状态下的规格
+    @Override
+    public List<Specification> getAllSpecification(String shopId) {
+        return specificationMapper.getAllSpecification(shopId);
+    }
 
     @Override
     public Specification getSpecificationById(String specificationId) {
