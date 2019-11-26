@@ -8,6 +8,12 @@ public interface MallShopService {
 
 
 /*---------------------------------商铺接口---------------------------------*/
+    List<ShopAttention> getShopAttentions(String userId,String shopId);
+
+    void addShopAttention(ShopAttention shopAttention);
+
+    void cancelShopAttention(String userId,String shopId);
+
     void getMyMallShopByOrderId(String orderId);
 
     List<MallShop> getMallShopByVideoId(String videoId);

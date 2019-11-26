@@ -53,6 +53,111 @@ public class MallShopController extends BaseController{
     private RedisUtil redisUtil;
 
 
+    /**
+     * 查询我的关注商铺列表
+     * @param user
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "isAttention")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult isAttention(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("查询我的关注商铺列表-------------->>/mallShop/isAttention");
+        getParameterMap(request, response);
+        String shopId = request.getParameter("shopId");
+        List<ShopAttention> shopAttentions = mallShopService.getShopAttentions(user.getId(), shopId);
+        if (StringUtils.isEmpty(shopAttentions)){
+            returnResult.setMessage("未关注！");
+            returnResult.setResult(new Object());
+        }else {
+            returnResult.setResult(shopAttentions.get(0));
+            returnResult.setMessage("返回成功！");
+        }
+        returnResult.setStatus(Boolean.TRUE);
+
+        return returnResult;
+    }
+
+
+    /**
+     * 查询我的关注商铺列表
+     * @param user
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "getShopAttentions")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult getShopAttentions(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("查询我的关注商铺列表-------------->>/mallShop/getShopAttentions");
+        getParameterMap(request, response);
+
+        List<ShopAttention> shopAttentions = mallShopService.getShopAttentions(user.getId(), "");
+        returnResult.setMessage("返回成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(shopAttentions);
+
+        return returnResult;
+    }
+
+    /**
+     * 添加商铺关注
+     * @param user
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "addShopAttention")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult addShopAttention(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("添加商铺关注-------------->>/mallShop/addShopAttention");
+        getParameterMap(request, response);
+        String shopId = request.getParameter("shopId");
+        List<ShopAttention> shopAttentions = mallShopService.getShopAttentions(user.getId(), shopId);
+        if (StringUtils.isNotEmpty(shopAttentions)){
+            returnResult.setMessage("已关注！");
+            returnResult.setStatus(Boolean.TRUE);
+            returnResult.setResult(new Object());
+            return returnResult;
+        }
+        String id = UUID.randomUUID().toString().replace("-","").toUpperCase();
+        ShopAttention shopAttention = new ShopAttention();
+
+        shopAttention.setId(id);
+        shopAttention.setUserId(user.getId());
+        shopAttention.setShopId(shopId);
+        mallShopService.addShopAttention(shopAttention);
+        returnResult.setMessage("关注成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(new Object());
+        return returnResult;
+
+
+    }
+
+
+    @RequestMapping(value = "cancelShopAttention")
+    @ResponseBody
+    @LoginRequired
+    public ReturnResult cancelShopAttention(@CurrentUser AppUser user,HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("查询我的商铺-------------->>/mallShop/cancelShopAttention");
+        getParameterMap(request, response);
+        String shopId = request.getParameter("shopId");
+        mallShopService.cancelShopAttention(user.getId(),shopId);
+        returnResult.setStatus(Boolean.TRUE);
+        returnResult.setResult(new Object());
+        returnResult.setMessage("删除成功！");
+        return returnResult;
+    }
+
 
 
     /**

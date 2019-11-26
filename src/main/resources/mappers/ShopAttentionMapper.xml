@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuyue.app.api.mapper.ShopAttentionMapper">
+
+    <!-- 查询单条记录 -->
+    <select id="getShopAttentions"  parameterType="String" resultType="com.yuyue.app.api.domain.ShopAttention">
+        SELECT *
+            FROM yuyue_mall_attention where 1=1
+        <if test="userId != null and userId != ''">
+            and user_id = #{userId}
+        </if>
+
+        <if test="shopId != null and shopId != ''">
+            and shop_id = #{shopId}
+        </if>
+
+        ORDER BY create_time desc
+    </select>
+
+    <insert id="addShopAttention" parameterType="com.yuyue.app.api.domain.ShopAttention">
+        insert into yuyue_mall_attention (id,user_id,shop_id)
+            VALUES
+         (#{id},#{userId},#{shopId})
+
+    </insert>
+
+    <delete id="cancelShopAttention" parameterType="String">
+        DELETE FROM yuyue_mall_attention WHERE user_id = #{userId} and shop_id = #{shopId}
+    </delete>
+</mapper>

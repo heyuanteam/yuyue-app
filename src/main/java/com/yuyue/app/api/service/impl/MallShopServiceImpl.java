@@ -41,6 +41,24 @@ public class MallShopServiceImpl implements MallShopService {
     private PayService payService;
     @Autowired
     private PayController payController;
+    @Autowired
+    private ShopAttentionMapper shopAttentionMapper;
+
+
+    @Override
+    public List<ShopAttention> getShopAttentions(String userId, String shopId) {
+        return shopAttentionMapper.getShopAttentions(userId,shopId);
+    }
+
+    @Override
+    public void addShopAttention(ShopAttention shopAttention) {
+        shopAttentionMapper.addShopAttention(shopAttention);
+    }
+
+    @Override
+    public void cancelShopAttention(String userId, String shopId) {
+        shopAttentionMapper.cancelShopAttention(userId,shopId);
+    }
 
     @Override
     public void getMyMallShopByOrderId(String orderId) {
