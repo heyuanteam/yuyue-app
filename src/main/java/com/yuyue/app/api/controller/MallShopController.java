@@ -372,14 +372,14 @@ public class MallShopController extends BaseController{
         getParameterMap(request, response);
         String shopId = request.getParameter("shopId");
         String sourcePay = request.getParameter("sourcePay");
-
+        String priceId = request.getParameter("priceId");
+        String tradeType = request.getParameter("tradeType");
         if (StringUtils.isEmpty(shopId)){
             returnResult.setMessage("商铺id为空");
             return returnResult;
         }
         /*---------------------------------生成订单-------------------------------*/
-        String priceId = request.getParameter("priceId");
-        String tradeType = request.getParameter("tradeType");
+
         if ("GGZFB".equals(tradeType) || "GGWX".equals(tradeType)){
 
         }else{
@@ -393,6 +393,7 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
         AdPrice adPrice = advertisementFeeInfo.get(0);
+        //计算支付金额
         BigDecimal bigDecimal = new BigDecimal(adPrice.getAdTotalPrice()).multiply(new BigDecimal(adPrice.getAdDiscount()))
                 .setScale(2, BigDecimal.ROUND_HALF_UP);
         Order order = new Order();
@@ -403,19 +404,24 @@ public class MallShopController extends BaseController{
         /*---------------------------------生成订单结束-------------------------------*/
         MallShop myMallShop = mallShopService.getMyMallShop(shopId);
         //商铺已存在情况下重新支付，---------> 未支付状态或是 支付超时状态
-        System.out.println(StringUtils.isNull(myMallShop));
-        if (StringUtils.isNotNull(myMallShop) && StringUtils.isNotEmpty(myMallShop.getStatus())){
-            //商铺已存在   且未支付状态或是 发布已过期状态
-            if ("10A".equals(myMallShop.getStatus())  || "10E".equals(myMallShop.getStatus())){
+        if (StringUtils.isNotNull(myMallShop) && ("10B".equals(myMallShop.getStatus())
+                || "10C".equals(myMallShop.getStatus())  || "10D".equals(myMallShop.getStatus())
+                || "10E".equals(myMallShop.getStatus()))   ){
+            //商铺已存在   已支付、已发布、已过期状态(再次支付)
+            if ("10B".equals(myMallShop.getStatus())){
+                returnResult.setMessage("已添加,待审核！");
+                returnResult.setStatus(Boolean.TRUE);
+            }else if ("10C".equals(myMallShop.getStatus())){
+                returnResult.setMessage("该订单正在发布！");
+                returnResult.setStatus(Boolean.TRUE);
+            }else if ("10D".equals(myMallShop.getStatus())){
+                returnResult.setMessage("该商铺已经被停止发布！");
+                returnResult.setStatus(Boolean.TRUE);
+            }else if ("10E".equals(myMallShop.getStatus())){
                 if(StringUtils.isNotEmpty(myMallShop.getOrderId())){
                     Order getOrder = payService.getOrderId(myMallShop.getOrderId());
                     if (StringUtils.isNull(getOrder)){
                         returnResult.setMessage("未查询该订单！！");
-                        return returnResult;
-                    }else if("10B".equals(getOrder.getStatus()) && "10A".equals(myMallShop.getStatus()) ){
-                        //修改商铺状态
-                        myMallShop.setStatus("10B");
-                        mallShopService.updateMyMallShopInfo(myMallShop);
                         return returnResult;
                     }
                     //订单未支付状态     --->  去支付
@@ -443,6 +449,12 @@ public class MallShopController extends BaseController{
                         }
                         return returnResult;
                     }
+                    else if("10B".equals(getOrder.getStatus())  ){
+                        //修改商铺状态
+                        myMallShop.setStatus("10B");
+                        mallShopService.updateMyMallShopInfo(myMallShop);
+                        return returnResult;
+                    }
                     //支付超时状态    支付失败   商铺到期   -->重新生成新的订单
                     else if ("10E".equals(myMallShop.getStatus())  ||
                                  "10C".equals(getOrder.getStatus()) ||
@@ -450,12 +462,15 @@ public class MallShopController extends BaseController{
 
                         try {
                             String orderId = null;
+                            //扫码支付
                             if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
                                 log.info("扫码支付");
                                 jsonObject = payController.payNative(order, request, response);
                                 orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
                                 returnResult.setMessage(orderId);
-                            }else {
+                            }
+                            //app 支付宝微信支付
+                            else {
                                 log.info("手机支付");
                                 jsonObject = payController.payYuYue(order, user);
                                 //成功生成新的订单，获取订单ID
@@ -494,25 +509,13 @@ public class MallShopController extends BaseController{
 
                 }
                 returnResult.setStatus(Boolean.TRUE);
-                return returnResult;
-            }
-            if ("10B".equals(myMallShop.getStatus())){
-                returnResult.setMessage("已添加,待审核！");
-                returnResult.setStatus(Boolean.TRUE);
-            }
-            if ("10C".equals(myMallShop.getStatus())){
-                returnResult.setMessage("该订单正在发布！");
-                returnResult.setStatus(Boolean.TRUE);
             }
             return returnResult;
         }
         /*---------------------------------------------新的商铺申请--------------------------------------------*/
         else {
             //新的商铺申请
-            if (StringUtils.isEmpty(shopId)){
-                returnResult.setMessage("商铺id不能为空！");
-                return returnResult;
-            }else if (StringUtils.isEmpty(request.getParameter("category"))){
+            if (StringUtils.isEmpty(request.getParameter("category"))){
                 returnResult.setMessage("商品/服务分类不能为空！");
                 return returnResult;
             }else if (StringUtils.isEmpty(request.getParameter("commodityName"))){
@@ -633,11 +636,7 @@ public class MallShopController extends BaseController{
                            return returnResult;
                        }
                             mallShop.setOrderId(orderId);
-                            Order getOrder = payService.getOrderId(orderId);
-                            if ("10B".equals(getOrder.getStatus()))
-                                mallShop.setStatus("10B");
-                            else
-                                mallShop.setStatus("10A");
+                            mallShop.setStatus("10A");
                             returnResult.setStatus(Boolean.TRUE);
                             returnResult.setResult(jsonObject.get("result"));
                             mallShopService.insertMyMallShop(mallShop);
@@ -1088,8 +1087,11 @@ public class MallShopController extends BaseController{
             MallShop myMallShop = mallShopService.getMyMallShop(cart.getShopId());
             //第一次
             if (StringUtils.isEmpty(resultCarts)) {
-
-                cart.setSpecification(mallShopService.getSpecificationById(cart.getCommodityId()));
+                Specification specification= mallShopService.getSpecificationById(cart.getCommodityId());
+                if (StringUtils.isNull(specification)){
+                    continue;
+                }
+                cart.setSpecification(specification);
                 ResultCart resultCart = new ResultCart();
                 resultCart.setShopId(myMallShop.getShopId());
                 resultCart.setCommodityName(myMallShop.getCommodityName());
@@ -1106,7 +1108,11 @@ public class MallShopController extends BaseController{
             ) {
                 //如果有已存在相同商铺的商品，仅将商品添加到List
                 if (resultCart.getShopId().equals(myMallShop.getShopId())) {
-                    cart.setSpecification(mallShopService.getSpecificationById(cart.getCommodityId()));
+                    Specification specification= mallShopService.getSpecificationById(cart.getCommodityId());
+                    if (StringUtils.isNull(specification)){
+                        continue;
+                    }
+                    cart.setSpecification(specification);
                     List<Cart> addCarts = resultCart.getCommodityList();
                     addCarts.add(cart);
                     resultCart.setCommodityList(addCarts);
@@ -1116,7 +1122,11 @@ public class MallShopController extends BaseController{
             }
             System.out.println(status);
             if (status == false) {
-                cart.setSpecification(mallShopService.getSpecificationById(cart.getCommodityId()));
+                Specification specification= mallShopService.getSpecificationById(cart.getCommodityId());
+                if (StringUtils.isNull(specification)){
+                    continue;
+                }
+                cart.setSpecification(specification);
                 ResultCart resultCart1 = new ResultCart();
                 resultCart1.setShopId(myMallShop.getShopId());
                 resultCart1.setCommodityName(myMallShop.getCommodityName());
