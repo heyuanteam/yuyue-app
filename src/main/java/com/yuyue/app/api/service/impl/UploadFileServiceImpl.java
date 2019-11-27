@@ -201,8 +201,8 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
     @Override
-    public List<UploadFile> getNextVideo(String uploadTime) {
-        return uploadFileMapper.getNextVideo(uploadTime);
+    public List<UploadFile> getNextVideo(String uploadTime,String type) {
+        return uploadFileMapper.getNextVideo(uploadTime,type);
     }
 
     /**

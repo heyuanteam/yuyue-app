@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -229,7 +230,7 @@ public class UploadFileController extends  BaseController{
      */
     @ResponseBody
     @RequestMapping("/getNextVideo")
-    public JSONObject getNextVideo(String page,String authorId,String videoId,HttpServletRequest request, HttpServletResponse response){
+    public JSONObject getNextVideo(String page,String authorId,String type,String videoId,HttpServletRequest request, HttpServletResponse response){
         log.info("获取下一个视频列表---->>/uploadFile/getNextVideo");
         getParameterMap(request, response);
         ReturnResult returnResult=new ReturnResult();
@@ -249,7 +250,15 @@ public class UploadFileController extends  BaseController{
         String uploadTime  = uploadFile.getUploadTime();
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
         PageHelper.startPage(Integer.parseInt(page), 10);
-        List<UploadFile> uploadFileList = uploadFileService.getNextVideo(uploadTime);
+        List<UploadFile> uploadFileList =  new ArrayList<>();
+        if ("video".equals(type) || "home".equals(type)){
+            uploadFileList = uploadFileService.getNextVideo(uploadTime,type);
+        }else {
+            returnResult.setResult(uploadFileList);
+            returnResult.setMessage("返回成功！");
+            returnResult.setStatus(Boolean.TRUE);
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
         for (UploadFile nextUploadFile:uploadFileList
              ) {
             System.out.println("----------");
