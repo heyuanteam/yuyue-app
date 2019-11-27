@@ -82,10 +82,12 @@ public class AppUser implements Serializable {
     private String wechatName;
 //    上级手机号
     private String fatherPhone;
-//    作废字段
+//    是否实名奖励1元
     private String extensionStatus;
-//    是否奖励推广员的状态
+//    是否商户奖励3元
     private String rewardStatus;
+//    是否艺人奖励1元
+    private String yiStatus;
 //    支付宝账号
     private String zfbNumber;
 //    支付宝真实姓名

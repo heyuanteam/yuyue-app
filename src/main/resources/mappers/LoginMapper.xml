@@ -38,6 +38,7 @@
         <result column="wechatName" property="wechatName" jdbcType="VARCHAR"/>
         <result column="fatherPhone" property="fatherPhone" jdbcType="VARCHAR"/>
         <result column="extensionStatus" property="extensionStatus" jdbcType="VARCHAR"/>
+        <result column="yiStatus" property="yiStatus" jdbcType="VARCHAR"/>
         <result column="rewardStatus" property="rewardStatus" jdbcType="VARCHAR"/>
         <result column="zfbNumber" property="zfbNumber" jdbcType="VARCHAR"/>
         <result column="zfbRealName" property="zfbRealName" jdbcType="VARCHAR"/>
@@ -128,7 +129,7 @@
             user_status userStatus,total ,mIncome,income,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,fatherPhone,
         ATTENTION_TOTAL attentionTotal,LIKE_TOTAL likeTotal,COMMENT_TOTAL commentTotal,education ,wechat ,signature,opendId,wechatName,extensionStatus,
             DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover,rewardStatus,
-        zfbNumber,zfbRealName
+        zfbNumber,zfbRealName,yiStatus
             FROM yuyue_merchant
             where 1=1
            <!-- <choose>-->
@@ -147,7 +148,7 @@
         user_status userStatus,total , mIncome,income,ADDR_DETAIL addrDetail,HEADP_URL headpUrl,USER_TYPE userType,cardFUrl,cardZUrl,userUrl,fatherPhone,
         ATTENTION_TOTAL attentionTotal,LIKE_TOTAL likeTotal,COMMENT_TOTAL commentTotal,education ,wechat ,signature,opendId,wechatName,extensionStatus,
         DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%s') createTime,DATE_FORMAT(update_time ,'%Y-%m-%d %H:%i:%s') updateTime,frontCover,rewardStatus,
-        zfbNumber,zfbRealName
+        zfbNumber,zfbRealName,yiStatus
         FROM yuyue_merchant
         where 1=1
         <if test="fatherPhone!=null and fatherPhone!='' ">  and fatherPhone=#{fatherPhone}  </if>
@@ -189,7 +190,7 @@
         fatherPhone,
         extensionStatus,
         rewardStatus,
-        zfbNumber,zfbRealName,
+        zfbNumber,zfbRealName,yiStatus,
         DATE_FORMAT(
         create_time,
         '%Y-%m-%d %H:%i:%s'
