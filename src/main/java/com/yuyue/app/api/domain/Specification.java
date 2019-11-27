@@ -35,6 +35,8 @@ public class Specification implements Serializable {
     //创建时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+    //是否评论
+    private Boolean isComment;
 
 
 }

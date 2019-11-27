@@ -31,5 +31,8 @@ public class MallComment implements Serializable {
     private Date createTime;
     //评价人
     private AppUser appUser;
+    //订单id
+    private String orderId;
+
 
 }

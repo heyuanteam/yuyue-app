@@ -71,7 +71,7 @@ public interface MallShopService {
     List<MallComment> getMallComments(String shopId);
 
 
-    MallComment getMallComment( String shopId,String consumerId);
+    MallComment getMallComment( String shopId,String orderId,String consumerId);
 
 
     double getScore( String shopId);

@@ -83,7 +83,7 @@ public class MallShopController extends BaseController{
 
 
     /**
-     * 查询我的关注商铺列表
+     * 查询我关注的商铺列表
      * @param user
      * @param request
      * @param response
@@ -148,8 +148,6 @@ public class MallShopController extends BaseController{
         returnResult.setStatus(Boolean.TRUE);
         returnResult.setResult(new Object());
         return returnResult;
-
-
     }
 
 
@@ -1325,13 +1323,12 @@ public class MallShopController extends BaseController{
         log.info("添加用户评价------------->>/mallShop/addMallComment");
         getParameterMap(request, response);
 
-        MallComment isComment = mallShopService.getMallComment(mallComment.getShopId(), appUser.getId());
-        if (StringUtils.isNotNull(isComment)){
-            returnResult.setMessage("该商品已评价！");
-            return returnResult;
-        }
+
         if (StringUtils.isEmpty(mallComment.getShopId())){
             returnResult.setMessage("shopId（商品）不能为空！");
+            return returnResult;
+        }else if (StringUtils.isEmpty(mallComment.getOrderId())){
+            returnResult.setMessage("订单id不可为空！");
             return returnResult;
         }else if (StringUtils.isEmpty(mallComment.getCommoditySize())){
             returnResult.setMessage("commoditySize（商品规格）不能为空！");
@@ -1340,6 +1337,7 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("content（内容）不能为空！");
             return returnResult;
         }
+
         try {
              if (mallComment.getScore()<0 || mallComment.getScore()>5){
                 returnResult.setMessage("评分错误！");
@@ -1350,16 +1348,21 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("分数类型错误！");
             return returnResult;
         }
+        MallComment isComment = mallShopService.getMallComment(mallComment.getShopId(),mallComment.getOrderId(), appUser.getId());
+        if (StringUtils.isNotNull(isComment)){
+            returnResult.setMessage("该商品已评价！");
+            return returnResult;
+        }
 
         mallComment.setCommentId(UUID.randomUUID().toString().replace("-","").toUpperCase());
         mallComment.setConsumerId(appUser.getId());
         mallShopService.addMallComment(mallComment);
+        //获取评论平均值
         double score = mallShopService.getScore(mallComment.getShopId());
         score = (double) Math.round(score * 10) / 10;
-        MallShop mallShop = new MallShop();
-        mallShop.setScore(score);
-        mallShop.setShopId(mallComment.getShopId());
-        mallShopService.updateMyMallShopInfo(mallShop);
+        MallShop myMallShop = mallShopService.getMyMallShop(mallComment.getShopId());
+        myMallShop.setScore(score);
+        mallShopService.updateMyMallShopInfo(myMallShop);
         returnResult.setMessage("评价成功！");
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;
@@ -2185,7 +2188,7 @@ public class MallShopController extends BaseController{
 //    }*/
 
     /**
-     *消费者 获取 订单列表(我的消费)
+     *我的消费
      * @param appUser
      * @param request
      * @param response
@@ -2198,7 +2201,7 @@ public class MallShopController extends BaseController{
                                                 HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
-        log.info("消费者 获取 订单列表------------->>/mallShop/getOrderByConsumerId");
+        log.info("我的消费------------->>/mallShop/getOrderByConsumerId");
         getParameterMap(request, response);
 
         String status = request.getParameter("status");
@@ -2257,6 +2260,12 @@ public class MallShopController extends BaseController{
                 //设置订单的状态
                 specificationById.setStatus(order.getStatus());
                 commodities.add(specificationById);
+                MallComment isComment = mallShopService.getMallComment(specificationById.getShopId(),orderId, appUser.getId());
+                if (StringUtils.isNotNull(isComment)){
+                    specificationById.setIsComment(Boolean.TRUE);
+                }else {
+                    specificationById.setIsComment(Boolean.FALSE);
+                }
             }
 
             returnOrderDetail.setOrderId(order.getId());
