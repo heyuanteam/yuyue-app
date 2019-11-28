@@ -1844,6 +1844,7 @@ public class MallShopController extends BaseController{
             }else {
                 orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
                 returnResult.setResult(jsonObject.get("result"));
+                returnResult.setMessage("订单生成成功！");
             }
 
         }
@@ -1889,7 +1890,7 @@ public class MallShopController extends BaseController{
 //            }
 //        }
 
-        returnResult.setMessage("订单生成成功！");
+
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;
     }
