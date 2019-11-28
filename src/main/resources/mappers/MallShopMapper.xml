@@ -38,7 +38,7 @@
         left join  yuyue_mall_shop_images i
         on   s.shop_id = i.shop_id
         where s.shop_id  in
-        (SELECT shop_id FROM yuyue_mall_shop WHERE video_id = #{videoId})
+        (SELECT shop_id FROM yuyue_mall_shop WHERE video_id = #{videoId}) and s.status = '10C'
         order by i.image_sort
 
     </select>
