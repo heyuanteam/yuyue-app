@@ -104,17 +104,54 @@
     </select>
 
     <select id="getNextVideo" resultMap="myUploadFile" parameterType="String">
-        SELECT
-            total.id ,DATE_FORMAT(total.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,total.filesName,total.filesPath,
-            total.filesType,total.fileSize,total.authorId,total.description,total.playAmount,total.commentAmount,total.likeAmount,
-            total.attentionAmount,total.duration,total.title,total.videoAddress,total.categoryId,total.status,
-            m.ID "userId",m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL
-        FROM
-            (SELECT * FROM yuyue_upload_file_0 WHERE UPLOAD_TIME &lt; #{uploadTime} and status ='10B' and filesType = 'video'
-            UNION
-            SELECT * FROM yuyue_upload_file_1 WHERE UPLOAD_TIME &lt; #{uploadTime} and status ='10B' and filesType = 'video')total
-            left join yuyue_merchant  m on total.authorId = m.ID
+
+        SELECT total.id ,DATE_FORMAT(total.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,total.filesName,total.filesPath,
+        total.filesType,total.fileSize,total.authorId,total.description,total.playAmount,total.commentAmount,total.likeAmount,
+        total.attentionAmount,total.duration,total.title,total.videoAddress,total.categoryId,total.status,
+        m.ID "userId",m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL FROM
+
+        ((SELECT
+        b.id ,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b.filesName,b.filesPath,
+        b.filesType,b.fileSize,b.authorId,b.description,b.playAmount,b.commentAmount,b.likeAmount,b.attentionAmount,
+        b.duration,b.title,b.videoAddress,b.categoryId,b.status
+        FROM yuyue_upload_file_0 b WHERE    status ='10B'
+            <if test='type == "video"'>
+                and  b.UPLOAD_TIME &lt; #{uploadTime}
+            </if>
+            and filesType = 'video'
+                <if test='type == "home"'>
+                    ORDER BY playAmount DESC
+                </if>
+                <if test='type == "video"'>
+                    ORDER BY UPLOAD_TIME DESC
+                </if>
+            LIMIT 0,10)
+        UNION
+        (SELECT
+        b1.id ,DATE_FORMAT(b1.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b1.filesName,b1.filesPath,
+        b1.filesType,b1.fileSize,b1.authorId,b1.description,b1.playAmount,b1.commentAmount,b1.likeAmount,b1.attentionAmount,
+        b1.duration,b1.title,b1.videoAddress,b1.categoryId,b1.status
+        FROM yuyue_upload_file_1 b1  WHERE    status ='10B'
+        <if test='type == "video"'>
+            and  b1.UPLOAD_TIME &lt; #{uploadTime}
+        </if>
+        and filesType = 'video'
+            <if test='type == "home"'>
+                ORDER BY playAmount DESC
+            </if>
+            <if test='type == "video"'>
                 ORDER BY UPLOAD_TIME DESC
+            </if>
+        LIMIT 0,10))total
+        left join yuyue_merchant  m on total.authorId = m.ID
+
+        <if test='type == "home"'>
+            ORDER BY playAmount DESC
+        </if>
+        <if test='type == "video"'>
+            ORDER BY UPLOAD_TIME DESC
+        </if>
+
     </select>
 
 

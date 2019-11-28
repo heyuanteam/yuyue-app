@@ -188,8 +188,8 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
-    public MallComment getMallComment(String shopId, String consumerId) {
-        return commentMapper.getMallComment(shopId,consumerId);
+    public MallComment getMallComment(String shopId, String orderId,String consumerId) {
+        return commentMapper.getMallComment(shopId,orderId,consumerId);
     }
 
     @Override

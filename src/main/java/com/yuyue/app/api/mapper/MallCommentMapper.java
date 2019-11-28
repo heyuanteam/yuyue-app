@@ -16,14 +16,16 @@ public interface MallCommentMapper extends MyBaseMapper<MallComment> {
     List<MallComment> getMallComments(@Param(value = "shopId") String shopId);
 
 
-    @Select("SELECT * FROM yuyue_mall_comment WHERE shop_id = #{shopId} and consumer_id = #{consumerId} limit 1")
-    MallComment getMallComment(@Param(value = "shopId") String shopId,@Param(value = "consumerId")String consumerId);
+    @Select("SELECT * FROM yuyue_mall_comment WHERE shop_id = #{shopId} " +
+            "and order_id = #{orderId} and consumer_id = #{consumerId} limit 1")
+    MallComment getMallComment(@Param(value = "shopId") String shopId,
+                               @Param(value = "orderId")String orderId,@Param(value = "consumerId")String consumerId);
 
     @Select("SELECT AVG(score) FROM yuyue_mall_comment WHERE shop_id = #{shopId}")
     double getScore(@Param(value = "shopId") String shopId);
 
     @Transactional
-    @Insert("INSERT INTO yuyue_mall_comment (comment_id,consumer_id,shop_id,content,score,commodity_size) " +
-            "VALUES (#{commentId},#{consumerId},#{shopId},#{content},#{score},#{commoditySize})")
+    @Insert("INSERT INTO yuyue_mall_comment (comment_id,consumer_id,order_id,shop_id,content,score,commodity_size) " +
+            "VALUES (#{commentId},#{consumerId},#{orderId},#{shopId},#{content},#{score},#{commoditySize})")
     void addMallComment(MallComment mallComment);
 }
