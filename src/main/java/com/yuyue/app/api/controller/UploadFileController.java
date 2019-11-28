@@ -247,16 +247,25 @@ public class UploadFileController extends  BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
-        String uploadTime  = uploadFile.getUploadTime();
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
         PageHelper.startPage(Integer.parseInt(page), 10);
         List<UploadFile> uploadFileList =  new ArrayList<>();
-        if ("video".equals(type) || "home".equals(type)){
-            uploadFileList = uploadFileService.getNextVideo(uploadTime,type);
+        if ("video".equals(type) || "home".equals(type) || "category".equals(type) || "artist".equals(type)){
+            if ("video".equals(type)){
+                String parameter  = uploadFile.getUploadTime();
+                uploadFileList = uploadFileService.getNextVideo(parameter,type);
+            }else if ("home".equals(type)){
+                String parameter = uploadFile.getPlayAmount();
+                uploadFileList = uploadFileService.getNextVideo(parameter,type);
+            }else if ("category".equals(type)){
+                uploadFileList = uploadFileService.getNextVideo(uploadFile.getCategoryId(),type);
+            }else {
+                uploadFileList =  uploadFileService.getNextVideo(uploadFile.getAuthorId(),type);
+            }
+
         }else {
             returnResult.setResult(uploadFileList);
-            returnResult.setMessage("返回成功！");
-            returnResult.setStatus(Boolean.TRUE);
+            returnResult.setMessage("type类型错误！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         for (UploadFile nextUploadFile:uploadFileList
