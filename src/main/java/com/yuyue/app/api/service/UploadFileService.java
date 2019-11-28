@@ -90,7 +90,7 @@ public interface UploadFileService {
      * @param parameter
      * @return
      */
-    List<UploadFile> getNextVideo(String parameter,String type);
+    List<UploadFile> getNextVideo(String parameter,String uploadTime,String type);
     /**
      * 我的发布
      * @param categoryId

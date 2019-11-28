@@ -253,14 +253,16 @@ public class UploadFileController extends  BaseController{
         if ("video".equals(type) || "home".equals(type) || "category".equals(type) || "artist".equals(type)){
             if ("video".equals(type)){
                 String parameter  = uploadFile.getUploadTime();
-                uploadFileList = uploadFileService.getNextVideo(parameter,type);
+                uploadFileList = uploadFileService.getNextVideo(parameter,"",type);
             }else if ("home".equals(type)){
                 String parameter = uploadFile.getPlayAmount();
-                uploadFileList = uploadFileService.getNextVideo(parameter,type);
+                uploadFileList = uploadFileService.getNextVideo(parameter,"",type);
             }else if ("category".equals(type)){
-                uploadFileList = uploadFileService.getNextVideo(uploadFile.getCategoryId(),type);
+                String uploadTime  = uploadFile.getUploadTime();
+                uploadFileList = uploadFileService.getNextVideo(uploadFile.getCategoryId(),uploadTime,type);
             }else {
-                uploadFileList =  uploadFileService.getNextVideo(uploadFile.getAuthorId(),type);
+                String uploadTime  = uploadFile.getUploadTime();
+                uploadFileList =  uploadFileService.getNextVideo(uploadFile.getAuthorId(),uploadTime,type);
             }
 
         }else {

@@ -122,9 +122,11 @@
                 and  b.playAmount &lt; #{parameter}
             </if>
             <if test='type == "category"'>
+                and  b.UPLOAD_TIME &lt; #{uploadTime}
                 and  b.categoryId = #{parameter}
             </if>
             <if test='type == "artist"'>
+                and  b.UPLOAD_TIME &lt; #{uploadTime}
                 and  b.authorId = #{parameter}
             </if>
             and filesType = 'video'
@@ -148,9 +150,11 @@
             and  b1.playAmount &lt; #{parameter}
         </if>
         <if test='type == "category"'>
+            and  b1.UPLOAD_TIME &lt; #{uploadTime}
             and  b1.categoryId = #{parameter}
         </if>
         <if test='type == "artist"'>
+            and  b1.UPLOAD_TIME &lt; #{uploadTime}
             and  b1.authorId = #{parameter}
         </if>
         and filesType = 'video'
