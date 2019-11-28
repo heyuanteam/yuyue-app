@@ -6,6 +6,12 @@ server:
 
 
 spring:
+  elasticsearch:
+    cluster-name: my-application
+    cluster-nodes: 101.37.252.177:9200
+    repositories:
+      enable: true
+
   thymeleaf:
     mode: HTML5
     encoding: UTF-8
