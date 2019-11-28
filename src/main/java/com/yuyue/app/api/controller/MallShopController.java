@@ -356,6 +356,7 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
+
     /**
      * 添加商铺
      * @param user
@@ -1738,7 +1739,7 @@ public class MallShopController extends BaseController{
     @ResponseBody
     @LoginRequired
     public ReturnResult createOrder(@CurrentUser  AppUser appUser,String cartStr,String addressId,
-                                       String payType,
+                                       String payType,String sourcePay,
                                        HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
@@ -1823,15 +1824,28 @@ public class MallShopController extends BaseController{
         order.setTradeType(payType);
         JSONObject jsonObject = null;
         try {
-            jsonObject = payController.payYuYue(order, appUser);
+            if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                log.info("扫码支付");
+                jsonObject = payController.payNative(order, request, response);
+            }else {
+                log.info("手机支付");
+                jsonObject = payController.payYuYue(order, appUser);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         String orderId = null ;
 
         if ("true".equals(jsonObject.getString("status"))){
-            orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
-            returnResult.setResult(jsonObject.get("result"));
+            if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
+                returnResult.setMessage(orderId);
+            }else {
+                orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                returnResult.setResult(jsonObject.get("result"));
+            }
+
         }
         //设置订单项状态
         //Order getOrder = payService.getOrderId(orderId);
