@@ -475,8 +475,7 @@ public class MallShopController extends BaseController{
                                 log.info("手机支付");
                                 jsonObject = payController.payYuYue(order, user);
                                 //成功生成新的订单，获取订单ID
-                                orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
-                                //returnResult.setMessage(orderId);
+
                             }
 
                             //生成订单
@@ -485,6 +484,11 @@ public class MallShopController extends BaseController{
                                 if (StringUtils.isEmpty(orderId)){
                                     returnResult.setMessage("订单Id为空！！");
                                     return returnResult;
+                                }else if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                                    orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
+                                    returnResult.setMessage(orderId);
+                                }else {
+                                    orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
                                 }
                                 myMallShop.setOrderId(orderId);
                                 myMallShop.setPriceId(adPrice.getPriceId());
@@ -1837,14 +1841,20 @@ public class MallShopController extends BaseController{
         }
         String orderId = null ;
 
+
+
         if ("true".equals(jsonObject.getString("status"))){
             if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
-                orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
+                orderId = jsonObject.getString("message");
                 returnResult.setMessage(orderId);
-            }else {
+            }else if(StringUtils.isEmpty(sourcePay)){
                 orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
                 returnResult.setResult(jsonObject.get("result"));
                 returnResult.setMessage("订单生成成功！");
+            }
+            if (StringUtils.isEmpty(orderId)){
+                returnResult.setMessage("订单Id为空！！");
+                return returnResult;
             }
 
         }
