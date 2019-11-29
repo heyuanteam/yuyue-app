@@ -22,7 +22,7 @@ public class Variables {
     public static final String info = "杭州和元网络科技有限公司";
     public static final String subject = "商城支付";
 
-    public static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/shop/list";
+    public static final String AliPayReturnUrl = "http://www.heyuannetwork.com/isLogin/shop/complete";
     public static final String wxNotifyUrl = "http://"+ip+appPort+"/yuyue-app/pay/wxpayNotify";
     public static final String AliPayNotifyUrl = "http://"+ip+appPort+"/yuyue-app/pay/alipayNotify";
 

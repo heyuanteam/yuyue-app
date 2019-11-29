@@ -970,8 +970,7 @@ public class PayController extends BaseController{
         getParameterMap(request, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-//        alipayRequest.setReturnUrl(Variables.AliPayReturnUrl);//同步通知页面
-        alipayRequest.setReturnUrl(Variables.AliPayNotifyUrl);//同步通知页面
+        alipayRequest.setReturnUrl(Variables.AliPayReturnUrl);//同步通知页面
         alipayRequest.setNotifyUrl(Variables.AliPayNotifyUrl);//在公共参数中设置回跳和通知地址
         String moneyD = order.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).toString();
         alipayRequest.setBizContent("{\"out_trade_no\":\""+ order.getId() +"\","
