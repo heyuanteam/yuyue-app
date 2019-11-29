@@ -1849,13 +1849,13 @@ public class MallShopController extends BaseController{
                 returnResult.setMessage(orderId);
             }else if(StringUtils.isEmpty(sourcePay)){
                 orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
-                returnResult.setResult(jsonObject.get("result"));
                 returnResult.setMessage("订单生成成功！");
             }
             if (StringUtils.isEmpty(orderId)){
-                returnResult.setMessage("订单Id为空！！");
+                returnResult.setMessage("订单生成失败！！");
                 return returnResult;
             }
+            returnResult.setResult(jsonObject.get("result"));
 
         }
         //设置订单项状态
