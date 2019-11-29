@@ -493,7 +493,7 @@ public class MallShopController extends BaseController{
                             //扫码支付
                             if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
                                 log.info("扫码支付");
-                                jsonObject = payController.payNative(order, request, response);
+                                jsonObject = payController.payNative(user,order, request, response);
                                 orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
                                 returnResult.setMessage(orderId);
                             }
@@ -644,7 +644,7 @@ public class MallShopController extends BaseController{
                    String orderId = null;
                    if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
                        log.info("扫码支付");
-                       jsonObject = payController.payNative(order, request, response);
+                       jsonObject = payController.payNative(user,order, request, response);
                        if (tradeType.contains("ZFB")){
                            orderId = jsonObject.getString("message");
                            returnResult.setMessage(orderId);
@@ -1857,7 +1857,7 @@ public class MallShopController extends BaseController{
         try {
             if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
                 log.info("扫码支付");
-                jsonObject = payController.payNative(order, request, response);
+                jsonObject = payController.payNative(appUser,order, request, response);
             }else {
                 log.info("手机支付");
                 jsonObject = payController.payYuYue(order, appUser);
@@ -2120,7 +2120,7 @@ public class MallShopController extends BaseController{
 
     }
     /**
-     * 获取未发货的订单
+     * 红点提示获取未发货的订单
      * @param appUser
      * @param request
      * @param response
