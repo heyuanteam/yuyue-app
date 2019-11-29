@@ -1117,9 +1117,19 @@ public class MallShopController extends BaseController{
              ) {
 
             MallShop myMallShop = mallShopService.getMyMallShop(cart.getShopId());
+            if (StringUtils.isNull(myMallShop)){
+                continue;
+            }
+            if ("N".equals(myMallShop.getIsRevise()) && "10C".equals(myMallShop.getStatus())
+                    && "open".equals(myMallShop.getBusinessStatus())){
+                myMallShop.setBusinessStatus("open");
+            }else {
+                myMallShop.setBusinessStatus("rest");
+            }
             //第一次
             if (StringUtils.isEmpty(resultCarts)) {
                 Specification specification= mallShopService.getSpecificationById(cart.getCommodityId());
+
                 if (StringUtils.isNull(specification)){
                     continue;
                 }

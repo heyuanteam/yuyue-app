@@ -74,11 +74,16 @@
     </select>
 
     <select id="getMerchantOrder" parameterType="String" resultMap="OrderItemVo">
-        SELECT * FROM yuyue_mall_order_item a,yuyue_mall_shop_commodity c
-            WHERE merchant_id = #{merchantId}
-                AND a.commodity_id = c.commodity_id
-                AND a.`status`  !='10A'
-                ORDER BY a.`status`
+       SELECT
+	        *
+        FROM
+            yuyue_mall_order_item a
+        LEFT JOIN yuyue_mall_shop_commodity c ON a.commodity_id = c.commodity_id
+        WHERE
+            merchant_id = #{merchantId}
+        AND a.`status` != '10A'
+        ORDER BY
+            a.`status`
     </select>
 
 
