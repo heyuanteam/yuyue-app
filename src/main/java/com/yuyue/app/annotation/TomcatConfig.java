@@ -10,7 +10,7 @@ import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletCont
 
 /**
  * Create by IntelliJ IDEA
- *
+ *访问接口的url属性的数据中若存在<>[\]^`{|} 特殊字符，使用该配置
  * @author chenlei
  * @dateTime 2019/5/23 18:09
  * @description TomcatConfig

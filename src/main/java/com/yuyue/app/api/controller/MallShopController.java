@@ -364,6 +364,7 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
+
     /**
      * 添加商铺
      * @param user
@@ -482,8 +483,7 @@ public class MallShopController extends BaseController{
                                 log.info("手机支付");
                                 jsonObject = payController.payYuYue(order, user);
                                 //成功生成新的订单，获取订单ID
-                                orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
-                                //returnResult.setMessage(orderId);
+
                             }
 
                             //生成订单
@@ -492,6 +492,11 @@ public class MallShopController extends BaseController{
                                 if (StringUtils.isEmpty(orderId)){
                                     returnResult.setMessage("订单Id为空！！");
                                     return returnResult;
+                                }else if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                                    orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
+                                    returnResult.setMessage(orderId);
+                                }else {
+                                    orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
                                 }
                                 myMallShop.setOrderId(orderId);
                                 myMallShop.setPriceId(adPrice.getPriceId());
@@ -1746,7 +1751,7 @@ public class MallShopController extends BaseController{
     @ResponseBody
     @LoginRequired
     public ReturnResult createOrder(@CurrentUser  AppUser appUser,String cartStr,String addressId,
-                                       String payType,
+                                       String payType,String sourcePay,
                                        HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
@@ -1831,15 +1836,35 @@ public class MallShopController extends BaseController{
         order.setTradeType(payType);
         JSONObject jsonObject = null;
         try {
-            jsonObject = payController.payYuYue(order, appUser);
+            if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                log.info("扫码支付");
+                jsonObject = payController.payNative(order, request, response);
+            }else {
+                log.info("手机支付");
+                jsonObject = payController.payYuYue(order, appUser);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         String orderId = null ;
 
+
+
         if ("true".equals(jsonObject.getString("status"))){
-            orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+            if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                orderId = jsonObject.getString("message");
+                returnResult.setMessage(orderId);
+            }else if(StringUtils.isEmpty(sourcePay)){
+                orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                returnResult.setMessage("订单生成成功！");
+            }
+            if (StringUtils.isEmpty(orderId)){
+                returnResult.setMessage("订单生成失败！！");
+                return returnResult;
+            }
             returnResult.setResult(jsonObject.get("result"));
+
         }
         //设置订单项状态
         //Order getOrder = payService.getOrderId(orderId);
@@ -1883,7 +1908,7 @@ public class MallShopController extends BaseController{
 //            }
 //        }
 
-        returnResult.setMessage("订单生成成功！");
+
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;
     }

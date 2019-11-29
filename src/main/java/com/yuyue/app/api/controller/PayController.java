@@ -1056,7 +1056,7 @@ public class PayController extends BaseController{
             payService.updateStatus(order.getId(), "10C");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        returnResult.setMessage("调用扫码微信成功！！");
+        returnResult.setMessage(order.getId());
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
