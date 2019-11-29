@@ -930,17 +930,10 @@ public class PayController extends BaseController{
      */
     @ResponseBody
     @RequestMapping("/payNative")
-    public JSONObject payNative(Order order,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @LoginRequired
+    public JSONObject payNative(@CurrentUser AppUser user,Order order,HttpServletRequest request, HttpServletResponse response) throws Exception {
         getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
-        String token = request.getHeader("token");
-        if(StringUtils.isEmpty(token)) {
-            returnResult.setMessage("缺少token！请去登录");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        String userId = String.valueOf(JWT.decode(token).getAudience().get(0));
-        AppUser user = loginService.getAppUserMsg("","",userId);
-
         log.info("-------创建扫码订单-----------");
         if (StringUtils.isEmpty(order.getTradeType())) {
             returnResult.setMessage("充值类型不能为空！！");
@@ -1067,17 +1060,10 @@ public class PayController extends BaseController{
      */
     @ResponseBody
     @RequestMapping("/payWapAPP")
-    public JSONObject payWapAPP(Order order,String code,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @LoginRequired
+    public JSONObject payWapAPP(@CurrentUser AppUser user,Order order, HttpServletRequest request, HttpServletResponse response) throws Exception {
         getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
-        String token = request.getHeader("token");
-        if(StringUtils.isEmpty(token)) {
-            returnResult.setMessage("缺少token！请去登录");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        String userId = String.valueOf(JWT.decode(token).getAudience().get(0));
-        AppUser user = loginService.getAppUserMsg("","",userId);
-
         log.info("-------创建APP浏览器支付订单-----------");
         if (StringUtils.isEmpty(order.getTradeType())) {
             returnResult.setMessage("充值类型不能为空！！");
@@ -1095,16 +1081,6 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         if (order.getTradeType().contains("WX")) {
-//            if (StringUtils.isEmpty(code)) {
-//                returnResult.setMessage("code不可以为空！");
-//                return ResultJSONUtils.getJSONObjectBean(returnResult);
-//            }
-//            String opendId = getOpenId(code).getString("openid");
-//            if (StringUtils.isEmpty(opendId)) {
-//                returnResult.setMessage("code错误！");
-//                return ResultJSONUtils.getJSONObjectBean(returnResult);
-//            }
-//            order.setNote(opendId);
             return payWapWX(order);
         } else if (order.getTradeType().contains("ZFB")) {
             return payWapZFB(order,request,response);
