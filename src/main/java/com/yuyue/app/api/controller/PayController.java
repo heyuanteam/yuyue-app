@@ -1190,13 +1190,25 @@ public class PayController extends BaseController{
     @RequestMapping("/refundMoney")
     @ResponseBody
     @LoginRequired
-    public JSONObject refundMoney(@CurrentUser AppUser appUser,String orderId
-            ,HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+    public JSONObject refundMoney(@CurrentUser AppUser appUser,String orderId,BigDecimal money,String tradeType
+            ,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception{
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         log.info("-------创建退款订单-----------");
-        if (StringUtils.isEmpty(orderId)) {
-            returnResult.setMessage("orderId不能为空!");
+        if (StringUtils.isEmpty(tradeType)) {
+            returnResult.setMessage("退款类型不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (money == null || money.compareTo(BigDecimal.ZERO)==0){
+            returnResult.setMessage("退款不能为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (appUser.getMIncome().compareTo(money) == -1){
+            returnResult.setMessage("退款不能高于收益！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (money.compareTo(new BigDecimal(5001))==1){
+            returnResult.setMessage("退款不能高于5000元！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (money.compareTo(new BigDecimal(1))==-1){
+            returnResult.setMessage("退款不能低于1元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         Order oldOrder = payService.getOrderId(orderId);
@@ -1205,22 +1217,45 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
-        Order order = new Order();
-        order.setOrderNo("YY"+ RandomSaltUtil.randomNumber(14));
-        order.setStatus("10A");
-        order.setMobile(appUser.getPhone());
-        order.setMerchantId(appUser.getId());
-//        order.setTradeType("SMWX");
-//        order.setMoney("100");
-        createOrder(order);
-        if (StringUtils.isEmpty(order.getId())) {
-            returnResult.setMessage("创建订单失败！缺少参数！");
+        ChangeMoney changeTime = payService.getChangeMoneyByTime(appUser.getId());
+        if (StringUtils.isNotNull(changeTime)) {
+            //上次退款时间
+            Date parse = dateFormat.parse(changeTime.getCreateTime());
+            long goTime = parse.getTime();
+            int second = (int)goTime / 1000;
+            log.info("上次退款时间====>>>>"+dateFormat.format(parse)+"秒数====>>>>"+second);
+            //当前系统时间
+            Date date = dateFormat.parse(dateFormat.format(new Date()));
+            Long toTime = date.getTime();
+            int systemTime =toTime.intValue() / 1000;
+            log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+systemTime);
+            if ((systemTime - second) < 30 ) {
+                returnResult.setMessage("您好！30秒内，只能退款一次！");
+                return ResultJSONUtils.getJSONObjectBean(returnResult);
+            }
+        }
+        ChangeMoney changeMoney = new ChangeMoney();
+        changeMoney.setNote("mIncome");
+        changeMoney.setMoney(money);
+        changeMoney.setTradeType(tradeType);
+        changeMoney.setMerchantId(appUser.getId());
+        changeMoney.setMobile(appUser.getPhone());
+        changeMoney.setChangeNo("YYTX"+tradeType+ RandomSaltUtil.randomNumber(14));
+        changeMoney.setHistoryMoney(appUser.getMIncome());
+        if ("10B".equals(changeMoney.getStatus())) {
+            returnResult.setMessage("请勿重复点击！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        if (order.getTradeType().contains("WX")) {
+        changeMoney.setStatus("10B");
+        createShouMoney(changeMoney);
+        if (StringUtils.isEmpty(changeMoney.getId())) {
+            returnResult.setMessage("创建提现订单失败！缺少参数！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        if (tradeType.contains("WX")) {
 //            return refundWX(order,httpRequest,httpResponse);
-        } else if (order.getTradeType().contains("ZFB")) {
-            return refundZFB(order,httpRequest,httpResponse);
+        } else if (tradeType.contains("ZFB")) {
+            return refundZFB(appUser,changeMoney,httpRequest,httpResponse);
         }
         returnResult.setMessage("退款类型选择错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -1232,13 +1267,13 @@ public class PayController extends BaseController{
      * @param httpResponse
      * @return
      */
-    public JSONObject refundZFB(Order order,HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+    public JSONObject refundZFB(AppUser user,ChangeMoney changeMoney,HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         try{
             AlipayTradeRefundModel refundModel = new AlipayTradeRefundModel();
-            refundModel.setOutTradeNo(order.getId());
-            refundModel.setRefundAmount(String.valueOf(order.getMoney()));//可部分退款和全部退款
+            refundModel.setOutTradeNo(changeMoney.getId());
+            refundModel.setRefundAmount(String.valueOf(changeMoney.getMoney()));//可部分退款和全部退款
             refundModel.setRefundReason("支付宝退款");
             //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
             AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
@@ -1247,18 +1282,21 @@ public class PayController extends BaseController{
             log.info("response.getMsg()========>>>>>>"+response.getMsg()+"\n");
             log.info("response.getBody()========>>>>>>"+response.getBody());
             //提现成功
+            BigDecimal subtract = BigDecimal.ZERO;
             if (response.isSuccess()) {
                 //商家减钱
-
+                subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
+                payService.updateMIncome(user.getId(),subtract);
+                payService.updateChangeMoneyStatus(subtract,response.getMsg(), "支付宝退款成功！", "10B", changeMoney.getId());
                 returnResult.setStatus(Boolean.TRUE);
                 returnResult.setMessage("支付宝原路返回成功！");
             }else{
-
+                payService.updateChangeMoneyStatus(subtract,"ERROR", "支付宝退款失败！", "10C", changeMoney.getId());
                 returnResult.setMessage("支付宝原路返回失败！");
             }
         }catch (Exception e){
             log.error("支付宝原路返回出错啦！！！"+e);
-            e.getStackTrace();
+            throw MyExceptionUtils.mxe("支付宝原路返回异常" + e.getMessage());
         }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
