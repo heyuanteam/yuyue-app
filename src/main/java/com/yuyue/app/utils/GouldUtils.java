@@ -621,4 +621,29 @@ public class GouldUtils {
         return parse;
     }
 
+    /**
+     * 根据高德经纬度获取地址信息
+     * @param gdLon
+     * @param gdLat
+     * @return
+     */
+    public static JSONObject getLonLarByAddress(String gdLon, String gdLat){
+        log.info("根据高德经纬度获取地址信息-------------->>");
+        JSONObject parse = new JSONObject();
+        Map<String, String> params = Maps.newHashMap();
+        params.put("location", gdLon + "," + gdLat);
+        try {
+            String url = GouldUtils.jointUrl(params, Variables.OUTPUT, Variables.gdKEY, Variables.GET_ADDRESS_URL);
+            parse = (JSONObject)JSON.parse(GouldUtils.doPost(url, params));
+            if ("OK".equals(parse.getString("info"))) {
+                return parse;
+            } else {
+                log.info("获取地址失败！");
+            }
+        } catch (Exception e) {
+            log.info("获取地址失败！");
+        }
+        return parse;
+    }
+
 }

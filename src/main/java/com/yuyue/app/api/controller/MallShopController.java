@@ -7,6 +7,7 @@ import com.auth0.jwt.JWT;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
@@ -16,6 +17,7 @@ import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.MyService;
 import com.yuyue.app.api.service.PayService;
 import com.yuyue.app.enums.ReturnResult;
+import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -302,6 +304,12 @@ public class MallShopController extends BaseController{
 //            jsonObject =JSON.parseObject((String)redisUtil.getString("getAllMallShop"));
 //            log.info("------redis缓存中取出数据-------");
 //        } else {
+
+        //计算距离太久，可以优化
+//        JSONObject lonLarByAddress = GouldUtils.getLonLarByAddress(gdLon, gdLat);
+//        lonLarByAddress.get("");
+//        HttpUtils.doPost(Variables.sendStockJPushUrl,sb.toString());
+
             List<MallShop> allMallShop = mallShopService.getAllMallShop(myArea,content);
             List<MallShopVo> list = GouldUtils.getNearbyStoreByDistinceAsc(sortType, new BigDecimal(gdLon), new BigDecimal(gdLat), allMallShop);
             jsonObject.put("total",allMallShop.size());
