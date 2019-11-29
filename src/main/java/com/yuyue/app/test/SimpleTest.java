@@ -1,8 +1,13 @@
 package com.yuyue.app.test;
 
+import com.yuyue.app.utils.MallUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class SimpleTest {
 
@@ -246,14 +251,50 @@ public class SimpleTest {
 //            System.out.println("已过期");
 //        }
 
-        String s = "123";
-        String a = "a";
-        String b = "b";
-        if ("123".equals(s) && ("b".equals(a) || "b".equals(a))){
-            System.out.println("~~~~~");
-        }else {
-            System.out.println("-----");
-        }
+//        String s = "123";
+//        String a = "a";
+//        String b = "b";
+//        if ("123".equals(s) && ("b".equals(a) || "b".equals(a))){
+//            System.out.println("~~~~~");
+//        }else {
+//            System.out.println("-----");
+//        }
+//        String cartStr = "8ABC88451CCD4A5B94E484C3D49D5B81[78B9FE2E0406476E8EF132C218F6CC0D:3]-8ABC88451CCD4A5B94E484C3D49D5B87[A529E05D78734079BA9B226C38B11E6C:1]";
+//        List<String> shopIds = new ArrayList<>();
+//        if (cartStr.contains("-")) {
+//            String[] splits = cartStr.split("-");
+//            for (String split : splits
+//            ) {
+//                String shopId = split.substring(0, split.indexOf("["));
+//                if ("8ABC88451CCD4A5B94E484C3D49D5B81".equals(shopId)){
+////                    cartStr.substring("8ABC88451CCD4A5B94E484C3D49D5B81",)
+//                    String newStr = null;
+//
+//                    System.out.println("---"+newStr);
+//                }
+//            }
+//        }else {
+//
+//        }
+
+//        String cartStr = "8ABC88451CCD4A5B94E484C3D49D5B81[78B9FE2E0406476E8EF132C218F6CC0D:3]-8ABC88451CCD4A5B94E484C3D49D5B87[A529E05D78734079BA9B226C38B11E6C:1]-";
+//        Map<String, String> stringStringMap = MallUtils.splitCartString(cartStr);
+//        for ( String key:stringStringMap.keySet()
+//             ) {
+//            String commodityIds = cartStr.substring( cartStr.indexOf("[")+1,cartStr.lastIndexOf("]"));
+//            System.out.println("dfg"+commodityIds);
+//            System.out.println("key:"+key+"      value:"+stringStringMap.get(key));
+//        }
+//        List<String> shopIds = MallUtils.getShopIds(cartStr);
+//        for (String s:shopIds
+//             ) {
+//            if ("8ABC88451CCD4A5B94E484C3D49D5B81".equals(s)){
+//                String newStr = cartStr.substring(cartStr.indexOf("8ABC88451CCD4A5B94E484C3D49D5B81"),cartStr.indexOf("["));
+//                System.out.println(newStr);
+//                System.out.println(cartStr);
+//            }
+//            System.out.println("shop:"+s);
+//        }
 
 
     }
