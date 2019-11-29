@@ -70,6 +70,7 @@ public class MallShopController extends BaseController{
         log.info("查询我的关注商铺列表-------------->>/mallShop/isAttention");
         getParameterMap(request, response);
         String shopId = request.getParameter("shopId");
+
         List<ShopAttention> shopAttentions = mallShopService.getShopAttentions(user.getId(), shopId);
         if (StringUtils.isEmpty(shopAttentions)){
             returnResult.setMessage("未关注！");
@@ -98,21 +99,39 @@ public class MallShopController extends BaseController{
         ReturnResult returnResult = new ReturnResult();
         log.info("查询我的关注商铺列表-------------->>/mallShop/getShopAttentions");
         getParameterMap(request, response);
-
+        String page = request.getParameter("page");
+        String pageSize = request.getParameter("pageSize");
+        if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))
+            page = "1";
+        if (StringUtils.isEmpty(pageSize) || !pageSize.matches("[0-9]+"))
+            pageSize = "10";
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(pageSize));
         List<ShopAttention> shopAttentions = mallShopService.getShopAttentions(user.getId(), "");
+        PageInfo<ShopAttention> pageInfo=new PageInfo<>(shopAttentions);
+        long total = pageInfo.getTotal();
+        int pages = pageInfo.getPages();
+        int currentPage = Integer.parseInt(page);
         List<MallShop> mallShops =  new ArrayList<>();
         if(StringUtils.isNotEmpty(shopAttentions)){
             for (ShopAttention shopAttention:shopAttentions
                  ) {
                 MallShop myMallShop = mallShopService.getMyMallShop(shopAttention.getShopId());
+                if (StringUtils.isNull(myMallShop)){
+                    continue;
+                }
                 AppUser appUserMsg = loginService.getAppUserMsg("", "", myMallShop.getMerchantId());
                 myMallShop.setHeadUrl(appUserMsg.getHeadpUrl());
                 mallShops.add(myMallShop);
             }
         }
+        Map<String,Object> map = new HashMap<>();
+        map.put("mallShops",mallShops);
+        map.put("pages",pages);
+        map.put("currentPage",currentPage);
+        map.put("total",total);
         returnResult.setMessage("返回成功！");
         returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(mallShops);
+        returnResult.setResult(map);
 
         return returnResult;
     }
