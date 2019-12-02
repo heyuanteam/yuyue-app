@@ -1,6 +1,7 @@
 package com.yuyue.app.api.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.auth0.jwt.JWT;
@@ -634,6 +635,20 @@ public class MallShopController extends BaseController{
             mallShop.setVideoPath(request.getParameter("videoPath"));
             mallShop.setRemark(request.getParameter("remark"));
             mallShop.setRemark("N");
+
+            try {
+                mallShop.getMerchantAddr().replace("-","");
+                JSONObject lonLarByAddress = GouldUtils.getLonLarByAddress(mallShop.getMerchantAddr());
+                if (com.yuyue.app.utils.StringUtils.isNotEmpty(lonLarByAddress)) {
+                    JSONObject object = JSONObject.parseObject(JSONArray.parseArray(lonLarByAddress.getString("geocodes")).get(0).toString());
+                    String[] locations = object.getString("location").split(",");
+                    mallShop.setGdLat(new BigDecimal(locations[1]));
+                    mallShop.setGdLon(new BigDecimal(locations[0]));
+                }
+            } catch (Exception e) {
+                returnResult.setMessage("地址填写错误！");
+                return returnResult;
+            }
             mallShopService.insertMyMallShop(mallShop);
             /*----------------------------------------接支付------------------------------------------------*/
             //新的商品推广申请
@@ -732,6 +747,20 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
         mallShop.setIsRevise("Y");
+
+        try {
+            mallShop.getMerchantAddr().replace("-","");
+            JSONObject lonLarByAddress = GouldUtils.getLonLarByAddress(mallShop.getMerchantAddr());
+            if (com.yuyue.app.utils.StringUtils.isNotEmpty(lonLarByAddress)) {
+                JSONObject object = JSONObject.parseObject(JSONArray.parseArray(lonLarByAddress.getString("geocodes")).get(0).toString());
+                String[] locations = object.getString("location").split(",");
+                mallShop.setGdLat(new BigDecimal(locations[1]));
+                mallShop.setGdLon(new BigDecimal(locations[0]));
+            }
+        } catch (Exception e) {
+            returnResult.setMessage("地址填写错误！");
+            return returnResult;
+        }
         mallShopService.updateMyMallShopInfo(mallShop);
         if (StringUtils.isNotEmpty(imageStr)){
             mallShopService.deleteImageByShopId(mallShop.getShopId());

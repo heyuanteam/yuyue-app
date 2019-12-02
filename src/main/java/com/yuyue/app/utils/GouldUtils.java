@@ -493,16 +493,16 @@ public class GouldUtils {
      * @return       按照距离由近到远排序之后List
      */
     public static List<MallShopVo> getNearbyStoreByDistinceAsc(String sortType, BigDecimal gdLon, BigDecimal gdLat, List<MallShop> allMallShop) {
-        for (MallShop mallShop: allMallShop) {
-            mallShop.getMerchantAddr().replace("-","");
-            JSONObject lonLarByAddress = getLonLarByAddress(mallShop.getMerchantAddr());
-            if (com.yuyue.app.utils.StringUtils.isNotEmpty(lonLarByAddress)) {
-                JSONObject jsonObject = JSONObject.parseObject(JSONArray.parseArray(lonLarByAddress.getString("geocodes")).get(0).toString());
-                String[] locations = jsonObject.getString("location").split(",");
-                mallShop.setGdLat(new BigDecimal(locations[1]));
-                mallShop.setGdLon(new BigDecimal(locations[0]));
-            }
-        }
+//        for (MallShop mallShop: allMallShop) {
+//            mallShop.getMerchantAddr().replace("-","");
+//            JSONObject lonLarByAddress = getLonLarByAddress(mallShop.getMerchantAddr());
+//            if (com.yuyue.app.utils.StringUtils.isNotEmpty(lonLarByAddress)) {
+//                JSONObject jsonObject = JSONObject.parseObject(JSONArray.parseArray(lonLarByAddress.getString("geocodes")).get(0).toString());
+//                String[] locations = jsonObject.getString("location").split(",");
+//                mallShop.setGdLat(new BigDecimal(locations[1]));
+//                mallShop.setGdLon(new BigDecimal(locations[0]));
+//            }
+//        }
         List<MallShopVo> list = Lists.newArrayList();
         allMallShop.forEach(mallShop -> {
             MallShopVo mallShopVo = new MallShopVo();
