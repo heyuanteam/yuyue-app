@@ -1240,7 +1240,7 @@ public class PayController extends BaseController{
         changeMoney.setTradeType(tradeType);
         changeMoney.setMerchantId(appUser.getId());
         changeMoney.setMobile(appUser.getPhone());
-        changeMoney.setChangeNo("YYTX"+tradeType+ RandomSaltUtil.randomNumber(14));
+        changeMoney.setChangeNo("YY"+tradeType+ RandomSaltUtil.randomNumber(14));
         changeMoney.setHistoryMoney(appUser.getMIncome());
         if ("10B".equals(changeMoney.getStatus())) {
             returnResult.setMessage("请勿重复点击！");

@@ -24,6 +24,8 @@
             <result column="order_id" property="orderId"/>
             <result column="start_time" property="startTime"/>
             <result column="end_time" property="endTime"/>
+            <result column="gdLon" property="gdLon"/>
+            <result column="gdLat" property="gdLat"/>
         <collection property="images" ofType="com.yuyue.app.api.domain.ShopImage" >
             <id column="image_id" property="imageId"/>
             <result column="image_path" property="imagePath"/>
@@ -83,10 +85,12 @@
 
     <insert id="insertMyMallShop" parameterType="com.yuyue.app.api.domain.MallShop">
          replace into yuyue_mall_shop (shop_id,merchant_id,category,commodity_name,detail,service_type,fare,commodity_price,
-         business_time,business_status,merchant_addr,merchant_phone,service_area,fee_area,video_path,remark,price_id,order_id,status)
+         business_time,business_status,merchant_addr,merchant_phone,service_area,fee_area,video_path,remark,price_id,order_id,status,
+         gdLon,gdLat)
          VALUES
-         (#{shopId},#{merchantId},#{category},#{commodityName},#{detail},#{serviceType},#{fare},#{commodityPrice},
-         #{businessTime},#{businessStatus},#{merchantAddr},#{merchantPhone},#{serviceArea},#{feeArea},#{videoPath},#{remark},#{priceId},#{orderId},#{status})
+         (#{shopId},#{merchantId},#{category},#{commodityName},#{detail},#{serviceType},#{fare},#{commodityPrice},#{businessTime},
+         #{businessStatus},#{merchantAddr},#{merchantPhone},#{serviceArea},#{feeArea},#{videoPath},#{remark},#{priceId},#{orderId},
+         #{status},#{gdLon},#{gdLat})
     </insert>
 
     <update id="updateMyMallShopInfo" parameterType="com.yuyue.app.api.domain.MallShop">
@@ -158,8 +162,12 @@
             <if test=" isRevise != null and isRevise != ''">
                 is_revise = #{isRevise},
             </if>
-
-
+            <if test="gdLon != null and gdLon != ''">
+                gdLon = #{gdLon},
+            </if>
+            <if test=" gdLat != null and gdLat != ''">
+                gdLat = #{gdLat},
+            </if>
 
         </set>
         where  shop_id = #{shopId}
