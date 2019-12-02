@@ -174,6 +174,14 @@
         where  shop_id = #{shopId}
     </update>
 
+    <select id="getDistanceAll"  resultType="com.yuyue.app.api.domain.Distance">
+
+       SELECT d.id,d.distance_value distanceValue,
+            DATE_FORMAT(d.create_time ,'%Y-%m-%d %H:%i:%s') createTime,
+            DATE_FORMAT(d.update_time ,'%Y-%m-%d %H:%i:%s') updateTime
+       FROM yuyue_distance d
+
+    </select>
 
 </mapper>
 
