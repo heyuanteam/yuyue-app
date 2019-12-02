@@ -359,6 +359,34 @@ public class MallShopController extends BaseController{
         return returnResult;
     }
 
+    /**
+     * 查询商城搜索距离的
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "getDistanceAll")
+    @ResponseBody
+    public ReturnResult getDistanceAll(HttpServletRequest request, HttpServletResponse response){
+        ReturnResult returnResult = new ReturnResult();
+        log.info("查询商城搜索距离的-------------->>/mallShop/getDistanceAll");
+        getParameterMap(request, response);
+        JSONArray jsonArray = new JSONArray();
+        if (redisUtil.existsKey("getDistanceAll")) {
+            jsonArray =JSON.parseArray((String)redisUtil.getString("getDistanceAll"));
+            log.info("------redis缓存中取出数据-------");
+        } else {
+            List<Distance> allDistance = mallShopService.getDistanceAll();
+            jsonArray=JSON.parseArray(JSONObject.toJSONString(allDistance));
+            redisUtil.setString("getDistanceAll", jsonArray.toJSONString(),600);
+            log.info("------redis存入数据-------");
+        }
+        returnResult.setResult(jsonArray);
+        returnResult.setMessage("获取距离成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return returnResult;
+    }
+
 
     /**
      * 获取爆款

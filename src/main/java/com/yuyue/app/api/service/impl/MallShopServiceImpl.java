@@ -336,4 +336,10 @@ public class MallShopServiceImpl implements MallShopService {
     public void changeDefaultAddr(String userId) {
         mallAddressMapper.changeDefaultAddr(userId);
     }
+
+    @Override
+    public List<Distance> getDistanceAll() {
+        return mallShopMapper.getDistanceAll();
+    }
+
 }
