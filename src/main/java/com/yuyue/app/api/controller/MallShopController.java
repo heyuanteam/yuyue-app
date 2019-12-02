@@ -1827,7 +1827,115 @@ public class MallShopController extends BaseController{
 //
 //        }
 //    }
+    /**
+     * 临时订单（最新）
+     * @param cartStr
+     * @param addressId
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "temporaryOrder")
+    @ResponseBody
+    public ReturnResult temporaryOrder(String cartStr,String  addressId,
+                                       HttpServletRequest request, HttpServletResponse response) {
 
+        ReturnResult returnResult = new ReturnResult();
+        log.info("临时订单（最新）------------->>/mallShop/temporaryOrder");
+        getParameterMap(request, response);
+        String token = request.getHeader("token");
+        String userId="";
+        if(StringUtils.isNotEmpty(token)) {
+            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
+        }
+        ReturnOrder returnOrder = new ReturnOrder();
+        List<ResultCart> resultCarts = new ArrayList<>();
+        if (StringUtils.isEmpty(cartStr)){
+            returnResult.setMessage("cartStr参数不能为空！");
+            return returnResult;
+        }
+        MallAddress mallAddress = null;
+        if (StringUtils.isEmpty(addressId)){
+            mallAddress = mallShopService.getDefaultAddress(userId);
+        }
+        if (StringUtils.isNotEmpty(addressId)){
+            mallAddress = mallShopService.getMallAddress(addressId);
+            if (StringUtils.isNull(mallAddress)){
+                returnResult.setMessage("未查询该地址！");
+                return returnResult;
+            }
+        }
+        returnOrder.setMallAddress(mallAddress);
+        Map<String,String> mapStr = null;
+        String newCartStr  = "" ;
+        try {
+            mapStr = MallUtils.getShopIds(cartStr);
+            if (StringUtils.isEmpty(mapStr)){
+                returnResult.setMessage("cartStr不可为空！");
+                return  returnResult;
+            }else {
+                //int i = 0;
+                for (String shopId:mapStr.keySet()
+                ) {
+                    //i++;
+                    MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+
+                    //System.out.println(shopId+ ":"+myMallShop.getStatus());
+                    if (StringUtils.isNotNull(myMallShop) && "10C".equals(myMallShop.getStatus())){
+                        newCartStr += shopId +"["+mapStr.get(shopId)+"]"+"-";
+                    }else {
+                        continue;
+                    }
+                    //System.out.println(i+":"+newCartStr);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(newCartStr);
+        if (StringUtils.isEmpty(newCartStr)){
+            returnResult.setMessage("没有符合的商品！");
+            return  returnResult;
+        }
+        if (newCartStr.contains("-")) {
+
+            String[] cartStrings = newCartStr.split("-");
+            for (String cartString:cartStrings
+            ) {
+                ResultCart resultCart = getResultCart(cartString, addressId);
+                if (StringUtils.isNull(resultCart)){
+                    returnResult.setMessage("数据格式错误！");
+                    return returnResult;
+                }
+                resultCarts.add(resultCart);
+            }
+
+        }else {
+            ResultCart resultCart = getResultCart(newCartStr,addressId);
+            if (StringUtils.isNull(resultCart)){
+                returnResult.setMessage("数据格式错误！");
+                return returnResult;
+            }
+            resultCarts.add(resultCart);
+        }
+        returnOrder.setResultCarts(resultCarts);
+        //获取交易总额
+        //BigDecimal payTotal = new BigDecimal(0);
+        String payTotal = "0";
+        Map<String,BigDecimal> map = new HashMap<>();
+        for (ResultCart resultCart: resultCarts) {
+            System.out.println("单个商铺"+resultCart.getPayAmount());
+            map.put(resultCart.getShopId(),resultCart.getPayAmount());
+            payTotal = new BigDecimal(payTotal).add(resultCart.getPayAmount()).toString();
+        }
+        System.out.println("总金额"+new BigDecimal(payTotal));
+        returnOrder.setOrderTotal(new BigDecimal(payTotal));
+        returnResult.setMessage("返回成功！");
+        returnResult.setStatus(Boolean.TRUE);
+
+        returnResult.setResult(returnOrder);
+        return returnResult;
+    }
 
 
     /**
@@ -1865,7 +1973,7 @@ public class MallShopController extends BaseController{
         }
 
         Map<String,String> map = null;
-        String newCartStr  = null ;
+        String newCartStr  = "" ;
         try {
             map = MallUtils.getShopIds(cartStr);
             if (StringUtils.isEmpty(map)){
@@ -1876,7 +1984,7 @@ public class MallShopController extends BaseController{
                 ) {
                     MallShop myMallShop = mallShopService.getMyMallShop(shopId);
                     if (StringUtils.isNotNull(myMallShop) && "10C".equals(myMallShop.getStatus())){
-                        newCartStr = shopId +"["+map.get(shopId)+"]"+"-";
+                        newCartStr += shopId +"["+map.get(shopId)+"]"+"-";
                     }else {
                         continue;
                     }
@@ -2510,110 +2618,6 @@ public class MallShopController extends BaseController{
 
 
 
-    /**
-     * 临时订单（最新）
-     * @param cartStr
-     * @param addressId
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping(value = "temporaryOrder")
-    @ResponseBody
-    public ReturnResult temporaryOrder(String cartStr,String  addressId,
-                                          HttpServletRequest request, HttpServletResponse response) {
-
-        ReturnResult returnResult = new ReturnResult();
-        log.info("临时订单（最新）------------->>/mallShop/temporaryOrder");
-        getParameterMap(request, response);
-        String token = request.getHeader("token");
-        String userId="";
-        if(StringUtils.isNotEmpty(token)) {
-            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
-        }
-        ReturnOrder returnOrder = new ReturnOrder();
-        List<ResultCart> resultCarts = new ArrayList<>();
-        if (StringUtils.isEmpty(cartStr)){
-            returnResult.setMessage("cartStr参数不能为空！");
-            return returnResult;
-        }
-        MallAddress mallAddress = null;
-        if (StringUtils.isEmpty(addressId)){
-            mallAddress = mallShopService.getDefaultAddress(userId);
-        }
-        if (StringUtils.isNotEmpty(addressId)){
-            mallAddress = mallShopService.getMallAddress(addressId);
-            if (StringUtils.isNull(mallAddress)){
-                returnResult.setMessage("未查询该地址！");
-                return returnResult;
-            }
-        }
-        returnOrder.setMallAddress(mallAddress);
-        Map<String,String> mapStr = null;
-        String newCartStr  = null ;
-        try {
-            mapStr = MallUtils.getShopIds(cartStr);
-            if (StringUtils.isEmpty(mapStr)){
-                returnResult.setMessage("cartStr不可为空！");
-                return  returnResult;
-            }else {
-                for (String shopId:mapStr.keySet()
-                ) {
-                    MallShop myMallShop = mallShopService.getMyMallShop(shopId);
-                    if (StringUtils.isNotNull(myMallShop) && "10C".equals(myMallShop.getStatus())){
-                        newCartStr = shopId +"["+mapStr.get(shopId)+"]"+"-";
-                    }else {
-                        continue;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println(newCartStr);
-        if (StringUtils.isEmpty(newCartStr)){
-            returnResult.setMessage("没有符合的商品！");
-            return  returnResult;
-        }
-        if (newCartStr.contains("-")) {
-
-            String[] cartStrings = newCartStr.split("-");
-            for (String cartString:cartStrings
-                 ) {
-                ResultCart resultCart = getResultCart(cartString, addressId);
-                if (StringUtils.isNull(resultCart)){
-                    returnResult.setMessage("数据格式错误！");
-                    return returnResult;
-                }
-                resultCarts.add(resultCart);
-            }
-
-        }else {
-            ResultCart resultCart = getResultCart(newCartStr,addressId);
-            if (StringUtils.isNull(resultCart)){
-                returnResult.setMessage("数据格式错误！");
-                return returnResult;
-            }
-            resultCarts.add(resultCart);
-        }
-        returnOrder.setResultCarts(resultCarts);
-        //获取交易总额
-        //BigDecimal payTotal = new BigDecimal(0);
-        String payTotal = "0";
-        Map<String,BigDecimal> map = new HashMap<>();
-        for (ResultCart resultCart: resultCarts) {
-            System.out.println("单个商铺"+resultCart.getPayAmount());
-            map.put(resultCart.getShopId(),resultCart.getPayAmount());
-            payTotal = new BigDecimal(payTotal).add(resultCart.getPayAmount()).toString();
-        }
-        System.out.println("总金额"+new BigDecimal(payTotal));
-        returnOrder.setOrderTotal(new BigDecimal(payTotal));
-        returnResult.setMessage("返回成功！");
-        returnResult.setStatus(Boolean.TRUE);
-
-        returnResult.setResult(returnOrder);
-        return returnResult;
-    }
 
     /**
      * 临时订单（最新）获取返回ResultCart结果
