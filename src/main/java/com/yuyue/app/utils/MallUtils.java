@@ -1,7 +1,6 @@
 package com.yuyue.app.utils;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class MallUtils {
 /*634543A9414EFDBEB63B6BDDB8535D11[488DA0232479449D9FE0571FA4FFB984:2]-
@@ -48,4 +47,27 @@ public class MallUtils {
         }
         return map;
     }
+
+    /*
+    * 8ABC88451CCD4A5B94E484C3D49D5B87[78B9FE2E0406476E8EF132C218F6CC0D:3]
+    * -8ABC88451CCD4A5B94E484C3D49D5B87[A529E05D78734079BA9B226C38B11E6C:1]
+    * */
+    public static Map<String,String> getShopIds(String cartStr) {
+       Map<String,String> map = new HashMap<>();
+        if (cartStr.contains("-")) {
+            String[] splits = cartStr.split("-");
+            for (String split : splits
+            ) {
+                String shopId = split.substring(0, split.indexOf("["));
+                String commodityIds = split.substring( split.indexOf("[")+1,split.lastIndexOf("]"));
+                map.put(shopId,commodityIds);
+            }
+        }else {
+            String shopId = cartStr.substring(0, cartStr.indexOf("["));
+            String commodityIds = cartStr.substring( cartStr.indexOf("[")+1,cartStr.lastIndexOf("]"));
+            map.put(shopId,commodityIds);
+        }
+        return map;
+    }
+
 }

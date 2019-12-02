@@ -1146,9 +1146,19 @@ public class MallShopController extends BaseController{
              ) {
 
             MallShop myMallShop = mallShopService.getMyMallShop(cart.getShopId());
+            if (StringUtils.isNull(myMallShop)){
+                continue;
+            }
+            if ("N".equals(myMallShop.getIsRevise()) && "10C".equals(myMallShop.getStatus())
+                    && "open".equals(myMallShop.getBusinessStatus())){
+                myMallShop.setBusinessStatus("open");
+            }else {
+                myMallShop.setBusinessStatus("rest");
+            }
             //第一次
             if (StringUtils.isEmpty(resultCarts)) {
                 Specification specification= mallShopService.getSpecificationById(cart.getCommodityId());
+
                 if (StringUtils.isNull(specification)){
                     continue;
                 }
@@ -1622,7 +1632,9 @@ public class MallShopController extends BaseController{
             for (String key:stringStringMap.keySet()
             ) {
                 Specification specificationById = mallShopService.getSpecificationById(key);
-
+                if (StringUtils.isNull(specificationById)){
+                    continue;
+                }
                 try {
                     if(specificationById.getCommodityReserve() >= Integer.parseInt(stringStringMap.get(key))){
                         continue;
@@ -1823,10 +1835,37 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("支付方式错误！");
             return  returnResult;
         }
+
+        Map<String,String> map = null;
+        String newCartStr  = null ;
+        try {
+            map = MallUtils.getShopIds(cartStr);
+            if (StringUtils.isEmpty(map)){
+                returnResult.setMessage("cartStr不可为空！");
+                return  returnResult;
+            }else {
+                for (String shopId:map.keySet()
+                ) {
+                    MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+                    if (StringUtils.isNotNull(myMallShop) && "10C".equals(myMallShop.getStatus())){
+                        newCartStr = shopId +"["+map.get(shopId)+"]"+"-";
+                    }else {
+                        continue;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(newCartStr);
+        if (StringUtils.isEmpty(newCartStr)){
+            returnResult.setMessage("没有符合的商品！");
+            return  returnResult;
+        }
         //判断库存问题
         Map<String, String> stringStringMap = null;
         try {
-             stringStringMap = MallUtils.splitCartString(cartStr);
+             stringStringMap = MallUtils.splitCartString(newCartStr);
             if(StringUtils.isEmpty(stringStringMap)){
                 returnResult.setMessage("cartStr不可为空！");
                 return  returnResult;
@@ -1837,10 +1876,11 @@ public class MallShopController extends BaseController{
                 Specification specificationById = mallShopService.getSpecificationById(key);
 
                 try {
-                    if(specificationById.getCommodityReserve() >= Integer.parseInt(stringStringMap.get(key))){
+                    if(specificationById.getCommodityReserve() >= Integer.parseInt(stringStringMap.get(key))
+                            &&  "10B".equals(specificationById.getStatus())){
                         continue;
                     }else {
-                        returnResult.setMessage(specificationById.getCommodityDetail()+"库存不足！");
+                        returnResult.setMessage(specificationById.getCommodityDetail()+"库存不足或是未上架状态！");
                         return  returnResult;
                     }
                 } catch (NumberFormatException e) {
@@ -1857,7 +1897,7 @@ public class MallShopController extends BaseController{
             return  returnResult;
         }
         //调用临时订单，获取交易总价，商铺收益
-        ReturnOrder returnOrderSuccess  = (ReturnOrder) temporaryOrder(cartStr,addressId,request,response).getResult();
+        ReturnOrder returnOrderSuccess  = (ReturnOrder) temporaryOrder(newCartStr,addressId,request,response).getResult();
         if (StringUtils.isNull(returnOrderSuccess)){
             returnResult.setMessage("生成订单异常");
             return  returnResult;
@@ -1869,7 +1909,7 @@ public class MallShopController extends BaseController{
         //System.out.println("该订单项总金额:"+payAmount);
         //orderItem.setShopIncome(payAmount);
         List<ResultCart> resultCarts= returnOrderSuccess.getResultCarts();
-        //获取商铺id ，商铺收益
+        //获取每个商铺id 及收益
         Map<String,BigDecimal> addMoneyToMerchantMap = new HashMap<>();
         if (StringUtils.isNotEmpty(resultCarts)){
             for (ResultCart resultCart:resultCarts
@@ -2481,9 +2521,35 @@ public class MallShopController extends BaseController{
             }
         }
         returnOrder.setMallAddress(mallAddress);
-        if (cartStr.contains("-")) {
+        Map<String,String> mapStr = null;
+        String newCartStr  = null ;
+        try {
+            mapStr = MallUtils.getShopIds(cartStr);
+            if (StringUtils.isEmpty(mapStr)){
+                returnResult.setMessage("cartStr不可为空！");
+                return  returnResult;
+            }else {
+                for (String shopId:mapStr.keySet()
+                ) {
+                    MallShop myMallShop = mallShopService.getMyMallShop(shopId);
+                    if (StringUtils.isNotNull(myMallShop) && "10C".equals(myMallShop.getStatus())){
+                        newCartStr = shopId +"["+mapStr.get(shopId)+"]"+"-";
+                    }else {
+                        continue;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(newCartStr);
+        if (StringUtils.isEmpty(newCartStr)){
+            returnResult.setMessage("没有符合的商品！");
+            return  returnResult;
+        }
+        if (newCartStr.contains("-")) {
 
-            String[] cartStrings = cartStr.split("-");
+            String[] cartStrings = newCartStr.split("-");
             for (String cartString:cartStrings
                  ) {
                 ResultCart resultCart = getResultCart(cartString, addressId);
@@ -2495,7 +2561,7 @@ public class MallShopController extends BaseController{
             }
 
         }else {
-            ResultCart resultCart = getResultCart(cartStr,addressId);
+            ResultCart resultCart = getResultCart(newCartStr,addressId);
             if (StringUtils.isNull(resultCart)){
                 returnResult.setMessage("数据格式错误！");
                 return returnResult;

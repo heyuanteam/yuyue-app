@@ -26,7 +26,7 @@ public interface MallAddressMapper extends MyBaseMapper<MallAddress> {
     @Select("SELECT * FROM yuyue_mall_delivery_address WHERE address_id = #{addressId} limit 1")
     MallAddress getMallAddress(@Param(value = "addressId") String addressId);
 
-    @Select("SELECT * FROM yuyue_mall_delivery_address WHERE user_id = #{userId} and default_addr = '1' limit 1")
+    @Select("SELECT * FROM yuyue_mall_delivery_address WHERE user_id = #{userId} and default_addr = '1' and status = 'Y' limit 1")
     MallAddress getDefaultAddress(@Param(value = "userId") String userId);
 
     @Transactional
