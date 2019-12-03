@@ -451,6 +451,7 @@ public class MallShopController extends BaseController{
         String sourcePay = request.getParameter("sourcePay");
         String priceId = request.getParameter("priceId");
         String tradeType = request.getParameter("tradeType");
+        String distanceId = request.getParameter("distanceId");
         if (StringUtils.isEmpty(shopId)){
             returnResult.setMessage("商铺id为空");
             return returnResult;
@@ -595,6 +596,7 @@ public class MallShopController extends BaseController{
         }
         /*---------------------------------------------新的商铺申请--------------------------------------------*/
         else {
+
             //新的商铺申请
             if (StringUtils.isEmpty(request.getParameter("category"))){
                 returnResult.setMessage("商品/服务分类不能为空！");
@@ -629,6 +631,12 @@ public class MallShopController extends BaseController{
                 return returnResult;
             }else if (StringUtils.isEmpty(request.getParameter("merchantPhone"))){
                 returnResult.setMessage("商家电话不能为空！");
+                return returnResult;
+            }else if (StringUtils.isEmpty(distanceId)){
+                returnResult.setMessage("距离id不可为空！");
+                return returnResult;
+            }else if(!distanceId.matches("[1-8]")){
+                returnResult.setMessage("距离id输入错误！");
                 return returnResult;
             }
             MallShop mallShop =new MallShop();
@@ -670,6 +678,7 @@ public class MallShopController extends BaseController{
 //                }
 //            }
             mallShop.setPriceId(priceId);
+
             mallShop.setServiceType(request.getParameter("serviceType"));
             mallShop.setFare(new BigDecimal(request.getParameter("fare")));
             mallShop.setCommodityPrice(new BigDecimal(request.getParameter("commodityPrice")));
@@ -683,6 +692,7 @@ public class MallShopController extends BaseController{
             mallShop.setVideoPath(request.getParameter("videoPath"));
             mallShop.setRemark(request.getParameter("remark"));
             mallShop.setRemark("N");
+            mallShop.setDistanceId(distanceId);
 
             try {
                 mallShop.getMerchantAddr().replace("-","");
@@ -777,7 +787,13 @@ public class MallShopController extends BaseController{
         else if (StringUtils.isEmpty(mallShop.getFare().toString())){
             returnResult.setMessage("运费不能为空！");
             return returnResult;
-        }
+        }else if (StringUtils.isEmpty(mallShop.getDistanceId())){
+             returnResult.setMessage("距离id不可为空！");
+             return returnResult;
+         }else if(!mallShop.getDistanceId().matches("[1-8]")){
+             returnResult.setMessage("距离id输入错误！");
+             return returnResult;
+         }
         //验证金额格式
        java.util.regex.Matcher match=pattern.matcher(mallShop.getFare().toString());
         if(match.matches()==false)

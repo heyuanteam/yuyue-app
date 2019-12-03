@@ -15,7 +15,7 @@ import java.util.Date;
 public class Distance implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
+    private String id;
 //    距离
     private String distanceValue;
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -53,10 +53,9 @@
 
     <select id="getMyMallShop"  parameterType="String" resultMap="MallShop">
 
-       SELECT * FROM yuyue_mall_shop s
-        left join  yuyue_mall_shop_images i
-        on   s.shop_id = i.shop_id
-        where s.shop_id  = #{shopId}
+       SELECT * FROM yuyue_mall_shop s, yuyue_mall_shop_images i,yuyue_distance distances
+          where s.shop_id = i.shop_id and  s.distance_id = distances.id and
+         s.shop_id  = #{shopId}
         order by i.image_sort
 
     </select>
@@ -92,11 +91,11 @@
     <insert id="insertMyMallShop" parameterType="com.yuyue.app.api.domain.MallShop">
          replace into yuyue_mall_shop (shop_id,merchant_id,category,commodity_name,detail,service_type,fare,commodity_price,
          business_time,business_status,merchant_addr,merchant_phone,service_area,fee_area,video_path,remark,price_id,order_id,status,
-         gdLon,gdLat)
+         gdLon,gdLat,distance_id)
          VALUES
          (#{shopId},#{merchantId},#{category},#{commodityName},#{detail},#{serviceType},#{fare},#{commodityPrice},#{businessTime},
          #{businessStatus},#{merchantAddr},#{merchantPhone},#{serviceArea},#{feeArea},#{videoPath},#{remark},#{priceId},#{orderId},
-         #{status},#{gdLon},#{gdLat})
+         #{status},#{gdLon},#{gdLat},#{distanceId})
     </insert>
 
     <update id="updateMyMallShopInfo" parameterType="com.yuyue.app.api.domain.MallShop">
@@ -173,6 +172,9 @@
             </if>
             <if test=" gdLat != null and gdLat != ''">
                 gdLat = #{gdLat},
+            </if>
+            <if test=" distanceId != null and distanceId != ''">
+                distance_id = #{distanceId}
             </if>
 
         </set>
