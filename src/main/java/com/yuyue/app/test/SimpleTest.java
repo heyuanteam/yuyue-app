@@ -295,7 +295,14 @@ public class SimpleTest {
 //            }
 //            System.out.println("shop:"+s);
 //        }
+        String distanceId = "不能";
+        if(!distanceId.matches("[1-8]")){
+            System.out.println("+++++++");
+        }
 
+        else if (Integer.parseInt(distanceId)<=8 && Integer.parseInt(distanceId)>=1){
+            System.out.println("------");
+        }
 
     }
 

@@ -86,6 +86,7 @@ public class MallShop implements Serializable {
     private BigDecimal gdLat;
     //距离ID
     private String distanceId;
+    private String distanceValue;
     //距离ID
     private Distance distances;
 
