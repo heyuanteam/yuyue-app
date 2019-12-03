@@ -17,7 +17,7 @@ public class Distance implements Serializable {
 
     private Integer id;
 //    距离
-    private BigDecimal distanceValue;
+    private String distanceValue;
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String createTime;
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

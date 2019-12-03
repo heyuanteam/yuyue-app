@@ -27,10 +27,15 @@
             <result column="end_time" property="endTime"/>
             <result column="gdLon" property="gdLon"/>
             <result column="gdLat" property="gdLat"/>
+            <result column="distance_id" property="distanceId"/>
         <collection property="images" ofType="com.yuyue.app.api.domain.ShopImage" >
             <id column="image_id" property="imageId"/>
             <result column="image_path" property="imagePath"/>
             <result column="image_sort" property="imageSort"/>
+        </collection>
+        <collection property="distances" ofType="com.yuyue.app.api.domain.Distance" >
+            <id column="id" property="id"/>
+            <result column="distance_value" property="distanceValue"/>
         </collection>
     </resultMap>
 
@@ -79,8 +84,8 @@
                   and CONCAT(s1.merchant_addr) like concat('%', #{myArea}, '%')
                 </if>
             and s1.status  = '10C' and s1.business_status = 'open'  and s1.is_revise = 'N'
-        ) ss ,yuyue_mall_shop_images images
-        where ss.shop_id = images.shop_id and images.image_sort = '0'
+        ) ss ,yuyue_mall_shop_images images,yuyue_distance distances
+        where ss.shop_id = images.shop_id and images.image_sort = '0' and distances.id = ss.distance_id
         order by ss.create_time desc
     </select>
 
@@ -174,13 +179,16 @@
         where  shop_id = #{shopId}
     </update>
 
-    <select id="getDistanceAll"  resultType="com.yuyue.app.api.domain.Distance">
+    <select id="getDistanceAll"  parameterType="String" resultType="com.yuyue.app.api.domain.Distance">
 
        SELECT d.id,d.distance_value distanceValue,
             DATE_FORMAT(d.create_time ,'%Y-%m-%d %H:%i:%s') createTime,
             DATE_FORMAT(d.update_time ,'%Y-%m-%d %H:%i:%s') updateTime
        FROM yuyue_distance d
-
+       where 1=1
+       <if test="id != 0" >
+           and d.id = #{id}
+       </if>
     </select>
 
 </mapper>

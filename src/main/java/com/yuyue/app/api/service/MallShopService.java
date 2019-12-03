@@ -126,5 +126,5 @@ public interface MallShopService {
     void changeDefaultAddr(String userId);
 
 //   取商城搜索距离
-    List<Distance> getDistanceAll();
+    List<Distance> getDistanceAll(String id);
 }

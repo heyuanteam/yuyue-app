@@ -49,5 +49,5 @@ public interface MallShopMapper extends MyBaseMapper<MallShop> {
     @Update("update yuyue_mall_shop set `business_status` = #{businessStatus} where shop_id = #{shopId} ")
     void updateMyMallShopStatus(@Param(value = "businessStatus")String businessStatus,@Param(value = "shopId") String shopId);
 
-    List<Distance> getDistanceAll();
+    List<Distance> getDistanceAll(@Param(value = "id")String id);
 }

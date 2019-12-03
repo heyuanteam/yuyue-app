@@ -299,6 +299,7 @@ public class MallShopController extends BaseController{
         log.info("查询所有符合条件的商铺-------------->>/mallShop/getAllMallShop");
         getParameterMap(request, response);
         String myArea = request.getParameter("myArea");//区域
+        String distanceId = request.getParameter("distanceId");//服务距离
         String page = request.getParameter("page");
         String pageSize = request.getParameter("pageSize");
         String content = request.getParameter("content");//分类、名称、详情
@@ -311,6 +312,9 @@ public class MallShopController extends BaseController{
         }
         if (StringUtils.isEmpty(sortType)){
             sortType = "distance";
+        }
+        if (StringUtils.isEmpty(distanceId)){
+            distanceId = "8";
         }
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))
             page = "1";
@@ -332,10 +336,26 @@ public class MallShopController extends BaseController{
 
             List<MallShop> allMallShop = mallShopService.getAllMallShop(myArea,content);
             List<MallShopVo> list = GouldUtils.getNearbyStoreByDistinceAsc(sortType, new BigDecimal(gdLon), new BigDecimal(gdLat), allMallShop);
-            jsonObject.put("total",allMallShop.size());
+//            获取距离
+            List<Distance> allDistance = mallShopService.getDistanceAll(distanceId);
+            String allDistanceValue = allDistance.get(0).getDistanceValue();
+            Iterator<MallShopVo> iter = list.iterator();
+            while (iter.hasNext()) {
+                MallShopVo mallShopVo = (MallShopVo) iter.next();
+//                双向选择
+                String distanceValue = mallShopVo.getDistances().getDistanceValue();
+                if (StringUtils.isNotEmpty(distanceValue) && allDistanceValue.contains("全部")) {
+                    break;
+                } else if (mallShopVo.getDistance() > Long.valueOf(allDistanceValue)
+                        || (!distanceValue.contains("全部") && mallShopVo.getDistance() > Long.valueOf(distanceValue))) {
+                        iter.remove();
+                }
+            }
+
+            jsonObject.put("total",list.size());
             jsonObject.put("pageNum",pageNum);
             jsonObject.put("pageSize",pageSum);
-            jsonObject.put("pages", (allMallShop.size()+ pageSum-1) / pageSum);
+            jsonObject.put("pages", (list.size()+ pageSum-1) / pageSum);
             // 构建分割
             List<MallShopVo> batchSubList = Lists.newArrayList();
             PageUtil<MallShopVo> batchListSplitIterator = new PageUtil<>(list, pageNum,pageSum);
@@ -376,7 +396,7 @@ public class MallShopController extends BaseController{
             jsonArray =JSON.parseArray((String)redisUtil.getString("getDistanceAll"));
             log.info("------redis缓存中取出数据-------");
         } else {
-            List<Distance> allDistance = mallShopService.getDistanceAll();
+            List<Distance> allDistance = mallShopService.getDistanceAll("");
             jsonArray=JSON.parseArray(JSONObject.toJSONString(allDistance));
             redisUtil.setString("getDistanceAll", jsonArray.toJSONString(),600);
             log.info("------redis存入数据-------");

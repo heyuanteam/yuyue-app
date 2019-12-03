@@ -338,8 +338,8 @@ public class MallShopServiceImpl implements MallShopService {
     }
 
     @Override
-    public List<Distance> getDistanceAll() {
-        return mallShopMapper.getDistanceAll();
+    public List<Distance> getDistanceAll(String id) {
+        return mallShopMapper.getDistanceAll(id);
     }
 
 }
