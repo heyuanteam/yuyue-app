@@ -217,6 +217,7 @@ public class MallShopController extends BaseController{
             specification = new ArrayList<>();
         }
         myMallShop.setSpecifications(specification);
+        myMallShop.setDistanceValue(myMallShop.getDistances().getDistanceValue()+"公里");
         String token = request.getHeader("token");
         String userId="";
         if(StringUtils.isNotEmpty(token)) {
