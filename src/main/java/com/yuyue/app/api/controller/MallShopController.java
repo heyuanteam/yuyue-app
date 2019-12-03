@@ -369,11 +369,15 @@ public class MallShopController extends BaseController{
                 break;
             }
         }
-        jsonObject.put("list",batchSubList);
 //        if ("1".equals(page) && StringUtils.isEmpty(sortType)) {
 //            redisUtil.setString("getAllMallShop", jsonObject.toJSONString(),600);
 //            log.info("------redis存入数据-------");
 //        }
+        if (Integer.valueOf(page) > Integer.valueOf(jsonObject.getString("pages"))) {
+            jsonObject.put("list",new ArrayList<>());
+        } else {
+            jsonObject.put("list",batchSubList);
+        }
         returnResult.setResult(jsonObject);
         returnResult.setStatus(Boolean.TRUE);
         return returnResult;

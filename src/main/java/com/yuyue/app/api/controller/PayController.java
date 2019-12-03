@@ -1202,7 +1202,7 @@ public class PayController extends BaseController{
             returnResult.setMessage("退款不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (appUser.getMIncome().compareTo(money) == -1){
-            returnResult.setMessage("退款不能高于收益！！");
+            returnResult.setMessage("退款不能高于收益余额！请线下交易！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (money.compareTo(new BigDecimal(5001))==1){
             returnResult.setMessage("退款不能高于5000元！");
@@ -1288,6 +1288,12 @@ public class PayController extends BaseController{
                 subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
                 payService.updateMIncome(user.getId(),subtract);
                 payService.updateChangeMoneyStatus(subtract,response.getMsg(), "支付宝退款成功！", "10B", changeMoney.getId());
+
+                //    极光库存通知 : 7 (merchantId,shopid)
+                StringBuilder sb = new StringBuilder();
+                sb.append(user.getJpushName()).append("&").append("");
+                HttpUtils.doPost(Variables.sendStockJPushUrl,sb.toString());
+
                 returnResult.setStatus(Boolean.TRUE);
                 returnResult.setMessage("支付宝原路返回成功！");
             }else{
