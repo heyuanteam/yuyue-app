@@ -334,45 +334,45 @@ public class MallShopController extends BaseController{
 //        lonLarByAddress.get("");
 //        HttpUtils.doPost(Variables.sendStockJPushUrl,sb.toString());
 
-            List<MallShop> allMallShop = mallShopService.getAllMallShop(myArea,content);
-            List<MallShopVo> list = GouldUtils.getNearbyStoreByDistinceAsc(sortType, new BigDecimal(gdLon), new BigDecimal(gdLat), allMallShop);
+        List<MallShop> allMallShop = mallShopService.getAllMallShop(myArea,content);
+        List<MallShopVo> list = GouldUtils.getNearbyStoreByDistinceAsc(sortType, new BigDecimal(gdLon), new BigDecimal(gdLat), allMallShop);
 //            获取距离
-            List<Distance> allDistance = mallShopService.getDistanceAll(distanceId);
-            String allDistanceValue = allDistance.get(0).getDistanceValue();
+        List<Distance> allDistance = mallShopService.getDistanceAll(distanceId);
+        String allDistanceValue = allDistance.get(0).getDistanceValue();
+        if (!allDistanceValue.contains("全部")){
             Iterator<MallShopVo> iter = list.iterator();
+            Long along = Long.valueOf(allDistanceValue) * 1000L;
             while (iter.hasNext()) {
                 MallShopVo mallShopVo = (MallShopVo) iter.next();
-//                双向选择
+//              双向选择
                 String distanceValue = mallShopVo.getDistances().getDistanceValue();
-                if (StringUtils.isNotEmpty(distanceValue) && allDistanceValue.contains("全部")) {
-                    break;
-                } else if (mallShopVo.getDistance() > Long.valueOf(allDistanceValue)
-                        || (!distanceValue.contains("全部") && mallShopVo.getDistance() > Long.valueOf(distanceValue))) {
-                        iter.remove();
+                if (mallShopVo.getDistance() > along || (StringUtils.isNotEmpty(distanceValue)
+                        && !distanceValue.contains("全部") && mallShopVo.getDistance() > Long.valueOf(distanceValue) * 1000L)) {
+                    iter.remove();
                 }
             }
+        }
 
-            jsonObject.put("total",list.size());
-            jsonObject.put("pageNum",pageNum);
-            jsonObject.put("pageSize",pageSum);
-            jsonObject.put("pages", (list.size()+ pageSum-1) / pageSum);
-            // 构建分割
-            List<MallShopVo> batchSubList = Lists.newArrayList();
-            PageUtil<MallShopVo> batchListSplitIterator = new PageUtil<>(list, pageNum,pageSum);
-            // 迭代每一批数据
-            while (batchListSplitIterator.hasNext()){
-                log.info("position====>>>"+batchListSplitIterator.position());
-                log.info("page====>>>"+page);
-                batchSubList = batchListSplitIterator.next();
-                if (batchListSplitIterator.position() == (Long.valueOf(pageNum * pageSum))) {
-                    break;
-                }
+        jsonObject.put("total",list.size());
+        jsonObject.put("pageNum",pageNum);
+        jsonObject.put("pageSize",pageSum);
+        jsonObject.put("pages", (list.size()+ pageSum-1) / pageSum);
+        // 构建分割
+        List<MallShopVo> batchSubList = Lists.newArrayList();
+        PageUtil<MallShopVo> batchListSplitIterator = new PageUtil<>(list, pageNum,pageSum);
+        // 迭代每一批数据
+        while (batchListSplitIterator.hasNext()){
+            log.info("position====>>>"+batchListSplitIterator.position());
+            log.info("page====>>>"+page);
+            batchSubList = batchListSplitIterator.next();
+            if (batchListSplitIterator.position() == (Long.valueOf(pageNum * pageSum))) {
+                break;
             }
-            jsonObject.put("list",batchSubList);
-//            if ("1".equals(page) && StringUtils.isEmpty(sortType)) {
-//                redisUtil.setString("getAllMallShop", jsonObject.toJSONString(),600);
-//                log.info("------redis存入数据-------");
-//            }
+        }
+        jsonObject.put("list",batchSubList);
+//        if ("1".equals(page) && StringUtils.isEmpty(sortType)) {
+//            redisUtil.setString("getAllMallShop", jsonObject.toJSONString(),600);
+//            log.info("------redis存入数据-------");
 //        }
         returnResult.setResult(jsonObject);
         returnResult.setStatus(Boolean.TRUE);
