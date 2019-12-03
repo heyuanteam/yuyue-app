@@ -398,6 +398,11 @@ public class MallShopController extends BaseController{
             log.info("------redis缓存中取出数据-------");
         } else {
             List<Distance> allDistance = mallShopService.getDistanceAll("");
+            for (Distance distance:allDistance) {
+                if (!distance.getDistanceValue().contains("全部")) {
+                    distance.setDistanceValue(distance.getDistanceValue()+"km");
+                }
+            }
             jsonArray=JSON.parseArray(JSONObject.toJSONString(allDistance));
             redisUtil.setString("getDistanceAll", jsonArray.toJSONString(),600);
             log.info("------redis存入数据-------");
