@@ -1197,14 +1197,16 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         OrderItemVo mallOrderItemById = mallShopService.getMallOrderItemById(orderItemId);
+        if (StringUtils.isNull(mallOrderItemById)) {
+            returnResult.setMessage("没有查询到该订单!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
         BigDecimal money = mallOrderItemById.getCommodityPrice();
         log.info("-------money-----------"+money);
         String tradeType = mallOrderItemById.getTradeType();
         log.info("-------tradeType-----------"+tradeType);
-        if (StringUtils.isNull(mallOrderItemById)) {
-            returnResult.setMessage("没有查询到该订单!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (money == null || money.compareTo(BigDecimal.ZERO)==0){
+        if (money == null || money.compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("退款金额不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (appUser.getMIncome().compareTo(money) == -1){
