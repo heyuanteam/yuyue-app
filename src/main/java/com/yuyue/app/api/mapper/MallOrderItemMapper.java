@@ -41,8 +41,9 @@ public interface MallOrderItemMapper extends MyBaseMapper<OrderItem> {
 //    @Transactional
 //    @Update("update yuyue_mall_order_item  set status= #{status} WHERE order_id = #{orderId}")
 //    void updateOrderItemsStatus(@Param(value = "orderId") String orderId,@Param(value = "status") String status);
-
-
+    @Transactional
+    @Update("update yuyue_mall_order_item  set isRefund = 'Y' WHERE order_item_id = #{orderItemId}")
+    void upIsRefund(@Param(value = "orderItemId")String orderItemId);
     @Transactional
     @Update("update yuyue_mall_order_item  set status= #{status} WHERE order_item_id = #{orderItemId}")
     void updateOrderItemsStatus(@Param(value = "orderItemId") String orderItemId,@Param(value = "status") String status);

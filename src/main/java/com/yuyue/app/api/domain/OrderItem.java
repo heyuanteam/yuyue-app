@@ -44,6 +44,8 @@ public class OrderItem implements Serializable {
     //      创建时间
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
+    //是否退款  N 未退款   Y已退款
+    private String isRefund;
     //订单项与商品一对一
     private Specification specification;
 

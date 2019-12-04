@@ -1306,7 +1306,7 @@ public class PayController extends BaseController{
                 //商家减钱
                 subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
                 //修改订单状态
-                mallShopService.updateOrderItemsStatus(orderItemId,"10E");
+                mallShopService.upIsRefund(orderItemId);
                 payService.updateMIncome(user.getId(),subtract);
                 payService.updateChangeMoneyStatus(subtract,response.getMsg(), "支付宝退款成功！", "10B", changeMoney.getId());
 

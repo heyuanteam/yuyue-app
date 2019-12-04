@@ -105,6 +105,7 @@ public interface MallShopService {
     //修改单个订单项中的支付状态
     void updateOrderItemsStatus(String orderItemId,String status);
 
+    void upIsRefund(String orderItemId);
     //减库存及给商家们加钱的方法
     void mallPaySuccess(String orderId);
 

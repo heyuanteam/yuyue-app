@@ -243,6 +243,11 @@ public class MallShopServiceImpl implements MallShopService {
         mallOrderItemMapper.updateOrderItemsStatus(orderItemId,status);
     }
 
+    @Override
+    public void upIsRefund(String orderItemId) {
+        mallOrderItemMapper.upIsRefund(orderItemId);
+    }
+
 
     //减库存及给商家们加钱的方法及修改订单项状态
     @Override
