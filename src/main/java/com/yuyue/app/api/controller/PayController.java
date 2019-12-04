@@ -1187,16 +1187,22 @@ public class PayController extends BaseController{
     @RequestMapping("/refundMoney")
     @ResponseBody
     @LoginRequired
-    public JSONObject refundMoney(@CurrentUser AppUser appUser,String orderItemId,BigDecimal money,String tradeType
+    public JSONObject refundMoney(@CurrentUser AppUser appUser,String orderItemId
             ,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception{
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         log.info("-------创建退款订单-----------");
-        if (StringUtils.isEmpty(tradeType)) {
-            returnResult.setMessage("退款类型不能为空！！");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if (StringUtils.isEmpty(orderItemId)){
+        if (StringUtils.isEmpty(orderItemId)){
             returnResult.setMessage("退款orderItemId不可以为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        OrderItemVo mallOrderItemById = mallShopService.getMallOrderItemById(orderItemId);
+        BigDecimal money = mallOrderItemById.getCommodityPrice();
+        log.info("-------money-----------"+money);
+        String tradeType = mallOrderItemById.getTradeType();
+        log.info("-------tradeType-----------"+tradeType);
+        if (StringUtils.isNull(mallOrderItemById)) {
+            returnResult.setMessage("没有查询到该订单!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (money == null || money.compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("退款金额不能为空！！");
@@ -1210,12 +1216,16 @@ public class PayController extends BaseController{
         } else if (money.compareTo(new BigDecimal(1))==-1){
             returnResult.setMessage("退款不能低于1元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-        OrderItemVo mallOrderItemById = mallShopService.getMallOrderItemById(orderItemId);
-        if (StringUtils.isNull(mallOrderItemById)) {
-            returnResult.setMessage("没有查询到该订单!");
+        } else if (StringUtils.isEmpty(tradeType)) {
+            returnResult.setMessage("退款类型无法获取！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
+        if (tradeType.contains("WX")) {
+            tradeType = "TKWX";
+        } else {
+            tradeType = "TKZFB";
+        }
+
         Order oldOrder = payService.getOrderId(mallOrderItemById.getOrderId());
         if (StringUtils.isNull(oldOrder)) {
             returnResult.setMessage("没有查询到该订单!");
