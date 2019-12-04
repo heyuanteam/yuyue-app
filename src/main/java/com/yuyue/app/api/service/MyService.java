@@ -54,7 +54,7 @@ public interface MyService {
 
     Advertisement findAdvertisement(String agencyCode, String produceAddr, String phone);
 
-    ChangeMoney getChangeMoney(String orderId);
+    ChangeMoney getChangeMoney(String orderId,String orderItemId);
 
     String getMoneyStatus(String orderId);
 }
