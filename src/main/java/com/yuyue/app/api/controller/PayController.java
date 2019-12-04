@@ -1274,7 +1274,7 @@ public class PayController extends BaseController{
         if (tradeType.contains("WX")) {
 //            return refundWX(order,httpRequest,httpResponse);
         } else if (tradeType.contains("ZFB")) {
-            return refundZFB(appUser,changeMoney,httpRequest,httpResponse);
+            return refundZFB(appUser,changeMoney,orderItemId,httpRequest,httpResponse);
         }
         returnResult.setMessage("退款类型选择错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -1286,7 +1286,7 @@ public class PayController extends BaseController{
      * @param httpResponse
      * @return
      */
-    public JSONObject refundZFB(AppUser user,ChangeMoney changeMoney,HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+    public JSONObject refundZFB(AppUser user,ChangeMoney changeMoney,String orderItemId,HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         try{
@@ -1305,6 +1305,8 @@ public class PayController extends BaseController{
             if (response.isSuccess()) {
                 //商家减钱
                 subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
+                //修改订单状态
+                mallShopService.updateOrderItemsStatus(orderItemId,"10E");
                 payService.updateMIncome(user.getId(),subtract);
                 payService.updateChangeMoneyStatus(subtract,response.getMsg(), "支付宝退款成功！", "10B", changeMoney.getId());
 

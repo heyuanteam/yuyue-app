@@ -1809,7 +1809,7 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("状态为空！");
             return returnResult;
         }else {
-            if ("10B".equals(status)  ||  "10C".equals(status) || "10D".equals(status) ){
+            if ("10B".equals(status)  ||  "10C".equals(status) || "10D".equals(status) || "10E".equals(status)){
 
                 OrderItemVo orderItemVo = mallShopService.getMallOrderItemById(orderItemId);
                 if (StringUtils.isNull(orderItemVo)){
