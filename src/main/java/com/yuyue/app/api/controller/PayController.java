@@ -245,7 +245,7 @@ public class PayController extends BaseController{
                 }
             }
             //送礼
-            ChangeMoney changeMoney = myService.getChangeMoney(orderId);
+            ChangeMoney changeMoney = myService.getChangeMoney(orderId,"");
             if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
                 if (!"10B".equals(changeMoney.getStatus()) && returnCode.equals("SUCCESS")) {
                     changeMoney.setResponseCode(returnCode);
@@ -416,7 +416,7 @@ public class PayController extends BaseController{
                 }
             }
             //送礼
-            ChangeMoney changeMoney = myService.getChangeMoney(orderId);
+            ChangeMoney changeMoney = myService.getChangeMoney(orderId,"");
             if (StringUtils.isNotNull(changeMoney) && changeMoney.getTradeType().contains("XF")) {//送礼
                 if (!"10B".equals(changeMoney.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
                     changeMoney.setResponseCode(params.get("trade_status"));
@@ -1254,8 +1254,15 @@ public class PayController extends BaseController{
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
         }
+
+        ChangeMoney oldChangeMoney = myService.getChangeMoney("", orderItemId);
+        if (StringUtils.isNotNull(oldChangeMoney)) {
+            returnResult.setMessage("该订单已经退款成功，请勿重复退款！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+
         ChangeMoney changeMoney = new ChangeMoney();
-        changeMoney.setNote("mIncome");
+        changeMoney.setNote(orderItemId);
         changeMoney.setMoney(money);
         changeMoney.setTradeType(tradeType);
         changeMoney.setMerchantId(appUser.getId());

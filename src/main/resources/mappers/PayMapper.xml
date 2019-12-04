@@ -38,6 +38,9 @@
         <if test="id != null and id != ''">
             and b.id = #{id}
         </if>
+        <if test="orderItemId != null and orderItemId != ''">
+            and b.note = #{orderItemId} and b.status = '10B'
+        </if>
         order by b.COMPLETE_TIME desc LIMIT 1
     </select>
 

@@ -91,8 +91,8 @@ public class MyServiceImpl implements MyService {
     public Advertisement findAdvertisement(String agencyCode, String produceAddr, String phone) { return advertisementMapper.findAdvertisement(agencyCode,produceAddr,phone);}
 
     @Override
-    public ChangeMoney getChangeMoney(String orderId) {
-        return payMapper.getChangeMoney(orderId); }
+    public ChangeMoney getChangeMoney(String orderId,String orderItemId) {
+        return payMapper.getChangeMoney(orderId,orderItemId); }
 
     @Override
     public String getMoneyStatus(String orderId) {
