@@ -1204,7 +1204,15 @@ public class PayController extends BaseController{
 
         BigDecimal money = mallOrderItemById.getCommodityPrice();
         log.info("-------money-----------"+money);
-        String tradeType = mallOrderItemById.getTradeType();
+        Order oldOrder = payService.getOrderId(mallOrderItemById.getOrderId());
+        if (StringUtils.isNull(oldOrder)) {
+            returnResult.setMessage("没有查询到该订单!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if ("10B".equals(oldOrder.getStatus())) {
+            returnResult.setMessage("该订单没有完成支付，不可以退款!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        String tradeType = oldOrder.getTradeType();
         log.info("-------tradeType-----------"+tradeType);
         if (money == null || money.compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("退款金额不能为空！！");
@@ -1226,15 +1234,6 @@ public class PayController extends BaseController{
             tradeType = "TKWX";
         } else {
             tradeType = "TKZFB";
-        }
-
-        Order oldOrder = payService.getOrderId(mallOrderItemById.getOrderId());
-        if (StringUtils.isNull(oldOrder)) {
-            returnResult.setMessage("没有查询到该订单!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("10B".equals(oldOrder.getStatus())) {
-            returnResult.setMessage("该订单没有完成支付，不可以退款!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
         ChangeMoney changeTime = payService.getChangeMoneyByTime(appUser.getId());
