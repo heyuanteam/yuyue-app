@@ -15,10 +15,7 @@ import com.auth0.jwt.JWT;
 import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
-import com.yuyue.app.api.domain.AppUser;
-import com.yuyue.app.api.domain.ChangeMoney;
-import com.yuyue.app.api.domain.Order;
-import com.yuyue.app.api.domain.OutMoney;
+import com.yuyue.app.api.domain.*;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.MallShopService;
 import com.yuyue.app.api.service.MyService;
@@ -1190,7 +1187,7 @@ public class PayController extends BaseController{
     @RequestMapping("/refundMoney")
     @ResponseBody
     @LoginRequired
-    public JSONObject refundMoney(@CurrentUser AppUser appUser,String orderId,BigDecimal money,String tradeType
+    public JSONObject refundMoney(@CurrentUser AppUser appUser,String orderItemId,BigDecimal money,String tradeType
             ,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception{
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
@@ -1198,11 +1195,14 @@ public class PayController extends BaseController{
         if (StringUtils.isEmpty(tradeType)) {
             returnResult.setMessage("退款类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (StringUtils.isEmpty(orderItemId)){
+            returnResult.setMessage("退款orderItemId不可以为空！！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (money == null || money.compareTo(BigDecimal.ZERO)==0){
-            returnResult.setMessage("退款不能为空！！");
+            returnResult.setMessage("退款金额不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (appUser.getMIncome().compareTo(money) == -1){
-            returnResult.setMessage("退款不能高于收益余额！请线下交易！");
+            returnResult.setMessage("账户余额不足！请线下交易！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (money.compareTo(new BigDecimal(5001))==1){
             returnResult.setMessage("退款不能高于5000元！");
@@ -1211,9 +1211,17 @@ public class PayController extends BaseController{
             returnResult.setMessage("退款不能低于1元！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
-        Order oldOrder = payService.getOrderId(orderId);
+        OrderItemVo mallOrderItemById = mallShopService.getMallOrderItemById(orderItemId);
+        if (StringUtils.isNull(mallOrderItemById)) {
+            returnResult.setMessage("没有查询到该订单!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        Order oldOrder = payService.getOrderId(mallOrderItemById.getOrderId());
         if (StringUtils.isNull(oldOrder)) {
             returnResult.setMessage("没有查询到该订单!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if ("10B".equals(oldOrder.getStatus())) {
+            returnResult.setMessage("该订单没有完成支付，不可以退款!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
@@ -1247,6 +1255,7 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         changeMoney.setStatus("10B");
+        changeMoney.setSourceId(oldOrder.getMerchantId());
         createShouMoney(changeMoney);
         if (StringUtils.isEmpty(changeMoney.getId())) {
             returnResult.setMessage("创建提现订单失败！缺少参数！");
@@ -1289,10 +1298,10 @@ public class PayController extends BaseController{
                 payService.updateMIncome(user.getId(),subtract);
                 payService.updateChangeMoneyStatus(subtract,response.getMsg(), "支付宝退款成功！", "10B", changeMoney.getId());
 
-                //    极光库存通知 : 7 (merchantId,shopid)
+                //    极光商家退款通知 : 9 (id,sourceId)
                 StringBuilder sb = new StringBuilder();
-                sb.append(user.getJpushName()).append("&").append("");
-                HttpUtils.doPost(Variables.sendStockJPushUrl,sb.toString());
+                sb.append(user.getId()).append("&").append(changeMoney.getSourceId());
+                HttpUtils.doPost(Variables.sendRefundUrl,sb.toString());
 
                 returnResult.setStatus(Boolean.TRUE);
                 returnResult.setMessage("支付宝原路返回成功！");

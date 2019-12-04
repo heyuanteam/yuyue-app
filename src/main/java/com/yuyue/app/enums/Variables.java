@@ -30,6 +30,8 @@ public class Variables {
     public static final String sendStockJPushUrl = "http://"+ip+bossPort+"/yuyue-boss/send/sendStockJPush";
     //    极光商家卖出商品通知 : 8 (orderId)
     public static final String sendClotheSoldUrl = "http://"+ip+bossPort+"/yuyue-boss/send/sendClotheSold";
+    //    极光商家退款通知 : 9 (id,sourceId)
+    public static final String sendRefundUrl = "http://"+ip+bossPort+"/yuyue-boss/send/sendRefund";
 
 // -------------------------------------------------------------------------------
     //安装fastdfs的虚拟机的ip
