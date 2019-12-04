@@ -78,7 +78,7 @@
         order by b.create_time desc limit 1
     </select>
 
-    <!-- 查询打赏、提现记录 -->
+    <!-- 查询打赏、提现、退款记录 -->
     <select id="changeMoneyList" parameterType="String" resultType="com.yuyue.app.api.domain.ChangeMoneyVo">
         SELECT (SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.merchantId) yiName,
                (SELECT c.USER_NICK_NAME FROM yuyue_merchant c WHERE c.ID = b.sourceId) sourceName,
@@ -97,7 +97,7 @@
             and b.tradeType in ('TXZFB','TXZWX','SY','TG') and b.note in ('income','用户收益','推广收益')
         </if>
         <if test="tradeType!=null and tradeType!='' and tradeType == 'SC'">
-            and b.tradeType in ('TXZFB','TXZWX','SC') and b.note in ('mIncome','商城收益')
+            and b.tradeType in ('TXZFB','TXZWX','SC','TKWX','TKZFB') and b.note in ('mIncome','商城收益')
         </if>
         <if test="userId!=null and userId!=''">
             and b.merchantId = #{userId}

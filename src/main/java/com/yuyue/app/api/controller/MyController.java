@@ -133,7 +133,7 @@ public class MyController extends BaseController{
     }
 
     /**
-     * 打赏、提现记录
+     * 打赏、提现、退款记录
      * @return
      */
     @RequestMapping("/changeMoneyList")
