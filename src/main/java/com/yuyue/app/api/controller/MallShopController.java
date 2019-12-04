@@ -315,7 +315,7 @@ public class MallShopController extends BaseController{
             sortType = "distance";
         }
         if (StringUtils.isEmpty(distanceId)){
-            distanceId = "8";
+            distanceId = "1";
         }
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))
             page = "1";

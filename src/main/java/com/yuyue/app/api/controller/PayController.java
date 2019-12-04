@@ -387,7 +387,7 @@ public class PayController extends BaseController{
                     log.info("加钱===================");
                     String trxNo = params.get("trade_status");
                     //加钱
-                    orderNo.setResponseCode(trxNo);
+                    orderNo.setResponseCode(params.get("trade_no"));
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
@@ -1208,7 +1208,7 @@ public class PayController extends BaseController{
         if (StringUtils.isNull(oldOrder)) {
             returnResult.setMessage("没有查询到该订单!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("10B".equals(oldOrder.getStatus())) {
+        } else if (!"10B".equals(oldOrder.getStatus())) {
             returnResult.setMessage("该订单没有完成支付，不可以退款!");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
@@ -1263,6 +1263,8 @@ public class PayController extends BaseController{
         ChangeMoney changeMoney = new ChangeMoney();
         changeMoney.setNote("mIncome");
         changeMoney.setMoneyNumber(orderItemId);
+        log.info("===========>>>>>>"+oldOrder.getResponseCode());
+        changeMoney.setResponseCode(oldOrder.getResponseCode());
         changeMoney.setMoney(money);
         changeMoney.setTradeType(tradeType);
         changeMoney.setMerchantId(appUser.getId());
@@ -1299,13 +1301,16 @@ public class PayController extends BaseController{
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         try{
-            AlipayTradeRefundModel refundModel = new AlipayTradeRefundModel();
-            refundModel.setOutTradeNo(changeMoney.getId());
-            refundModel.setRefundAmount(String.valueOf(changeMoney.getMoney()));//可部分退款和全部退款
-            refundModel.setRefundReason("支付宝退款");
             //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
             AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
-            request.setBizModel(refundModel);
+
+            String refundReason = "支付宝退款";
+            request.setBizContent("{\"out_trade_no\":\"" + changeMoney.getId() + "\","
+                    +"\"trade_no\":\"" + changeMoney.getResponseCode() + "\","   //支付宝交易号
+                    +"\"refund_amount\":\"" + String.valueOf(changeMoney.getMoney()) + "\","
+                    +"\"refund_reason\":\""+refundReason+"\"," //可部分退款和全部退款
+                    +"\"refund_currency\":\"cny\","
+                    +"\"org_pid\":\"" + null + "\"}");
             AlipayTradeRefundResponse response = Variables.alipayClient.execute(request);
             log.info("response.getMsg()========>>>>>>"+response.getMsg()+"\n");
             log.info("response.getBody()========>>>>>>"+response.getBody());
