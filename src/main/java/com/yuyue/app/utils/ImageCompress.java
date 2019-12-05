@@ -109,7 +109,7 @@ public class ImageCompress {
             Thumbnails.of(file.getInputStream()).scale(1f)
                     .outputQuality(0.15f)
                     .outputFormat("jpg")
-                    .toFile("/var/www/html/compression_diagram" + name);
+                    .toFile("/var/www/html/compression_diagram/" + name);
         } catch (IOException e) {
 
         }
