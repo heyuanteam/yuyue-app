@@ -1280,11 +1280,96 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
         if (tradeType.contains("WX")) {
-//            return refundWX(order,httpRequest,httpResponse);
+            return refundWX(appUser,changeMoney,oldOrder,httpRequest,httpResponse);
         } else if (tradeType.contains("ZFB")) {
             return refundZFB(appUser,changeMoney,oldOrder,httpRequest,httpResponse);
         }
         returnResult.setMessage("退款类型选择错误！！");
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
+    /**
+     * 作用：微信退款，原路返回<br>
+     * 场景：当交易发生之后一段时间内，由于买家或者卖家的原因需要退款时，卖家可以通过退款接口将支付款退还给买家，
+     * 微信支付将在收到退款请求并且验证成功之后，按照退款规则将支付款按原路退到买家帐号上。
+     * 接口文档地址：https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=9_4
+     * @throws Exception e
+     * @param httpRequest
+     * @param httpResponse
+     * @return
+     */
+    public JSONObject refundWX(AppUser user,ChangeMoney changeMoney,Order oldOrder,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception {
+        getParameterMap(httpRequest, httpResponse);
+        ReturnResult returnResult = new ReturnResult();
+        try{
+            String refundReason = "微信退款";
+            log.info("oldOrder.getId()=======>>>>>"+oldOrder.getId());
+            log.info("changeMoney.getResponseCode()=======>>>>>"+changeMoney.getResponseCode());
+            Map<String, String> data = new HashMap<>();
+            data.put("appid", Variables.wxAppId);
+            data.put("mch_id", Variables.wxMchID);
+            data.put("nonce_str", RandomSaltUtil.generetRandomSaltCode(32));
+            // 变量名      字段名 必填  类型  示例值 描述
+            // 微信订单号    二选一 String(32)  1.21775E+27 微信生成的订单号，在支付通知中有返回
+            data.put("transaction_id", changeMoney.getResponseCode());
+            // 商户订单号    String(32)  1.21775E+27 商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。
+            data.put("out_trade_no", oldOrder.getId());
+            // 商户退款单号   是   String(64)  1.21775E+27 商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。
+            data.put("out_refund_no", changeMoney.getId());
+            // 订单金额 是   Int 100 订单总金额，单位为分，只能为整数，详见支付金额
+            String moneyD = oldOrder.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).setScale(0,BigDecimal.ROUND_HALF_UP).toString();
+            data.put("total_fee", moneyD);
+            // 退款金额 是   Int 100 退款总金额，订单总金额，单位为分，只能为整数，详见支付金额
+            // 默认单位为分，系统是元，所以需要*100
+            String refundMoney = changeMoney.getMoney().setScale(2, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).setScale(0,BigDecimal.ROUND_HALF_UP).toString();
+            data.put("refund_fee", refundMoney);
+            // 退款原因 否   String(80)  商品已售完   若商户传入，会在下发给用户的退款消息中体现退款原因
+            data.put("refund_desc", refundReason);
+            // 退款结果通知url    否   String(256)
+            //data.put("notify_url", notify_url);
+            /** 以下参数为非必填参数 **/
+            // 退款资金来源   否   String(30)  REFUND_SOURCE_RECHARGE_FUNDS    仅针对老资金流商户使用;REFUND_SOURCE_UNSETTLED_FUNDS---未结算资金退款（默认使用未结算资金退款）;REFUND_SOURCE_RECHARGE_FUNDS---可用余额退款
+            data.put("refund_account", "REFUND_SOURCE_RECHARGE_FUNDS");
+            String sign = MD5Utils.signDatashwx(data, Variables.wxKEY);
+            data.put("sign", sign);
+            StringBuffer sb = new StringBuffer();
+            sb.append("<xml>");
+            XMLUtils.mapToXMLTest2(data, sb);
+            sb.append("</xml>");
+            CloseableHttpResponse response = HttpUtils.Post("https://api.mch.weixin.qq.com/secapi/pay/refund", sb.toString(), true);
+            String transfersXml = EntityUtils.toString(response.getEntity(), Variables.CHARSET);
+            Map<String, String> transferMap = XMLUtils.xmlString2Map(transfersXml);
+            log.info("微信退款回返信息=============>>>>>>"+transferMap.toString());
+
+            BigDecimal subtract = BigDecimal.ZERO;
+            if (transferMap.size()>0) {
+                if (transferMap.get("result_code").equals("SUCCESS") && transferMap.get("return_code").equals("SUCCESS")) {
+                    //商家减钱
+                    subtract = ResultJSONUtils.updateUserMoney(user.getMIncome(), changeMoney.getMoney(), "");
+                    //修改订单状态
+                    mallShopService.upIsRefund(changeMoney.getMoneyNumber());
+                    payService.updateMIncome(user.getId(),subtract);
+                    payService.updateChangeMoneyStatus(subtract,transferMap.get("result_code"), "微信退款成功！", "10B", changeMoney.getId());
+
+                    //    极光商家退款通知 : 9 (id,sourceId)
+                    String id = user.getId();
+                    String sourceId = changeMoney.getSourceId();
+                    log.info("sourceId========>>>>>>"+sourceId+"====id==>>>>>>"+id);
+                    Map<String, String> params = Maps.newHashMap();
+                    params.put("id", id);
+                    params.put("sourceId", sourceId);
+                    GouldUtils.doPost(Variables.sendRefundUrl, params);
+                    returnResult.setStatus(Boolean.TRUE);
+                    returnResult.setMessage("微信原路返回成功！");
+                }else{
+                    payService.updateChangeMoneyStatus(subtract,"ERROR", "微信退款失败！", "10C", changeMoney.getId());
+                    returnResult.setMessage("微信原路返回失败！");
+                }
+            }
+        }catch (Exception e){
+            log.error("微信原路返回出错啦！！！"+e);
+            throw MyExceptionUtils.mxe("微信原路返回异常" + e.getMessage());
+        }
         return ResultJSONUtils.getJSONObjectBean(returnResult);
     }
 
@@ -1294,7 +1379,7 @@ public class PayController extends BaseController{
      * @param httpResponse
      * @return
      */
-    public JSONObject refundZFB(AppUser user,ChangeMoney changeMoney,Order oldOrder,HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+    public JSONObject refundZFB(AppUser user,ChangeMoney changeMoney,Order oldOrder,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception {
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         try{
@@ -1319,7 +1404,6 @@ public class PayController extends BaseController{
             AlipayTradeRefundResponse response = Variables.alipayClient.execute(request);
             log.info("response.getMsg()========>>>>>>"+response.getMsg()+"\n");
             log.info("response.getBody()========>>>>>>"+response.getBody());
-            //提现成功
             BigDecimal subtract = BigDecimal.ZERO;
             if (response.isSuccess()) {
                 //商家减钱
