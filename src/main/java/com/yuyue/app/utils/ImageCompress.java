@@ -102,6 +102,8 @@ public class ImageCompress {
         String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
         //获取uuid作为文件名
         String name = UUID.randomUUID().toString().replaceAll("-", "");
+        String path = System.getProperty("user.dir");
+        System.out.println(path);
         try {
             // 先尝试压缩并保存图片
             Thumbnails.of(file.getInputStream()).scale(1f)
@@ -111,6 +113,8 @@ public class ImageCompress {
         } catch (IOException e) {
 
         }
-        return REMOTE_URL.concat(name).concat(".").concat("jpg");
+        String thumbnail = REMOTE_URL.concat(name).concat(".").concat("jpg");
+        System.out.println(thumbnail);
+        return thumbnail;
     }
 }
