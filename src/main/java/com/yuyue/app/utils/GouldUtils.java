@@ -508,7 +508,7 @@ public class GouldUtils {
             MallShopVo mallShopVo = new MallShopVo();
             BeanUtil.copyProperties(mallShop, mallShopVo);
             Double distince = getDistince(gdLon, gdLat, mallShop.getGdLon(), mallShop.getGdLat());
-            mallShopVo.setDistance(distince.longValue());
+            mallShopVo.setDistance(distince.longValue()/10L);
             list.add(mallShopVo);
         });
         if ("distance".equals(sortType)) {
