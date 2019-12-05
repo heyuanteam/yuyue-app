@@ -25,6 +25,7 @@ import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -1329,10 +1330,13 @@ public class PayController extends BaseController{
                 payService.updateChangeMoneyStatus(subtract,response.getMsg(), "支付宝退款成功！", "10B", changeMoney.getId());
 
                 //    极光商家退款通知 : 9 (id,sourceId)
-                HashMap<String,String> map = Maps.newHashMap();
-                map.put("id",user.getId());
-                map.put("sourceId",changeMoney.getSourceId());
-                GouldUtils.doPost(Variables.sendRefundUrl,map);
+                String id = user.getId();
+                String sourceId = changeMoney.getSourceId();
+                log.info("sourceId========>>>>>>"+sourceId+"====id==>>>>>>"+id);
+                Map<String, String> params = Maps.newHashMap();
+                params.put("id", id);
+                params.put("sourceId", sourceId);
+                GouldUtils.doPost(Variables.sendRefundUrl, params);
 
                 returnResult.setStatus(Boolean.TRUE);
                 returnResult.setMessage("支付宝原路返回成功！");

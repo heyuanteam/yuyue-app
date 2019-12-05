@@ -1,6 +1,20 @@
 package com.yuyue.app.test;
 
+import com.google.common.collect.Maps;
+import com.yuyue.app.api.domain.AppUser;
+import com.yuyue.app.api.service.LoginService;
+import com.yuyue.app.enums.Variables;
+import com.yuyue.app.utils.GouldUtils;
+import com.yuyue.app.utils.HttpUtils;
 import com.yuyue.app.utils.MallUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +28,42 @@ public class SimpleTest {
 
 
     public static void main(String[] args) {
+//        StringBuilder sb = new StringBuilder();
+//        String id = "B044C53B38BA4E84B507E62402683E26";
+//        String sourceId = "50D530BBA2394D25A0476182D8834ACD";
+//
+//        try {
+//            CloseableHttpClient client = null;
+//            CloseableHttpResponse response = null;
+//            try {
+//                AppUser appUser = loginService.getAppUserMsg("","",sourceId);
+//                HttpGet httpGet = new HttpGet(Variables.sendRefundUrl + "?id="+id+"&sourceId="+sourceId);
+//                httpGet.setHeader("token",loginService.getToken(appUser));
+//
+//                client = HttpClients.createDefault();
+//                response = client.execute(httpGet);
+//                HttpEntity entity = response.getEntity();
+//                String result = EntityUtils.toString(entity);
+//                System.out.println(result);
+//            } finally {
+//                if (response != null) {
+//                    response.close();
+//                }
+//                if (client != null) {
+//                    client.close();
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        sb.append(id).append("&").append(sourceId);
+//        GouldUtils.doPost(Variables.sendRefundUrl,sb.toString(), ContentType.APPLICATION_JSON);
+
+//        Map<String, String> params = Maps.newHashMap();
+//        params.put("id", id);
+//        params.put("sourceId", sourceId);
+//        GouldUtils.doPost(Variables.sendRefundUrl, params);
+//        HttpUtils.doPost(Variables.sendRefundUrl,sb.toString());
 
        /* String a="0.05";
         String b="0.1";
@@ -295,14 +345,14 @@ public class SimpleTest {
 //            }
 //            System.out.println("shop:"+s);
 //        }
-        String distanceId = "不能";
-        if(!distanceId.matches("[1-8]")){
-            System.out.println("+++++++");
-        }
-
-        else if (Integer.parseInt(distanceId)<=8 && Integer.parseInt(distanceId)>=1){
-            System.out.println("------");
-        }
+//        String distanceId = "不能";
+//        if(!distanceId.matches("[1-8]")){
+//            System.out.println("+++++++");
+//        }
+//
+//        else if (Integer.parseInt(distanceId)<=8 && Integer.parseInt(distanceId)>=1){
+//            System.out.println("------");
+//        }
 
     }
 
