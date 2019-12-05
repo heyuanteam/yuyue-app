@@ -11,6 +11,7 @@ import com.yuyue.app.api.mapper.UploadFileMapper;
 import com.yuyue.app.api.service.UploadFileService;
 import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.enums.Variables;
+import com.yuyue.app.utils.ImageCompress;
 import com.yuyue.app.utils.ResultJSONUtils;
 import com.yuyue.app.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -112,7 +113,10 @@ public class UploadFileServiceImpl implements UploadFileService {
 //                    uploadFile.setAuthorId(user.getId());
                     uploadFile.setFilesName(files[i].getOriginalFilename());
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
-
+                    if ("jpg".equals(subFileType) || "png".equals(subFileType) ||
+                            "gif".equals(subFileType)  ||"jpeg".equals(subFileType)){
+                        uploadFile.setThumbnail(ImageCompress.thumbnail(files[i]));
+                    }
 //                    uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
 //                    uploadFile.setFilesMD5(MD5Utils.getMd5ByUrl("http://"+uploadFile.getFilesPath()));
                     log.info("文件存储在服务器的路径==============>{}", Variables.ip_home + "/" + storePath.getFullPath());

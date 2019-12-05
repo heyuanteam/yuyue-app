@@ -29,6 +29,8 @@ public class UploadFile implements Serializable {
     private String videoAddress;
 //  文件地址
     private String filesPath;
+    //图片压缩图
+    private String thumbnail;
 //  文件类型
     private String filesType;
 //  文件大小
