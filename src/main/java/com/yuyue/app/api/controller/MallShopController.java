@@ -340,17 +340,20 @@ public class MallShopController extends BaseController{
 //            获取距离
         List<Distance> allDistance = mallShopService.getDistanceAll(distanceId);
         String allDistanceValue = allDistance.get(0).getDistanceValue();
+        Iterator<MallShopVo> iter = list.iterator();
+        Long along = 0L;
         if (!allDistanceValue.contains("全部")){
-            Iterator<MallShopVo> iter = list.iterator();
-            Long along = Long.valueOf(allDistanceValue) * 1000L;
-            while (iter.hasNext()) {
-                MallShopVo mallShopVo = (MallShopVo) iter.next();
+            along = Long.valueOf(allDistanceValue) * 1000L;
+        }
+        while (iter.hasNext()) {
+            MallShopVo mallShopVo = (MallShopVo) iter.next();
 //              双向选择
-                String distanceValue = mallShopVo.getDistances().getDistanceValue();
-                if (mallShopVo.getDistance() > along || (StringUtils.isNotEmpty(distanceValue) && !distanceValue.contains("全部") &&
-                        (mallShopVo.getDistance() > Long.valueOf(distanceValue) * 1000L || along > Long.valueOf(distanceValue) * 1000L))) {
-                    iter.remove();
-                }
+            String distanceValue = mallShopVo.getDistances().getDistanceValue();
+            if (mallShopVo.getDistance() > along || (StringUtils.isNotEmpty(distanceValue) && !distanceValue.contains("全部") &&
+                    (mallShopVo.getDistance() > Long.valueOf(distanceValue) * 1000L || along > Long.valueOf(distanceValue) * 1000L))) {
+                iter.remove();
+            } else if (StringUtils.isNotEmpty(distanceValue) && distanceValue.contains("全部") && mallShopVo.getDistance() > Long.valueOf(distanceValue) * 1000L ){
+                iter.remove();
             }
         }
 
