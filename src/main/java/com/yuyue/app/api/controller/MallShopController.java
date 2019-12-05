@@ -348,7 +348,7 @@ public class MallShopController extends BaseController{
 //              双向选择
                 String distanceValue = mallShopVo.getDistances().getDistanceValue();
                 if (mallShopVo.getDistance() > along || (StringUtils.isNotEmpty(distanceValue) && !distanceValue.contains("全部") &&
-                        (mallShopVo.getDistance() > Long.valueOf(distanceValue) * 1000L) || along > Long.valueOf(distanceValue) * 1000L)) {
+                        (mallShopVo.getDistance() > Long.valueOf(distanceValue) * 1000L || along > Long.valueOf(distanceValue) * 1000L))) {
                     iter.remove();
                 }
             }
