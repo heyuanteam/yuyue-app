@@ -1,9 +1,12 @@
 package com.yuyue.app.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yuyue.app.api.domain.AppUser;
+import com.yuyue.app.enums.Variables;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
@@ -240,4 +243,28 @@ public class HttpUtils {
         return ip;
     }
 
+    public static void sendGetUrl(String url,String parameter,String token) {
+        try {
+            CloseableHttpClient client = null;
+            CloseableHttpResponse response = null;
+            try {
+                HttpGet httpGet = new HttpGet( url+"?"+ parameter);
+                httpGet.setHeader("token", token);
+                client = HttpClients.createDefault();
+                response = client.execute(httpGet);
+                HttpEntity entity = response.getEntity();
+                String result = EntityUtils.toString(entity);
+                System.out.println(result);
+            } finally {
+                if (response != null) {
+                    response.close();
+                }
+                if (client != null) {
+                    client.close();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -39,7 +39,7 @@
             and b.id = #{id}
         </if>
         <if test="orderItemId != null and orderItemId != ''">
-            and b.note = #{orderItemId} and b.status = '10B'
+            and b.moneyNumber = #{orderItemId} and b.status = '10B'
         </if>
         order by b.COMPLETE_TIME desc LIMIT 1
     </select>
@@ -113,7 +113,7 @@
             FROM yuyue_change_money b
             WHERE 1=1 and tradeType like  'TX%'
             <if test="userId!=null and userId!=''">
-                and b.merchantId = #{userId}
+                and b.merchantId = #{userId} and b.status = '10B'
             </if>
         order by b.CREATE_TIME desc LIMIT 1
     </select>

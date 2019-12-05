@@ -25,6 +25,7 @@ import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -387,7 +388,7 @@ public class PayController extends BaseController{
                     log.info("加钱===================");
                     String trxNo = params.get("trade_status");
                     //加钱
-                    orderNo.setResponseCode(trxNo);
+                    orderNo.setResponseCode(params.get("trade_no"));
                     orderNo.setResponseMessage(trxNo);
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
@@ -578,19 +579,16 @@ public class PayController extends BaseController{
 
         ChangeMoney changeTime = payService.getChangeMoneyByTime(user.getId());
         if (StringUtils.isNotNull(changeTime)) {
-            //上次提时间
+            //上次退款时间
             Date parse = dateFormat.parse(changeTime.getCreateTime());
-            long goTime = parse.getTime();
-            int second = (int)goTime / 1000;
-            log.info("上次提现时间====>>>>"+dateFormat.format(parse)+"秒数====>>>>"+second);
+            long goTime = parse.getTime()/ 1000;
+            log.info("上次退款时间====>>>>"+dateFormat.format(parse)+"秒数====>>>>"+goTime);
             //当前系统时间
             Date date = dateFormat.parse(dateFormat.format(new Date()));
-            Long toTime = date.getTime();
-            int systemTime =toTime.intValue() / 1000;
-            log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+systemTime);
-
-            if ((systemTime - second) < 30 ) {
-                returnResult.setMessage("您好！30秒内，只能提现一次！");
+            Long toTime = date.getTime()/ 1000;
+            log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+toTime);
+            if ((toTime - goTime) < 30 ) {
+                returnResult.setMessage("您好！30秒内，只能退款一次！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
         }
@@ -1204,7 +1202,15 @@ public class PayController extends BaseController{
 
         BigDecimal money = mallOrderItemById.getCommodityPrice();
         log.info("-------money-----------"+money);
-        String tradeType = mallOrderItemById.getTradeType();
+        Order oldOrder = payService.getOrderId(mallOrderItemById.getOrderId());
+        if (StringUtils.isNull(oldOrder)) {
+            returnResult.setMessage("没有查询到该订单!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (!"10B".equals(oldOrder.getStatus())) {
+            returnResult.setMessage("该订单没有完成支付，不可以退款!");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        String tradeType = oldOrder.getTradeType();
         log.info("-------tradeType-----------"+tradeType);
         if (money == null || money.compareTo(BigDecimal.ZERO)==0){
             returnResult.setMessage("退款金额不能为空！！");
@@ -1228,28 +1234,17 @@ public class PayController extends BaseController{
             tradeType = "TKZFB";
         }
 
-        Order oldOrder = payService.getOrderId(mallOrderItemById.getOrderId());
-        if (StringUtils.isNull(oldOrder)) {
-            returnResult.setMessage("没有查询到该订单!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        } else if ("10B".equals(oldOrder.getStatus())) {
-            returnResult.setMessage("该订单没有完成支付，不可以退款!");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }
-
         ChangeMoney changeTime = payService.getChangeMoneyByTime(appUser.getId());
         if (StringUtils.isNotNull(changeTime)) {
             //上次退款时间
             Date parse = dateFormat.parse(changeTime.getCreateTime());
-            long goTime = parse.getTime();
-            int second = (int)goTime / 1000;
-            log.info("上次退款时间====>>>>"+dateFormat.format(parse)+"秒数====>>>>"+second);
+            long goTime = parse.getTime()/ 1000;
+            log.info("上次退款时间====>>>>"+dateFormat.format(parse)+"秒数====>>>>"+goTime);
             //当前系统时间
             Date date = dateFormat.parse(dateFormat.format(new Date()));
-            Long toTime = date.getTime();
-            int systemTime =toTime.intValue() / 1000;
-            log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+systemTime);
-            if ((systemTime - second) < 30 ) {
+            Long toTime = date.getTime()/ 1000;
+            log.info("当前系统时间====>>>>"+dateFormat.format(date)+"秒数====>>>>"+toTime);
+            if ((toTime - goTime) < 30 ) {
                 returnResult.setMessage("您好！30秒内，只能退款一次！");
                 return ResultJSONUtils.getJSONObjectBean(returnResult);
             }
@@ -1263,7 +1258,10 @@ public class PayController extends BaseController{
 
         ChangeMoney changeMoney = new ChangeMoney();
         changeMoney.setNote("mIncome");
+        //小订单ID
         changeMoney.setMoneyNumber(orderItemId);
+        //支付回调ID
+        changeMoney.setRealName(oldOrder.getResponseCode());
         changeMoney.setMoney(money);
         changeMoney.setTradeType(tradeType);
         changeMoney.setMerchantId(appUser.getId());
@@ -1284,7 +1282,7 @@ public class PayController extends BaseController{
         if (tradeType.contains("WX")) {
 //            return refundWX(order,httpRequest,httpResponse);
         } else if (tradeType.contains("ZFB")) {
-            return refundZFB(appUser,changeMoney,httpRequest,httpResponse);
+            return refundZFB(appUser,changeMoney,oldOrder,httpRequest,httpResponse);
         }
         returnResult.setMessage("退款类型选择错误！！");
         return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -1296,15 +1294,26 @@ public class PayController extends BaseController{
      * @param httpResponse
      * @return
      */
-    public JSONObject refundZFB(AppUser user,ChangeMoney changeMoney,HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+    public JSONObject refundZFB(AppUser user,ChangeMoney changeMoney,Order oldOrder,HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
         try{
-            AlipayTradeRefundModel refundModel = new AlipayTradeRefundModel();
-            refundModel.setOutTradeNo(changeMoney.getId());
-            refundModel.setRefundAmount(String.valueOf(changeMoney.getMoney()));//可部分退款和全部退款
-            refundModel.setRefundReason("支付宝退款");
             //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
+
+            String refundReason = "支付宝退款";
+            AlipayTradeRefundModel refundModel = new AlipayTradeRefundModel();
+            log.info("oldOrder.getId()=======>>>>>"+oldOrder.getId());
+            log.info("changeMoney.getResponseCode()=======>>>>>"+changeMoney.getResponseCode());
+            refundModel.setOutTradeNo(oldOrder.getId());
+            refundModel.setTradeNo(changeMoney.getResponseCode());
+            refundModel.setRefundAmount(String.valueOf(changeMoney.getMoney()));
+            refundModel.setRefundReason(refundReason);
+//            request.setBizContent("{\"out_trade_no\":\"" + changeMoney.getId() + "\","
+//                    +"\"trade_no\":\"" + changeMoney.getResponseCode() + "\","   //支付宝交易号
+//                    +"\"refund_amount\":\"" + changeMoney.getMoney() + "\","
+//                    +"\"refund_reason\":\""+refundReason+"\"," //可部分退款和全部退款
+//                    +"\"refund_currency\":\"cny\","
+//                    +"\"org_pid\":\"" + null + "\"}");
             AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
             request.setBizModel(refundModel);
             AlipayTradeRefundResponse response = Variables.alipayClient.execute(request);
@@ -1321,9 +1330,13 @@ public class PayController extends BaseController{
                 payService.updateChangeMoneyStatus(subtract,response.getMsg(), "支付宝退款成功！", "10B", changeMoney.getId());
 
                 //    极光商家退款通知 : 9 (id,sourceId)
-                StringBuilder sb = new StringBuilder();
-                sb.append(user.getId()).append("&").append(changeMoney.getSourceId());
-                HttpUtils.doPost(Variables.sendRefundUrl,sb.toString());
+                String id = user.getId();
+                String sourceId = changeMoney.getSourceId();
+                log.info("sourceId========>>>>>>"+sourceId+"====id==>>>>>>"+id);
+                Map<String, String> params = Maps.newHashMap();
+                params.put("id", id);
+                params.put("sourceId", sourceId);
+                GouldUtils.doPost(Variables.sendRefundUrl, params);
 
                 returnResult.setStatus(Boolean.TRUE);
                 returnResult.setMessage("支付宝原路返回成功！");
