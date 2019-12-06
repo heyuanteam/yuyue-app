@@ -657,28 +657,53 @@ public class MallShopController extends BaseController{
             mallShop.setMerchantId(user.getId());
             mallShop.setCategory(request.getParameter("category"));
             mallShop.setCommodityName(request.getParameter("commodityName"));
-            String commodityImage = request.getParameter("images");
-            if (StringUtils.isNotEmpty(commodityImage)){
-                if (commodityImage.contains(";")){
-                    String[] images = commodityImage.split(";");
-
-                    for ( Byte i = 0 ; i < images.length ; i++) {
+            //压缩图
+            String commodityImages = request.getParameter("images");
+            //原图
+            String originalImages = request.getParameter("originalImages");
+            if (StringUtils.isEmpty(originalImages)){
+                returnResult.setMessage("原图路径不可为空！");
+                return returnResult;
+            }else {
+                mallShopService.deleteImageByShopId(shopId);
+                if (originalImages.contains(";")){
+                    //原图
+                    String[] originalImage = originalImages.split(";");
+                    String[] commodityImage = null;
+                    if (StringUtils.isNotEmpty(commodityImages) && commodityImages.contains(";")){
+                        //压缩图
+                        commodityImage = commodityImages.split(";");
+                    }else {
+                        commodityImage[0] = commodityImages;
+                    }
+                    for ( Byte i = 0 ; i < originalImage.length ; i++) {
                         ShopImage shopImage = new ShopImage();
-                        shopImage.setImagePath(images[i]);
+                        String id = UUID.randomUUID().toString().replace("-","").toUpperCase();
+                        shopImage.setId(id);
+                        shopImage.setOriginalImage(originalImage[i]);
+                        if (i < commodityImage.length){
+                            shopImage.setImagePath(commodityImage[i]);
+                            System.out.println("缩图："+commodityImage[i]);
+                        }
                         shopImage.setImageSort(i);
                         shopImage.setShopId(shopId);
-                        System.out.println(images[i]);
+                        System.out.println("原图："+originalImage[i]);
+                        System.out.println("----------");
                         mallShopService.insertShopImage(shopImage);
                     }
                 }else {
                     ShopImage shopImage = new ShopImage();
-                    shopImage.setImagePath(commodityImage);
+                    String id = UUID.randomUUID().toString().replace("-","").toUpperCase();
+                    shopImage.setId(id);
+                    shopImage.setImagePath(commodityImages);
+                    shopImage.setOriginalImage(originalImages);
                     shopImage.setImageSort((byte) 0);
                     shopImage.setShopId(shopId);
                     mallShopService.insertShopImage(shopImage);
                 }
 
             }
+
 
             mallShop.setDetail(request.getParameter("detail"));
 
@@ -899,7 +924,7 @@ public class MallShopController extends BaseController{
 
 
     /**
-     * 修改商铺图片
+     * 修改商铺图片(弃用)
      * @param request
      * @param response
      * @return
@@ -912,6 +937,7 @@ public class MallShopController extends BaseController{
         getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
         String commodityImage = request.getParameter("images");
+
         String shopId = request.getParameter("shopId");
         if (StringUtils.isEmpty(shopId)){
             returnResult.setMessage("商铺id为空！");
