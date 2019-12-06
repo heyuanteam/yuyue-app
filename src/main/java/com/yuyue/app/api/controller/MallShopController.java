@@ -1062,7 +1062,7 @@ public class MallShopController extends BaseController{
         ReturnResult returnResult = new ReturnResult();
         Specification specification = new Specification();
         getParameterMap(request, response);
-
+        log.info("编辑规格(添加修改)------------->>/mallShop/editSpecification");
         if (StringUtils.isEmpty(commodityPrice)){
             returnResult.setMessage("价格不能为空！");
             return returnResult;
@@ -1093,6 +1093,7 @@ public class MallShopController extends BaseController{
         specification.setCommodityReserve(Integer.parseInt(commodityReserve));
         specification.setCommoditySize(commoditySize);
         specification.setImagePath(imagePath);
+        //如果是添加规格
         if (StringUtils.isEmpty(commodityId)){
             if (StringUtils.isEmpty(shopId)){
                 returnResult.setMessage("商铺id不能为空！");
@@ -1104,6 +1105,16 @@ public class MallShopController extends BaseController{
             returnResult.setMessage("规格添加成功！");
 
         }else {
+            //修改规格
+            Specification specificationById = mallShopService.getSpecificationById(commodityId);
+            if (StringUtils.isNotEmpty(status) &&(StringUtils.isEmpty(specificationById.getStatus())
+                    ||"10A".equals(specificationById.getStatus()) || "10B".equals(specificationById.getStatus()))){
+                specification.setStatus(status);
+            }else if ("10D".equals(specificationById.getStatus()) && "10A".equals(status)){
+                specification.setStatus("10A");
+            }else if ("10D".equals(specificationById.getStatus()) && "10B".equals(status)){
+                specification.setStatus("10B");
+            }
             specification.setCommodityId(commodityId);
             mallShopService.updateSpecification(specification);
             returnResult.setMessage("规格修改成功！");

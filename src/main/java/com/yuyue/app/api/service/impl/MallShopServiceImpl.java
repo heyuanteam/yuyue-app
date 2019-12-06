@@ -271,6 +271,7 @@ public class MallShopServiceImpl implements MallShopService {
                     StringBuilder sb = new StringBuilder();
                     sb.append(orderItem.getCommodityId()).append("&").append(orderItem.getShopId());
                     HttpUtils.doPost(Variables.sendStockJPushUrl,sb.toString());
+                    specification.setStatus("10D");
                 }
                 specification.setCommodityReserve(i);
                 updateSpecification(specification);
