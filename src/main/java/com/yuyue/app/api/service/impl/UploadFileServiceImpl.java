@@ -115,9 +115,12 @@ public class UploadFileServiceImpl implements UploadFileService {
                     uploadFile.setFilesPath(Variables.ip_home + "/" + storePath.getFullPath());
                     if ("jpg".equals(subFileType) || "png".equals(subFileType) ||
                             "gif".equals(subFileType)  ||"jpeg".equals(subFileType)){
-                        String thumbnail = ImageCompress.thumbnail(files[i]);
-                        System.out.println(thumbnail);
-                        uploadFile.setThumbnail(thumbnail);
+                        if (1*1024*1024 < files[i].getSize() ){
+                            String thumbnail = ImageCompress.thumbnail(files[i]);
+                            System.out.println(thumbnail);
+                            uploadFile.setThumbnail(thumbnail);
+                        }
+
                     }
 //                    uploadFile.setFileSize(ResultJSONUtils.getSize(Double.valueOf(files[i].getSize())));
 //                    uploadFile.setFilesMD5(MD5Utils.getMd5ByUrl("http://"+uploadFile.getFilesPath()));
