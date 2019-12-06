@@ -221,7 +221,7 @@ public class PayController extends BaseController{
             BigDecimal subtract = BigDecimal.ZERO;
             if (StringUtils.isNotNull(orderNo)) {
                 if (!"10B".equals(orderNo.getStatus()) && returnCode.equals("SUCCESS")) {
-                    orderNo.setResponseCode(returnCode);
+                    orderNo.setResponseCode(object.get("transaction_id").toString());
                     orderNo.setResponseMessage(object.get("result_code").toString());
                     orderNo.setStatus("10B");
                     payService.updateOrderStatus(orderNo.getResponseCode(), orderNo.getResponseMessage(), orderNo.getStatus(), orderNo.getOrderNo());
