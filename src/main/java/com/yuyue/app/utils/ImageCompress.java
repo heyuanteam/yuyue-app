@@ -107,7 +107,7 @@ public class ImageCompress {
         try {
             // 先尝试压缩并保存图片
             Thumbnails.of(file.getInputStream()).scale(1f)
-                    .outputQuality(0.15f)
+                    .outputQuality(0.015f)
                     .outputFormat("jpg")
                     .toFile("/var/www/html/compression_diagram/" + name);
         } catch (IOException e) {

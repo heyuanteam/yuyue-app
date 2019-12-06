@@ -32,6 +32,7 @@
             <id column="image_id" property="imageId"/>
             <result column="image_path" property="imagePath"/>
             <result column="image_sort" property="imageSort"/>
+            <result column="original_image" property="originalImage"/>
         </collection>
         <collection property="distances" ofType="com.yuyue.app.api.domain.Distance" >
             <id column="id" property="id"/>
