@@ -17,9 +17,9 @@ public interface ShopImageMapper extends MyBaseMapper<ShopImage> {
     List<ShopImage> getShopImage(@Param(value = "shopId") String shopId);
 
     @Transactional
-    @Insert("REPLACE into yuyue_mall_shop_images (image_path,shop_id,image_sort)  \n" +
+    @Insert("REPLACE into yuyue_mall_shop_images (id,image_path,shop_id,image_sort,original_image)  \n" +
             "VALUES \n" +
-            " (#{imagePath},#{shopId},#{imageSort})")
+            " (#{id},#{imagePath},#{shopId},#{imageSort},#{originalImage})")
     void insertShopImage(ShopImage shopImage);
 
     @Transactional
