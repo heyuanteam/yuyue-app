@@ -16,6 +16,7 @@
         <result column="shop_income" property="shopIncome"/>
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
+        <result column="isRefund" property="isRefund"/>
 
         <association property="specification" javaType="com.yuyue.app.api.domain.Specification" >
             <id column="commodity_id" property="commodityId"/>
