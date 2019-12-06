@@ -18,6 +18,7 @@
         <result column="duration" property="duration"/>
         <result column="title" property="title"/>
         <result column="videoAddress" property="videoAddress"/>
+        <result column="originalImage" property="originalImage"/>
         <result column="categoryId" property="categoryId"/>
         <result column="status" property="status"/>
         <association property="appUser" javaType="com.yuyue.app.api.domain.AppUser">
@@ -35,7 +36,7 @@
         SELECT
         b.id ,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b.filesName,b.filesPath,
         b.filesType,b.fileSize,b.authorId,b.description,b.playAmount,b.commentAmount,b.likeAmount,b.attentionAmount,
-        b.duration,b.title,b.videoAddress,b.categoryId,b.status,
+        b.duration,b.title,b.videoAddress,b.originalImage,b.categoryId,b.status,
         m.ID "userId",m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL
         from yuyue_upload_file_0 b
         left join yuyue_merchant m on b.authorId = m.ID
@@ -50,7 +51,7 @@
         SELECT
         b1.id ,DATE_FORMAT(b1.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b1.filesName,b1.filesPath,
         b1.filesType,b1.fileSize,b1.authorId,b1.description,b1.playAmount,b1.commentAmount,b1.likeAmount,b1.attentionAmount,
-        b1.duration,b1.title,b1.videoAddress,b1.categoryId,b1.status,
+        b1.duration,b1.title,b1.videoAddress,b1.originalImage,b1.categoryId,b1.status,
         m1.ID "userId",m1.USER_NICK_NAME,m1.HEADP_URL,m1.ATTENTION_TOTAL,m1.LIKE_TOTAL,m1.COMMENT_TOTAL
         from yuyue_upload_file_1 b1
         left join yuyue_merchant  m1 on b1.authorId = m1.ID
@@ -75,7 +76,7 @@
         SELECT
         b.id ,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b.filesName,b.filesPath,
         b.filesType,b.fileSize,b.authorId,b.description,b.playAmount,b.commentAmount,b.likeAmount,b.attentionAmount,
-        b.duration,b.title,b.videoAddress,b.categoryId,b.status,
+        b.duration,b.title,b.videoAddress,b.originalImage,b.categoryId,b.status,
         m.ID "userId",m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL
         from yuyue_upload_file_0 b
         left join yuyue_merchant m on b.authorId = m.ID
@@ -84,7 +85,7 @@
         SELECT
         b1.id ,DATE_FORMAT(b1.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b1.filesName,b1.filesPath,
         b1.filesType,b1.fileSize,b1.authorId,b1.description,b1.playAmount,b1.commentAmount,b1.likeAmount,b1.attentionAmount,
-        b1.duration,b1.title,b1.videoAddress,b1.categoryId,b1.status,
+        b1.duration,b1.title,b1.videoAddress,b1.originalImage,b1.categoryId,b1.status,
         m1.ID "userId",m1.USER_NICK_NAME,m1.HEADP_URL,m1.ATTENTION_TOTAL,m1.LIKE_TOTAL,m1.COMMENT_TOTAL
         from yuyue_upload_file_1 b1
         left join yuyue_merchant  m1 on b1.authorId = m1.ID
@@ -99,13 +100,13 @@
 
         SELECT total.id ,DATE_FORMAT(total.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,total.filesName,total.filesPath,
         total.filesType,total.fileSize,total.authorId,total.description,total.playAmount,total.commentAmount,total.likeAmount,
-        total.attentionAmount,total.duration,total.title,total.videoAddress,total.categoryId,total.status,
+        total.attentionAmount,total.duration,total.title,total.videoAddress,originalImage,total.categoryId,total.status,
         m.ID "userId",m.USER_NICK_NAME,m.HEADP_URL,m.ATTENTION_TOTAL,m.LIKE_TOTAL,m.COMMENT_TOTAL FROM
 
         ((SELECT
         b.id ,DATE_FORMAT(b.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b.filesName,b.filesPath,
         b.filesType,b.fileSize,b.authorId,b.description,b.playAmount,b.commentAmount,b.likeAmount,b.attentionAmount,
-        b.duration,b.title,b.videoAddress,b.categoryId,b.status
+        b.duration,b.title,b.videoAddress,b.originalImage,b.categoryId,b.status
         FROM yuyue_upload_file_0 b WHERE    status ='10B'
             <if test='type == "video"'>
                 and  b.UPLOAD_TIME &lt; #{parameter}
@@ -133,7 +134,7 @@
         (SELECT
         b1.id ,DATE_FORMAT(b1.UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') UPLOAD_TIME,b1.filesName,b1.filesPath,
         b1.filesType,b1.fileSize,b1.authorId,b1.description,b1.playAmount,b1.commentAmount,b1.likeAmount,b1.attentionAmount,
-        b1.duration,b1.title,b1.videoAddress,b1.categoryId,b1.status
+        b1.duration,b1.title,b1.videoAddress,b1.originalImage,b1.categoryId,b1.status
         FROM yuyue_upload_file_1 b1  WHERE    status ='10B'
         <if test='type == "video"'>
             and  b1.UPLOAD_TIME &lt; #{parameter}

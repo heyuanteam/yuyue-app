@@ -2256,7 +2256,7 @@ public class MallShopController extends BaseController{
 
 
     /**
-     *商户获取所有订单(顾客订单)
+     *顾客订单(顾客订单)
      * @param appUser
      * @param request
      * @param response
@@ -2269,7 +2269,7 @@ public class MallShopController extends BaseController{
                                   HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
-        log.info("商户获取所有订单(顾客订单)------------->>/mallShop/getMerchantOrder");
+        log.info("顾客订单------------->>/mallShop/getMerchantOrder");
         getParameterMap(request, response);
         //String orderId = request.getParameter("orderId");
         //订单状态（做筛选用）
@@ -2305,7 +2305,7 @@ public class MallShopController extends BaseController{
 
 
     /**
-     *商户获取所有订单
+     *顾客订单(第一版弃用)
      * @param appUser
      * @param request
      * @param response
@@ -2318,85 +2318,86 @@ public class MallShopController extends BaseController{
                                          HttpServletRequest request, HttpServletResponse response){
 
         ReturnResult returnResult = new ReturnResult();
-        log.info("商户获取所有订单------------->>/mallShop/getOrderByMerchantId");
+        log.info("顾客订单(第一版弃用)------------->>/mallShop/getOrderByMerchantId");
         getParameterMap(request, response);
+        return returnResult;
         //String orderId = request.getParameter("orderId");
         //订单状态
-        String status = request.getParameter("status");
-        String orderNo = request.getParameter("orderId");
+//        String status = request.getParameter("status");
+//        String orderNo = request.getParameter("orderId");
+//        //通过shopId获取该商铺的全部订单
+//        List<String> orderByShopId = null;
+//        //将结果打包
+//        List<ReturnOrder> returnOrders = new ArrayList<>();
+//        //获取我的商铺id
+//        List<MallShop> mallShops = mallShopService.myMallShopInfo(appUser.getId());
+//        if (StringUtils.isEmpty(mallShops)){
+//            returnResult.setMessage("暂无商铺！");
+//            returnResult.setStatus(Boolean.TRUE);
+//            return returnResult;
+//        }
+//        for (MallShop mallShop:mallShops
+//        ) {
+//            String shopId = mallShop.getShopId();
+//            //获取商铺订单列表
+//            if (StringUtils.isEmpty(orderNo)){
+//                orderByShopId = mallShopService.getOrderToItem(shopId,"",status);
+//            }else {
+//                orderByShopId.add(orderNo);
+//            }if (StringUtils.isEmpty(orderByShopId)){
+//                continue;
+//            }else {
+//                for (String orderId:orderByShopId
+//                ) {
+//                    Order order = payService.getOrderId(orderId);
+//                    if ("10A".equals(order.getStatus()) ||"10C".equals(order.getStatus()) || "10D".equals(order.getStatus())){
+//                        continue;
+//                    }
+//                    ReturnOrder returnOrder =new ReturnOrder();
+//                    //根据订单id获取订单项
+//                    List<OrderItem> mallOrderItems = mallShopService.getMallOrderItem(orderId,shopId,"");
+//                    List<Specification> commodities = new ArrayList<>();
+//                    String  payAmount ="0";
+//                    for (OrderItem orderItem:mallOrderItems
+//                    ) {
+//                        Specification specificationById = mallShopService.getSpecificationById(orderItem.getCommodityId());
+//                        //设置规格价格
+//                        specificationById.setCommodityPrice(orderItem.getCommodityPrice());
+//                        //设置规格购买数量
+//                        specificationById.setCommodityNum(orderItem.getCommodityNum());
+//                        //设置支付状态
+//                        specificationById.setStatus(order.getStatus());
+//                        payAmount = orderItem.getCommodityPrice().multiply(BigDecimal.valueOf(orderItem.getCommodityNum())).toString();
+//                        commodities.add(specificationById);
+//                    }
+//                    //去订单号
+//
+//                    AppUser appUserMsg = loginService.getAppUserMsg("", "",  mallOrderItems.get(0).getConsumerId());
+//                    //消费者名
+//                    returnOrder.setConsumerName(appUserMsg.getNickName());
+//                    returnOrder.setConsumerPhone(appUserMsg.getPhone());
+//                    returnOrder.setOrderNo(order.getOrderNo());
+//                    returnOrder.setOrderId(order.getId());
+//                    returnOrder.setCommodities(commodities);
+//                    returnOrder.setPayAmount(new BigDecimal(payAmount).add(mallOrderItems.get(0).getFare()));
+//                    returnOrder.setFare(mallOrderItems.get(0).getFare());
+//                    //下单时间
+//                    returnOrder.setCreateTime(mallOrderItems.get(0).getCreateTime());
+//                    //支付类型
+//                    returnOrder.setTradeType(order.getTradeType());
+//                    returnOrder.setStatus(mallOrderItems.get(0).getStatus());
+//                    returnOrders.add(returnOrder);
+//                }
+//            }
+//        }
+//        returnResult.setMessage("查询成功！");
+//        returnResult.setStatus(Boolean.TRUE);
+//        returnResult.setResult(returnOrders);
+//        return returnResult;
 
-        //通过shopId获取该商铺的全部订单
-        List<String> orderByShopId = null;
-        //将结果打包
-        List<ReturnOrder> returnOrders = new ArrayList<>();
-        //获取我的商铺id
-        List<MallShop> mallShops = mallShopService.myMallShopInfo(appUser.getId());
-        if (StringUtils.isEmpty(mallShops)){
-            returnResult.setMessage("暂无商铺！");
-            returnResult.setStatus(Boolean.TRUE);
-            return returnResult;
-        }
-        for (MallShop mallShop:mallShops
-        ) {
-            String shopId = mallShop.getShopId();
-            //获取商铺订单列表
-            if (StringUtils.isEmpty(orderNo)){
-                orderByShopId = mallShopService.getOrderToItem(shopId,"",status);
-            }else {
-                orderByShopId.add(orderNo);
-            }if (StringUtils.isEmpty(orderByShopId)){
-                continue;
-            }else {
-                for (String orderId:orderByShopId
-                ) {
-                    Order order = payService.getOrderId(orderId);
-                    if ("10A".equals(order.getStatus()) ||"10C".equals(order.getStatus()) || "10D".equals(order.getStatus())){
-                        continue;
-                    }
-                    ReturnOrder returnOrder =new ReturnOrder();
-                    //根据订单id获取订单项
-                    List<OrderItem> mallOrderItems = mallShopService.getMallOrderItem(orderId,shopId,"");
-                    List<Specification> commodities = new ArrayList<>();
-                    String  payAmount ="0";
-                    for (OrderItem orderItem:mallOrderItems
-                    ) {
-                        Specification specificationById = mallShopService.getSpecificationById(orderItem.getCommodityId());
-                        //设置规格价格
-                        specificationById.setCommodityPrice(orderItem.getCommodityPrice());
-                        //设置规格购买数量
-                        specificationById.setCommodityNum(orderItem.getCommodityNum());
-                        //设置支付状态
-                        specificationById.setStatus(order.getStatus());
-                        payAmount = orderItem.getCommodityPrice().multiply(BigDecimal.valueOf(orderItem.getCommodityNum())).toString();
-                        commodities.add(specificationById);
-                    }
-                    //去订单号
-
-                    AppUser appUserMsg = loginService.getAppUserMsg("", "",  mallOrderItems.get(0).getConsumerId());
-                    //消费者名
-                    returnOrder.setConsumerName(appUserMsg.getNickName());
-                    returnOrder.setConsumerPhone(appUserMsg.getPhone());
-                    returnOrder.setOrderNo(order.getOrderNo());
-                    returnOrder.setOrderId(order.getId());
-                    returnOrder.setCommodities(commodities);
-                    returnOrder.setPayAmount(new BigDecimal(payAmount).add(mallOrderItems.get(0).getFare()));
-                    returnOrder.setFare(mallOrderItems.get(0).getFare());
-                    //下单时间
-                    returnOrder.setCreateTime(mallOrderItems.get(0).getCreateTime());
-                    //支付类型
-                    returnOrder.setTradeType(order.getTradeType());
-                    returnOrder.setStatus(mallOrderItems.get(0).getStatus());
-                    returnOrders.add(returnOrder);
-                }
-            }
-        }
 
 
 
-        returnResult.setMessage("查询成功！");
-        returnResult.setStatus(Boolean.TRUE);
-        returnResult.setResult(returnOrders);
-        return returnResult;
 
     }
     /**

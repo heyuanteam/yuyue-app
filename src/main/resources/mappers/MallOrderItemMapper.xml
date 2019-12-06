@@ -84,7 +84,7 @@
             merchant_id = #{merchantId}
         AND a.`status` != '10A'
         ORDER BY
-            a.`status`
+          a.status,a.create_time desc
     </select>
 
 

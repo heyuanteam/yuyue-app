@@ -160,11 +160,11 @@ public class UploadFileController extends  BaseController{
     @ResponseBody
     @LoginRequired
     public JSONObject addRelease(@CurrentUser AppUser user,String categoryId,String title,String description, String fileType,
-                                 String videoAddress,String fileName,String filesPath, HttpServletRequest request
+                                 String videoAddress,String originalImage,String fileName,String filesPath, HttpServletRequest request
                                     , HttpServletResponse response) throws Exception {
         log.info("视频发布-------------->>/uploadFile/addRelease");
         getParameterMap(request, response);
-        return uploadFileService.addRelease(user.getId(),categoryId,title,description,fileType,videoAddress,fileName,filesPath);
+        return uploadFileService.addRelease(user.getId(),categoryId,title,description,fileType,videoAddress,originalImage,fileName,filesPath);
     }
 
     /**

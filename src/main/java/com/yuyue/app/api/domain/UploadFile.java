@@ -27,6 +27,8 @@ public class UploadFile implements Serializable {
     private String uploadTime;
 //  视频第一帧图片链接
     private String videoAddress;
+//  视频第一帧图片原图
+    private String originalImage;
 //  文件地址
     private String filesPath;
     //图片压缩图

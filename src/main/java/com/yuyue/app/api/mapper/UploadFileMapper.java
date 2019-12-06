@@ -60,12 +60,13 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
      */
     @Transactional
     @Insert("INSERT INTO ${tableName} " +
-            "(id,filesName,filesPath,filesType,authorId,description,videoAddress,title,categoryId) VALUES " +
-            "(#{id},#{filesName},#{filesPath},#{filesType},#{authorId},#{description},#{videoAddress}," +
+            "(id,filesName,filesPath,filesType,authorId,description,videoAddress,originalImage,title,categoryId) VALUES " +
+            "(#{id},#{filesName},#{filesPath},#{filesType},#{authorId},#{description},#{videoAddress},#{originalImage}," +
             "#{title},#{categoryId})")
     void insertUploadFile(@Param("tableName") String tableName,@Param("id") String id,@Param("filesName") String filesName,
                           @Param("filesPath") String filesPath, @Param("filesType") String filesType, @Param("authorId") String authorId,
                           @Param("description") String description,@Param("videoAddress")String videoAddress,
+                          @Param("originalImage")String originalImage,
                           @Param("title")String title,@Param("categoryId")String categoryId);
 
 
