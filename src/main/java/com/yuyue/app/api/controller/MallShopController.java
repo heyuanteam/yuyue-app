@@ -266,19 +266,10 @@ public class MallShopController extends BaseController{
 
         for (MallShop myShop:myMallShops
              ) {
-            if ("10A".equals(myShop.getStatus())){
-                Order order = payService.getOrderId(myShop.getOrderId());
-                if ("10B".equals(order.getStatus())){
-                    myShop.setStatus("10B");
-                    mallShopService.updateMyMallShopInfo(myShop);
-                }else {
-                    continue;
-                }
-            }
             //规格
             myShop.setImages(mallShopService.getShopImage(myShop.getShopId()));
             myShop.setAdPrice(myService.getAdvertisementFeeInfo(myShop.getPriceId(),"").get(0));
-            List<Specification> specification = mallShopService.getSpecification(myShop.getShopId());
+            List<Specification> specification = mallShopService.getAllSpecification(myShop.getShopId());
             myShop.setSpecifications(specification);
         }
         returnResult.setMessage("返回成功！");

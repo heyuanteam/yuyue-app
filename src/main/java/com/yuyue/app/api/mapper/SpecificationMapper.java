@@ -9,10 +9,10 @@ import java.util.List;
 
 @Repository
 public interface SpecificationMapper extends MyBaseMapper<Specification> {
-
-    @Select("SELECT * FROM yuyue_mall_shop_commodity WHERE shop_id = #{shopId}  ORDER BY create_time DESC")
+    //我的广告展示
+    @Select("SELECT * FROM yuyue_mall_shop_commodity WHERE shop_id = #{shopId} and status != '10C' ORDER BY create_time DESC")
     List<Specification> getAllSpecification(@Param(value = "shopId") String shopId);
-
+    //商铺详情展示
     @Select("SELECT * FROM yuyue_mall_shop_commodity WHERE shop_id = #{shopId} and status = '10B' or status = '10D' ORDER BY create_time DESC")
     List<Specification> getSpecificationByStatus(@Param(value = "shopId") String shopId);
 
