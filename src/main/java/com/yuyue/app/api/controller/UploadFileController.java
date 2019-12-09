@@ -147,7 +147,8 @@ public class UploadFileController extends  BaseController{
 //        if(StringUtils.isNotEmpty(token)){
 //            userId = String.valueOf(JWT.decode(token).getAudience().get(0));
 //        }
-        return uploadFileService.UploadFilesToServer(files,version);
+        String fileType = request.getParameter("fileType");
+        return uploadFileService.UploadFilesToServer(files,version,fileType);
     }
 
     /**

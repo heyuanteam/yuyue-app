@@ -88,7 +88,7 @@ public class UploadFileServiceImpl implements UploadFileService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject UploadFilesToServer(MultipartFile[] files,String version) throws Exception{
+    public JSONObject UploadFilesToServer(MultipartFile[] files,String version, String fileType) throws Exception{
         ReturnResult returnResult=new ReturnResult();
         if (files == null || files.length == 0) {
             returnResult.setMessage("文件为空!");
@@ -115,6 +115,9 @@ public class UploadFileServiceImpl implements UploadFileService {
                     //原图
                     String filesPath = Variables.ip_home + "/" + storePath.getFullPath();
                     uploadFile.setThumbnail(filesPath);
+                    if ("video".equals(fileType)){
+                        uploadFile.setFilesPath(filesPath);
+                    }
                     if ("jpg".equals(subFileType) || "png".equals(subFileType) ||
                             "gif".equals(subFileType)  ||"jpeg".equals(subFileType)){
                         if (1*1024*1024 < files[i].getSize() ){
@@ -123,7 +126,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                             //缩图
                             uploadFile.setFilesPath(thumbnail);
                         }else {
-                            uploadFile.setThumbnail(filesPath);
+                            uploadFile.setFilesPath(filesPath);
                         }
 
                     }
@@ -239,9 +242,6 @@ public class UploadFileServiceImpl implements UploadFileService {
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else if(StringUtils.isEmpty(videoAddress)){
             returnResult.setMessage("第一帧图片缩图不可为空");
-            return ResultJSONUtils.getJSONObjectBean(returnResult);
-        }else if(StringUtils.isEmpty(originalImage)){
-            returnResult.setMessage("第一帧图片原图不可为空");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }else if(StringUtils.isEmpty(categoryId)){
             returnResult.setMessage("视频种类不可为空");

@@ -636,14 +636,16 @@ public class MallShopController extends BaseController{
             }else if (StringUtils.isEmpty(request.getParameter("merchantPhone"))){
                 returnResult.setMessage("商家电话不能为空！");
                 return returnResult;
-            }else if (StringUtils.isEmpty(distanceId)){
-                returnResult.setMessage("距离id不可为空！");
-                return returnResult;
             }else if(!distanceId.matches("[1-8]")){
                 returnResult.setMessage("距离id输入错误！");
                 return returnResult;
             }
             MallShop mallShop =new MallShop();
+            if (StringUtils.isEmpty(distanceId)){
+                mallShop.setDistanceId("1");
+            }else {
+                mallShop.setDistanceId(distanceId);
+            }
             mallShop.setShopId(shopId);
             mallShop.setMerchantId(user.getId());
             mallShop.setCategory(request.getParameter("category"));
@@ -721,7 +723,7 @@ public class MallShopController extends BaseController{
             mallShop.setVideoPath(request.getParameter("videoPath"));
             mallShop.setRemark(request.getParameter("remark"));
             mallShop.setRemark("N");
-            mallShop.setDistanceId(distanceId);
+
 
             try {
                 mallShop.getMerchantAddr().replace("-","");
@@ -855,27 +857,76 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
         mallShopService.updateMyMallShopInfo(mallShop);
-        if (StringUtils.isNotEmpty(imageStr)){
-            mallShopService.deleteImageByShopId(mallShop.getShopId());
-            if (imageStr.contains(";")){
-                String[] images = imageStr.split(";");
-                for ( Byte i = 0 ; i < images.length ; i++) {
+        //压缩图
+        //String commodityImages = request.getParameter("images");
+        String commodityImages = mallShop.getImageStr();
+        System.out.println(commodityImages);
+        //原图
+        String originalImages = request.getParameter("originalImages");
+        System.out.println(originalImages);
+        String shopId = mallShop.getShopId();
+        if (StringUtils.isEmpty(originalImages)){
+            returnResult.setMessage("原图路径不可为空！");
+            return returnResult;
+        }else {
+            mallShopService.deleteImageByShopId(shopId);
+            if (originalImages.contains(";")) {
+                //原图
+                String[] originalImage = originalImages.split(";");
+                String[] commodityImage = null;
+                if (StringUtils.isNotEmpty(commodityImages) && commodityImages.contains(";")) {
+                    //压缩图
+                    commodityImage = commodityImages.split(";");
+                } else {
+                    commodityImage[0] = commodityImages;
+                }
+                for (Byte i = 0; i < originalImage.length; i++) {
                     ShopImage shopImage = new ShopImage();
-                    shopImage.setImagePath(images[i]);
+                    String id = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+                    shopImage.setId(id);
+                    shopImage.setOriginalImage(originalImage[i]);
+                    if (i < commodityImage.length) {
+                        shopImage.setImagePath(commodityImage[i]);
+                        System.out.println("缩图：" + commodityImage[i]);
+                    }
                     shopImage.setImageSort(i);
-                    shopImage.setShopId(mallShop.getShopId());
-                    System.out.println(images[i]);
+                    shopImage.setShopId(shopId);
+                    System.out.println("原图：" + originalImage[i]);
+                    System.out.println("----------");
                     mallShopService.insertShopImage(shopImage);
                 }
-            }else {
+            } else {
                 ShopImage shopImage = new ShopImage();
-                shopImage.setImagePath(imageStr);
-                shopImage.setImageSort((byte)0);
-                shopImage.setShopId(mallShop.getShopId());
+                String id = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+                shopImage.setId(id);
+                shopImage.setImagePath(commodityImages);
+                shopImage.setOriginalImage(originalImages);
+                shopImage.setImageSort((byte) 0);
+                shopImage.setShopId(shopId);
                 mallShopService.insertShopImage(shopImage);
             }
-
         }
+//        if (StringUtils.isNotEmpty(imageStr)){
+//            mallShopService.deleteImageByShopId(mallShop.getShopId());
+//            if (imageStr.contains(";")){
+//                String[] images = imageStr.split(";");
+//                for ( Byte i = 0 ; i < images.length ; i++) {
+//                    ShopImage shopImage = new ShopImage();
+//                    shopImage.setImagePath(images[i]);
+//                    shopImage.setImageSort(i);
+//                    shopImage.setShopId(mallShop.getShopId());
+//                    System.out.println(images[i]);
+//                    mallShopService.insertShopImage(shopImage);
+//                }
+//            }else {
+//                ShopImage shopImage = new ShopImage();
+//                shopImage.setImagePath(imageStr);
+//                shopImage.setImageSort((byte)0);
+//                shopImage.setShopId(mallShop.getShopId());
+//                mallShopService.insertShopImage(shopImage);
+//            }
+//
+//        }
 
 
         returnResult.setMessage("修改成功！");
