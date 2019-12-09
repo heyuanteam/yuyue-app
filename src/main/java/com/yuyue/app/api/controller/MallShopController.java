@@ -486,117 +486,119 @@ public class MallShopController extends BaseController{
         /*---------------------------------生成订单结束-------------------------------*/
         MallShop myMallShop = mallShopService.getMyMallShop(shopId);
         //商铺已存在情况下重新支付，---------> 未支付状态或是 支付超时状态
-        if (StringUtils.isNotNull(myMallShop) && ("10B".equals(myMallShop.getStatus())
-                || "10C".equals(myMallShop.getStatus())  || "10D".equals(myMallShop.getStatus())
-                || "10E".equals(myMallShop.getStatus()))   ){
-            //商铺已存在   已支付、已发布、已过期状态(再次支付)
-            if ("10B".equals(myMallShop.getStatus())){
-                returnResult.setMessage("已添加,待审核！");
-                returnResult.setStatus(Boolean.TRUE);
-            }else if ("10C".equals(myMallShop.getStatus())){
-                returnResult.setMessage("该订单正在发布！");
-                returnResult.setStatus(Boolean.TRUE);
-            }else if ("10D".equals(myMallShop.getStatus())){
-                returnResult.setMessage("该商铺已经被停止发布！");
-                returnResult.setStatus(Boolean.TRUE);
-            }else if ("10E".equals(myMallShop.getStatus())){
-                if(StringUtils.isNotEmpty(myMallShop.getOrderId())){
-                    Order getOrder = payService.getOrderId(myMallShop.getOrderId());
-                    if (StringUtils.isNull(getOrder)){
-                        returnResult.setMessage("未查询该订单！！");
-                        return returnResult;
-                    }
-                    //订单未支付状态     --->  去支付
-                    else if("10A".equals(getOrder.getStatus())){
-                        if ("GGWX".equals(order.getTradeType())) {
-                            try {
-                                jsonObject = payController.payWX(getOrder);
-                                returnResult.setStatus(Boolean.TRUE);
-                                returnResult.setMessage("添加成功！");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else if ("GGZFB".equals(order.getTradeType())) {
-                            try {
-                                jsonObject = payController.payZFB(getOrder);
-                                // String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
-                                returnResult.setStatus(Boolean.TRUE);
-                                //returnResult.setMessage(jsonObject.getString("result"));
-                                returnResult.setMessage("添加成功！");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }else {
-                            returnResult.setMessage("支付类型错误！");
+        if (StringUtils.isNotNull(myMallShop) ){
+            if ("10B".equals(myMallShop.getStatus()) || "10C".equals(myMallShop.getStatus())
+                    || "10D".equals(myMallShop.getStatus())   || "10E".equals(myMallShop.getStatus())){
+                //商铺已存在   已支付、已发布、已过期状态(再次支付)
+                if ("10B".equals(myMallShop.getStatus())){
+                    returnResult.setMessage("已添加,待审核！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }else if ("10C".equals(myMallShop.getStatus())){
+                    returnResult.setMessage("该订单正在发布！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }else if ("10D".equals(myMallShop.getStatus())){
+                    returnResult.setMessage("该商铺已经被停止发布！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }else if ("10E".equals(myMallShop.getStatus())){
+                    if(StringUtils.isNotEmpty(myMallShop.getOrderId())){
+                        Order getOrder = payService.getOrderId(myMallShop.getOrderId());
+                        if (StringUtils.isNull(getOrder)){
+                            returnResult.setMessage("未查询该订单！！");
+                            return returnResult;
                         }
-                        return returnResult;
-                    }
-                    else if("10B".equals(getOrder.getStatus())  ){
-                        //修改商铺状态
-                        myMallShop.setStatus("10B");
-                        mallShopService.updateMyMallShopInfo(myMallShop);
-                        return returnResult;
-                    }
-                    //支付超时状态    支付失败   商铺到期   -->重新生成新的订单
-                    else if ("10E".equals(myMallShop.getStatus())  ||
-                                 "10C".equals(getOrder.getStatus()) ||
-                                     "10D".equals(getOrder.getStatus())){
-
-                        try {
-                            String orderId = null;
-                            //扫码支付
-                            if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
-                                log.info("扫码支付");
-                                jsonObject = payController.payNative(user,order, request, response);
-                                orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
-                                returnResult.setMessage(orderId);
+                        //订单未支付状态     --->  去支付
+                        else if("10A".equals(getOrder.getStatus())){
+                            if ("GGWX".equals(order.getTradeType())) {
+                                try {
+                                    jsonObject = payController.payWX(getOrder);
+                                    returnResult.setStatus(Boolean.TRUE);
+                                    returnResult.setMessage("添加成功！");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else if ("GGZFB".equals(order.getTradeType())) {
+                                try {
+                                    jsonObject = payController.payZFB(getOrder);
+                                    // String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                                    returnResult.setStatus(Boolean.TRUE);
+                                    //returnResult.setMessage(jsonObject.getString("result"));
+                                    returnResult.setMessage("添加成功！");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }else {
+                                returnResult.setMessage("支付类型错误！");
                             }
-                            //app 支付宝微信支付
-                            else {
-                                log.info("手机支付");
-                                jsonObject = payController.payYuYue(order, user);
-                                //成功生成新的订单，获取订单ID
+                            return returnResult;
+                        }
+                        else if("10B".equals(getOrder.getStatus())  ){
+                            //修改商铺状态
+                            myMallShop.setStatus("10B");
+                            mallShopService.updateMyMallShopInfo(myMallShop);
+                            return returnResult;
+                        }
+                        //支付超时状态    支付失败   商铺到期   -->重新生成新的订单
+                        else if ("10E".equals(myMallShop.getStatus())  ||
+                                "10C".equals(getOrder.getStatus()) ||
+                                "10D".equals(getOrder.getStatus())){
 
-                            }
-
-                            //生成订单
-                            if ("true".equals(jsonObject.getString("status"))){
-
-                                if (StringUtils.isEmpty(orderId)){
-                                    returnResult.setMessage("订单Id为空！！");
-                                    return returnResult;
-                                }else if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                            try {
+                                String orderId = null;
+                                //扫码支付
+                                if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                                    log.info("扫码支付");
+                                    jsonObject = payController.payNative(user,order, request, response);
                                     orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
                                     returnResult.setMessage(orderId);
-                                }else {
-                                    orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
                                 }
-                                myMallShop.setOrderId(orderId);
-                                myMallShop.setPriceId(adPrice.getPriceId());
-                                Order newOrder = payService.getOrderId(orderId);
-                                if ("10B".equals(newOrder.getStatus()))
-                                    myMallShop.setStatus("10B");
-                                else
-                                    myMallShop.setStatus("10A");
-                                returnResult.setResult(jsonObject.get("result"));
-                                returnResult.setMessage("订单重新生成，等待审核！！");
-                                returnResult.setStatus(Boolean.TRUE);
-                                returnResult.setResult(jsonObject.get("result"));
-                                mallShopService.updateMyMallShopInfo(myMallShop);
-                                return returnResult;
-                            }else {
-                                returnResult.setMessage("订单生成失败！！");
+                                //app 支付宝微信支付
+                                else {
+                                    log.info("手机支付");
+                                    jsonObject = payController.payYuYue(order, user);
+                                    //成功生成新的订单，获取订单ID
+
+                                }
+
+                                //生成订单
+                                if ("true".equals(jsonObject.getString("status"))){
+
+                                    if (StringUtils.isEmpty(orderId)){
+                                        returnResult.setMessage("订单Id为空！！");
+                                        return returnResult;
+                                    }else if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                                        orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
+                                        returnResult.setMessage(orderId);
+                                    }else {
+                                        orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                                    }
+                                    myMallShop.setOrderId(orderId);
+                                    myMallShop.setPriceId(adPrice.getPriceId());
+                                    Order newOrder = payService.getOrderId(orderId);
+                                    if ("10B".equals(newOrder.getStatus()))
+                                        myMallShop.setStatus("10B");
+                                    else
+                                        myMallShop.setStatus("10A");
+                                    returnResult.setResult(jsonObject.get("result"));
+                                    returnResult.setMessage("订单重新生成，等待审核！！");
+                                    returnResult.setStatus(Boolean.TRUE);
+                                    returnResult.setResult(jsonObject.get("result"));
+                                    mallShopService.updateMyMallShopInfo(myMallShop);
+                                    return returnResult;
+                                }else {
+                                    returnResult.setMessage("订单生成失败！！");
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
 
+                    }
+                    returnResult.setStatus(Boolean.TRUE);
                 }
-                returnResult.setStatus(Boolean.TRUE);
+                return returnResult;
             }
-            return returnResult;
+
         }
         /*---------------------------------------------新的商铺申请--------------------------------------------*/
         else {
@@ -783,9 +785,9 @@ public class MallShopController extends BaseController{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-            return returnResult;
-        }
 
+        }
+        return returnResult;
     }
 
     /**
