@@ -345,6 +345,10 @@ public class MallShopController extends BaseController{
                         || mallShopVo.getDistance() > along) {
                     iter.remove();
                 }
+            } else if (!allDistanceValue.contains("全部")){
+                if (mallShopVo.getDistance() > along) {
+                    iter.remove();
+                }
             }
         }
 
