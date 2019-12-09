@@ -812,13 +812,7 @@ public class MallShopController extends BaseController{
         else if (StringUtils.isEmpty(mallShop.getFare().toString())){
             returnResult.setMessage("运费不能为空！");
             return returnResult;
-        }else if (StringUtils.isEmpty(mallShop.getDistanceId())){
-             returnResult.setMessage("距离id不可为空！");
-             return returnResult;
-         }else if(!mallShop.getDistanceId().matches("[1-8]")){
-             returnResult.setMessage("距离id输入错误！");
-             return returnResult;
-         }
+        }
         //验证金额格式
        java.util.regex.Matcher match=pattern.matcher(mallShop.getFare().toString());
         if(match.matches()==false)
@@ -836,7 +830,12 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
         mallShop.setIsRevise("Y");
-
+        if (StringUtils.isEmpty(mallShop.getDistanceId())){
+            mallShop.setDistanceId("1");
+        }else if(!mallShop.getDistanceId().matches("[1-8]")){
+            returnResult.setMessage("距离id输入错误！");
+            return returnResult;
+        }
         try {
             mallShop.getMerchantAddr().replace("-","");
             JSONObject lonLarByAddress = GouldUtils.getLonLarByAddress(mallShop.getMerchantAddr());
