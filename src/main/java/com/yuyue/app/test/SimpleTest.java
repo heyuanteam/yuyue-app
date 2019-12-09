@@ -28,43 +28,6 @@ public class SimpleTest {
 
 
     public static void main(String[] args) {
-//        StringBuilder sb = new StringBuilder();
-//        String id = "B044C53B38BA4E84B507E62402683E26";
-//        String sourceId = "50D530BBA2394D25A0476182D8834ACD";
-//
-//        try {
-//            CloseableHttpClient client = null;
-//            CloseableHttpResponse response = null;
-//            try {
-//                AppUser appUser = loginService.getAppUserMsg("","",sourceId);
-//                HttpGet httpGet = new HttpGet(Variables.sendRefundUrl + "?id="+id+"&sourceId="+sourceId);
-//                httpGet.setHeader("token",loginService.getToken(appUser));
-//
-//                client = HttpClients.createDefault();
-//                response = client.execute(httpGet);
-//                HttpEntity entity = response.getEntity();
-//                String result = EntityUtils.toString(entity);
-//                System.out.println(result);
-//            } finally {
-//                if (response != null) {
-//                    response.close();
-//                }
-//                if (client != null) {
-//                    client.close();
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        sb.append(id).append("&").append(sourceId);
-//        GouldUtils.doPost(Variables.sendRefundUrl,sb.toString(), ContentType.APPLICATION_JSON);
-
-//        Map<String, String> params = Maps.newHashMap();
-//        params.put("id", id);
-//        params.put("sourceId", sourceId);
-//        GouldUtils.doPost(Variables.sendRefundUrl, params);
-//        HttpUtils.doPost(Variables.sendRefundUrl,sb.toString());
-
        /* String a="0.05";
         String b="0.1";
         BigDecimal bigDecimal = new BigDecimal(a).multiply(new BigDecimal(b)).setScale(2,BigDecimal.ROUND_HALF_UP);

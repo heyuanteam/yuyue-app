@@ -20,13 +20,13 @@
 
     <properties>
         <!--上线放开-->
-<!--        <start-class>com.yuyue.app.AppApplication</start-class>-->
+        <start-class>com.yuyue.app.AppApplication</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <!-- myBatis -->
         <mybatis.version>3.4.5</mybatis.version>
-        <mybatis-generator-core.version>1.3.2</mybatis-generator-core.version>
+        <mybatis-generator-core.version>1.3.5</mybatis-generator-core.version>
         <mybatis-spring.version>1.2.2</mybatis-spring.version>
         <mysql-connector-java.version>5.1.34</mysql-connector-java.version>
         <!-- mybatis pagehelper -->
@@ -38,20 +38,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <!-- 移除嵌入式tomcat插件,上线放开-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.springframework.boot</groupId>-->
-<!--                    <artifactId>spring-boot-starter-tomcat</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--上线放开-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.tomcat</groupId>-->
-<!--            <artifactId>tomcat-servlet-api</artifactId>-->
-<!--            <version>8.0.36</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>8.0.36</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
@@ -145,11 +145,12 @@
             <version>3.3.4.ALL</version>
         </dependency>
 
-        <!-- MySql驱动 -->
+        <!-- 数据库驱动包 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.42</version>
+            <scope>runtime</scope>
         </dependency>
         <!-- TIMESTAMP -->
         <dependency>
@@ -163,11 +164,13 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>1.3.2</version>
         </dependency>
+        <!-- MyBatis -->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
             <version>${mybatis.version}</version>
         </dependency>
+        <!-- 代码生成器 -->
         <dependency>
             <groupId>org.mybatis.generator</groupId>
             <artifactId>mybatis-generator-core</artifactId>
@@ -177,7 +180,7 @@
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>2.0.2</version>
+            <version>1.2.4</version>
         </dependency>
         <!-- mybatis pagehelper 分页查询插件-->
         <dependency>
