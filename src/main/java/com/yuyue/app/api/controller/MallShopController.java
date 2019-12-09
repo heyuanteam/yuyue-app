@@ -266,19 +266,10 @@ public class MallShopController extends BaseController{
 
         for (MallShop myShop:myMallShops
              ) {
-            if ("10A".equals(myShop.getStatus())){
-                Order order = payService.getOrderId(myShop.getOrderId());
-                if ("10B".equals(order.getStatus())){
-                    myShop.setStatus("10B");
-                    mallShopService.updateMyMallShopInfo(myShop);
-                }else {
-                    continue;
-                }
-            }
             //规格
             myShop.setImages(mallShopService.getShopImage(myShop.getShopId()));
             myShop.setAdPrice(myService.getAdvertisementFeeInfo(myShop.getPriceId(),"").get(0));
-            List<Specification> specification = mallShopService.getSpecification(myShop.getShopId());
+            List<Specification> specification = mallShopService.getAllSpecification(myShop.getShopId());
             myShop.setSpecifications(specification);
         }
         returnResult.setMessage("返回成功！");
@@ -495,117 +486,116 @@ public class MallShopController extends BaseController{
         /*---------------------------------生成订单结束-------------------------------*/
         MallShop myMallShop = mallShopService.getMyMallShop(shopId);
         //商铺已存在情况下重新支付，---------> 未支付状态或是 支付超时状态
-        if (StringUtils.isNotNull(myMallShop) && ("10B".equals(myMallShop.getStatus())
-                || "10C".equals(myMallShop.getStatus())  || "10D".equals(myMallShop.getStatus())
-                || "10E".equals(myMallShop.getStatus()))   ){
-            //商铺已存在   已支付、已发布、已过期状态(再次支付)
-            if ("10B".equals(myMallShop.getStatus())){
-                returnResult.setMessage("已添加,待审核！");
-                returnResult.setStatus(Boolean.TRUE);
-            }else if ("10C".equals(myMallShop.getStatus())){
-                returnResult.setMessage("该订单正在发布！");
-                returnResult.setStatus(Boolean.TRUE);
-            }else if ("10D".equals(myMallShop.getStatus())){
-                returnResult.setMessage("该商铺已经被停止发布！");
-                returnResult.setStatus(Boolean.TRUE);
-            }else if ("10E".equals(myMallShop.getStatus())){
-                if(StringUtils.isNotEmpty(myMallShop.getOrderId())){
-                    Order getOrder = payService.getOrderId(myMallShop.getOrderId());
-                    if (StringUtils.isNull(getOrder)){
-                        returnResult.setMessage("未查询该订单！！");
-                        return returnResult;
-                    }
-                    //订单未支付状态     --->  去支付
-                    else if("10A".equals(getOrder.getStatus())){
-                        if ("GGWX".equals(order.getTradeType())) {
-                            try {
-                                jsonObject = payController.payWX(getOrder);
-                                returnResult.setStatus(Boolean.TRUE);
-                                returnResult.setMessage("添加成功！");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else if ("GGZFB".equals(order.getTradeType())) {
-                            try {
-                                jsonObject = payController.payZFB(getOrder);
-                                // String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
-                                returnResult.setStatus(Boolean.TRUE);
-                                //returnResult.setMessage(jsonObject.getString("result"));
-                                returnResult.setMessage("添加成功！");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }else {
-                            returnResult.setMessage("支付类型错误！");
+        if (StringUtils.isNotNull(myMallShop) && ("10B".equals(myMallShop.getStatus()) || "10C".equals(myMallShop.getStatus())
+                || "10D".equals(myMallShop.getStatus())   || "10E".equals(myMallShop.getStatus()))){
+                //商铺已存在   已支付、已发布、已过期状态(再次支付)
+                if ("10B".equals(myMallShop.getStatus())){
+                    returnResult.setMessage("已添加,待审核！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }else if ("10C".equals(myMallShop.getStatus())){
+                    returnResult.setMessage("该订单正在发布！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }else if ("10D".equals(myMallShop.getStatus())){
+                    returnResult.setMessage("该商铺已经被停止发布！");
+                    returnResult.setStatus(Boolean.TRUE);
+                }else if ("10E".equals(myMallShop.getStatus())){
+                    if(StringUtils.isNotEmpty(myMallShop.getOrderId())){
+                        Order getOrder = payService.getOrderId(myMallShop.getOrderId());
+                        if (StringUtils.isNull(getOrder)){
+                            returnResult.setMessage("未查询该订单！！");
+                            return returnResult;
                         }
-                        return returnResult;
-                    }
-                    else if("10B".equals(getOrder.getStatus())  ){
-                        //修改商铺状态
-                        myMallShop.setStatus("10B");
-                        mallShopService.updateMyMallShopInfo(myMallShop);
-                        return returnResult;
-                    }
-                    //支付超时状态    支付失败   商铺到期   -->重新生成新的订单
-                    else if ("10E".equals(myMallShop.getStatus())  ||
-                                 "10C".equals(getOrder.getStatus()) ||
-                                     "10D".equals(getOrder.getStatus())){
-
-                        try {
-                            String orderId = null;
-                            //扫码支付
-                            if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
-                                log.info("扫码支付");
-                                jsonObject = payController.payNative(user,order, request, response);
-                                orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
-                                returnResult.setMessage(orderId);
+                        //订单未支付状态     --->  去支付
+                        else if("10A".equals(getOrder.getStatus())){
+                            if ("GGWX".equals(order.getTradeType())) {
+                                try {
+                                    jsonObject = payController.payWX(getOrder);
+                                    returnResult.setStatus(Boolean.TRUE);
+                                    returnResult.setMessage("添加成功！");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } else if ("GGZFB".equals(order.getTradeType())) {
+                                try {
+                                    jsonObject = payController.payZFB(getOrder);
+                                    // String orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                                    returnResult.setStatus(Boolean.TRUE);
+                                    //returnResult.setMessage(jsonObject.getString("result"));
+                                    returnResult.setMessage("添加成功！");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }else {
+                                returnResult.setMessage("支付类型错误！");
                             }
-                            //app 支付宝微信支付
-                            else {
-                                log.info("手机支付");
-                                jsonObject = payController.payYuYue(order, user);
-                                //成功生成新的订单，获取订单ID
+                            return returnResult;
+                        }
+                        else if("10B".equals(getOrder.getStatus())  ){
+                            //修改商铺状态
+                            myMallShop.setStatus("10B");
+                            mallShopService.updateMyMallShopInfo(myMallShop);
+                            return returnResult;
+                        }
+                        //支付超时状态    支付失败   商铺到期   -->重新生成新的订单
+                        else if ("10E".equals(myMallShop.getStatus())  ||
+                                "10C".equals(getOrder.getStatus()) ||
+                                "10D".equals(getOrder.getStatus())){
 
-                            }
-
-                            //生成订单
-                            if ("true".equals(jsonObject.getString("status"))){
-
-                                if (StringUtils.isEmpty(orderId)){
-                                    returnResult.setMessage("订单Id为空！！");
-                                    return returnResult;
-                                }else if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                            try {
+                                String orderId = null;
+                                //扫码支付
+                                if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                                    log.info("扫码支付");
+                                    jsonObject = payController.payNative(user,order, request, response);
                                     orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
                                     returnResult.setMessage(orderId);
-                                }else {
-                                    orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
                                 }
-                                myMallShop.setOrderId(orderId);
-                                myMallShop.setPriceId(adPrice.getPriceId());
-                                Order newOrder = payService.getOrderId(orderId);
-                                if ("10B".equals(newOrder.getStatus()))
-                                    myMallShop.setStatus("10B");
-                                else
-                                    myMallShop.setStatus("10A");
-                                returnResult.setResult(jsonObject.get("result"));
-                                returnResult.setMessage("订单重新生成，等待审核！！");
-                                returnResult.setStatus(Boolean.TRUE);
-                                returnResult.setResult(jsonObject.get("result"));
-                                mallShopService.updateMyMallShopInfo(myMallShop);
-                                return returnResult;
-                            }else {
-                                returnResult.setMessage("订单生成失败！！");
+                                //app 支付宝微信支付
+                                else {
+                                    log.info("手机支付");
+                                    jsonObject = payController.payYuYue(order, user);
+                                    //成功生成新的订单，获取订单ID
+
+                                }
+
+                                //生成订单
+                                if ("true".equals(jsonObject.getString("status"))){
+
+                                    if (StringUtils.isEmpty(orderId)){
+                                        returnResult.setMessage("订单Id为空！！");
+                                        return returnResult;
+                                    }else if (StringUtils.isNotEmpty(sourcePay) && "YYSM".equals(sourcePay)){
+                                        orderId = JSON.parseObject(jsonObject.getString("message")).toJSONString();
+                                        returnResult.setMessage(orderId);
+                                    }else {
+                                        orderId = JSON.parseObject(jsonObject.getString("result")).getString("orderId");
+                                    }
+                                    myMallShop.setOrderId(orderId);
+                                    myMallShop.setPriceId(adPrice.getPriceId());
+                                    Order newOrder = payService.getOrderId(orderId);
+                                    if ("10B".equals(newOrder.getStatus()))
+                                        myMallShop.setStatus("10B");
+                                    else
+                                        myMallShop.setStatus("10A");
+                                    returnResult.setResult(jsonObject.get("result"));
+                                    returnResult.setMessage("订单重新生成，等待审核！！");
+                                    returnResult.setStatus(Boolean.TRUE);
+                                    returnResult.setResult(jsonObject.get("result"));
+                                    mallShopService.updateMyMallShopInfo(myMallShop);
+                                    return returnResult;
+                                }else {
+                                    returnResult.setMessage("订单生成失败！！");
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
-                    }
 
+                    }
+                    returnResult.setStatus(Boolean.TRUE);
                 }
-                returnResult.setStatus(Boolean.TRUE);
-            }
-            return returnResult;
+                return returnResult;
         }
         /*---------------------------------------------新的商铺申请--------------------------------------------*/
         else {
@@ -645,14 +635,18 @@ public class MallShopController extends BaseController{
             }else if (StringUtils.isEmpty(request.getParameter("merchantPhone"))){
                 returnResult.setMessage("商家电话不能为空！");
                 return returnResult;
-            }else if (StringUtils.isEmpty(distanceId)){
-                returnResult.setMessage("距离id不可为空！");
-                return returnResult;
-            }else if(!distanceId.matches("[1-8]")){
-                returnResult.setMessage("距离id输入错误！");
-                return returnResult;
             }
             MallShop mallShop =new MallShop();
+            if (StringUtils.isEmpty(distanceId)){
+                mallShop.setDistanceId("1");
+            }else {
+                if(distanceId.matches("[1-8]")){
+                    mallShop.setDistanceId(distanceId);
+                }else {
+                    returnResult.setMessage("距离id输入错误！");
+                    return returnResult;
+                }
+            }
             mallShop.setShopId(shopId);
             mallShop.setMerchantId(user.getId());
             mallShop.setCategory(request.getParameter("category"));
@@ -701,10 +695,7 @@ public class MallShopController extends BaseController{
                     shopImage.setShopId(shopId);
                     mallShopService.insertShopImage(shopImage);
                 }
-
             }
-
-
             mallShop.setDetail(request.getParameter("detail"));
 
 //            String specifications= request.getParameter("specifications");
@@ -716,7 +707,6 @@ public class MallShopController extends BaseController{
 //                }
 //            }
             mallShop.setPriceId(priceId);
-
             mallShop.setServiceType(request.getParameter("serviceType"));
             mallShop.setFare(new BigDecimal(request.getParameter("fare")));
             mallShop.setCommodityPrice(new BigDecimal(request.getParameter("commodityPrice")));
@@ -730,7 +720,6 @@ public class MallShopController extends BaseController{
             mallShop.setVideoPath(request.getParameter("videoPath"));
             mallShop.setRemark(request.getParameter("remark"));
             mallShop.setRemark("N");
-            mallShop.setDistanceId(distanceId);
 
             try {
                 mallShop.getMerchantAddr().replace("-","");
@@ -763,7 +752,6 @@ public class MallShopController extends BaseController{
                            orderId = JSON.parseObject(jsonObject.getString("result")).getString("out_trade_no");
                            returnResult.setMessage("订单生成，等待审核！！");
                        }
-
                    }else {
                        log.info("手机支付");
                        jsonObject = payController.payYuYue(order, user);
@@ -790,9 +778,8 @@ public class MallShopController extends BaseController{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-            return returnResult;
         }
-
+        return returnResult;
     }
 
     /**
@@ -864,27 +851,76 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
         mallShopService.updateMyMallShopInfo(mallShop);
-        if (StringUtils.isNotEmpty(imageStr)){
-            mallShopService.deleteImageByShopId(mallShop.getShopId());
-            if (imageStr.contains(";")){
-                String[] images = imageStr.split(";");
-                for ( Byte i = 0 ; i < images.length ; i++) {
+        //压缩图
+        //String commodityImages = request.getParameter("images");
+        String commodityImages = mallShop.getImageStr();
+        System.out.println(commodityImages);
+        //原图
+        String originalImages = request.getParameter("originalImages");
+        System.out.println(originalImages);
+        String shopId = mallShop.getShopId();
+        if (StringUtils.isEmpty(originalImages)){
+            returnResult.setMessage("原图路径不可为空！");
+            return returnResult;
+        }else {
+            mallShopService.deleteImageByShopId(shopId);
+            if (originalImages.contains(";")) {
+                //原图
+                String[] originalImage = originalImages.split(";");
+                String[] commodityImage = null;
+                if (StringUtils.isNotEmpty(commodityImages) && commodityImages.contains(";")) {
+                    //压缩图
+                    commodityImage = commodityImages.split(";");
+                } else {
+                    commodityImage[0] = commodityImages;
+                }
+                for (Byte i = 0; i < originalImage.length; i++) {
                     ShopImage shopImage = new ShopImage();
-                    shopImage.setImagePath(images[i]);
+                    String id = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+                    shopImage.setId(id);
+                    shopImage.setOriginalImage(originalImage[i]);
+                    if (i < commodityImage.length) {
+                        shopImage.setImagePath(commodityImage[i]);
+                        System.out.println("缩图：" + commodityImage[i]);
+                    }
                     shopImage.setImageSort(i);
-                    shopImage.setShopId(mallShop.getShopId());
-                    System.out.println(images[i]);
+                    shopImage.setShopId(shopId);
+                    System.out.println("原图：" + originalImage[i]);
+                    System.out.println("----------");
                     mallShopService.insertShopImage(shopImage);
                 }
-            }else {
+            } else {
                 ShopImage shopImage = new ShopImage();
-                shopImage.setImagePath(imageStr);
-                shopImage.setImageSort((byte)0);
-                shopImage.setShopId(mallShop.getShopId());
+                String id = UUID.randomUUID().toString().replace("-", "").toUpperCase();
+                shopImage.setId(id);
+                shopImage.setImagePath(commodityImages);
+                shopImage.setOriginalImage(originalImages);
+                shopImage.setImageSort((byte) 0);
+                shopImage.setShopId(shopId);
                 mallShopService.insertShopImage(shopImage);
             }
-
         }
+//        if (StringUtils.isNotEmpty(imageStr)){
+//            mallShopService.deleteImageByShopId(mallShop.getShopId());
+//            if (imageStr.contains(";")){
+//                String[] images = imageStr.split(";");
+//                for ( Byte i = 0 ; i < images.length ; i++) {
+//                    ShopImage shopImage = new ShopImage();
+//                    shopImage.setImagePath(images[i]);
+//                    shopImage.setImageSort(i);
+//                    shopImage.setShopId(mallShop.getShopId());
+//                    System.out.println(images[i]);
+//                    mallShopService.insertShopImage(shopImage);
+//                }
+//            }else {
+//                ShopImage shopImage = new ShopImage();
+//                shopImage.setImagePath(imageStr);
+//                shopImage.setImageSort((byte)0);
+//                shopImage.setShopId(mallShop.getShopId());
+//                mallShopService.insertShopImage(shopImage);
+//            }
+//
+//        }
 
 
         returnResult.setMessage("修改成功！");
