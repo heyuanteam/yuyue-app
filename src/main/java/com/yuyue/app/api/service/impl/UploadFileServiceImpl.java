@@ -112,14 +112,16 @@ public class UploadFileServiceImpl implements UploadFileService {
 //                    uploadFile.setId(uid.toUpperCase());
 //                    uploadFile.setAuthorId(user.getId());
                     uploadFile.setFilesName(files[i].getOriginalFilename());
+                    //原图
                     String filesPath = Variables.ip_home + "/" + storePath.getFullPath();
-                    uploadFile.setFilesPath(filesPath);
+                    uploadFile.setThumbnail(filesPath);
                     if ("jpg".equals(subFileType) || "png".equals(subFileType) ||
                             "gif".equals(subFileType)  ||"jpeg".equals(subFileType)){
                         if (1*1024*1024 < files[i].getSize() ){
                             String thumbnail = ImageCompress.thumbnail(files[i]);
                             System.out.println(thumbnail);
-                            uploadFile.setThumbnail(thumbnail);
+                            //缩图
+                            uploadFile.setFilesPath(thumbnail);
                         }else {
                             uploadFile.setThumbnail(filesPath);
                         }
