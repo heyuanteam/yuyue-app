@@ -486,9 +486,8 @@ public class MallShopController extends BaseController{
         /*---------------------------------生成订单结束-------------------------------*/
         MallShop myMallShop = mallShopService.getMyMallShop(shopId);
         //商铺已存在情况下重新支付，---------> 未支付状态或是 支付超时状态
-        if (StringUtils.isNotNull(myMallShop) ){
-            if ("10B".equals(myMallShop.getStatus()) || "10C".equals(myMallShop.getStatus())
-                    || "10D".equals(myMallShop.getStatus())   || "10E".equals(myMallShop.getStatus())){
+        if (StringUtils.isNotNull(myMallShop) && ("10B".equals(myMallShop.getStatus()) || "10C".equals(myMallShop.getStatus())
+                || "10D".equals(myMallShop.getStatus())   || "10E".equals(myMallShop.getStatus()))){
                 //商铺已存在   已支付、已发布、已过期状态(再次支付)
                 if ("10B".equals(myMallShop.getStatus())){
                     returnResult.setMessage("已添加,待审核！");
@@ -597,8 +596,6 @@ public class MallShopController extends BaseController{
                     returnResult.setStatus(Boolean.TRUE);
                 }
                 return returnResult;
-            }
-
         }
         /*---------------------------------------------新的商铺申请--------------------------------------------*/
         else {
@@ -638,15 +635,17 @@ public class MallShopController extends BaseController{
             }else if (StringUtils.isEmpty(request.getParameter("merchantPhone"))){
                 returnResult.setMessage("商家电话不能为空！");
                 return returnResult;
-            }else if(!distanceId.matches("[1-8]")){
-                returnResult.setMessage("距离id输入错误！");
-                return returnResult;
             }
             MallShop mallShop =new MallShop();
             if (StringUtils.isEmpty(distanceId)){
                 mallShop.setDistanceId("1");
             }else {
-                mallShop.setDistanceId(distanceId);
+                if(distanceId.matches("[1-8]")){
+                    mallShop.setDistanceId(distanceId);
+                }else {
+                    returnResult.setMessage("距离id输入错误！");
+                    return returnResult;
+                }
             }
             mallShop.setShopId(shopId);
             mallShop.setMerchantId(user.getId());
@@ -696,10 +695,7 @@ public class MallShopController extends BaseController{
                     shopImage.setShopId(shopId);
                     mallShopService.insertShopImage(shopImage);
                 }
-
             }
-
-
             mallShop.setDetail(request.getParameter("detail"));
 
 //            String specifications= request.getParameter("specifications");
@@ -711,7 +707,6 @@ public class MallShopController extends BaseController{
 //                }
 //            }
             mallShop.setPriceId(priceId);
-
             mallShop.setServiceType(request.getParameter("serviceType"));
             mallShop.setFare(new BigDecimal(request.getParameter("fare")));
             mallShop.setCommodityPrice(new BigDecimal(request.getParameter("commodityPrice")));
@@ -725,7 +720,6 @@ public class MallShopController extends BaseController{
             mallShop.setVideoPath(request.getParameter("videoPath"));
             mallShop.setRemark(request.getParameter("remark"));
             mallShop.setRemark("N");
-
 
             try {
                 mallShop.getMerchantAddr().replace("-","");
@@ -758,7 +752,6 @@ public class MallShopController extends BaseController{
                            orderId = JSON.parseObject(jsonObject.getString("result")).getString("out_trade_no");
                            returnResult.setMessage("订单生成，等待审核！！");
                        }
-
                    }else {
                        log.info("手机支付");
                        jsonObject = payController.payYuYue(order, user);
@@ -785,7 +778,6 @@ public class MallShopController extends BaseController{
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
         }
         return returnResult;
     }
