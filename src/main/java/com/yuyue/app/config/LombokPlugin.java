@@ -132,26 +132,6 @@ public class LombokPlugin extends PluginAdapter {
 
     }
 
-//    private void writeFile(File file, String content, String fileEncoding) throws IOException {
-//        // 添加 @Abc注解，注意同时加上 import 语句
-//        if (file.getName().endsWith("Mapper.java")) {
-//            content = content.replaceFirst("public interface", "import com.xxx.Abc;\n\n@Abc\npublic interface");
-//        }
-//
-//        FileOutputStream fos = new FileOutputStream(file, false);
-//        OutputStreamWriter osw;
-//        if (fileEncoding == null) {
-//            osw = new OutputStreamWriter(fos);
-//        } else {
-//            osw = new OutputStreamWriter(fos, fileEncoding);
-//        }
-//
-//        BufferedWriter bw = new BufferedWriter(osw);
-//        bw.write(content);
-//        bw.close();
-//    }
-
-
 //    @Override
 //    public boolean validate(List<String> list) {
 //        return true;

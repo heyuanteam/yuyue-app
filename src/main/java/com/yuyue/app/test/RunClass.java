@@ -10,6 +10,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * mybatis逆向工程,会把原来的代码覆盖，慎用
+ */
+
 public class RunClass {
     public static void main(String[] args) throws Exception{
 
