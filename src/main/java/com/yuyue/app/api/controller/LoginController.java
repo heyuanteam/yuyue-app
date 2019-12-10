@@ -8,14 +8,15 @@ import com.yuyue.app.api.domain.AppVersion;
 import com.yuyue.app.enums.ReturnResult;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.utils.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,8 @@ import java.util.regex.Pattern;
  */
 @RestController
 @RequestMapping(value="/login", produces = "application/json; charset=UTF-8")
+//@Api注解，tags是对控制器命名，description可以对该控制器进行描述
+@Api(tags = "用户登陆相关Api")
 public class LoginController extends BaseController{
     private static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
@@ -44,7 +47,11 @@ public class LoginController extends BaseController{
      * @return
      */
     @ResponseBody
-    @RequestMapping("/version")
+    @RequestMapping(value = "/version", method = RequestMethod.GET)
+    @ApiOperation(value = "获取最新版本号",response = AppVersion.class, notes = "获取最新版本号")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "appVersion",paramType = "query",value = "安卓1或苹果0",required = true,dataType = "String")
+    })
     public JSONObject getVersion(@RequestParam(value = "appVersion") String appVersion
             , HttpServletRequest request, HttpServletResponse response) {
         LOGGER.info("获取版本号-------------->>/login/version");
@@ -81,6 +88,7 @@ public class LoginController extends BaseController{
      */
     @RequestMapping("/loginByPassword")
     @ResponseBody
+    @ApiOperation(value = "用户使用账号密码登录功能", notes = "获取用户信息")
     public JSONObject loginByPassword(@RequestParam(value = "password") String password, @RequestParam(value = "phone") String phone,
                                       HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOGGER.info("用户使用账号密码登录功能-------------->>/login/loginByPassword");
