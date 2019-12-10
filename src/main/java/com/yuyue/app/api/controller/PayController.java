@@ -1200,7 +1200,7 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
-        BigDecimal money = mallOrderItemById.getCommodityPrice();
+        BigDecimal money = mallOrderItemById.getShopIncome();
         log.info("-------money-----------"+money);
         Order oldOrder = payService.getOrderId(mallOrderItemById.getOrderId());
         if (StringUtils.isNull(oldOrder)) {
