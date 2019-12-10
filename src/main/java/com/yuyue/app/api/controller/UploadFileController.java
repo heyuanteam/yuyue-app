@@ -249,20 +249,24 @@ public class UploadFileController extends  BaseController{
         }
         UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
         if (StringUtils.isEmpty(page) || !page.matches("[0-9]+"))  page = "1";
-        PageHelper.startPage(Integer.parseInt(page), 10);
+
         List<UploadFile> uploadFileList =  new ArrayList<>();
         if ("video".equals(type) || "home".equals(type) || "category".equals(type) || "artist".equals(type)){
             if ("video".equals(type)){
                 String parameter  = uploadFile.getUploadTime();
+                PageHelper.startPage(Integer.parseInt(page), 10);
                 uploadFileList = uploadFileService.getNextVideo(parameter,"",type);
             }else if ("home".equals(type)){
                 String parameter = uploadFile.getPlayAmount();
+                PageHelper.startPage(Integer.parseInt(page), 10);
                 uploadFileList = uploadFileService.getNextVideo(parameter,"",type);
             }else if ("category".equals(type)){
                 String uploadTime  = uploadFile.getUploadTime();
+                PageHelper.startPage(Integer.parseInt(page), 10);
                 uploadFileList = uploadFileService.getNextVideo(uploadFile.getCategoryId(),uploadTime,type);
             }else {
                 String uploadTime  = uploadFile.getUploadTime();
+                PageHelper.startPage(Integer.parseInt(page), 10);
                 uploadFileList =  uploadFileService.getNextVideo(uploadFile.getAuthorId(),uploadTime,type);
             }
 

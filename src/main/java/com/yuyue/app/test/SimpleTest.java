@@ -7,6 +7,7 @@ import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.GouldUtils;
 import com.yuyue.app.utils.HttpUtils;
 import com.yuyue.app.utils.MallUtils;
+import com.yuyue.app.utils.ResultJSONUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -316,6 +317,9 @@ public class SimpleTest {
 //        else if (Integer.parseInt(distanceId)<=8 && Integer.parseInt(distanceId)>=1){
 //            System.out.println("------");
 //        }
+
+        String table = ResultJSONUtils.getHashValue("yuyue_upload_file_", "A408C597F8A140F68D10C21CCDFF2AF3");
+        System.out.println(table);
 
     }
 
