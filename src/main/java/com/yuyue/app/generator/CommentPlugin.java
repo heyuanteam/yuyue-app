@@ -1,4 +1,4 @@
-package com.yuyue.app.config;
+package com.yuyue.app.generator;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;

@@ -27,7 +27,7 @@
         </plugin>
 
         <!-- 自定义的注释生成插件-->
-        <plugin type="com.yuyue.app.config.CommentPlugin">
+        <plugin type="com.yuyue.app.generator.CommentPlugin">
             <!-- 抑制警告 -->
             <property name="suppressTypeWarnings" value="true" />
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
@@ -37,7 +37,7 @@
         </plugin>
 
         <!-- lombok插件  -->
-        <plugin type="com.yuyue.app.config.LombokPlugin" >
+        <plugin type="com.yuyue.app.generator.LombokPlugin" >
             <property name="hasLombok" value="true"/>
         </plugin>
 
