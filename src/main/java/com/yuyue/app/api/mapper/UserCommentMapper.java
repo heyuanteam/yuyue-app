@@ -55,9 +55,9 @@ public interface UserCommentMapper extends MyBaseMapper<UserComment> {
     int getCommentTotal(@Param(value = "videoId") String videoId);
 
     @Transactional
-    @Insert("INSERT into yuyue_user_comment (ID,VIDEO_ID,USER_ID,TEXT) " +
-            "VALUES (#{id}, #{videoId}, #{userId}, #{text})")
-    void addComment(UserComment comment );
+    @Insert("INSERT into yuyue_user_comment (ID,VIDEO_ID,USER_ID,AUTHOR_ID,TEXT) " +
+            "VALUES (#{id}, #{videoId}, #{userId},#{authorId}, #{text})")
+    void addComment(UserComment comment);
 
     @Transactional
     @Delete("DELETE FROM yuyue_user_comment WHERE ID = #{id}")

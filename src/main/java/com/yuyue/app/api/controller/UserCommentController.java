@@ -131,6 +131,7 @@ public class UserCommentController extends BaseController{
             comment.setId(id);
             comment.setVideoId(videoId);
             comment.setUserId(user.getId());
+            comment.setAuthorId(authorId);
             comment.setText(mapValue.get("text"));
             //数据插入到Comment表中
             userCommentService.addComment(comment);
@@ -159,20 +160,21 @@ public class UserCommentController extends BaseController{
         ReturnResult returnResult =new ReturnResult();
         Map<String, String> mapValue = getParameterMap(request, response);
         String commentId=mapValue.get("id");
-        String videoId=mapValue.get("videoId");
+/*      String videoId=mapValue.get("videoId");
         String authorId=mapValue.get("authorId");
         if(StringUtils.isEmpty(videoId) ){
             returnResult.setMessage("videoId不可为空!!");
         }else if (StringUtils.isEmpty(authorId)){
             returnResult.setMessage("authorId不可为空!!");
-        }
+        }*/
         UserComment userCommentById = userCommentService.getUserCommentById(commentId);
+        System.out.println(userCommentById);
         if(StringUtils.isNull(userCommentById) ){
             returnResult.setMessage("未查询到该评论!!");
         }else {
-            uploadFileService.reduceCommentAmount(authorId,videoId);
+            uploadFileService.reduceCommentAmount(userCommentById.getAuthorId(),userCommentById.getVideoId());
             //通过评论id删除评论表中该评论
-            userCommentService.deleteComment(commentId,videoId);
+            userCommentService.deleteComment(commentId,userCommentById.getVideoId());
 
             returnResult.setMessage("删除成功！");
             returnResult.setStatus(Boolean.TRUE);

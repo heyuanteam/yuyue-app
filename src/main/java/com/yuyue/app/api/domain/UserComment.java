@@ -17,6 +17,7 @@ public class UserComment implements Serializable {
     private String text;
     private String createTime;
     private String userId;
+    private String authorId;
 
 
 }
