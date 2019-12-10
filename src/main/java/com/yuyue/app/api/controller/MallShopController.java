@@ -341,14 +341,13 @@ public class MallShopController extends BaseController{
 //              双向选择
             String distanceValue = mallShopVo.getDistances().getDistanceValue();
             if (StringUtils.isNotEmpty(distanceValue) && !distanceValue.contains("全部")) {
-                if (mallShopVo.getDistance() > Long.valueOf(distanceValue) * 1000L || along > Long.valueOf(distanceValue) * 1000L
-                        || mallShopVo.getDistance() > along) {
+                if (mallShopVo.getDistance() > Long.valueOf(distanceValue) * 1000L || along > Long.valueOf(distanceValue) * 1000L) {
+                    iter.remove();
+                } else if (!allDistanceValue.contains("全部") && mallShopVo.getDistance() > along){
                     iter.remove();
                 }
-            } else if (!allDistanceValue.contains("全部")){
-                if (mallShopVo.getDistance() > along) {
-                    iter.remove();
-                }
+            } else if (!allDistanceValue.contains("全部") && mallShopVo.getDistance() > along){
+                iter.remove();
             }
         }
 
