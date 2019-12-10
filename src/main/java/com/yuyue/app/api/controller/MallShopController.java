@@ -725,7 +725,6 @@ public class MallShopController extends BaseController{
             mallShop.setRemark("N");
 
             try {
-                mallShop.getMerchantAddr().replace("-","");
                 JSONObject lonLarByAddress = GouldUtils.getLonLarByAddress(mallShop.getMerchantAddr());
                 if (com.yuyue.app.utils.StringUtils.isNotEmpty(lonLarByAddress)) {
                     JSONObject object = JSONObject.parseObject(JSONArray.parseArray(lonLarByAddress.getString("geocodes")).get(0).toString());
@@ -840,7 +839,6 @@ public class MallShopController extends BaseController{
             return returnResult;
         }
         try {
-            mallShop.getMerchantAddr().replace("-","");
             JSONObject lonLarByAddress = GouldUtils.getLonLarByAddress(mallShop.getMerchantAddr());
             if (com.yuyue.app.utils.StringUtils.isNotEmpty(lonLarByAddress)) {
                 JSONObject object = JSONObject.parseObject(JSONArray.parseArray(lonLarByAddress.getString("geocodes")).get(0).toString());
