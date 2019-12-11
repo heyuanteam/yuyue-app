@@ -61,12 +61,13 @@ public class PayController extends BaseController{
     //苹果内购
     private static final Map<String, Object> iosMap = new HashMap<>();
     static {
+        //1 3 6 12 30 50
+        iosMap.put("1",new BigDecimal(0.7));
+        iosMap.put("3",new BigDecimal(2.1));
+        iosMap.put("6",new BigDecimal(4.2));
         iosMap.put("12",new BigDecimal(8.4));
         iosMap.put("30",new BigDecimal(21));
         iosMap.put("50",new BigDecimal(35));
-        iosMap.put("128",new BigDecimal(89.6));
-        iosMap.put("618",new BigDecimal(432.6));
-        iosMap.put("6,498",new BigDecimal(4548.6));
     }
 
     @ResponseBody
@@ -468,11 +469,28 @@ public class PayController extends BaseController{
     @ResponseBody
     @RequestMapping(value = "/doIosRequest")
     @LoginRequired
-    public synchronized JSONObject doIosRequest(String TransactionID, String Payload, @CurrentUser AppUser user) throws Exception {
+    public synchronized JSONObject doIosRequest(String videoId,String sourceId,String TransactionID, String Payload, @CurrentUser AppUser user) throws Exception {
         ReturnResult returnResult = new ReturnResult();
-        Map<String, Object> map = new HashMap<>();
-        System.out.println("客户端传过来的值1：" + TransactionID + "客户端传过来的值2：" + Payload);
+        if (StringUtils.isEmpty(videoId)) {
+            returnResult.setMessage("视频ID不可以为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (StringUtils.isEmpty(sourceId)) {
+            returnResult.setMessage("艺人ID不可以为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (StringUtils.isEmpty(TransactionID)) {
+            returnResult.setMessage("TransactionID不可以为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        } else if (StringUtils.isEmpty(Payload)) {
+            returnResult.setMessage("Payload不可以为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        AppUser appUser = loginService.getAppUserMsg("","",sourceId);
+        if(StringUtils.isNull(appUser)){
+            returnResult.setMessage("您想送礼的用户，不存在！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
 
+        System.out.println("客户端传过来的值1：" + TransactionID + "客户端传过来的值2：" + Payload);
         String verifyResult = IosVerifyUtils.buyAppVerify(Payload, 1); //1.先线上测试 发送平台验证
         if (verifyResult == null) { // 苹果服务器没有返回验证结果
             returnResult.setMessage("无订单信息!");
@@ -490,6 +508,7 @@ public class PayController extends BaseController{
             }
 
             System.out.println("苹果平台返回值：job" + job);
+            BigDecimal subtract = BigDecimal.ZERO;
             if (states.equals("0")) { // 前端所提供的收据是有效的 验证成功
                 String r_receipt = job.getString("receipt");
                 JSONObject returnJson = JSONObject.parseObject(r_receipt);
@@ -498,27 +517,46 @@ public class PayController extends BaseController{
 
                 String product_id = in_appJson.getString("product_id");
                 String transaction_id = in_appJson.getString("transaction_id"); // 订单号
+
+                String[] moneys = product_id.split("\\.");
+                ChangeMoney xfMoney = new ChangeMoney();
+                xfMoney.setChangeNo("YYXF" + RandomSaltUtil.randomNumber(14));
+                xfMoney.setStatus("10A");
+                xfMoney.setMobile(user.getPhone());
+                xfMoney.setMerchantId(user.getId());
+                xfMoney.setSourceId(appUser.getId());
+                xfMoney.setNote(iosMap.get(moneys[3]).toString());
+                xfMoney.setTradeType("XFIOS");
+                xfMoney.setMoney(new BigDecimal(moneys[3]));
+                xfMoney.setVideoId(videoId);
+                createShouMoney(xfMoney);
+
                 //如果单号一致 则保存到数据库
                 if (TransactionID.equals(transaction_id)) {
-                    String[] moneys = product_id.split("\\.");
-                    Order order = new Order();
-                    order.setOrderNo(TransactionID);
-                    order.setStatus("10B");
-                    order.setStatusCode("100001");
-                    order.setMobile(user.getPhone());
-                    order.setMerchantId(user.getId());
-                    order.setMoney(new BigDecimal(iosMap.get(moneys[3]).toString()));
-                    order.setTradeType("CZIOS");
-                    order.setNote(moneys[3]);
-//                  order.setMoney("100");
-                    createOrder(order);
-//                    BigDecimal add = ResultJSONUtils.updateUserMoney(user.getTotal(),new BigDecimal(iosMap.get(moneys[3]).toString()),"+");
-//                    payService.updateTotal(user.getId(), add);
-//                    极光商家卖出商品通知 : 8 (orderId)
-                    HttpUtils.doPost(Variables.sendClotheSoldUrl,order.getId());
+                    //送礼
+                    BigDecimal bigDecimal = new BigDecimal(xfMoney.getNote()).multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
+                    payService.updateOutIncome(appUser.getId(),subtract);
+                    payService.updateChangeMoneyStatus(subtract,"SUCCESS", "苹果内购成功", "10B", xfMoney.getId());
+
+                    ChangeMoney syMoney = new ChangeMoney();
+                    syMoney.setChangeNo("YYSY" + RandomSaltUtil.randomNumber(14));
+                    syMoney.setStatus("10B");
+                    syMoney.setMobile(appUser.getPhone());
+                    syMoney.setMerchantId(appUser.getId());
+                    syMoney.setSourceId(xfMoney.getMerchantId());
+                    syMoney.setMoney(bigDecimal);
+                    syMoney.setNote("用户收益");
+                    syMoney.setTradeType("SY");
+                    syMoney.setHistoryMoney(subtract);
+                    createShouMoney(syMoney);
+
+                    payService.updateChangeMoneyStatus(subtract,"SUCCESS", "苹果内购成功", "10B", syMoney.getId());
                     returnResult.setStatus(Boolean.TRUE);
                     returnResult.setMessage("充值成功！");
                     returnResult.setResult(moneys[3]);
+                } else {
+                    payService.updateChangeMoneyStatus(subtract,"ERROR", "receipt数据有问题", "10C", xfMoney.getId());
                 }
             } else {
                 returnResult.setMessage("receipt数据有问题");

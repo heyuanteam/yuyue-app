@@ -91,7 +91,7 @@
             and b.videoId = #{videoId}
         </if>
         <if test="tradeType!=null and tradeType!='' and tradeType == 'XF'">
-            and b.tradeType in ('XFZFB','XFWX')
+            and b.tradeType in ('XFZFB','XFWX','XFIOS')
         </if>
         <if test="tradeType!=null and tradeType!='' and tradeType == 'SY'">
             and b.tradeType in ('TXZFB','TXZWX','SY','TG') and b.note in ('income','用户收益','推广收益')
