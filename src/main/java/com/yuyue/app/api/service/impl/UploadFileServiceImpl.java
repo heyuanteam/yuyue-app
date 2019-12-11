@@ -326,6 +326,16 @@ public class UploadFileServiceImpl implements UploadFileService {
         return uploadFileMapper.getVideoByAuthor(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId), authorId,begin,limit);
     }
 
+    @Override
+    public void reportVideo(ReportVideo reportVideo) {
+        uploadFileMapper.reportVideo(reportVideo);
+    }
+
+    @Override
+    public ReportVideo getReportVideo(String userId, String videoId) {
+        return uploadFileMapper.getReportVideo(userId,videoId);
+    }
+
 
     /**
      *视频表、用户表点赞量+1

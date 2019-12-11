@@ -9,6 +9,7 @@ import com.google.common.collect.Maps;
 import com.yuyue.app.annotation.CurrentUser;
 import com.yuyue.app.annotation.LoginRequired;
 import com.yuyue.app.api.domain.AppUser;
+import com.yuyue.app.api.domain.ReportVideo;
 import com.yuyue.app.api.domain.UploadFile;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.api.service.UploadFileService;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author: Lucifer
@@ -312,4 +314,58 @@ public class UploadFileController extends  BaseController{
         return ResultJSONUtils.getJSONObjectBean(returnResult);
 
     }
+
+    @RequestMapping(value = "/reportVideo")
+    @ResponseBody
+    @LoginRequired
+    public JSONObject reportVideo(@CurrentUser AppUser appUser,HttpServletRequest request, HttpServletResponse response){
+        log.info("视频举报---->>/uploadFile/reportVideo");
+        getParameterMap(request, response);
+        ReturnResult returnResult=new ReturnResult();
+        String id = UUID.randomUUID().toString().replace("-","").toUpperCase();
+        String userId = appUser.getId();
+        String authorId = request.getParameter("authorId");
+        String videoId= request.getParameter("videoId");
+        String content = request.getParameter("content");
+        String imagePath = request.getParameter("imagePath");
+        String contact = request.getParameter("contact");
+        if (StringUtils.isEmpty(videoId)){
+            returnResult.setMessage("视频id不可为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (StringUtils.isEmpty(authorId)){
+            returnResult.setMessage("作者id不可为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (StringUtils.isEmpty(content)){
+            returnResult.setMessage("举报内容不可为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }else if (StringUtils.isEmpty(contact)){
+            returnResult.setMessage("联系方式不可为空！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        UploadFile uploadFile = uploadFileService.fileDetail(authorId, videoId);
+        if (StringUtils.isNull(uploadFile)){
+            returnResult.setMessage("未发现该视频！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        ReportVideo getReportVideo = uploadFileService.getReportVideo(userId, videoId);
+        if(StringUtils.isNotNull(getReportVideo)){
+            returnResult.setMessage("已举报，等待处理！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        ReportVideo reportVideo = new ReportVideo();
+        reportVideo.setId(id);
+        reportVideo.setUserId(userId);
+        reportVideo.setAuthorId(authorId);
+        reportVideo.setVideoId(videoId);
+        reportVideo.setContent(content);
+        reportVideo.setImagePath(imagePath);
+        reportVideo.setContact(contact);
+        reportVideo.setStatus("10A");
+
+        uploadFileService.reportVideo(reportVideo);
+        returnResult.setMessage("举报成功！");
+        returnResult.setStatus(Boolean.TRUE);
+        return ResultJSONUtils.getJSONObjectBean(returnResult);
+    }
+
 }

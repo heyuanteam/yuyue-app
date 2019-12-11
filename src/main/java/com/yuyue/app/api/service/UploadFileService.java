@@ -1,5 +1,6 @@
 package com.yuyue.app.api.service;
 import com.alibaba.fastjson.JSONObject;
+import com.yuyue.app.api.domain.ReportVideo;
 import com.yuyue.app.api.domain.UploadFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -114,4 +115,7 @@ public interface UploadFileService {
     List<UploadFile> getVideoByAuthor(String authorId,int begin,int limit);
 
 
+    void reportVideo(ReportVideo reportVideo);
+
+    ReportVideo getReportVideo(String userId,String videoId);
 }

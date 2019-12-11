@@ -1,5 +1,6 @@
 package com.yuyue.app.api.mapper;
 
+import com.yuyue.app.api.domain.ReportVideo;
 import com.yuyue.app.api.domain.UploadFile;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -189,4 +190,13 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
      */
     @Select("SELECT *,DATE_FORMAT(UPLOAD_TIME,'%Y-%m-%d %H:%i:%s') uploadTime FROM ${tableName} WHERE authorId = #{authorId} AND status = '10B' ORDER BY UPLOAD_TIME DESC limit #{begin},#{limit}")
     List<UploadFile> getVideoByAuthor(@Param("tableName") String tableName,@Param("authorId") String authorId,@Param("begin")int begin,@Param("limit")int limit);
+
+    @Transactional
+    @Insert("insert into yuyue_video_report (id,user_id,video_id,author_id,content,contact,image_path,status) " +
+            "values (#{id},#{userId},#{videoId},#{authorId},#{content},#{contact},#{imagePath},#{status})")
+    void reportVideo(ReportVideo reportVideo);
+
+    @Select("select * from yuyue_video_report where user_id = #{userId} and video_id = #{videoId}")
+    ReportVideo getReportVideo(@Param(value = "userId") String userId, @Param(value = "videoId") String videoId);
+
 }
