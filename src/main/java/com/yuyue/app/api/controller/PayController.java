@@ -384,7 +384,8 @@ public class PayController extends BaseController{
             BigDecimal subtract = BigDecimal.ZERO;
             if (StringUtils.isNotNull(orderNo)) {
                 // 有可能出现多次回调，只有在该状态下的回调才是支付成功下的回调
-                if (!"10B".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS") || params.get("trade_status").equals("TRADE_FINISHED"))) {
+                if (!"10B".equals(orderNo.getStatus()) && (params.get("trade_status").equals("TRADE_SUCCESS")
+                        || params.get("trade_status").equals("TRADE_FINISHED"))) {
                     log.info("加钱===================");
                     String trxNo = params.get("trade_status");
                     //加钱

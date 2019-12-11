@@ -255,7 +255,7 @@ public class MallShopServiceImpl implements MallShopService {
 
         //给商家们加钱的方法
         List<String> shopIds = mallOrderItemMapper.getShopIds(orderId);
-        //mallOrderItemMapper.updateOrderItemsStatus(orderId,"10B");
+        mallOrderItemMapper.updateOrderItemsStatus(orderId,"10B");
         for (String shopId:shopIds) {
             List<OrderItem> mallOrderItems = getMallOrderItem(orderId, shopId, "");
             String money = null;
@@ -276,7 +276,7 @@ public class MallShopServiceImpl implements MallShopService {
                 specification.setCommodityReserve(i);
                 updateSpecification(specification);
                 money = orderItem.getShopIncome().toString();
-                updateOrderItemsStatus(orderId,"10B");
+                //updateOrderItemsStatus(orderId,"10B");
             }
             //给商家加钱
             MallShop myMallShop = getMyMallShop(shopId);
