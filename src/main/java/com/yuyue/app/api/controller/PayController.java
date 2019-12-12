@@ -525,16 +525,16 @@ public class PayController extends BaseController{
                 xfMoney.setMobile(user.getPhone());
                 xfMoney.setMerchantId(user.getId());
                 xfMoney.setSourceId(appUser.getId());
-                xfMoney.setNote(iosMap.get(moneys[3]).toString());
+                xfMoney.setNote(moneys[3]);
                 xfMoney.setTradeType("XFIOS");
-                xfMoney.setMoney(new BigDecimal(moneys[3]));
+                xfMoney.setMoney(new BigDecimal(iosMap.get(moneys[3]).toString()));
                 xfMoney.setVideoId(videoId);
                 createShouMoney(xfMoney);
 
                 //如果单号一致 则保存到数据库
                 if (TransactionID.equals(transaction_id)) {
                     //送礼
-                    BigDecimal bigDecimal = new BigDecimal(xfMoney.getNote()).multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal bigDecimal = (xfMoney.getMoney().multiply(new BigDecimal(0.6))).setScale(2, BigDecimal.ROUND_HALF_UP);
                     subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
                     payService.updateOutIncome(appUser.getId(),subtract);
                     payService.updateChangeMoneyStatus(subtract,"SUCCESS", "苹果内购成功", "10B", xfMoney.getId());

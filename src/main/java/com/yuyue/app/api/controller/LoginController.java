@@ -47,7 +47,7 @@ public class LoginController extends BaseController{
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/version", method = RequestMethod.GET)
+    @RequestMapping(value = "/version")
     @ApiOperation(value = "获取最新版本号",response = AppVersion.class, notes = "获取最新版本号")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "appVersion",paramType = "query",value = "安卓1或苹果0",required = true,dataType = "String")
