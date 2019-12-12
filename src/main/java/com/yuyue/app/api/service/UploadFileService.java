@@ -38,6 +38,8 @@ public interface UploadFileService {
      */
     void downloadFile(String filesName, String filesPath, HttpServletResponse response) throws IOException;
 
+    /*修改举报状态*/
+    void updateReportStatus(String authorId,String videoId);
     /**
      * 视频播放量
      * @param

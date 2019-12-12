@@ -194,6 +194,10 @@ public class UploadFileServiceImpl implements UploadFileService {
         outputStream.write(bytes);
     }
 
+    @Override
+    public void updateReportStatus(String authorId, String videoId) {
+        uploadFileMapper.updateReportStatus(ResultJSONUtils.getHashValue("yuyue_upload_file_",authorId),videoId);
+    }
 
 
     /**

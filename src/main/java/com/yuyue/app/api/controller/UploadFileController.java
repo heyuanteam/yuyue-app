@@ -363,6 +363,7 @@ public class UploadFileController extends  BaseController{
         reportVideo.setStatus("10A");
 
         uploadFileService.reportVideo(reportVideo);
+        uploadFileService.updateReportStatus(authorId,videoId);
         returnResult.setMessage("举报成功！");
         returnResult.setStatus(Boolean.TRUE);
         return ResultJSONUtils.getJSONObjectBean(returnResult);

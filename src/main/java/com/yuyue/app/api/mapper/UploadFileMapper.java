@@ -71,6 +71,8 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
                           @Param("title")String title,@Param("categoryId")String categoryId);
 
 
+
+
     /**
      * 更新视频信息（发布）
      * @param tableName
@@ -198,5 +200,14 @@ public interface UploadFileMapper extends MyBaseMapper<UploadFile> {
 
     @Select("select * from yuyue_video_report where user_id = #{userId} and video_id = #{videoId}")
     ReportVideo getReportVideo(@Param(value = "userId") String userId, @Param(value = "videoId") String videoId);
+
+    /**
+     * 修改举报状态
+     * @param tableName
+     * @param id
+     */
+    @Transactional
+    @Update("UPDATE ${tableName} SET report_status = '10A'  WHERE id = #{id}")
+    void updateReportStatus(@Param("tableName")String tableName,@Param("id")String id);
 
 }
