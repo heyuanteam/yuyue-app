@@ -534,7 +534,7 @@ public class PayController extends BaseController{
                 //如果单号一致 则保存到数据库
                 if (TransactionID.equals(transaction_id)) {
                     //送礼
-                    BigDecimal bigDecimal = xfMoney.getMoney().multiply(new BigDecimal(0.6)).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal bigDecimal = (xfMoney.getMoney().multiply(new BigDecimal(0.6))).setScale(2, BigDecimal.ROUND_HALF_UP);
                     subtract = ResultJSONUtils.updateUserMoney(appUser.getIncome(), bigDecimal, "+");
                     payService.updateOutIncome(appUser.getId(),subtract);
                     payService.updateChangeMoneyStatus(subtract,"SUCCESS", "苹果内购成功", "10B", xfMoney.getId());
