@@ -2068,7 +2068,7 @@ public class MallShopController extends BaseController{
     @RequestMapping(value = "createOrder")
     @ResponseBody
     @LoginRequired
-    public ReturnResult createOrder(@CurrentUser  AppUser appUser,String cartStr,String addressId,
+    public ReturnResult createOrder(@CurrentUser AppUser appUser,String cartStr,String addressId,
                                        String payType,String sourcePay,
                                        HttpServletRequest request, HttpServletResponse response){
 

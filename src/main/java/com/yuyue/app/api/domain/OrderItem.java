@@ -38,6 +38,12 @@ public class OrderItem implements Serializable {
     private int commodityNum;
     //商铺收益
     private BigDecimal shopIncome;
+    //详细地址
+    private String specificAddr;
+    //收货人
+    private String receiver;
+    //手机号
+    private String phone;
 
     //      支付类型及配送状态
     private String status;
