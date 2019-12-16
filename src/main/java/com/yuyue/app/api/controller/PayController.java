@@ -28,6 +28,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +56,8 @@ public class PayController extends BaseController{
     private MyService myService;
     @Autowired
     private MallShopService mallShopService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     // 构造签名的map
     private SortedMap<Object, Object> parameters = new TreeMap<>();
@@ -593,7 +596,7 @@ public class PayController extends BaseController{
     @ResponseBody
     @RequestMapping("/outMoney")
     @LoginRequired
-    public JSONObject outMoney(String tradeType,BigDecimal money,String note,@CurrentUser AppUser user) throws Exception {
+    public JSONObject outMoney(String tradeType,BigDecimal money,String note,String code,String phone,@CurrentUser AppUser user) throws Exception {
         ReturnResult returnResult = new ReturnResult();
         log.info("-------提现订单-----------");
         if (StringUtils.isEmpty(tradeType)) {
@@ -613,6 +616,10 @@ public class PayController extends BaseController{
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         } else if (money.compareTo(new BigDecimal(1))==-1){
             returnResult.setMessage("提现不能低于1元！");
+            return ResultJSONUtils.getJSONObjectBean(returnResult);
+        }
+        if (StringUtils.isEmpty(code) || code.length() != 6 || !code.equals(redisTemplate.opsForValue().get(phone).toString())) {
+            returnResult.setMessage("验证码输入错误！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
         }
 
