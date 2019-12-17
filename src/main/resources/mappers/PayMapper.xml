@@ -94,10 +94,10 @@
             and b.tradeType in ('XFZFB','XFWX','XFIOS')
         </if>
         <if test="tradeType!=null and tradeType!='' and tradeType == 'SY'">
-            and b.tradeType in ('TXZFB','TXZWX','SY','TG') and b.note in ('income','用户收益','推广收益')
+            and b.tradeType in ('TXZFB','TXWX','SY','TG') and b.note in ('income','用户收益','推广收益')
         </if>
         <if test="tradeType!=null and tradeType!='' and tradeType == 'SC'">
-            and b.tradeType in ('TXZFB','TXZWX','SC','TKWX','TKZFB') and b.note in ('mIncome','商城收益')
+            and b.tradeType in ('TXZFB','TXWX','SC','TKWX','TKZFB') and b.note in ('mIncome','商城收益')
         </if>
         <if test="userId!=null and userId!=''">
             and b.merchantId = #{userId}
