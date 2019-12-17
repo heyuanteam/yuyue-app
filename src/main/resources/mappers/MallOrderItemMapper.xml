@@ -14,6 +14,11 @@
         <result column="commodity_price" property="commodityPrice"/>
         <result column="commodity_num" property="commodityNum"/>
         <result column="shop_income" property="shopIncome"/>
+
+        <result column="specific_addr" property="specificAddr"/>
+        <result column="phone" property="phone"/>
+        <result column="receiver" property="receiver"/>
+
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="isRefund" property="isRefund"/>
