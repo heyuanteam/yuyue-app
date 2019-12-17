@@ -71,7 +71,7 @@ public class MallShopController extends BaseController{
         log.info("查询我的关注商铺列表-------------->>/mallShop/isAttention");
         getParameterMap(request, response);
         String shopId = request.getParameter("shopId");
-
+        System.out.println("321");
         List<ShopAttention> shopAttentions = mallShopService.getShopAttentions(user.getId(), shopId);
         if (StringUtils.isEmpty(shopAttentions)){
             returnResult.setMessage("未关注！");
