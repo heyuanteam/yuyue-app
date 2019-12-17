@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface LikeMapper extends MyBaseMapper<Like> {
 
-    @Select("SELECT STATUS FROM yuyue_like_list WHERE USER_ID = #{userId} and VIDEO_ID = #{videoId}")
+    @Select("SELECT STATUS FROM yuyue_like_list WHERE USER_ID = #{userId} and VIDEO_ID = #{videoId} limit 1")
     String getLikeStatus(@Param("userId")String userId,@Param("videoId")String videoId);
 
     @Transactional

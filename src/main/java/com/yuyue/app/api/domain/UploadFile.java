@@ -50,7 +50,7 @@ public class UploadFile implements Serializable {
 //    评论数量
     private String commentAmount;
 //    时长
-   private String duration;
+    private String duration;
     //状态
     private String status;
     //举报状态
