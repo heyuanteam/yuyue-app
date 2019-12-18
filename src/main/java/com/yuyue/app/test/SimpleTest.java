@@ -1,7 +1,11 @@
 package com.yuyue.app.test;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.yuyue.app.api.domain.AppUser;
+import com.yuyue.app.api.domain.Feedback;
+import com.yuyue.app.api.mapper.FeedbackMapper;
 import com.yuyue.app.api.service.LoginService;
 import com.yuyue.app.enums.Variables;
 import com.yuyue.app.utils.GouldUtils;
@@ -16,16 +20,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import springfox.documentation.spring.web.json.Json;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SimpleTest {
-
 
 
     public static void main(String[] args) {
@@ -318,8 +319,27 @@ public class SimpleTest {
 //            System.out.println("------");
 //        }
 
-        String table = ResultJSONUtils.getHashValue("yuyue_upload_file_", "A408C597F8A140F68D10C21CCDFF2AF3");
-        System.out.println(table);
+//        String table = ResultJSONUtils.getHashValue("yuyue_upload_file_", "A408C597F8A140F68D10C21CCDFF2AF3");
+//        System.out.println(table);
+
+        Feedback feedback = new Feedback();
+        feedback.setId(UUID.randomUUID().toString().replace("-","").toUpperCase());
+        feedback.setContact("110");
+        feedback.setPictureUrl("www.baidu.com");
+        feedback.setDetails("你好，我是110！");
+        feedback.setUserId("112");
+        feedback.setStatus("10A");
+        String s = JSONObject.toJSONString(feedback);
+        System.out.println("fastJson将对象转化为json串："+s);
+        System.out.println("Object 调用toString方法："+feedback.toString());
+        String s1 = "";
+        Feedback feedback1 = JSONObject.parseObject(s1,Feedback.class);
+//        System.out.println(jsonObject.get("contact"));
+//        JSONObject jsonObject = JSONObject.parseObject(s);
+//        Feedback feedback1 =  (Feedback) JSONObject.parseObject(s);
+        System.out.println("fastJson将json 串转化为对象："+feedback1);
+
+
 
     }
 

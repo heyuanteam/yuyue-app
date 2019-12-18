@@ -14,6 +14,14 @@
         <result column="commodity_price" property="commodityPrice"/>
         <result column="commodity_num" property="commodityNum"/>
         <result column="shop_income" property="shopIncome"/>
+
+        <result column="specific_addr" property="specificAddr"/>
+        <result column="phone" property="phone"/>
+        <result column="receiver" property="receiver"/>
+
+        <result column="shop_json" property="shopJson"/>
+        <result column="specification_json" property="specificationJson"/>
+
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="isRefund" property="isRefund"/>
@@ -79,7 +87,7 @@
 	        *
         FROM
             yuyue_mall_order_item a
-        LEFT JOIN yuyue_mall_shop_commodity c ON a.commodity_id = c.commodity_id
+
         WHERE
             merchant_id = #{merchantId}
         AND a.`status` != '10A'

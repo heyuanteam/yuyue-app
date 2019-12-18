@@ -44,6 +44,10 @@ public class OrderItem implements Serializable {
     private String receiver;
     //手机号
     private String phone;
+    //订单项中商铺原始信息
+    private String shopJson;
+    //订单项中规格信息
+    private String specificationJson;
 
     //      支付类型及配送状态
     private String status;

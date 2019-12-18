@@ -32,10 +32,12 @@ public interface MallOrderItemMapper extends MyBaseMapper<OrderItem> {
 
     @Transactional
     @Insert("REPLACE INTO yuyue_mall_order_item (order_item_id,order_id,shop_id, \n" +
-            "address_id,commodity_id,consumer_id,merchant_id,fare,commodity_price,shop_income,commodity_num,status) \n" +
+            "address_id,commodity_id,consumer_id,merchant_id,fare,commodity_price,shop_income,commodity_num," +
+            "specific_addr,phone,receiver,shop_json,specification_json,status) \n" +
             "VALUES \n" +
             "(#{orderItemId},#{orderId},#{shopId},#{addressId},#{commodityId},#{consumerId}, #{merchantId},\n" +
-            "#{fare},#{commodityPrice},#{shopIncome},#{commodityNum},#{status})")
+            "#{fare},#{commodityPrice},#{shopIncome},#{commodityNum}," +
+            "#{specificAddr},#{phone},#{receiver},#{shopJson},#{specificationJson},#{status})")
     void editMallOrderItem(OrderItem orderItem);
 
 //    @Transactional
