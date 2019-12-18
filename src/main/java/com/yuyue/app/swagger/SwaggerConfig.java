@@ -35,7 +35,7 @@ public class SwaggerConfig{
                 .title("Spring Boot中使用Swagger2构建RESTful API")  //接口文档标题
                 .description("rest api 文档构建利器")    //描述
                 .termsOfServiceUrl("http://www.heyuannetwork.com")  //相关的网址
-                .contact(new Contact("后端开发","http://www.heyuannetwork.com/","weilingwei_it@163.com")) //作者  邮箱等
+                .contact(new Contact("后端开发","http://www.heyuannetwork.com","weilingwei_it@163.com")) //作者  邮箱等
                 .version("1.0.0")
                 .build();
     }

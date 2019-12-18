@@ -31,7 +31,6 @@ public class LombokPlugin extends PluginAdapter {
 
     /**
      * 拦截 普通字段
-     *
      * @param topLevelClass
      * @param introspectedTable
      * @return
@@ -45,7 +44,6 @@ public class LombokPlugin extends PluginAdapter {
 
     /**
      * 拦截 主键
-     *
      * @param topLevelClass
      * @param introspectedTable
      * @return
@@ -59,7 +57,6 @@ public class LombokPlugin extends PluginAdapter {
 
     /**
      * 拦截 blob 类型字段
-     *
      * @param topLevelClass
      * @param introspectedTable
      * @return
@@ -72,9 +69,8 @@ public class LombokPlugin extends PluginAdapter {
     }
 
     /**
-     * Prevents all getters from being generated.
+     * 防止所有getter被生成
      * See SimpleModelGenerator
-     *
      * @param method
      * @param topLevelClass
      * @param introspectedColumn
@@ -92,9 +88,8 @@ public class LombokPlugin extends PluginAdapter {
     }
 
     /**
-     * Prevents all setters from being generated
+     * 防止所有setter被生成
      * See SimpleModelGenerator
-     *
      * @param method
      * @param topLevelClass
      * @param introspectedColumn
@@ -112,8 +107,7 @@ public class LombokPlugin extends PluginAdapter {
     }
 
     /**
-     * Adds the @Data lombok import and annotation to the class
-     *
+     * 添加@数据lombok导入和注释的类
      * @param topLevelClass
      */
     protected void addDataAnnotation(TopLevelClass topLevelClass) {
@@ -159,6 +153,14 @@ public class LombokPlugin extends PluginAdapter {
 //        return true;
 //    }
 //
+
+    /**
+     * 添加@数据mapper导入和注释的类
+     * @param interfaze
+     * @param topLevelClass
+     * @param introspectedTable
+     * @return
+     */
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         //Mapper文件的注释
