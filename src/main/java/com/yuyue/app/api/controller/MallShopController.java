@@ -2373,7 +2373,7 @@ public class MallShopController extends BaseController{
                     e.printStackTrace();
                 }
                 MallAddress mallAddress =  new MallAddress();
-                mallAddress.setDefaultAddr(orderItemVo.getSpecificAddr());
+                mallAddress.setSpecificAddr(orderItemVo.getSpecificAddr());
                 mallAddress.setPhone(orderItemVo.getPhone());
                 mallAddress.setReceiver(orderItemVo.getReceiver());
                 orderItemVo.setMallAddress(mallAddress);

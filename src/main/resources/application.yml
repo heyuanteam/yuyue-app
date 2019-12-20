@@ -33,8 +33,8 @@ spring:
 
   #redis配置
   redis:
-    #host: 101.37.252.177
-    host: 47.97.125.222
+    host: 101.37.252.177
+    #    host: 47.97.125.222
     port: 63000
     password: heyuan123456.
     lettuce:
@@ -50,13 +50,13 @@ spring:
       timeout: 50000
     database: 0
 
-#druid相关配置
+  #druid相关配置
   druid:
     username: root
     password: Ab323232
     #基本属性
-    #    url: jdbc:mysql://101.37.252.177:33060/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-    url: jdbc:mysql://47.97.125.222:33060/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    url: jdbc:mysql://101.37.252.177:33060/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    #    url: jdbc:mysql://47.97.125.222:33060/yuyue?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.xa.DruidXADataSource
     #配置初始化大小/最小/最大
@@ -100,8 +100,8 @@ logging:
 fdfs:
   so-timeout: 600000 #上传的超时时间
   connect-timeout: 600000 #连接超时时间
-  #  tracker-list: 101.37.252.177:22122
-  tracker-list: 47.97.125.222:22122
+  tracker-list: 101.37.252.177:22122
+  #  tracker-list: 47.97.125.222:22122
   pool:
     jmx-enabled: false
 #PageHelper的配置

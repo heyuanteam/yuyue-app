@@ -598,7 +598,7 @@ public class PayController extends BaseController{
     @LoginRequired
     public JSONObject outMoney(String tradeType,BigDecimal money,String note,String code,String phone,@CurrentUser AppUser user) throws Exception {
         ReturnResult returnResult = new ReturnResult();
-        log.info("-------提现订单-----------");
+        log.info("-------提现订单-----------pay/outMoney");
         if (StringUtils.isEmpty(tradeType)) {
             returnResult.setMessage("提现类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -699,7 +699,7 @@ public class PayController extends BaseController{
         String checkName ="NO_CHECK";
         String partner_trade_no = RandomSaltUtil.generetRandomSaltCode(32);
         //描述
-        log.info("金额==========>>>"+changeMoney.getMoney());
+        log.info("/pay/outWX -----> 转账WX金额==========>>>"+changeMoney.getMoney());
         //手续费0.75%
         BigDecimal rate = changeMoney.getMoney().multiply(new BigDecimal(0.0075)).setScale(2, BigDecimal.ROUND_HALF_UP);
         BigDecimal rateMoney = changeMoney.getMoney().subtract(rate).setScale(2, BigDecimal.ROUND_HALF_UP);
@@ -776,6 +776,7 @@ public class PayController extends BaseController{
     @RequestMapping("/saveUserInfo")
     @LoginRequired
     public JSONObject saveUserInfo(@CurrentUser AppUser user,String tradeType,String zfbNumber,String zfbRealName,String code) {
+        log.info("/pay/saveUserInfo -----> opendId保存到个人信息里面==========>>>");
         ReturnResult returnResult = new ReturnResult();
         if (StringUtils.isEmpty(tradeType)) {
             returnResult.setMessage("提现类型不能为空！！");
@@ -825,6 +826,7 @@ public class PayController extends BaseController{
     @RequestMapping("/deleteOpendId")
     @LoginRequired
     public JSONObject deleteOpendId(@CurrentUser AppUser user,String tradeType) {
+        log.info("/pay/deleteOpendId -----> 删除opendId==========>>>");
         ReturnResult returnResult = new ReturnResult();
         if (StringUtils.isEmpty(tradeType)){
             returnResult.setMessage("类型不能为空！！");
@@ -865,6 +867,7 @@ public class PayController extends BaseController{
      * @return
      */
     private JSONObject getUserInfo(JSONObject jsonObject){
+        log.info("获取用户基本信息 --> getUserInfo: ===>>>");
         String accessToken = jsonObject.getString("access_token");
         String openid = jsonObject.getString("openid");
 //         GET
@@ -888,7 +891,7 @@ public class PayController extends BaseController{
      * @Date	2018年9月3日
      */
     public JSONObject getOpenId(String code){
-        log.info("code: ===>>>"+code);
+        log.info("获取用户openID --> code: ===>>>"+code);
         JSONObject jsonObject = new JSONObject();
         if (code != null) {
             String url = "https://api.weixin.qq.com/sns/oauth2/access_token?"
@@ -975,7 +978,7 @@ public class PayController extends BaseController{
     public JSONObject payNative(@CurrentUser AppUser user,Order order,HttpServletRequest request, HttpServletResponse response) throws Exception {
         getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
-        log.info("-------创建扫码订单-----------");
+        log.info("/pay/payNative  ---扫码支付----创建扫码订单-----------");
         if (StringUtils.isEmpty(order.getTradeType())) {
             returnResult.setMessage("充值类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -1003,6 +1006,7 @@ public class PayController extends BaseController{
     private JSONObject payNativeZFB(Order order,HttpServletRequest request, HttpServletResponse httpResponse) {
         getParameterMap(request, httpResponse);
         ReturnResult returnResult = new ReturnResult();
+        log.info("/pay/payNativeZFB  ---->支付宝扫码回调");
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(Variables.AliPayReturnUrl);//同步通知页面
         alipayRequest.setNotifyUrl(Variables.AliPayNotifyUrl);//在公共参数中设置回跳和通知地址
@@ -1105,7 +1109,7 @@ public class PayController extends BaseController{
     public JSONObject payWapAPP(@CurrentUser AppUser user,Order order, HttpServletRequest request, HttpServletResponse response) throws Exception {
         getParameterMap(request, response);
         ReturnResult returnResult = new ReturnResult();
-        log.info("-------创建APP浏览器支付订单-----------");
+        log.info("pay/payWapAPP    ---APP浏览器支付----创建APP浏览器支付订单-----------");
         if (StringUtils.isEmpty(order.getTradeType())) {
             returnResult.setMessage("充值类型不能为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -1235,7 +1239,7 @@ public class PayController extends BaseController{
             ,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception{
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
-        log.info("-------创建退款订单-----------");
+        log.info("/pay/refundMoney---支付退款，原路返回----创建退款订单-----------");
         if (StringUtils.isEmpty(orderItemId)){
             returnResult.setMessage("退款orderItemId不可以为空！！");
             return ResultJSONUtils.getJSONObjectBean(returnResult);
@@ -1346,6 +1350,7 @@ public class PayController extends BaseController{
      */
     public JSONObject refundWX(AppUser user,ChangeMoney changeMoney,Order oldOrder,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception {
         getParameterMap(httpRequest, httpResponse);
+        log.info("/pay/refundWX ------>微信退款，原路返回 ");
         ReturnResult returnResult = new ReturnResult();
         try{
             String refundReason = "微信退款";
@@ -1428,6 +1433,7 @@ public class PayController extends BaseController{
     public JSONObject refundZFB(AppUser user,ChangeMoney changeMoney,Order oldOrder,HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception {
         getParameterMap(httpRequest, httpResponse);
         ReturnResult returnResult = new ReturnResult();
+        log.info("/pay/refundZFB   --------->   支付宝退款，原路返回");
         try{
             //实例化具体API对应的request类,类名称和接口名称对应,当前调用接口名称：alipay.trade.app.pay
 
